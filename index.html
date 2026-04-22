@@ -41,9 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     init();
   })
-  .catch(err => {
-    console.error("Error cargando datos:", err);
-  });
+  .catch(err => console.error(err));
 
   function parseCSV(csv) {
     const lines = csv.trim().split("\n");
@@ -53,65 +51,63 @@ document.addEventListener("DOMContentLoaded", () => {
     return lines.map(line => {
       const values = line.split(delimiter);
       const obj = {};
-      headers.forEach((h, i) => {
-        obj[h.trim()] = values[i]?.trim();
-      });
+      headers.forEach((h, i) => obj[h.trim()] = values[i]?.trim());
       return obj;
     });
   }
 
   function init() {
-    const tbody = document.getElementById('rankingBody');
+    const tbody = document.getElementById("rankingBody");
     if (!tbody) {
-      console.error("No se encontró #rankingBody");
+      console.error("❌ Falta el tbody con id=rankingBody");
       return;
     }
 
-    tbody.innerHTML = '';
+    tbody.innerHTML = "";
     data.forEach((p, i) => {
       tbody.innerHTML += `<tr onclick="showPlayer(${i})">
-        <td style="font-weight:800; color:var(--pitch-green); text-align:center;">#${i + 1}</td>
-        <td style="font-weight:600; color:var(--soccer-dark);">${p.name}</td>
-        <td style="text-align:right; font-weight:800; color:var(--pitch-green);">${p.total}</td>
+        <td>#${i + 1}</td>
+        <td>${p.name}</td>
+        <td>${p.total}</td>
       </tr>`;
     });
   }
 
-  window.showRanking = function () {
-    document.getElementById('rankingSection').classList.remove('hidden');
-    document.getElementById('playerSection').classList.add('hidden');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
   window.showPlayer = function (idx) {
     const p = data[idx];
-    document.getElementById('rankingSection').classList.add('hidden');
-    document.getElementById('playerSection').classList.remove('hidden');
 
-    document.getElementById('playerNameBig').textContent = p.name;
-    document.getElementById('statTotal').textContent = p.total;
-    document.getElementById('statPreguntas').textContent = p.preguntas;
-    document.getElementById('statPos').textContent = "#" + (idx + 1);
+    document.getElementById("rankingSection").classList.add("hidden");
+    document.getElementById("playerSection").classList.remove("hidden");
 
-    const tBody = document.getElementById('teamsBody');
-    tBody.innerHTML = '';
+    document.getElementById("playerNameBig").textContent = p.name;
+    document.getElementById("statTotal").textContent = p.total;
+    document.getElementById("statPreguntas").textContent = p.preguntas;
+    document.getElementById("statPos").textContent = "#" + (idx + 1);
+
+    const tBody = document.getElementById("teamsBody");
+    tBody.innerHTML = "";
+
     p.teams.forEach(t => {
       tBody.innerHTML += `<tr>
         <td>${t.pos}</td>
-        <td style="text-align:left; font-weight:700; color:var(--soccer-dark)">${t.team}</td>
-        <td style="color:#777">${t.coef}</td>
+        <td>${t.team}</td>
+        <td>${t.coef}</td>
         <td>${t.r1}</td>
         <td>${t.octavos || 0}</td>
         <td>${t.cuartos || 0}</td>
         <td>${t.semis || 0}</td>
         <td>${t.terceros || 0}</td>
         <td>${t.final || 0}</td>
-        <td class="points-final">${t.puntos}</td>
+        <td>${t.puntos}</td>
       </tr>`;
     });
+  };
 
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+  window.showRanking = function () {
+    document.getElementById("rankingSection").classList.remove("hidden");
+    document.getElementById("playerSection").classList.add("hidden");
   };
 
 });
 </script>
+``
