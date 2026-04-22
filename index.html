@@ -41,10 +41,14 @@ Promise.all([
 
 function parseCSV(csv) {
   const lines = csv.trim().split("\n");
-  const headers = lines.shift().split(",");
+
+  // Detectar delimitador automáticamente
+  const delimiter = lines[0].includes(";") ? ";" : ",";
+
+  const headers = lines.shift().split(delimiter);
 
   return lines.map(line => {
-    const values = line.split(",");
+    const values = line.split(delimiter);
     const obj = {};
     headers.forEach((h, i) => {
       obj[h.trim()] = values[i]?.trim();
