@@ -247,8 +247,7 @@
 <script>
     // Datos integrados y ordenados por el campo 'total' (Mayor a Menor)
     
-
-ocument.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", () => {
 
   const URL_RANKING = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRvbv4wKVLcF-dhiuLmYtU3aR8diCVDA8EgQ-yxaZXXqotI_L2VSWcoFo0NwiPEXB0XJwOxu9prujQk/pub?gid=0&output=csv";
   const URL_TEAMS   = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRvbv4wKVLcF-dhiuLmYtU3aR8diCVDA8EgQ-yxaZXXqotI_L2VSWcoFo0NwiPEXB0XJwOxu9prujQk/pub?gid=176911669&output=csv";
@@ -260,6 +259,7 @@ ocument.addEventListener("DOMContentLoaded", () => {
     fetch(URL_TEAMS).then(r => r.text())
   ])
   .then(([rankingCSV, teamsCSV]) => {
+
     const rankingRows = parseCSV(rankingCSV);
     const teamRows = parseCSV(teamsCSV);
 
@@ -284,63 +284,83 @@ ocument.addEventListener("DOMContentLoaded", () => {
     }));
 
     data.sort((a, b) =>
-      parseFloat(b.total.replace(',', '.')) -
-      parseFloat(a.total.replace(',', '.'))
+      parseFloat((b.total || "0").replace(',', '.')) -
+      parseFloat((a.total || "0").replace(',', '.'))
     );
 
     init();
   })
-  .catch(err => console.error(err));
+  .catch(err => console.error("Error:", err));
 
-  
-    function init() {
-        const tbody = document.getElementById('rankingBody');
-        tbody.innerHTML = '';
-        data.forEach((p, i) => {
-            tbody.innerHTML += `<tr onclick="showPlayer(${i})">
-                <td style="font-weight:800; color:var(--pitch-green); text-align:center;">#${i+1}</td>
-                <td style="font-weight:600; color:var(--soccer-dark);">${p.name}</td>
-                <td style="text-align:right; font-weight:800; color:var(--pitch-green);">${p.total}</td>
-            </tr>`;
-        });
+  function parseCSV(csv) {
+    const lines = csv.trim().split("\n");
+    const delimiter = lines[0].includes(";") ? ";" : ",";
+    const headers = lines.shift().split(delimiter);
+
+    return lines.map(line => {
+      const values = line.split(delimiter);
+      const obj = {};
+      headers.forEach((h, i) => obj[h.trim()] = values[i]?.trim());
+      return obj;
+    });
+  }
+
+  function init() {
+    const tbody = document.getElementById('rankingBody');
+    if (!tbody) {
+      console.error("No existe rankingBody");
+      return;
     }
 
-    function showRanking() {
-        document.getElementById('rankingSection').classList.remove('hidden');
-        document.getElementById('playerSection').classList.add('hidden');
-        window.scrollTo({top: 0, behavior: 'smooth'});
-    }
+    tbody.innerHTML = '';
+    data.forEach((p, i) => {
+      tbody.innerHTML += `<tr onclick="showPlayer(${i})">
+        <td style="font-weight:800; color:var(--pitch-green); text-align:center;">#${i+1}</td>
+        <td style="font-weight:600; color:var(--soccer-dark);">${p.name}</td>
+        <td style="text-align:right; font-weight:800; color:var(--pitch-green);">${p.total}</td>
+      </tr>`;
+    });
+  }
 
-    function showPlayer(idx) {
-        const p = data[idx];
-        document.getElementById('rankingSection').classList.add('hidden');
-        document.getElementById('playerSection').classList.remove('hidden');
-        
-        document.getElementById('playerNameBig').textContent = p.name;
-        document.getElementById('statTotal').textContent = p.total;
-        document.getElementById('statPreguntas').textContent = p.preguntas;
-        document.getElementById('statPos').textContent = "#" + (parseInt(idx) + 1);
+  window.showRanking = function () {
+    document.getElementById('rankingSection').classList.remove('hidden');
+    document.getElementById('playerSection').classList.add('hidden');
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  }
 
-        const tBody = document.getElementById('teamsBody');
-        tBody.innerHTML = '';
-        p.teams.forEach(t => {
-            tBody.innerHTML += `<tr>
-                <td>${t.pos}</td>
-                <td style="text-align:left; font-weight:700; color:var(--soccer-dark)">${t.team}</td>
-                <td style="color:#777">${t.coef}</td>
-                <td>${t.r1}</td>
-                <td>${t.octavos || 0}</td>
-                <td>${t.cuartos || 0}</td>
-                <td>${t.semis || 0}</td>
-                <td>${t.terceros || 0}</td>
-                <td>${t.final || 0}</td>
-                <td class="points-final">${t.puntos}</td>
-            </tr>`;
-        });
-        window.scrollTo({top: 0, behavior: 'smooth'});
-    }
+  window.showPlayer = function (idx) {
+    const p = data[idx];
 
-    init();
+    document.getElementById('rankingSection').classList.add('hidden');
+    document.getElementById('playerSection').classList.remove('hidden');
+
+    document.getElementById('playerNameBig').textContent = p.name;
+    document.getElementById('statTotal').textContent = p.total;
+    document.getElementById('statPreguntas').textContent = p.preguntas;
+    document.getElementById('statPos').textContent = "#" + (idx + 1);
+
+    const tBody = document.getElementById('teamsBody');
+    tBody.innerHTML = '';
+
+    p.teams.forEach(t => {
+      tBody.innerHTML += `<tr>
+        <td>${t.pos}</td>
+        <td style="text-align:left; font-weight:700;">${t.team}</td>
+        <td>${t.coef}</td>
+        <td>${t.r1}</td>
+        <td>${t.octavos || 0}</td>
+        <td>${t.cuartos || 0}</td>
+        <td>${t.semis || 0}</td>
+        <td>${t.terceros || 0}</td>
+        <td>${t.final || 0}</td>
+        <td class="points-final">${t.puntos}</td>
+      </tr>`;
+    });
+
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  }
+
+});
 </script>
 </body>
 </html>
