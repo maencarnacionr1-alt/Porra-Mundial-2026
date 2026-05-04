@@ -285,8 +285,29 @@ document.addEventListener("DOMContentLoaded", () => {
         }))
     }));
 
-  
- 
+    data.sort((a, b) =>
+      parseFloat((b.total || "0").replace(',', '.')) -
+      parseFloat((a.total || "0").replace(',', '.'))
+    );
+
+    init();
+  })
+  .catch(err => console.error("Error:", err));
+
+  function parseCSV(csv) {
+    const lines = csv.trim().split("\n");
+    const delimiter = lines[0].includes(";") ? ";" : ",";
+    const headers = lines.shift().split(delimiter);
+
+    return lines.map(line => {
+  const values = line.split(delimiter);
+  const obj = {};
+  headers.forEach((h, i) => {
+    // La limpieza se hace aquí dentro para cada columna
+    obj[h.trim()] = values[i]?.trim().replace(/"/g, ''); 
+  });
+  return obj;
+});
 
   function init() {
     const tbody = document.getElementById('rankingBody');
