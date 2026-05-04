@@ -36,7 +36,7 @@
             border-radius: 30px;
             /* Sombra profunda para efecto de elevación sobre el degradado */
             box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4);
-            overflow: hidden;
+            /*overflow: hidden;*/
             border: 1px solid rgba(255, 255, 255, 0.2);
             animation: slideUp 0.6s ease-out;
         }
@@ -52,6 +52,9 @@
             padding: 50px 20px;
             text-align: center;
             border-bottom: 8px solid var(--gold);
+	    position: sticky;
+	    top: 0;
+	    z-index: 100;
         }
 
         h1 { 
@@ -62,9 +65,6 @@
             letter-spacing: 3px;
             color: var(--white);
             text-shadow: 3px 3px 0px rgba(0,0,0,0.5);
-	    position: sticky;
-            top: 0;
-            z-index: 100;
         }
 
         .view-section { padding: 40px; }
