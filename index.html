@@ -1,280 +1,372 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mundial Adquira 2026</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mundial Adquira 2026</title>
+    <link href="https://fonts.googleapis.com/css2?family=Black+Ops+One&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --pitch-green: #1b5e20;
+            --grass-light: #2e7d32;
+            --grass-vibrant: #388e3c;
+            --hover-row: #f1f8e9;
+            --gold: #ffd700;
+            --white: #ffffff;
+            --soccer-dark: #121212;
+            --text-main: #333333;
+        }
 
-<link href="https://fonts.googleapis.com/css2?family=Black+Ops+One&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+        body {
+            font-family: 'Inter', sans-serif;
+            /* DEGRADADO VERDE ESPECTACULAR */
+            background: linear-gradient(135deg, #0a2b10 0%, #1b5e20 50%, #2e7d32 100%);
+            background-attachment: fixed;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+        }
 
-<style>
-:root {
-  --green:#1b5e20;
-  --light:#2e7d32;
-  --gold:#ffd700;
-}
+        .main-container {
+            width: 100%;
+            max-width: 1100px;
+            background: rgba(255, 255, 255, 0.98); /* Blanco casi opaco para resaltar */
+            border-radius: 30px;
+            /* Sombra profunda para efecto de elevación sobre el degradado */
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4);
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: slideUp 0.6s ease-out;
+        }
 
-body {
-  font-family: Inter, sans-serif;
-  margin:0;
-  background: linear-gradient(135deg,#0a2b10,#2e7d32);
-}
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-.main {
-  max-width:1000px;
-  margin:20px auto;
-  background:white;
-  border-radius:20px;
-  overflow:hidden;
-}
+        header {
+            background: linear-gradient(135deg, var(--soccer-dark) 0%, var(--pitch-green) 100%);
+            color: white;
+            padding: 50px 20px;
+            text-align: center;
+            border-bottom: 8px solid var(--gold);
+        }
 
-header {
-  background:linear-gradient(135deg,#111,var(--green));
-  color:white;
-  padding:30px;
-  text-align:center;
-  border-bottom:6px solid var(--gold);
-}
+        h1 { 
+            font-family: 'Black Ops One', cursive;
+            margin: 0; 
+            font-size: 2.8rem; 
+            text-transform: uppercase; 
+            letter-spacing: 3px;
+            color: var(--white);
+            text-shadow: 3px 3px 0px rgba(0,0,0,0.5);
+        }
 
-h1 {font-family:"Black Ops One"; margin:0;}
+        .view-section { padding: 40px; }
+        .hidden { display: none; }
 
-.search {
-  padding:20px;
-  text-align:center;
-}
+        /* --- RANKING PROFESIONAL --- */
+        .ranking-table {
+            width: 100%;
+            max-width: 500px; /* --- Cambia este valor (ejemplo: de 800px a 600px o 500px) --- */
+            margin: 0 auto;
+            border-collapse: collapse;
+        }
 
-.search input {
-  padding:10px;
-  width:80%;
-  max-width:400px;
-  border-radius:20px;
-  border:1px solid #ccc;
-}
+        .ranking-table th {
+            padding: 15px;
+            text-align: left;
+            color: #666;
+            font-weight: 800;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            border-bottom: 2px solid #eee;
+            letter-spacing: 1px;
+        }
 
-table {
-  width:100%;
-  border-collapse:collapse;
-}
+        .ranking-table tbody tr {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
 
-th, td {
-  padding:12px;
-  text-align:left;
-}
+        /* EFECTO SEÑALAR FILA */
+        .ranking-table tbody tr:hover {
+            background-color: var(--hover-row);
+            transform: scale(1.02);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
 
-tr {
-  cursor:pointer;
-}
+        .ranking-table td {
+            padding: 18px 15px;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 1.1rem;
+        }
 
-tr:hover {
-  background:#f1f8e9;
-}
+        /* --- FICHA JUGADOR --- */
+        #playerNameBig {
+            font-family: 'Black Ops One', cursive; 
+            font-size: 4.5rem;
+            color: var(--pitch-green);
+            text-align: center;
+            margin: 10px 0 30px 0;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            background: linear-gradient(to bottom, var(--pitch-green), var(--grass-vibrant));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
 
-.top1 {background:#fff8e1;}
-.top2 {background:#f5f5f5;}
-.top3 {background:#fce4ec;}
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            margin-bottom: 50px;
+        }
 
-.hidden {display:none;}
+        .stat-card {
+            background: var(--soccer-dark);
+            color: white;
+            padding: 25px;
+            border-radius: 20px;
+            text-align: center;
+            border-bottom: 6px solid var(--gold);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
 
-.player {
-  padding:20px;
-}
+        .stat-card label { 
+            display: block; 
+            font-size: 0.75rem; 
+            color: var(--gold); 
+            text-transform: uppercase; 
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            margin-bottom: 8px;
+        }
+        .stat-card span { font-size: 2.5rem; font-weight: 800; }
 
-.big {
-  font-family:"Black Ops One";
-  font-size:3rem;
-  text-align:center;
-  color:var(--green);
-}
+        .btn-return {
+            background: #fff;
+            border: 2px solid var(--pitch-green);
+            padding: 12px 30px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 800;
+            font-family: 'Inter', sans-serif;
+            color: var(--pitch-green);
+            transition: 0.3s;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+        }
 
-.stats {
-  display:flex;
-  justify-content:space-around;
-  margin:20px 0;
-}
+        .btn-return:hover {
+            background: var(--pitch-green);
+            color: white;
+            box-shadow: 0 8px 20px rgba(27, 94, 32, 0.3);
+        }
 
-.card {
-  background:#111;
-  color:white;
-  padding:15px;
-  border-radius:10px;
-}
-
-button {
-  padding:10px 20px;
-  border-radius:20px;
-  border:2px solid var(--green);
-  background:white;
-  cursor:pointer;
-}
-</style>
+        /* TABLA DESGLOSE EQUIPOS */
+        .teams-table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            background: #fff;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+        .teams-table th { 
+            background: #f8f9fa; 
+            color: #444; 
+            padding: 15px; 
+            font-weight: 800;
+            font-size: 0.75rem;
+            border-bottom: 2px solid #eee;
+        }
+        .teams-table td { 
+            padding: 15px; 
+            text-align: center; 
+            border-bottom: 1px solid #f0f0f0; 
+            font-weight: 600;
+        }
+        .teams-table tbody tr:hover { background-color: var(--hover-row); }
+        
+        .points-final { font-weight: 800; color: var(--pitch-green); font-size: 1.1rem; }
+    </style>
 </head>
-
 <body>
 
-<div class="main">
+<div class="main-container">
+    <header>
+        <h1>MUNDIAL ADQUIRA 2026</h1>
+    </header>
 
-<header>
-<h1>MUNDIAL ADQUIRA 2026</h1>
-</header>
+    <div id="rankingSection" class="view-section">
+        <table class="ranking-table">
+            <thead>
+                <tr>
+                    <th width="33%">POSICIÓN</th>
+                    <th width="33%">JUGADOR</th>
+                    <th width="33%" style="text-align: right;">PUNTOS</th>
+                </tr>
+            </thead>
+            <tbody id="rankingBody"></tbody>
+        </table>
+    </div>
 
-<div id="ranking">
+    <div id="playerSection" class="view-section hidden">
+        <button class="btn-return" onclick="showRanking()">← Volver al Ranking Global</button>
+        
+        <h2 id="playerNameBig">NOMBRE</h2>
+        
+        <div class="stats-row">
+            <div class="stat-card"><label>Puntos Finales</label><span id="statTotal">0</span></div>
+            <div class="stat-card"><label>Preguntas</label><span id="statPreguntas">0</span></div>
+            <div class="stat-card"><label>Ranking</label><span id="statPos">#0</span></div>
+        </div>
 
-<div class="search">
-<input type="text" id="search" placeholder="Buscar jugador...">
-</div>
-
-<table>
-<thead>
-<tr>
-<th>#</th>
-<th>Jugador</th>
-<th>Puntos</th>
-</tr>
-</thead>
-<tbody id="body">
-<tr><td colspan="3">Cargando...</td></tr>
-</tbody>
-</table>
-
-</div>
-
-<div id="player" class="hidden player">
-<button onclick="back()">← Volver</button>
-
-<div class="big" id="name"></div>
-
-<div class="stats">
-<div class="card">Puntos: <span id="total"></span></div>
-<div class="card">Preguntas: <span id="preg"></span></div>
-<div class="card">Ranking: <span id="pos"></span></div>
-</div>
-
-<table>
-<thead>
-<tr>
-<th>Equipo</th>
-<th>Puntos</th>
-</tr>
-</thead>
-<tbody id="teams"></tbody>
-</table>
-
-</div>
-
+        <table class="teams-table">
+            <thead>
+                <tr>
+                    <th>POSICIÓN</th>
+                    <th style="text-align:left">EQUIPO</th>
+                    <th>COEF</th>
+                    <th>1ª F</th>
+            	    <th>16VOS F</th>
+                    <th>8VOS</th>
+                    <th>4TOS</th>
+                    <th>SEMIS</th>
+                    <th>3º</th>
+                    <th>FINAL</th>
+                    <th>TOTAL PUNTOS</th>
+                </tr>
+            </thead>
+            <tbody id="teamsBody"></tbody>
+        </table>
+    </div>
 </div>
 
 <script>
+    // Datos integrados y ordenados por el campo 'total' (Mayor a Menor)
+    
+document.addEventListener("DOMContentLoaded", () => {
 
-const URL1="https://docs.google.com/spreadsheets/d/e/2PACX-1vRvbv4wKVLcF-dhiuLmYtU3aR8diCVDA8EgQ-yxaZXXqotI_L2VSWcoFo0NwiPEXB0XJwOxu9prujQk/pub?gid=0&output=csv";
-const URL2="https://docs.google.com/spreadsheets/d/e/2PACX-1vRvbv4wKVLcF-dhiuLmYtU3aR8diCVDA8EgQ-yxaZXXqotI_L2VSWcoFo0NwiPEXB0XJwOxu9prujQk/pub?gid=176911669&output=csv";
+  const URL_RANKING = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRvbv4wKVLcF-dhiuLmYtU3aR8diCVDA8EgQ-yxaZXXqotI_L2VSWcoFo0NwiPEXB0XJwOxu9prujQk/pub?gid=0&single=true&output=csv";
+  const URL_TEAMS = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRvbv4wKVLcF-dhiuLmYtU3aR8diCVDA8EgQ-yxaZXXqotI_L2VSWcoFo0NwiPEXB0XJwOxu9prujQk/pub?gid=176911669&single=true&output=csv";
 
-let data=[];
+  let data = [];
 
-const norm=s=> (s||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").trim();
+  Promise.all([
+    fetch(URL_RANKING).then(r => r.text()),
+    fetch(URL_TEAMS).then(r => r.text())
+  ])
+  .then(([rankingCSV, teamsCSV]) => {
 
-const parse=csv=>{
-  const l=csv.trim().split("\n");
-  const d=l[0].includes(";")?";":",";
-  const h=l.shift().toLowerCase().split(d);
-  return l.map(r=>{
-    const v=r.split(d);
-    let o={};
-    h.forEach((k,i)=>o[k]=v[i]?.replace(/"/g,"").trim());
-    return o;
-  });
-};
+    const rankingRows = parseCSV(rankingCSV);
+    const teamRows = parseCSV(teamsCSV);
 
-async function load(){
-
-  if(localStorage.data){
-    data=JSON.parse(localStorage.data);
-    render();
-    return;
-  }
-
-  try{
-    const [r1,r2]=await Promise.all([
-      fetch(URL1).then(r=>r.text()),
-      fetch(URL2).then(r=>r.text())
-    ]);
-
-    const a=parse(r1);
-    const b=parse(r2);
-
-    data=a.map(p=>({
-      name:p.name||p.nombre,
-      total:parseFloat((p.total||"0").replace(",",".")),
-      preguntas:+p.preguntas||0,
-      teams:b.filter(t=>norm(t.name||t.nombre)==norm(p.name||p.nombre))
-        .map(t=>({
-          team:t.team,
-          puntos:parseFloat(t.puntos)||0
+    data = rankingRows.map(player => ({
+      name: player.name,
+      preguntas: player.preguntas,
+      total: player.total,
+      teams: teamRows
+        .filter(t => t.name === player.name)
+        .map(t => ({
+          pos: t.pos,
+          team: t.team,
+          coef: t.coef,
+          fase: t.fase,
+	  dieciseisavos: t.dieciseisavos,
+          octavos: t.octavos,
+          cuartos: t.cuartos,
+          semis: t.semis,
+          terceros: t.terceros,
+          final: t.final,
+          puntos: t.puntos
         }))
     }));
 
-    data.sort((a,b)=>b.total-a.total);
+    data.sort((a, b) =>
+      parseFloat((b.total || "0").replace(',', '.')) -
+      parseFloat((a.total || "0").replace(',', '.'))
+    );
 
-    localStorage.data=JSON.stringify(data);
+    init();
+  })
+  .catch(err => console.error("Error:", err));
 
-    render();
+  function parseCSV(csv) {
+    const lines = csv.trim().split("\n");
+    const delimiter = lines[0].includes(";") ? ";" : ",";
+    const headers = lines.shift().split(delimiter);
 
-  }catch(e){
-    document.getElementById("body").innerHTML="<tr><td colspan=3>Error cargando</td></tr>";
+    return lines.map(line => {
+  const values = line.split(delimiter);
+  const obj = {};
+  headers.forEach((h, i) => {
+    // La limpieza se hace aquí dentro para cada columna
+    obj[h.trim()] = values[i]?.trim().replace(/"/g, ''); 
+  });
+  return obj;
+});
   }
-}
 
-function render(filter=""){
-  const body=document.getElementById("body");
-  body.innerHTML="";
+  function init() {
+    const tbody = document.getElementById('rankingBody');
+    if (!tbody) {
+      console.error("No existe rankingBody");
+      return;
+    }
 
-  data
-  .filter(p=>norm(p.name).includes(norm(filter)))
-  .forEach((p,i)=>{
-    const tr=document.createElement("tr");
+    tbody.innerHTML = '';
+    data.forEach((p, i) => {
+      tbody.innerHTML += `<tr onclick="showPlayer(${i})">
+        <td style="font-weight:800; color:var(--pitch-green); text-align:center;">#${i+1}</td>
+        <td style="font-weight:600; color:var(--soccer-dark);">${p.name}</td>
+        <td style="text-align:right; font-weight:800; color:var(--pitch-green);">${p.total}</td>
+      </tr>`;
+    });
+  }
 
-    if(i==0) tr.className="top1";
-    else if(i==1) tr.className="top2";
-    else if(i==2) tr.className="top3";
+  window.showRanking = function () {
+    document.getElementById('rankingSection').classList.remove('hidden');
+    document.getElementById('playerSection').classList.add('hidden');
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  }
 
-    tr.innerHTML=`
-      <td>#${i+1}</td>
-      <td>${p.name}</td>
-      <td>${p.total}</td>
-    `;
+  window.showPlayer = function (idx) {
+    const p = data[idx];
 
-    tr.onclick=()=>show(i);
+    document.getElementById('rankingSection').classList.add('hidden');
+    document.getElementById('playerSection').classList.remove('hidden');
 
-    body.appendChild(tr);
-  });
-}
+    document.getElementById('playerNameBig').textContent = p.name;
+    document.getElementById('statTotal').textContent = p.total.replace(',', '.');
+    document.getElementById('statPreguntas').textContent = p.preguntas;
+    document.getElementById('statPos').textContent = "#" + (idx + 1);
 
-function show(i){
-  const p=data[i];
+    const tBody = document.getElementById('teamsBody');
+    tBody.innerHTML = '';
 
-  document.getElementById("ranking").classList.add("hidden");
-  document.getElementById("player").classList.remove("hidden");
+    p.teams.forEach(t => {
+      tBody.innerHTML += `<tr>
+        <td>${t.pos}</td>
+        <td style="text-align:left; font-weight:700;">${t.team}</td>
+        <td>${t.coef}</td>
+        <td>${t.fase}</td>
+	<td>${t.dieciseisavos}</td>
+        <td>${t.octavos || 0}</td>
+        <td>${t.cuartos || 0}</td>
+        <td>${t.semis || 0}</td>
+        <td>${t.terceros || 0}</td>
+        <td>${t.final || 0}</td>
+        <td class="points-final">${t.puntos}</td>
+      </tr>`;
+    });
 
-  name.textContent=p.name;
-  total.textContent=p.total;
-  preg.textContent=p.preguntas;
-  pos.textContent="#"+(i+1);
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  }
 
-  teams.innerHTML="";
-  p.teams.forEach(t=>{
-    teams.innerHTML+=`<tr><td>${t.team}</td><td>${t.puntos}</td></tr>`;
-  });
-}
-
-function back(){
-  document.getElementById("ranking").classList.remove("hidden");
-  document.getElementById("player").classList.add("hidden");
-}
-
-search.oninput=e=>render(e.target.value);
-
-load();
-
+});
 </script>
-
 </body>
 </html>
