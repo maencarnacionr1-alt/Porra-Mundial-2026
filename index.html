@@ -294,18 +294,7 @@ document.addEventListener("DOMContentLoaded", () => {
   })
   .catch(err => console.error("Error:", err));
 
-  function parseCSV(csv) {
-    const lines = csv.trim().split("\n");
-    const delimiter = lines[0].includes(";") ? ";" : ",";
-    const headers = lines.shift().split(delimiter);
-
-    return lines.map(line => {
-      const values = line.split(delimiter);
-      const obj = {};
-      headers.forEach((h, i) => obj[h.trim()] = values[i]?.trim());
-      return obj;
-    });
-  }
+ //Aquí va la otra función que acabo de quitar
 
   function init() {
     const tbody = document.getElementById('rankingBody');
