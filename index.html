@@ -285,16 +285,8 @@ document.addEventListener("DOMContentLoaded", () => {
         }))
     }));
 
-    data.sort((a, b) =>
-      parseFloat((b.total || "0").replace(',', '.')) -
-      parseFloat((a.total || "0").replace(',', '.'))
-    );
-
-    init();
-  })
-  .catch(err => console.error("Error:", err));
-
- //Aquí va la otra función que acabo de quitar
+  
+ 
 
   function init() {
     const tbody = document.getElementById('rankingBody');
