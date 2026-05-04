@@ -247,11 +247,10 @@
 
 <script>
     // Datos integrados y ordenados por el campo 'total' (Mayor a Menor)
-    
 document.addEventListener("DOMContentLoaded", () => {
 
-  const URL_RANKING = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRvbv4wKVLcF-dhiuLmYtU3aR8diCVDA8EgQ-yxaZXXqotI_L2VSWcoFo0NwiPEXB0XJwOxu9prujQk/pub?gid=0&single=true&output=csv";
-  const URL_TEAMS = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRvbv4wKVLcF-dhiuLmYtU3aR8diCVDA8EgQ-yxaZXXqotI_L2VSWcoFo0NwiPEXB0XJwOxu9prujQk/pub?gid=176911669&single=true&output=csv";
+  const URL_RANKING = "https://google.com";
+  const URL_TEAMS = "https://google.com"; // Asegúrate de que esta URL sea la correcta
 
   let data = [];
 
@@ -275,7 +274,7 @@ document.addEventListener("DOMContentLoaded", () => {
           team: t.team,
           coef: t.coef,
           fase: t.fase,
-	  dieciseisavos: t.dieciseisavos,
+          dieciseisavos: t.dieciseisavos,
           octavos: t.octavos,
           cuartos: t.cuartos,
           semis: t.semis,
@@ -285,6 +284,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }))
     }));
 
+    // Ordenación corrigiendo comas por puntos para que el cálculo sea numérico
     data.sort((a, b) =>
       parseFloat((b.total || "0").replace(',', '.')) -
       parseFloat((a.total || "0").replace(',', '.'))
@@ -302,24 +302,26 @@ document.addEventListener("DOMContentLoaded", () => {
     return lines.map(line => {
       const values = line.split(delimiter);
       const obj = {};
-      headers.forEach((h, i) => obj[h.trim()] = values[i]?.trim());
+      headers.forEach((h, i) => {
+        // MEJORA: Eliminamos comillas dobles y espacios sobrantes
+        obj[h.trim()] = values[i]?.trim().replace(/"/g, ''); 
+      });
       return obj;
     });
   }
 
   function init() {
     const tbody = document.getElementById('rankingBody');
-    if (!tbody) {
-      console.error("No existe rankingBody");
-      return;
-    }
+    if (!tbody) return;
 
     tbody.innerHTML = '';
     data.forEach((p, i) => {
+      // MEJORA: Visualizamos el total con punto en vez de coma
+      const totalVisual = (p.total || "0").replace(',', '.');
       tbody.innerHTML += `<tr onclick="showPlayer(${i})">
         <td style="font-weight:800; color:var(--pitch-green); text-align:center;">#${i+1}</td>
         <td style="font-weight:600; color:var(--soccer-dark);">${p.name}</td>
-        <td style="text-align:right; font-weight:800; color:var(--pitch-green);">${p.total}</td>
+        <td style="text-align:right; font-weight:800; color:var(--pitch-green);">${totalVisual}</td>
       </tr>`;
     });
   }
@@ -337,7 +339,8 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById('playerSection').classList.remove('hidden');
 
     document.getElementById('playerNameBig').textContent = p.name;
-    document.getElementById('statTotal').textContent = p.total.replace(',', '.');
+    // MEJORA: Visualizamos los puntos en la ficha con punto
+    document.getElementById('statTotal').textContent = (p.total || "0").replace(',', '.');
     document.getElementById('statPreguntas').textContent = p.preguntas;
     document.getElementById('statPos').textContent = "#" + (idx + 1);
 
@@ -345,24 +348,27 @@ document.addEventListener("DOMContentLoaded", () => {
     tBody.innerHTML = '';
 
     p.teams.forEach(t => {
+      // MEJORA: Visualizamos los puntos del equipo con punto
+      const puntosEquipo = (t.puntos || "0").replace(',', '.');
+      const coefEquipo = (t.coef || "0").replace(',', '.');
+      
       tBody.innerHTML += `<tr>
         <td>${t.pos}</td>
         <td style="text-align:left; font-weight:700;">${t.team}</td>
-        <td>${t.coef}</td>
+        <td>${coefEquipo}</td>
         <td>${t.fase}</td>
-	<td>${t.dieciseisavos}</td>
+        <td>${t.dieciseisavos}</td>
         <td>${t.octavos || 0}</td>
         <td>${t.cuartos || 0}</td>
         <td>${t.semis || 0}</td>
         <td>${t.terceros || 0}</td>
         <td>${t.final || 0}</td>
-        <td class="points-final">${t.puntos}</td>
+        <td class="points-final">${puntosEquipo}</td>
       </tr>`;
     });
 
     window.scrollTo({top: 0, behavior: 'smooth'});
   }
-
 });
 </script>
 </body>
