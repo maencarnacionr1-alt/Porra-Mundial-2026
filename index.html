@@ -237,7 +237,7 @@
                     <th>SEMIS</th>
                     <th>3º</th>
                     <th>FINAL</th>
-                    <th>TOTAL</th>
+                    <th>TOTAL PUNTOS</th>
                 </tr>
             </thead>
             <tbody id="teamsBody"></tbody>
@@ -274,7 +274,7 @@ document.addEventListener("DOMContentLoaded", () => {
           pos: t.pos,
           team: t.team,
           coef: t.coef,
-          r1: t.r1,
+          r1: t.1ª fase,
 	  dieciseisavos: t.dieciseisavos,
           octavos: t.octavos,
           cuartos: t.cuartos,
@@ -349,7 +349,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <td>${t.pos}</td>
         <td style="text-align:left; font-weight:700;">${t.team}</td>
         <td>${t.coef}</td>
-        <td>${t.r1}</td>
+        <td>${t.1ª fase}</td>
 	<td>${t.dieciseisavos}</td>
         <td>${t.octavos || 0}</td>
         <td>${t.cuartos || 0}</td>
