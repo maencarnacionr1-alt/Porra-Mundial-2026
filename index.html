@@ -300,14 +300,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const headers = lines.shift().split(delimiter);
 
     return lines.map(line => {
-  const values = line.split(delimiter);
-  const obj = {};
-  headers.forEach((h, i) => {
-    // La limpieza se hace aquí dentro para cada columna
-    obj[h.trim()] = values[i]?.trim().replace(/"/g, ''); 
-  });
-  return obj;
-});
+      const values = line.split(delimiter);
+      const obj = {};
+      headers.forEach((h, i) => obj[h.trim()] = values[i]?.trim());
+      return obj;
+    });
   }
 
   function init() {
