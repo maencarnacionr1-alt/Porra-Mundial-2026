@@ -182,18 +182,29 @@
     // Lista de equipos para el registro (Puedes editarla)
     const equiposDisponibles = ["Argentina", "Brasil", "España", "Francia", "Alemania", "Portugal", "Inglaterra", "Uruguay", "Italia", "Holanda", "Bélgica", "Colombia"];
 
-    async function cargarRanking() {
+        async function cargarRanking() {
         try {
             const res = await fetch(URL_RANKING);
             const csv = await res.text();
+            // Detecta si tu Excel usa coma o punto y coma
+            const sep = csv.includes(";") ? ";" : ",";
             const filas = csv.split("\n").slice(1);
+            
             document.getElementById('rankingBody').innerHTML = filas.map(f => {
-                const c = f.split(",");
+                const c = f.split(sep);
                 if(c.length < 2) return "";
-                return `<tr><td>${c[0]}</td><td>${c[1]}</td><td style="text-align:right">${c[3] || 0}</td></tr>`;
+                const nombre = c[1].trim();
+                // AQUÍ RESTAURAMOS TU DISEÑO Y EL CLIC
+                return `
+                    <tr onclick="mostrarDetalle('${nombre}')">
+                        <td width="33%">${c[0]}</td>
+                        <td width="33%">${nombre}</td>
+                        <td width="33%" style="text-align: right; font-weight: 800;">${c[2] || 0}</td>
+                    </tr>`;
             }).join('');
         } catch (e) { console.error(e); }
     }
+
 
     function showRegister() {
         document.getElementById('rankingSection').classList.add('hidden');
