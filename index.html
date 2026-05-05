@@ -58,7 +58,6 @@
         .view-section { padding: 40px; }
         .hidden { display: none; }
 
-        /* --- BOTÓN REGISTRO DIAGONAL --- */
         .btn-registro-container {
             position: absolute;
             bottom: -20px;
@@ -87,7 +86,6 @@
 
         .btn-registro:hover { transform: scale(1.05) rotate(0deg); background-color: var(--white); }
 
-        /* --- TABLAS --- */
         .ranking-table { width: 100%; max-width: 500px; margin: 0 auto; border-collapse: collapse; }
         .ranking-table th { padding: 15px; text-align: left; color: #666; font-weight: 800; text-transform: uppercase; font-size: 0.8rem; border-bottom: 2px solid #eee; }
         .ranking-table td { padding: 18px 15px; border-bottom: 1px solid #f0f0f0; font-size: 1.1rem; }
@@ -113,6 +111,7 @@
         <h1>MUNDIAL ADQUIRA 2026</h1>
     </header>
 
+    <!-- RANKING -->
     <div id="rankingSection" class="view-section">
         <table class="ranking-table">
             <thead>
@@ -122,27 +121,32 @@
         </table>
     </div>
 
+    <!-- REGISTRO -->
     <div id="registerSection" class="view-section hidden">
         <button class="btn-return" onclick="showRanking()">← Volver al Ranking</button>
-        <h2 style="text-align: center; font-family: 'Black Ops One'; color: var(--pitch-green);">REGISTRO</h2>
+        <h2 id="playerNameBig" style="font-size: 2rem; text-align:center; font-family:'Black Ops One'; color: var(--pitch-green);">REGISTRO</h2>
         <form id="registrationForm" style="max-width: 500px; margin: 0 auto;">
             <label style="font-weight: 800; display: block; margin-bottom: 8px;">TU NOMBRE:</label>
             <input type="text" name="nombre" required style="width: 100%; padding: 12px; border-radius: 10px; border: 2px solid #ddd; margin-bottom: 20px;">
-            <label style="font-weight: 800; display: block; margin-bottom: 10px;">TOP 8 EQUIPOS:</label>
+            <label style="font-weight: 800; display: block; margin-bottom: 10px;">TOP 8 EQUIPOS (Orden de mérito):</label>
             <div id="dropdownsContainer"></div>
             <button type="submit" class="btn-registro" style="width: 100%; justify-content: center; margin-top: 20px; font-size: 1rem; padding: 15px;">ENVIAR PRONÓSTICOS</button>
         </form>
     </div>
 
+    <!-- FICHA DETALLE -->
     <div id="playerSection" class="view-section hidden">
         <button class="btn-return" onclick="showRanking()">← Volver al Ranking Global</button>
         <h2 id="playerNameBigDetail">NOMBRE</h2>
-        <p style="text-align: center;">Aquí aparecerán los datos detallados de tu hoja de equipos.</p>
+        <p style="text-align: center;">Datos del participante sincronizados.</p>
     </div>
 </div>
 
 <script>
-    const URL_RANKING = "https://google.com";
+    // --- TUS URLS ORIGINALES ---
+    const URL_RANKING = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRvbv4wKVLcF-dhiuLmYtU3aR8diCVDA8EgQ-yxaZXXqotI_L2VSWcoFo0NwiPEXB0XJwOxu9prujQk/pub?gid=0&single=true&output=csv";
+    const URL_TEAMS = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRvbv4wKVLcF-dhiuLmYtU3aR8diCVDA8EgQ-yxaZXXqotI_L2VSWcoFo0NwiPEXB0XJwOxu9prujQk/pub?gid=176911669&single=true&output=csv";
+    
     const equiposDisponibles = ["Argentina", "Brasil", "España", "Francia", "Alemania", "Portugal", "Inglaterra", "Uruguay", "Italia", "Holanda", "Bélgica", "Colombia"];
 
     async function cargarRanking() {
@@ -162,7 +166,7 @@
                     <td width="33%" style="text-align: right; font-weight: 800;">${c[2]?.trim() || 0}</td>
                 </tr>`;
             }).join('');
-        } catch (e) { console.error(e); }
+        } catch (e) { console.error("Error:", e); }
     }
 
     function mostrarDetalle(nombre) {
