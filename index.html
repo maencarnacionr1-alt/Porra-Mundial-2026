@@ -39,10 +39,7 @@
             position: relative;
         }
 
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
 
         header {
             background: linear-gradient(135deg, var(--soccer-dark) 0%, var(--pitch-green) 100%);
@@ -56,19 +53,12 @@
             border-radius: 30px 30px 0 0;
         }
 
-        h1 { 
-            font-family: 'Black Ops One', cursive;
-            margin: 0; 
-            font-size: 2.8rem; 
-            text-transform: uppercase; 
-            letter-spacing: 3px;
-            color: var(--white);
-            text-shadow: 3px 3px 0px rgba(0,0,0,0.5);
-        }
+        h1 { font-family: 'Black Ops One', cursive; margin: 0; font-size: 2.8rem; text-transform: uppercase; letter-spacing: 3px; color: var(--white); text-shadow: 3px 3px 0px rgba(0,0,0,0.5); }
 
         .view-section { padding: 40px; }
         .hidden { display: none; }
 
+        /* --- BOTÓN REGISTRO DIAGONAL --- */
         .btn-registro-container {
             position: absolute;
             bottom: -20px;
@@ -95,33 +85,22 @@
             box-shadow: 5px 5px 15px rgba(0,0,0,0.3);
         }
 
-        .btn-registro:hover {
-            transform: scale(1.05) rotate(0deg);
-            background-color: var(--white);
-        }
+        .btn-registro:hover { transform: scale(1.05) rotate(0deg); background-color: var(--white); }
 
-        .dot-online {
-            width: 8px;
-            height: 8px;
-            background-color: var(--pitch-green);
-            border-radius: 50%;
-            animation: pulse-dot 1.5s infinite;
-        }
-
-        @keyframes pulse-dot {
-            0% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.4); opacity: 0.5; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-
+        /* --- TABLAS --- */
         .ranking-table { width: 100%; max-width: 500px; margin: 0 auto; border-collapse: collapse; }
         .ranking-table th { padding: 15px; text-align: left; color: #666; font-weight: 800; text-transform: uppercase; font-size: 0.8rem; border-bottom: 2px solid #eee; }
         .ranking-table td { padding: 18px 15px; border-bottom: 1px solid #f0f0f0; font-size: 1.1rem; }
-        .ranking-table tbody tr:hover { background-color: var(--hover-row); cursor: pointer; }
+        .ranking-table tbody tr:hover { background-color: var(--hover-row); transform: scale(1.02); cursor: pointer; transition: 0.2s; }
         
         .btn-return { background: #fff; border: 2px solid var(--pitch-green); padding: 12px 30px; border-radius: 50px; cursor: pointer; font-weight: 800; color: var(--pitch-green); text-transform: uppercase; font-size: 0.8rem; margin-bottom: 20px; }
-        #playerNameBig { font-family: 'Black Ops One', cursive; font-size: 3.5rem; color: var(--pitch-green); text-align: center; text-transform: uppercase; }
-        .equipo-select { width: 100%; padding: 12px; margin-bottom: 10px; border-radius: 10px; border: 2px solid #eee; font-family: 'Inter', sans-serif; font-weight: 600; background: white; }
+        
+        #playerNameBigDetail { 
+            font-family: 'Black Ops One', cursive; font-size: 3.5rem; color: var(--pitch-green); text-align: center; text-transform: uppercase;
+            background: linear-gradient(to bottom, var(--pitch-green), var(--grass-vibrant)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+
+        .equipo-select { width: 100%; padding: 12px; margin-bottom: 10px; border-radius: 10px; border: 2px solid #eee; font-weight: 600; }
     </style>
 </head>
 <body>
@@ -129,64 +108,47 @@
 <div class="main-container">
     <header>
         <div class="btn-registro-container">
-            <a href="javascript:void(0)" onclick="showRegister()" class="btn-registro">
-                <div class="dot-online"></div>
-                Registrar Equipo
-            </a>
+            <a href="javascript:void(0)" onclick="showRegister()" class="btn-registro">Registrar Equipo</a>
         </div>
         <h1>MUNDIAL ADQUIRA 2026</h1>
     </header>
 
-    <!-- RANKING -->
     <div id="rankingSection" class="view-section">
         <table class="ranking-table">
             <thead>
-                <tr><th>POSICIÓN</th><th>JUGADOR</th><th style="text-align: right;">PUNTOS</th></tr>
+                <tr><th width="33%">POSICIÓN</th><th width="33%">JUGADOR</th><th width="33%" style="text-align: right;">PUNTOS</th></tr>
             </thead>
             <tbody id="rankingBody"></tbody>
         </table>
     </div>
 
-    <!-- REGISTRO -->
     <div id="registerSection" class="view-section hidden">
         <button class="btn-return" onclick="showRanking()">← Volver al Ranking</button>
-        <h2 id="playerNameBig" style="font-size: 2rem;">REGISTRO</h2>
+        <h2 style="text-align: center; font-family: 'Black Ops One'; color: var(--pitch-green);">REGISTRO</h2>
         <form id="registrationForm" style="max-width: 500px; margin: 0 auto;">
-            <div style="margin-bottom: 20px;">
-                <label style="font-weight: 800; display: block; margin-bottom: 8px;">TU NOMBRE:</label>
-                <input type="text" name="nombre" required style="width: 100%; padding: 12px; border-radius: 10px; border: 2px solid #ddd;">
-            </div>
-            <label style="font-weight: 800; display: block; margin-bottom: 10px;">TOP 8 EQUIPOS (Ordenados 1-8):</label>
+            <label style="font-weight: 800; display: block; margin-bottom: 8px;">TU NOMBRE:</label>
+            <input type="text" name="nombre" required style="width: 100%; padding: 12px; border-radius: 10px; border: 2px solid #ddd; margin-bottom: 20px;">
+            <label style="font-weight: 800; display: block; margin-bottom: 10px;">TOP 8 EQUIPOS:</label>
             <div id="dropdownsContainer"></div>
-            <button type="submit" class="btn-registro" style="width: 100%; justify-content: center; margin-top: 20px; font-size: 1rem; padding: 15px;">
-                ENVIAR PRONÓSTICOS
-            </button>
+            <button type="submit" class="btn-registro" style="width: 100%; justify-content: center; margin-top: 20px; font-size: 1rem; padding: 15px;">ENVIAR PRONÓSTICOS</button>
         </form>
-        <div id="successMessage" class="hidden" style="text-align:center; color:var(--pitch-green); font-weight:800; padding: 20px;">
-            ¡PRONÓSTICOS ENVIADOS CON ÉXITO!
-        </div>
     </div>
 
-    <!-- DETALLE JUGADOR -->
     <div id="playerSection" class="view-section hidden">
-        <button class="btn-return" onclick="showRanking()">← Volver</button>
-        <h2 id="playerNameBig">JUGADOR</h2>
+        <button class="btn-return" onclick="showRanking()">← Volver al Ranking Global</button>
+        <h2 id="playerNameBigDetail">NOMBRE</h2>
+        <p style="text-align: center;">Aquí aparecerán los datos detallados de tu hoja de equipos.</p>
     </div>
 </div>
 
 <script>
-    // --- TUS URLS ORIGINALES ---
-    const URL_RANKING = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRvbv4wKVLcF-dhiuLmYtU3aR8diCVDA8EgQ-yxaZXXqotI_L2VSWcoFo0NwiPEXB0XJwOxu9prujQk/pub?gid=0&single=true&output=csv";
-    const URL_TEAMS = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRvbv4wKVLcF-dhiuLmYtU3aR8diCVDA8EgQ-yxaZXXqotI_L2VSWcoFo0NwiPEXB0XJwOxu9prujQk/pub?gid=176911669&single=true&output=csv";
-    
-    // Lista de equipos para el registro (Puedes editarla)
+    const URL_RANKING = "https://google.com";
     const equiposDisponibles = ["Argentina", "Brasil", "España", "Francia", "Alemania", "Portugal", "Inglaterra", "Uruguay", "Italia", "Holanda", "Bélgica", "Colombia"];
 
-        async function cargarRanking() {
+    async function cargarRanking() {
         try {
             const res = await fetch(URL_RANKING);
             const csv = await res.text();
-            // Detecta si tu Excel usa coma o punto y coma
             const sep = csv.includes(";") ? ";" : ",";
             const filas = csv.split("\n").slice(1);
             
@@ -194,17 +156,21 @@
                 const c = f.split(sep);
                 if(c.length < 2) return "";
                 const nombre = c[1].trim();
-                // AQUÍ RESTAURAMOS TU DISEÑO Y EL CLIC
-                return `
-                    <tr onclick="mostrarDetalle('${nombre}')">
-                        <td width="33%">${c[0]}</td>
-                        <td width="33%">${nombre}</td>
-                        <td width="33%" style="text-align: right; font-weight: 800;">${c[2] || 0}</td>
-                    </tr>`;
+                return `<tr onclick="mostrarDetalle('${nombre}')">
+                    <td width="33%">${c[0].trim()}</td>
+                    <td width="33%">${nombre}</td>
+                    <td width="33%" style="text-align: right; font-weight: 800;">${c[2]?.trim() || 0}</td>
+                </tr>`;
             }).join('');
         } catch (e) { console.error(e); }
     }
 
+    function mostrarDetalle(nombre) {
+        document.getElementById('rankingSection').classList.add('hidden');
+        document.getElementById('playerSection').classList.remove('hidden');
+        document.getElementById('playerNameBigDetail').innerText = nombre;
+        window.scrollTo(0, 0);
+    }
 
     function showRegister() {
         document.getElementById('rankingSection').classList.add('hidden');
@@ -224,9 +190,7 @@
         container.innerHTML = '';
         for (let i = 1; i <= 8; i++) {
             const sel = document.createElement('select');
-            sel.name = `top${i}`;
-            sel.className = 'equipo-select';
-            sel.required = true;
+            sel.name = `top${i}`; sel.className = 'equipo-select'; sel.required = true;
             sel.addEventListener('change', updateOptions);
             container.appendChild(sel);
         }
@@ -238,12 +202,10 @@
         const selected = Array.from(selects).map(s => s.value).filter(v => v !== "");
         selects.forEach((s, i) => {
             const val = s.value;
-            s.innerHTML = `<option value="">Posición ${i + 1}...</option>`;
+            s.innerHTML = `<option value="">#${i + 1} - Seleccionar...</option>`;
             equiposDisponibles.forEach(e => {
                 if (!selected.includes(e) || e === val) {
-                    const opt = new Option(e, e);
-                    if (e === val) opt.selected = true;
-                    s.add(opt);
+                    const opt = new Option(e, e); if (e === val) opt.selected = true; s.add(opt);
                 }
             });
         });
