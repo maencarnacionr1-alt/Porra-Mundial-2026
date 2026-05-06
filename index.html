@@ -409,19 +409,26 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  function hideAllSections() {
+    document.getElementById('rankingSection').classList.add('hidden');
+    document.getElementById('registerSection').classList.add('hidden');
+    document.getElementById('playerSection').classList.add('hidden');
+  }
   window.showRanking = function () {
     document.getElementById('rankingSection').classList.remove('hidden');
     document.getElementById('playerSection').classList.add('hidden');
-    document.getElementById('registerSection').classList.add('hidden');
     window.scrollTo({top: 0, behavior: 'smooth'});
   }
 
   window.showPlayer = function (idx) {
+
+    hideAllSections();
+
     const p = data[idx];
 
-    document.getElementById('rankingSection').classList.add('hidden');
+    
     document.getElementById('playerSection').classList.remove('hidden');
-    document.getElementById('registerSection').classList.add('hidden');
+   
 
     document.getElementById('playerNameBig').textContent = p.name;
     document.getElementById('statTotal').textContent = p.total.replace(',', '.');
@@ -469,17 +476,15 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function showRegister() {
-        document.getElementById('rankingSection').classList.add('hidden');
-        document.getElementById('playerSection').classList.add('hidden');
+	hideAllSections();
         document.getElementById('registerSection').classList.remove('hidden');
         renderDropdowns();
     }
 
     function showRanking() {
-        document.getElementById('registerSection').classList.add('hidden');
-        document.getElementById('playerSection').classList.add('hidden');
-        document.getElementById('rankingSection').classList.remove('hidden');
-    }
+   	 hideAllSections();
+   	 document.getElementById('rankingSection').classList.remove('hidden');
+   }
 
     function renderDropdowns() {
         const container = document.getElementById('dropdownsContainer');
