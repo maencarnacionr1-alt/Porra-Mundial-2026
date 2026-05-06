@@ -257,14 +257,15 @@
     <header>
 <!-- BOTÓN DE REGISTRO -->
     <div class="btn-registro-container">
-        <a href="URL_DE_TU_GOOGLE_FORM" target="_blank" class="btn-registro">
-            <div class="dot-online"></div>
+        <a href="javascript:void(0)" onclick="showRegister()" class="btn-registro">
+                <div class="dot-online"></div>
             ¡Regístrate y participa!
         </a>
     </div>
         <h1>MUNDIAL ADQUIRA 2026</h1>
     </header>
 
+	<!-- RANKING -->
     <div id="rankingSection" class="view-section">
         <table class="ranking-table">
             <thead>
@@ -278,6 +279,25 @@
         </table>
     </div>
 
+<!-- REGISTRO -->
+    <div id="registerSection" class="view-section hidden">
+        <button type="button" class="btn-return" onclick="showRanking()">← Volver al Ranking</button>
+        <h2 id="playerNameBig" style="font-size: 2rem;">REGISTRO</h2>
+        <form id="registrationForm" style="max-width: 500px; margin: 0 auto;">
+            <div style="margin-bottom: 20px;">
+                <label style="font-weight: 800; display: block; margin-bottom: 8px;">TU NOMBRE:</label>
+                <input type="text" name="nombre" required style="width: 100%; padding: 12px; border-radius: 10px; border: 2px solid #ddd;">
+            </div>
+            <label style="font-weight: 800; display: block; margin-bottom: 10px;">TOP 8 EQUIPOS (Ordenados 1-8):</label>
+            <div id="dropdownsContainer"></div>
+            <button type="submit" class="btn-registro" style="width: 100%; justify-content: center; margin-top: 20px; font-size: 1rem; padding: 15px;">
+                ENVIAR PRONÓSTICOS
+            </button>
+        </form>
+        <div id="successMessage" class="hidden" style="text-align:center; color:var(--pitch-green); font-weight:800; padding: 20px;">
+            ¡PRONÓSTICOS ENVIADOS CON ÉXITO!
+        </div>
+	
     <div id="playerSection" class="view-section hidden">
         <button class="btn-return" onclick="showRanking()">← Volver al Ranking Global</button>
         
@@ -429,6 +449,68 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
 });
+
+// Lista de equipos para el registro (Puedes editarla)
+    const equiposDisponibles = ["Argentina", "Brasil", "España", "Francia", "Alemania", "Portugal", "Inglaterra", "Uruguay", "Italia", "Holanda", "Bélgica", "Colombia"];
+
+    async function cargarRanking() {
+        try {
+            const res = await fetch(URL_RANKING);
+            const csv = await res.text();
+            const filas = csv.split("\n").slice(1);
+            document.getElementById('rankingBody').innerHTML = filas.map(f => {
+                const c = f.split(",");
+                if(c.length < 2) return "";
+                return `<tr><td>${c[0]}</td><td>${c[1]}</td><td style="text-align:right">${c[3] || 0}</td></tr>`;
+            }).join('');
+        } catch (e) { console.error(e); }
+    }
+
+    function showRegister() {
+        document.getElementById('rankingSection').classList.add('hidden');
+        document.getElementById('playerSection').classList.add('hidden');
+        document.getElementById('registerSection').classList.remove('hidden');
+        renderDropdowns();
+    }
+
+    function showRanking() {
+        document.getElementById('registerSection').classList.add('hidden');
+        document.getElementById('playerSection').classList.add('hidden');
+        document.getElementById('rankingSection').classList.remove('hidden');
+    }
+
+    function renderDropdowns() {
+        const container = document.getElementById('dropdownsContainer');
+        container.innerHTML = '';
+        for (let i = 1; i <= 8; i++) {
+            const sel = document.createElement('select');
+            sel.name = `top${i}`;
+            sel.className = 'equipo-select';
+            sel.required = true;
+            sel.addEventListener('change', updateOptions);
+            container.appendChild(sel);
+        }
+        updateOptions();
+    }
+
+    function updateOptions() {
+        const selects = document.querySelectorAll('.equipo-select');
+        const selected = Array.from(selects).map(s => s.value).filter(v => v !== "");
+        selects.forEach((s, i) => {
+            const val = s.value;
+            s.innerHTML = `<option value="">Posición ${i + 1}...</option>`;
+            equiposDisponibles.forEach(e => {
+                if (!selected.includes(e) || e === val) {
+                    const opt = new Option(e, e);
+                    if (e === val) opt.selected = true;
+                    s.add(opt);
+                }
+            });
+        });
+    }
+
+    document.addEventListener("DOMContentLoaded", cargarRanking);
 </script>
+
 </body>
 </html>
