@@ -404,7 +404,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById('playerNameBig').textContent = p.name;
     document.getElementById('statTotal').textContent = p.total.replace(',', '.');
     document.getElementById('statPreguntas').textContent = p.preguntas;
-    document.getElementById('statPos').textContent = "#" + (idx + 1);
+    document.getElementById('statPos').textContent = (idx + 1) + "º";
 
     const tBody = document.getElementById('teamsBody');
     tBody.innerHTML = '';
