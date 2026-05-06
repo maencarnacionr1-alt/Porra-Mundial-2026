@@ -382,7 +382,7 @@ document.addEventListener("DOMContentLoaded", () => {
     tbody.innerHTML = '';
     data.forEach((p, i) => {
       tbody.innerHTML += `<tr onclick="showPlayer(${i})">
-        <td style="font-weight:800; color:var(--pitch-green); text-align:center;">#${i+1}</td>
+        <td style="font-weight:800; color:var(--pitch-green); text-align:center;">º${i+1}</td>
         <td style="font-weight:600; color:var(--soccer-dark);">${p.name}</td>
         <td style="text-align:right; font-weight:800; color:var(--pitch-green);">${p.total}</td>
       </tr>`;
