@@ -419,8 +419,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const p = data[idx];
 
     document.getElementById('rankingSection').classList.add('hidden');
-    document.getElementById('registerSection').classList.add('hidden');
     document.getElementById('playerSection').classList.remove('hidden');
+    document.getElementById('registerSection').classList.add('hidden');
 
     document.getElementById('playerNameBig').textContent = p.name;
     document.getElementById('statTotal').textContent = p.total.replace(',', '.');
