@@ -884,54 +884,53 @@ function updateFaseOptions(prefix) {
 
     // ========= ENVÍO GOOGLE SHEETS =========
 
-    document.getElementById('registrationForm').onsubmit = async (e) => {
+   document.getElementById('registrationForm').onsubmit = async (e) => {
 
-        e.preventDefault();
+    e.preventDefault();
 
-        try {
+    try {
 
-            const form = e.target;
+        const form = e.target;
 
-            const formData = new FormData(form);
+        const formData = new FormData(form);
 
-            const dataObj = {};
+        const dataObj = {};
 
-            formData.forEach((value, key) => {
+        formData.forEach((value, key) => {
+            dataObj[key] = value;
+        });
 
-                dataObj[key] = value;
+        console.log("Enviando:", dataObj);
 
-            });
+        const response = await fetch(GOOGLE_SCRIPT_URL, {
 
-            await fetch(GOOGLE_SCRIPT_URL, {
+            method: 'POST',
 
-                method: 'POST',
+            headers: {
+                'Content-Type': 'text/plain;charset=utf-8'
+            },
 
-                mode: JSON.stringify(dataObj),
+            body: JSON.stringify(dataObj)
 
-                headers: {	
-                    "Content-Type": "text/plain;charset=utf-8"
-                },
-            	body: JSON.stringify(dataObj)
-	
-            });
+        });
 
-	    const result = await response.text();
+        const result = await response.text();
 
-            console.log(result);
+        console.log("Respuesta:", result);
 
-            document.getElementById('registrationForm')
-                .classList.add('hidden');
+        document.getElementById('registrationForm')
+            .classList.add('hidden');
 
-            document.getElementById('successMessage')
-                .classList.remove('hidden');
+        document.getElementById('successMessage')
+            .classList.remove('hidden');
 
-        } catch (error) {
+    } catch (error) {
 
-            console.error(error);
+        console.error("ERROR:", error);
 
-            alert("Error enviando datos.");
-        }
-    };
+        alert("Error enviando datos.");
+    }
+};
 
 
     // ========= START =========
