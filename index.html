@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mundial Adquira 2026</title>
     <link href="https://googleapis.com" rel="stylesheet">
-
     <style>
         :root {
             --pitch-green: #1b5e20;
@@ -382,20 +381,19 @@
 </div>
 
 <script>
-    // URLs de Google Sheets
-    const URL_EQUIPOS_OFICIAL = "https://google.com";
+    // URLs ÚNICAS DE GOOGLE SHEETS
+    const URL_MAESTRA = "https://google.com";
     const URL_RANKING = "https://google.com";
     const URL_TEAMS = "https://google.com";
 
     let equiposDisponibles = [];
     let data = [];
 
-    document.addEventListener("DOMContentLoaded", cargarTodo);
-
-    async function cargarTodo() {
+    // ÚNICA ENTRADA DE CARGA
+    document.addEventListener("DOMContentLoaded", async () => {
         try {
             const [resEquipos, resRanking, resTeams] = await Promise.all([
-                fetch(URL_EQUIPOS_OFICIAL).then(r => r.text()),
+                fetch(URL_MAESTRA).then(r => r.text()),
                 fetch(URL_RANKING).then(r => r.text()),
                 fetch(URL_TEAMS).then(r => r.text())
             ]);
@@ -410,7 +408,9 @@
             const teamRows = parseCSV(resTeams);
 
             data = rankingRows.map(p => ({
-                name: p.name, preguntas: p.preguntas, total: p.total,
+                name: p.name, 
+                preguntas: p.preguntas, 
+                total: p.total,
                 teams: teamRows.filter(t => t.name === p.name).map(t => ({
                     pos: t.pos, team: t.team, coef: t.coef, fase: t.fase,
                     dieciseisavos: t.dieciseisavos, octavos: t.octavos,
@@ -419,17 +419,21 @@
                 }))
             }));
 
-            data.sort((a, b) => parseFloat(b.total.replace(',', '.')) - parseFloat(a.total.replace(',', '.')));
+            data.sort((a, b) => parseFloat((b.total || "0").replace(',', '.')) - parseFloat((a.total || "0").replace(',', '.')));
+            
             renderRanking();
-
-        } catch (err) { console.error("Error:", err); }
-    }
+        } catch (err) { 
+            console.error("Error en la carga de datos:", err); 
+        }
+    });
 
     function parseCSV(csv) {
         const lines = csv.trim().split("\n");
-        const headers = lines.shift().split(lines[0].includes(";") ? ";" : ",");
+        if (lines.length === 0) return [];
+        const delimiter = lines[0].includes(";") ? ";" : ",";
+        const headers = lines.shift().split(delimiter);
         return lines.map(line => {
-            const values = line.split(lines[0].includes(";") ? ";" : ",");
+            const values = line.split(delimiter);
             const obj = {};
             headers.forEach((h, i) => obj[h.trim()] = values[i]?.trim());
             return obj;
@@ -437,10 +441,12 @@
     }
 
     function renderRanking() {
-        document.getElementById('rankingBody').innerHTML = data.map((p, i) => `
+        const tbody = document.getElementById('rankingBody');
+        if (!tbody) return;
+        tbody.innerHTML = data.map((p, i) => `
             <tr onclick="showPlayer(${i})">
                 <td style="font-weight:800; color:var(--pitch-green); text-align:center;">${i+1}º</td>
-                <td>${p.name}</td>
+                <td style="font-weight:600;">${p.name}</td>
                 <td style="text-align:right; font-weight:800; color:var(--pitch-green);">${p.total}</td>
             </tr>
         `).join('');
@@ -491,7 +497,7 @@
     }
 
     function renderSimpleDropdowns() {
-        const opts = `<option value="" disabled selected>Elegir...</option>` + 
+        const opts = `<option value="" disabled selected>Elegir equipo...</option>` + 
                      equiposDisponibles.map(e => `<option value="${e}">${e}</option>`).join('');
         document.querySelectorAll('.equipo-select-simple').forEach(s => s.innerHTML = opts);
     }
