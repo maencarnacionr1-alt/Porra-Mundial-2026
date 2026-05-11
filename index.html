@@ -317,154 +317,163 @@
 
     <div id="registerSection" class="view-section hidden">
 
-        <button class="btn-return" onclick="showRanking()">
-            ← Volver
-        </button>
+    <button class="btn-return" onclick="showRanking()">
+        ← Volver
+    </button>
 
-        <form id="registrationForm" style="max-width:700px; margin:0 auto;">
+    <form id="registrationForm" style="max-width:900px; margin:0 auto;">
 
-            <div style="margin-bottom:30px; text-align:center;">
-                <label class="preg-label" style="font-size:1.2rem;">
-                    Nombre de Participante:
-                </label>
+        <!-- PARTICIPANTE -->
 
-                <input
-                    type="text"
-                    name="nombre"
-                    required
-                    placeholder="Escribe tu nombre..."
-                    style="width:80%; padding:15px; border-radius:15px; border:3px solid var(--pitch-green); font-size:1.2rem; text-align:center; font-weight:700;"
-                >
-            </div>
+        <div style="margin-bottom:30px; text-align:center;">
 
-            <!-- PRIMERA FASE -->
-            <div class="fase-container">
+            <label class="preg-label" style="font-size:1.2rem;">
+                Nombre de Participante:
+            </label>
 
-                <div class="fase-title">Primera Fase</div>
-
-                <label class="preg-label">
-                    Top 8 Equipos (Orden de preferencia):
-                </label>
-
-                <div id="dropdownsContainer"
-                    style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-                </div>
-
-                <div class="grid-preguntas" style="margin-top:15px;">
-
-                    <div>
-                        <label class="preg-label">Más goles a favor</label>
-                        <select name="mas_goles" class="equipo-select-simple" required></select>
-                    </div>
-
-                    <div>
-                        <label class="preg-label">Menos goles en contra</label>
-                        <select name="menos_goles" class="equipo-select-simple" required></select>
-                    </div>
-
-                </div>
-            </div>
-
-            <!-- OCTAVOS -->
-            <div class="fase-container">
-
-                <div class="fase-title">Octavos</div>
-
-                <div id="octavosContainer"
-                    style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-                </div>
-
-            </div>
-
-            <!-- CUARTOS -->
-            <div class="fase-container">
-
-                <div class="fase-title">Cuartos</div>
-
-                <div id="cuartosContainer"
-                    style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-                </div>
-
-            </div>
-
-            <!-- SEMIFINALISTAS -->
-            <div class="fase-container">
-
-                <div class="fase-title">Semifinalistas</div>
-
-                <div id="semisContainer"
-                    style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-                </div>
-
-            </div>
-
-            <!-- FINALISTAS -->
-            <div class="fase-container">
-
-                <div class="fase-title">Finalistas</div>
-
-                <div id="finalistasContainer"
-                    style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-                </div>
-
-            </div>
-
-            <!-- SEGUNDA FASE -->
-            <div class="fase-container">
-
-                <div class="fase-title">Segunda Fase</div>
-
-                <div class="grid-preguntas">
-
-                    <div>
-                        <label class="preg-label">Campeón</label>
-                        <select name="campeon" class="equipo-select-simple" required></select>
-                    </div>
-
-                    <div>
-                        <label class="preg-label">Subcampeón</label>
-                        <select name="subcampeon" class="equipo-select-simple" required></select>
-                    </div>
-
-                    <div>
-                        <label class="preg-label">Tercer Puesto</label>
-                        <select name="tercero" class="equipo-select-simple" required></select>
-                    </div>
-
-                    <div>
-                        <label class="preg-label">Revelación</label>
-                        <select name="revelacion" class="equipo-select-simple" required></select>
-                    </div>
-
-                </div>
-            </div>
-
-            <button
-                type="submit"
-                class="btn-registro"
-                style="width:100%; justify-content:center; padding:20px; font-size:1.2rem; border-radius:20px;"
+            <input
+                type="text"
+                name="nombre"
+                required
+                placeholder="Escribe tu nombre..."
+                style="width:80%; padding:15px; border-radius:15px; border:3px solid var(--pitch-green); font-size:1.2rem; text-align:center; font-weight:700;"
             >
-                ENVIAR MIS PRONÓSTICOS 🏆
-            </button>
+        </div>
 
-        </form>
+        <!-- TOP 8 -->
 
-        <div id="successMessage"
-            class="hidden"
-            style="text-align:center; padding:50px;">
+        <div class="fase-container">
 
-            <h2 style="font-family:'Black Ops One'; color:var(--pitch-green); font-size:3rem;">
-                ¡ÉXITO!
-            </h2>
+            <div class="fase-title">
+                TOP 8 EQUIPOS
+            </div>
 
-            <p>Tus datos han sido registrados correctamente.</p>
-
-            <button class="btn-return" onclick="showRanking()">
-                Volver al Inicio
-            </button>
+            <div id="top8Container"
+                style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+            </div>
 
         </div>
-    </div>
+
+        <!-- FASE DE GRUPOS -->
+
+        <div class="fase-container">
+
+            <div class="fase-title">
+                FASE DE GRUPOS
+            </div>
+
+            <h3 style="color:var(--pitch-green)">
+                Primeros de Grupo
+            </h3>
+
+            <div id="primerosGrupoContainer"
+                style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:30px;">
+            </div>
+
+            <h3 style="color:var(--pitch-green)">
+                Segundos de Grupo
+            </h3>
+
+            <div id="segundosGrupoContainer"
+                style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:30px;">
+            </div>
+
+            <h3 style="color:var(--pitch-green)">
+                Mejores Terceros
+            </h3>
+
+            <div id="mejoresTercerosContainer"
+                style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:30px;">
+            </div>
+
+            <div class="grid-preguntas">
+
+                <div>
+                    <label class="preg-label">Equipo más goleador</label>
+                    <select name="mas_goles" class="equipo-select-simple" required></select>
+                </div>
+
+                <div>
+                    <label class="preg-label">Equipo menos goleado</label>
+                    <select name="menos_goles" class="equipo-select-simple" required></select>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- ELIMINATORIAS -->
+
+        <div class="fase-container">
+
+            <div class="fase-title">
+                ELIMINATORIAS
+            </div>
+
+            <h3 style="color:var(--pitch-green)">
+                Clasificados a Octavos
+            </h3>
+
+            <div id="octavosContainer"
+                style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:30px;">
+            </div>
+
+            <h3 style="color:var(--pitch-green)">
+                Clasificados a Cuartos
+            </h3>
+
+            <div id="cuartosContainer"
+                style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:30px;">
+            </div>
+
+            <h3 style="color:var(--pitch-green)">
+                Semifinalistas
+            </h3>
+
+            <div id="semisContainer"
+                style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:30px;">
+            </div>
+
+            <h3 style="color:var(--pitch-green)">
+                Finalistas
+            </h3>
+
+            <div id="finalistasContainer"
+                style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:30px;">
+            </div>
+
+            <div class="grid-preguntas">
+
+                <div>
+                    <label class="preg-label">Campeón</label>
+                    <select name="campeon" class="equipo-select-simple" required></select>
+                </div>
+
+                <div>
+                    <label class="preg-label">Subcampeón</label>
+                    <select name="subcampeon" class="equipo-select-simple" required></select>
+                </div>
+
+                <div>
+                    <label class="preg-label">Tercer Puesto</label>
+                    <select name="tercero" class="equipo-select-simple" required></select>
+                </div>
+
+            </div>
+
+        </div>
+
+        <button
+            type="submit"
+            class="btn-registro"
+            style="width:100%; justify-content:center; padding:20px; font-size:1.2rem; border-radius:20px;"
+        >
+            ENVIAR MIS PRONÓSTICOS 🏆
+        </button>
+
+    </form>
+
+</div>
 
     <div id="playerSection" class="view-section hidden">
 
@@ -535,7 +544,7 @@
     // REEMPLAZA ESTA URL POR TU WEB APP DE APPS SCRIPT
 
     const GOOGLE_SCRIPT_URL =
-        "https://script.google.com/macros/s/AKfycbz1BwdFbqq_BiX5-rIWMJDVLrTVJBtyu9x0aqfgSps0tOt3mtifW3xLA_BiOJ4WxBZUAA/exec";
+        "https://script.google.com/macros/s/AKfycby8LWIhR9PAJc99DblzR_unqfmhAGNvrYrTm_9HVUrX27lByf8dARBz2o9T2XJpP3BaVA/exec";
 
 
     let equiposDisponibles = [];
@@ -681,20 +690,78 @@
 
     window.showRegister = function() {
 
-        document.querySelectorAll('.view-section')
-            .forEach(s => s.classList.add('hidden'));
+    document.querySelectorAll('.view-section')
+        .forEach(s => s.classList.add('hidden'));
 
-        document.getElementById('registerSection')
-            .classList.remove('hidden');
+    document.getElementById('registerSection')
+        .classList.remove('hidden');
 
-        renderDropdowns();
-        renderSimpleDropdowns();
+    renderSimpleDropdowns();
 
-       	renderFaseDropdowns('octavosContainer', 'octavos', 8);
-	renderFaseDropdowns('cuartosContainer', 'cuartos', 4);
-	renderFaseDropdowns('semisContainer', 'semis', 2);
-	renderFaseDropdowns('finalistasContainer', 'finalistas', 2);
-    };
+    // TOP 8
+    renderDynamicSection(
+        'top8Container',
+        'top',
+        8,
+        'Top'
+    );
+
+    // PRIMEROS
+    renderDynamicSection(
+        'primerosGrupoContainer',
+        'grupo_primero',
+        8,
+        'Grupo'
+    );
+
+    // SEGUNDOS
+    renderDynamicSection(
+        'segundosGrupoContainer',
+        'grupo_segundo',
+        8,
+        'Grupo'
+    );
+
+    // MEJORES TERCEROS
+    renderDynamicSection(
+        'mejoresTercerosContainer',
+        'mejor_tercero',
+        8,
+        'Mejor tercero'
+    );
+
+    // OCTAVOS
+    renderDynamicSection(
+        'octavosContainer',
+        'octavos',
+        16,
+        'Octavos'
+    );
+
+    // CUARTOS
+    renderDynamicSection(
+        'cuartosContainer',
+        'cuartos',
+        8,
+        'Cuartos'
+    );
+
+    // SEMIS
+    renderDynamicSection(
+        'semisContainer',
+        'semis',
+        4,
+        'Semis'
+    );
+
+    // FINALISTAS
+    renderDynamicSection(
+        'finalistasContainer',
+        'finalistas',
+        2,
+        'Finalista'
+    );
+};
 
 
     window.showRanking = function() {
