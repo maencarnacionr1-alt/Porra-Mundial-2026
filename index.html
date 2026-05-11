@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mundial Adquira 2026</title>
     <link href="https://googleapis.com" rel="stylesheet">
+
     <style>
         :root {
             --pitch-green: #1b5e20;
@@ -38,7 +39,10 @@
             animation: slideUp 0.6s ease-out;
         }
 
-        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
         header {
             background: linear-gradient(135deg, var(--soccer-dark) 0%, var(--pitch-green) 100%);
@@ -52,248 +56,854 @@
             border-radius: 30px 30px 0 0;
         }
 
-        h1 { font-family: 'Black Ops One', cursive; margin: 0; font-size: 2.8rem; text-transform: uppercase; letter-spacing: 3px; color: var(--white); text-shadow: 3px 3px 0px rgba(0,0,0,0.5); }
+        h1 {
+            font-family: 'Black Ops One', cursive;
+            margin: 0;
+            font-size: 2.8rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--white);
+            text-shadow: 3px 3px 0px rgba(0,0,0,0.5);
+        }
+
         .view-section { padding: 40px; }
         .hidden { display: none; }
 
-        .ranking-table { width: 100%; max-width: 500px; margin: 0 auto; border-collapse: collapse; }
-        .ranking-table th { padding: 15px; text-align: left; color: #666; font-weight: 800; text-transform: uppercase; font-size: 0.8rem; border-bottom: 2px solid #eee; position: sticky; top: 106px; background: white; z-index: 99; }
-        .ranking-table tbody tr { cursor: pointer; transition: all 0.3s ease; }
-        .ranking-table tbody tr:hover { background-color: var(--hover-row); transform: scale(1.02); }
-        .ranking-table td { padding: 18px 15px; border-bottom: 1px solid #f0f0f0; font-size: 1.1rem; }
+        .ranking-table {
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+            border-collapse: collapse;
+        }
 
-        #playerNameBig { font-family: 'Black Ops One', cursive; font-size: 4.5rem; color: var(--pitch-green); text-align: center; margin: 10px 0 30px 0; text-transform: uppercase; background: linear-gradient(to bottom, var(--pitch-green), var(--grass-vibrant)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .ranking-table th {
+            padding: 15px;
+            text-align: left;
+            color: #666;
+            font-weight: 800;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            border-bottom: 2px solid #eee;
+            letter-spacing: 1px;
+            position: sticky;
+            top: 106px;
+            background: white;
+            z-index: 99;
+        }
 
-        .stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; margin-bottom: 50px; }
-        .stat-card { background: var(--soccer-dark); color: white; padding: 25px; border-radius: 20px; text-align: center; border-bottom: 6px solid var(--gold); }
-        .stat-card label { display: block; font-size: 0.75rem; color: var(--gold); text-transform: uppercase; font-weight: 800; margin-bottom: 8px; }
-        .stat-card span { font-size: 2.5rem; font-weight: 800; }
+        .ranking-table tbody tr {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
 
-        .btn-return { background: #fff; border: 2px solid var(--pitch-green); padding: 12px 30px; border-radius: 50px; cursor: pointer; font-weight: 800; color: var(--pitch-green); text-transform: uppercase; font-size: 0.8rem; margin-bottom: 10px; }
+        .ranking-table tbody tr:hover {
+            background-color: var(--hover-row);
+            transform: scale(1.02);
+        }
 
-        .teams-table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 15px; overflow: hidden; }
-        .teams-table th { background: #f8f9fa; color: #444; padding: 15px; font-weight: 800; font-size: 0.75rem; border-bottom: 2px solid #eee; }
-        .teams-table td { padding: 15px; text-align: center; border-bottom: 1px solid #f0f0f0; font-weight: 600; }
-        .points-final { font-weight: 800; color: var(--pitch-green); font-size: 1.1rem; }
+        .ranking-table td {
+            padding: 18px 15px;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 1.1rem;
+        }
 
-        .btn-registro-container { position: absolute; bottom: -20px; left: 7px; z-index: 1001; transform: rotate(-5deg); }
-        .btn-registro { background-color: var(--gold); color: var(--soccer-dark); padding: 8px 18px; border: 2px solid var(--white); border-radius: 10px 50px 50px 10px; font-weight: 800; cursor: pointer; text-transform: uppercase; font-size: 0.65rem; display: flex; align-items: center; gap: 8px; text-decoration: none; box-shadow: 5px 5px 15px rgba(0,0,0,0.3); }
+        #playerNameBig {
+            font-family: 'Black Ops One', cursive;
+            font-size: 4.5rem;
+            color: var(--pitch-green);
+            text-align: center;
+            margin: 10px 0 30px 0;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            background: linear-gradient(to bottom, var(--pitch-green), var(--grass-vibrant));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
 
-        .dot-online { width: 8px; height: 8px; background-color: var(--pitch-green); border-radius: 50%; animation: pulse-dot 1.5s infinite; }
-        @keyframes pulse-dot { 0% { transform: scale(1); } 50% { transform: scale(1.4); } 100% { transform: scale(1); } }
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            margin-bottom: 50px;
+        }
 
-        /* ESTILOS DE SECCIONES DE REGISTRO */
-        .seccion-registro { margin-top: 30px; padding: 20px; border-radius: 15px; background: #fdfdfd; border: 1px solid #eee; box-shadow: 0 4px 6px rgba(0,0,0,0.02); }
-        .seccion-registro h3 { font-family: 'Black Ops One'; color: var(--pitch-green); border-bottom: 2px solid var(--gold); display: inline-block; padding-bottom: 5px; margin-bottom: 20px; text-transform: uppercase; font-size: 1.2rem; }
-        .grid-fases { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; }
-        .label-campo { display: block; font-size: 0.7rem; font-weight: 800; color: #555; margin-bottom: 3px; text-transform: uppercase; }
-        .equipo-select-fase { width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #ccc; font-size: 0.85rem; font-family: 'Inter'; font-weight: 600; }
+        .stat-card {
+            background: var(--soccer-dark);
+            color: white;
+            padding: 25px;
+            border-radius: 20px;
+            text-align: center;
+            border-bottom: 6px solid var(--gold);
+        }
+
+        .stat-card label {
+            display: block;
+            font-size: 0.75rem;
+            color: var(--gold);
+            text-transform: uppercase;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .stat-card span {
+            font-size: 2.5rem;
+            font-weight: 800;
+        }
+
+        .btn-return {
+            background: #fff;
+            border: 2px solid var(--pitch-green);
+            padding: 12px 30px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 800;
+            color: var(--pitch-green);
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            margin-bottom: 10px;
+        }
+
+        .teams-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #fff;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .teams-table th {
+            background: #f8f9fa;
+            color: #444;
+            padding: 15px;
+            font-weight: 800;
+            font-size: 0.75rem;
+            border-bottom: 2px solid #eee;
+        }
+
+        .teams-table td {
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid #f0f0f0;
+            font-weight: 600;
+        }
+
+        .points-final {
+            font-weight: 800;
+            color: var(--pitch-green);
+            font-size: 1.1rem;
+        }
+
+        .btn-registro-container {
+            position: absolute;
+            bottom: -20px;
+            left: 7px;
+            z-index: 1001;
+            transform: rotate(-5deg);
+        }
+
+        .btn-registro {
+            background-color: var(--gold);
+            color: var(--soccer-dark);
+            padding: 8px 18px;
+            border: 2px solid var(--white);
+            border-radius: 10px 50px 50px 10px;
+            font-weight: 800;
+            cursor: pointer;
+            text-transform: uppercase;
+            font-size: 0.65rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            box-shadow: 5px 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .dot-online {
+            width: 8px;
+            height: 8px;
+            background-color: var(--pitch-green);
+            border-radius: 50%;
+            animation: pulse-dot 1.5s infinite;
+        }
+
+        @keyframes pulse-dot {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.4); }
+            100% { transform: scale(1); }
+        }
+
+        .fase-container {
+            background: #fff;
+            padding: 25px;
+            border-radius: 20px;
+            margin-bottom: 25px;
+            border: 1px solid #eee;
+        }
+
+        .fase-title {
+            color: var(--pitch-green);
+            font-family: 'Black Ops One';
+            font-size: 1.4rem;
+            border-bottom: 3px solid var(--gold);
+            padding-bottom: 8px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+
+        .preg-label {
+            font-weight: 800;
+            display: block;
+            margin-bottom: 5px;
+            font-size: 0.85rem;
+            color: #444;
+            text-transform: uppercase;
+        }
+
+        .equipo-select,
+        .equipo-select-simple {
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            border: 2px solid #ddd;
+            margin-bottom: 12px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+        }
+
+        .grid-preguntas {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
     </style>
 </head>
+
 <body>
 
 <div class="main-container">
+
     <header>
         <div class="btn-registro-container">
             <a href="javascript:void(0)" onclick="showRegister()" class="btn-registro">
-                <div class="dot-online"></div> ¡Regístrate y participa!
+                <div class="dot-online"></div>
+                ¡Regístrate y participa!
             </a>
         </div>
+
         <h1>MUNDIAL ADQUIRA 2026</h1>
     </header>
 
     <div id="rankingSection" class="view-section">
+
         <table class="ranking-table">
             <thead>
                 <tr>
                     <th width="33%">POSICIÓN</th>
                     <th width="33%">JUGADOR</th>
-                    <th width="33%" style="text-align: right;">PUNTOS</th>
+                    <th width="33%" style="text-align:right;">PUNTOS</th>
                 </tr>
             </thead>
-            <tbody id="rankingBody"></tbody>
+
+            <tbody id="rankingBody">
+                <tr>
+                    <td colspan="3" style="text-align:center;">
+                        Cargando datos del mundial...
+                    </td>
+                </tr>
+            </tbody>
         </table>
+
     </div>
 
     <div id="registerSection" class="view-section hidden">
-        <button class="btn-return" onclick="showRanking()">← Volver</button>
-        <form id="registrationForm" style="max-width: 900px; margin: 0 auto;">
-            <div style="margin-bottom: 25px;">
-                <label style="font-weight: 800; display: block; margin-bottom: 8px;">TU NOMBRE:</label>
-                <input type="text" name="nombre" required style="width: 100%; padding: 12px; border-radius: 10px; border: 2px solid #ddd; font-size: 1.1rem;">
+
+        <button class="btn-return" onclick="showRanking()">
+            ← Volver
+        </button>
+
+        <form id="registrationForm" style="max-width:700px; margin:0 auto;">
+
+            <div style="margin-bottom:30px; text-align:center;">
+                <label class="preg-label" style="font-size:1.2rem;">
+                    Nombre de Participante:
+                </label>
+
+                <input
+                    type="text"
+                    name="nombre"
+                    required
+                    placeholder="Escribe tu nombre..."
+                    style="width:80%; padding:15px; border-radius:15px; border:3px solid var(--pitch-green); font-size:1.2rem; text-align:center; font-weight:700;"
+                >
             </div>
 
-            <!-- TOP 8 -->
-            <div class="seccion-registro">
-                <h3>1. Ranking TOP 8</h3>
-                <div id="dropdownsContainer" class="grid-fases"></div>
-            </div>
+            <!-- PRIMERA FASE -->
+            <div class="fase-container">
 
-            <!-- OCTAVOS DE FINAL -->
-            <div class="seccion-registro">
-                <h3>2. Clasificados a Octavos (16 Equipos)</h3>
-                <div id="octavosContainer" class="grid-fases"></div>
-            </div>
+                <div class="fase-title">Primera Fase</div>
 
-            <!-- CUARTOS DE FINAL -->
-            <div class="seccion-registro">
-                <h3>3. Clasificados a Cuartos (8 Equipos)</h3>
-                <div id="cuartosContainer" class="grid-fases"></div>
-            </div>
+                <label class="preg-label">
+                    Top 8 Equipos (Orden de preferencia):
+                </label>
 
-            <!-- SEMIFINALES -->
-            <div class="seccion-registro">
-                <h3>4. Clasificados a Semifinales (4 Equipos)</h3>
-                <div id="semisContainer" class="grid-fases"></div>
-            </div>
+                <div id="dropdownsContainer"
+                    style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                </div>
 
-            <!-- FINAL Y BONUS -->
-            <div class="seccion-registro">
-                <h3>5. Podio y Estadísticas</h3>
-                <div class="grid-fases" style="grid-template-columns: repeat(2, 1fr);">
-                    <div><label class="label-campo">Campeón:</label><select name="campeon" class="equipo-select-fase auto-fill-eq" required></select></div>
-                    <div><label class="label-campo">Subcampeón:</label><select name="subcampeon" class="equipo-select-fase auto-fill-eq" required></select></div>
-                    <div><label class="label-campo">Tercer Puesto:</label><select name="tercero" class="equipo-select-fase auto-fill-eq" required></select></div>
-                    <div><label class="label-campo">Goles a Favor (Equipo):</label><select name="mas_goles" class="equipo-select-fase auto-fill-eq" required></select></div>
-                    <div><label class="label-campo">Goles en Contra (Equipo):</label><select name="menos_goles" class="equipo-select-fase auto-fill-eq" required></select></div>
-                    <div><label class="label-campo">Equipo Revelación:</label><select name="revelacion" class="equipo-select-fase auto-fill-eq" required></select></div>
+                <div class="grid-preguntas" style="margin-top:15px;">
+
+                    <div>
+                        <label class="preg-label">Más goles a favor</label>
+                        <select name="mas_goles" class="equipo-select-simple" required></select>
+                    </div>
+
+                    <div>
+                        <label class="preg-label">Menos goles en contra</label>
+                        <select name="menos_goles" class="equipo-select-simple" required></select>
+                    </div>
+
                 </div>
             </div>
 
-            <button type="submit" class="btn-registro" style="width: 100%; justify-content: center; margin-top: 30px; font-size: 1.2rem; padding: 18px; border-radius: 15px;">
+            <!-- OCTAVOS -->
+            <div class="fase-container">
+
+                <div class="fase-title">Octavos</div>
+
+                <div id="octavosContainer"
+                    style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                </div>
+
+            </div>
+
+            <!-- CUARTOS -->
+            <div class="fase-container">
+
+                <div class="fase-title">Cuartos</div>
+
+                <div id="cuartosContainer"
+                    style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                </div>
+
+            </div>
+
+            <!-- SEMIFINALISTAS -->
+            <div class="fase-container">
+
+                <div class="fase-title">Semifinalistas</div>
+
+                <div id="semisContainer"
+                    style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                </div>
+
+            </div>
+
+            <!-- FINALISTAS -->
+            <div class="fase-container">
+
+                <div class="fase-title">Finalistas</div>
+
+                <div id="finalistasContainer"
+                    style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                </div>
+
+            </div>
+
+            <!-- SEGUNDA FASE -->
+            <div class="fase-container">
+
+                <div class="fase-title">Segunda Fase</div>
+
+                <div class="grid-preguntas">
+
+                    <div>
+                        <label class="preg-label">Campeón</label>
+                        <select name="campeon" class="equipo-select-simple" required></select>
+                    </div>
+
+                    <div>
+                        <label class="preg-label">Subcampeón</label>
+                        <select name="subcampeon" class="equipo-select-simple" required></select>
+                    </div>
+
+                    <div>
+                        <label class="preg-label">Tercer Puesto</label>
+                        <select name="tercero" class="equipo-select-simple" required></select>
+                    </div>
+
+                    <div>
+                        <label class="preg-label">Revelación</label>
+                        <select name="revelacion" class="equipo-select-simple" required></select>
+                    </div>
+
+                </div>
+            </div>
+
+            <button
+                type="submit"
+                class="btn-registro"
+                style="width:100%; justify-content:center; padding:20px; font-size:1.2rem; border-radius:20px;"
+            >
                 ENVIAR MIS PRONÓSTICOS 🏆
             </button>
+
         </form>
+
+        <div id="successMessage"
+            class="hidden"
+            style="text-align:center; padding:50px;">
+
+            <h2 style="font-family:'Black Ops One'; color:var(--pitch-green); font-size:3rem;">
+                ¡ÉXITO!
+            </h2>
+
+            <p>Tus datos han sido registrados correctamente.</p>
+
+            <button class="btn-return" onclick="showRanking()">
+                Volver al Inicio
+            </button>
+
+        </div>
     </div>
 
     <div id="playerSection" class="view-section hidden">
-        <button class="btn-return" onclick="showRanking()">← Volver al Ranking Global</button>
+
+        <button class="btn-return" onclick="showRanking()">
+            ← Volver al Ranking
+        </button>
+
         <h2 id="playerNameBig">NOMBRE</h2>
+
         <div class="stats-row">
-            <div class="stat-card"><label>Puntos Finales</label><span id="statTotal">0</span></div>
-            <div class="stat-card"><label>Preguntas</label><span id="statPreguntas">0</span></div>
-            <div class="stat-card"><label>Ranking</label><span id="statPos">#0</span></div>
+
+            <div class="stat-card">
+                <label>Puntos Finales</label>
+                <span id="statTotal">0</span>
+            </div>
+
+            <div class="stat-card">
+                <label>Preguntas</label>
+                <span id="statPreguntas">0</span>
+            </div>
+
+            <div class="stat-card">
+                <label>Ranking</label>
+                <span id="statPos">#0</span>
+            </div>
+
         </div>
+
         <table class="teams-table">
+
             <thead>
                 <tr>
-                    <th>POS</th><th style="text-align:left">EQUIPO</th><th>COEF</th><th>1ª F</th>
-                    <th>16VOS</th><th>8VOS</th><th>4TOS</th><th>SEMIS</th><th>3º</th><th>FINAL</th><th>TOTAL</th>
+                    <th>POS</th>
+                    <th style="text-align:left">EQUIPO</th>
+                    <th>COEF</th>
+                    <th>1ª F</th>
+                    <th>16VOS</th>
+                    <th>8VOS</th>
+                    <th>4TOS</th>
+                    <th>SEMIS</th>
+                    <th>3º</th>
+                    <th>FINAL</th>
+                    <th>TOTAL</th>
                 </tr>
             </thead>
+
             <tbody id="teamsBody"></tbody>
+
         </table>
     </div>
 </div>
 
 <script>
-    const URL_MAESTRA = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRvbv4wKVLcF-dhiuLmYtU3aR8diCVDA8EgQ-yxaZXXqotI_L2VSWcoFo0NwiPEXB0XJwOxu9prujQk/pub?gid=2071537923&single=true&output=csv";
-    const URL_RANKING = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRvbv4wKVLcF-dhiuLmYtU3aR8diCVDA8EgQ-yxaZXXqotI_L2VSWcoFo0NwiPEXB0XJwOxu9prujQk/pub?gid=0&single=true&output=csv";
-    const URL_TEAMS = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRvbv4wKVLcF-dhiuLmYtU3aR8diCVDA8EgQ-yxaZXXqotI_L2VSWcoFo0NwiPEXB0XJwOxu9prujQk/pub?gid=176911669&single=true&output=csv";
 
-    let data = [];
+    // ========= URLs =========
+
+    const URL_MAESTRA =
+        "https://docs.google.com/spreadsheets/d/e/2PACX-1vRvbv4wKVLcF-dhiuLmYtU3aR8diCVDA8EgQ-yxaZXXqotI_L2VSWcoFo0NwiPEXB0XJwOxu9prujQk/pub?gid=2071537923&single=true&output=csv";
+
+    const URL_RANKING =
+        "https://docs.google.com/spreadsheets/d/e/2PACX-1vRvbv4wKVLcF-dhiuLmYtU3aR8diCVDA8EgQ-yxaZXXqotI_L2VSWcoFo0NwiPEXB0XJwOxu9prujQk/pub?gid=0&single=true&output=csv";
+
+    const URL_TEAMS =
+        "https://docs.google.com/spreadsheets/d/e/2PACX-1vRvbv4wKVLcF-dhiuLmYtU3aR8diCVDA8EgQ-yxaZXXqotI_L2VSWcoFo0NwiPEXB0XJwOxu9prujQk/pub?gid=176911669&single=true&output=csv";
+
+
+    // ========= GOOGLE APPS SCRIPT =========
+    // REEMPLAZA ESTA URL POR TU WEB APP DE APPS SCRIPT
+
+    const GOOGLE_SCRIPT_URL =
+        "https://script.google.com/macros/s/PEGA_AQUI_TU_WEBAPP_URL/exec";
+
+
     let equiposDisponibles = [];
+    let data = [];
 
-    document.addEventListener("DOMContentLoaded", () => {
-        Promise.all([
-            fetch(URL_MAESTRA).then(r => r.text()),
-            fetch(URL_RANKING).then(r => r.text()),
-            fetch(URL_TEAMS).then(r => r.text())
-        ])
-        .then(([equiposCSV, rankingCSV, teamsCSV]) => {
-            equiposDisponibles = equiposCSV.replace(/^\uFEFF/, '').split(/\r?\n/)
-                .map(l => l.split(',').replace(/^"|"$/g, '').trim())
-                .filter(e => e !== "" && e !== "EQUIPOS");
 
-            const rankingRows = parseCSV(rankingCSV);
-            const teamRows = parseCSV(teamsCSV);
+    // ========= INIT =========
 
-            data = rankingRows.map(player => ({
-                name: player.name, preguntas: player.preguntas, total: player.total,
-                teams: teamRows.filter(t => t.name === player.name).map(t => ({
-                    pos: t.pos, team: t.team, coef: t.coef, fase: t.fase,
-                    dieciseisavos: t.dieciseisavos, octavos: t.octavos,
-                    cuartos: t.cuartos, semis: t.semis, terceros: t.terceros,
-                    final: t.final, puntos: t.puntos
-                }))
+    async function initApp() {
+
+        try {
+
+            console.log("Cargando datos...");
+
+            const [resEquipos, resRanking, resTeams] = await Promise.all([
+
+                fetch(URL_MAESTRA).then(r => r.text()),
+                fetch(URL_RANKING).then(r => r.text()),
+                fetch(URL_TEAMS).then(r => r.text())
+
+            ]);
+
+            equiposDisponibles = resEquipos
+                .replace(/^\uFEFF/, '')
+                .split(/\r?\n/)
+                .map(l => l.split(',')[0].replace(/^"|"$/g, '').trim())
+                .filter(e => e !== "" && e.toUpperCase() !== "EQUIPOS");
+
+            console.log("Equipos cargados:", equiposDisponibles.length);
+
+            const rankingRows = parseCSV(resRanking);
+            const teamRows = parseCSV(resTeams);
+
+            data = rankingRows.map(p => ({
+
+                name: p.name || "Sin nombre",
+                preguntas: p.preguntas || "0",
+                total: p.total || "0",
+
+                teams: teamRows
+                    .filter(t => t.name === p.name)
+                    .map(t => ({
+                        pos: t.pos,
+                        team: t.team,
+                        coef: t.coef,
+                        fase: t.fase,
+                        dieciseisavos: t.dieciseisavos,
+                        octavos: t.octavos,
+                        cuartos: t.cuartos,
+                        semis: t.semis,
+                        terceros: t.terceros,
+                        final: t.final,
+                        puntos: t.puntos
+                    }))
+
             }));
-            data.sort((a, b) => parseFloat(b.total.replace(',', '.')) - parseFloat(a.total.replace(',', '.')));
-            init();
-        });
-    });
+
+            data.sort((a, b) =>
+                parseFloat(b.total.replace(',', '.')) -
+                parseFloat(a.total.replace(',', '.'))
+            );
+
+            renderRanking();
+
+        } catch (err) {
+
+            console.error("Error crítico:", err);
+
+            document.getElementById('rankingBody').innerHTML =
+                "<tr><td colspan='3'>Error al cargar datos. Verifica la conexión.</td></tr>";
+        }
+    }
+
+
+    // ========= CSV =========
 
     function parseCSV(csv) {
+
         const lines = csv.trim().split("\n");
-        const delimiter = lines.includes(";") ? ";" : ",";
-        const headers = lines.shift().split(delimiter).map(h => h.trim());
+
+        if (lines.length === 0) return [];
+
+        const sep = lines[0].includes(";") ? ";" : ",";
+
+        const headers = lines.shift()
+            .split(sep)
+            .map(h => h.trim().toLowerCase());
+
         return lines.map(line => {
-            const values = line.split(delimiter);
+
+            const values = line.split(sep);
+
             const obj = {};
-            headers.forEach((h, i) => obj[h] = values[i]?.trim());
+
+            headers.forEach((h, i) => {
+
+                obj[h] = values[i]?.trim().replace(/^"|"$/g, '');
+
+            });
+
             return obj;
         });
     }
 
-    function init() {
-        document.getElementById('rankingBody').innerHTML = data.map((p, i) => `
+
+    // ========= RANKING =========
+
+    function renderRanking() {
+
+        const tbody = document.getElementById('rankingBody');
+
+        if (!data.length) {
+
+            tbody.innerHTML =
+                "<tr><td colspan='3'>No hay jugadores registrados.</td></tr>";
+
+            return;
+        }
+
+        tbody.innerHTML = data.map((p, i) => `
+
             <tr onclick="showPlayer(${i})">
-                <td style="font-weight:800; color:var(--pitch-green); text-align:center;">${i+1}º</td>
-                <td style="font-weight:600;">${p.name}</td>
-                <td style="text-align:right; font-weight:800; color:var(--pitch-green);">${p.total}</td>
+
+                <td style="font-weight:800; color:var(--pitch-green); text-align:center;">
+                    ${i+1}º
+                </td>
+
+                <td style="font-weight:600;">
+                    ${p.name}
+                </td>
+
+                <td style="text-align:right; font-weight:800; color:var(--pitch-green);">
+                    ${p.total}
+                </td>
+
             </tr>
+
         `).join('');
     }
 
-    window.showRegister = () => {
-        document.getElementById('rankingSection').classList.add('hidden');
-        document.getElementById('registerSection').classList.remove('hidden');
-        // Generamos dinámicamente las secciones
-        generarCamposFase('dropdownsContainer', 8, 'top', 'Ranking');
-        generarCamposFase('octavosContainer', 16, 'octavo', 'Octavos');
-        generarCamposFase('cuartosContainer', 8, 'cuarto', 'Cuartos');
-        generarCamposFase('semisContainer', 4, 'semi', 'Semifinal');
-        
-        // Rellenamos los de podio/bonus
-        const opts = `<option value="" disabled selected>Elegir...</option>` + equiposDisponibles.map(e => `<option value="${e}">${e}</option>`).join('');
-        document.querySelectorAll('.auto-fill-eq').forEach(s => s.innerHTML = opts);
+
+    // ========= VISTAS =========
+
+    window.showRegister = function() {
+
+        document.querySelectorAll('.view-section')
+            .forEach(s => s.classList.add('hidden'));
+
+        document.getElementById('registerSection')
+            .classList.remove('hidden');
+
+        renderDropdowns();
+        renderSimpleDropdowns();
+
+        renderFaseDropdowns('octavosContainer', 'octavos', 8);
+        renderFaseDropdowns('cuartosContainer', 'cuartos', 4);
+        renderFaseDropdowns('semisContainer', 'semis', 2);
+        renderFaseDropdowns('finalistasContainer', 'finalistas', 2);
     };
 
-    function generarCamposFase(containerId, cantidad, prefijo, etiqueta) {
-        const container = document.getElementById(containerId);
-        container.innerHTML = '';
-        const opts = `<option value="" disabled selected>Elegir...</option>` + equiposDisponibles.map(e => `<option value="${e}">${e}</option>`).join('');
-        
-        for (let i = 1; i <= cantidad; i++) {
-            const div = document.createElement('div');
-            div.innerHTML = `<label class="label-campo">${etiqueta} ${i}:</label>
-                            <select name="${prefijo}${i}" class="equipo-select-fase" required>${opts}</select>`;
-            container.appendChild(div);
-        }
-    }
 
-    window.showRanking = () => {
-        document.getElementById('rankingSection').classList.remove('hidden');
-        document.getElementById('registerSection').classList.add('hidden');
-        document.getElementById('playerSection').classList.add('hidden');
+    window.showRanking = function() {
+
+        document.querySelectorAll('.view-section')
+            .forEach(s => s.classList.add('hidden'));
+
+        document.getElementById('rankingSection')
+            .classList.remove('hidden');
     };
 
-    window.showPlayer = (idx) => {
+
+    window.showPlayer = function(idx) {
+
         const p = data[idx];
-        document.getElementById('rankingSection').classList.add('hidden');
-        document.getElementById('playerSection').classList.remove('hidden');
+
+        document.querySelectorAll('.view-section')
+            .forEach(s => s.classList.add('hidden'));
+
+        document.getElementById('playerSection')
+            .classList.remove('hidden');
+
         document.getElementById('playerNameBig').textContent = p.name;
         document.getElementById('statTotal').textContent = p.total;
         document.getElementById('statPreguntas').textContent = p.preguntas;
         document.getElementById('statPos').textContent = (idx + 1) + "º";
+
         document.getElementById('teamsBody').innerHTML = p.teams.map(t => `
+
             <tr>
-                <td>${t.pos}</td><td style="text-align:left; font-weight:700;">${t.team}</td>
-                <td>${t.coef}</td><td>${t.fase}</td><td>${t.dieciseisavos}</td>
-                <td>${t.octavos || 0}</td><td>${t.cuartos || 0}</td><td>${t.semis || 0}</td>
-                <td>${t.terceros || 0}</td><td>${t.final || 0}</td><td class="points-final">${t.puntos}</td>
+
+                <td>${t.pos}</td>
+
+                <td style="text-align:left; font-weight:700;">
+                    ${t.team}
+                </td>
+
+                <td>${t.coef}</td>
+                <td>${t.fase}</td>
+                <td>${t.dieciseisavos}</td>
+                <td>${t.octavos || 0}</td>
+                <td>${t.cuartos || 0}</td>
+                <td>${t.semis || 0}</td>
+                <td>${t.terceros || 0}</td>
+                <td>${t.final || 0}</td>
+
+                <td class="points-final">
+                    ${t.puntos}
+                </td>
+
             </tr>
+
         `).join('');
     };
+
+
+    // ========= DROPDOWNS =========
+
+    function renderDropdowns() {
+
+        const container = document.getElementById('dropdownsContainer');
+
+        container.innerHTML = '';
+
+        for (let i = 1; i <= 8; i++) {
+
+            const sel = document.createElement('select');
+
+            sel.name = `top${i}`;
+            sel.className = 'equipo-select';
+            sel.required = true;
+
+            sel.addEventListener('change', updateOptions);
+
+            container.appendChild(sel);
+        }
+
+        updateOptions();
+    }
+
+
+    function renderSimpleDropdowns() {
+
+        const opts =
+            `<option value="" disabled selected>Elegir...</option>` +
+            equiposDisponibles.map(e =>
+                `<option value="${e}">${e}</option>`
+            ).join('');
+
+        document.querySelectorAll('.equipo-select-simple')
+            .forEach(s => s.innerHTML = opts);
+    }
+
+
+    function renderFaseDropdowns(containerId, prefix, cantidad) {
+
+        const container = document.getElementById(containerId);
+
+        container.innerHTML = '';
+
+        for (let i = 1; i <= cantidad; i++) {
+
+            container.innerHTML += `
+
+                <div>
+
+                    <label class="preg-label">
+                        ${prefix.toUpperCase()} ${i}
+                    </label>
+
+                    <select
+                        name="${prefix}${i}"
+                        class="equipo-select-simple"
+                        required
+                    >
+                    </select>
+
+                </div>
+            `;
+        }
+
+        renderSimpleDropdowns();
+    }
+
+
+    function updateOptions() {
+
+        const selects = document.querySelectorAll('.equipo-select');
+
+        const selected = Array.from(selects)
+            .map(s => s.value)
+            .filter(v => v !== "");
+
+        selects.forEach((s, i) => {
+
+            const val = s.value;
+
+            s.innerHTML =
+                `<option value="">Posición ${i + 1}...</option>`;
+
+            equiposDisponibles.forEach(e => {
+
+                if (!selected.includes(e) || e === val) {
+
+                    const opt = new Option(e, e);
+
+                    if (e === val) opt.selected = true;
+
+                    s.add(opt);
+                }
+            });
+        });
+    }
+
+
+    // ========= ENVÍO GOOGLE SHEETS =========
+
+    document.getElementById('registrationForm').onsubmit = async (e) => {
+
+        e.preventDefault();
+
+        try {
+
+            const form = e.target;
+
+            const formData = new FormData(form);
+
+            const dataObj = {};
+
+            formData.forEach((value, key) => {
+
+                dataObj[key] = value;
+
+            });
+
+            await fetch(GOOGLE_SCRIPT_URL, {
+
+                method: 'POST',
+
+                mode: 'no-cors',
+
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+
+                body: JSON.stringify(dataObj)
+
+            });
+
+            document.getElementById('registrationForm')
+                .classList.add('hidden');
+
+            document.getElementById('successMessage')
+                .classList.remove('hidden');
+
+        } catch (error) {
+
+            console.error(error);
+
+            alert("Error enviando datos.");
+        }
+    };
+
+
+    // ========= START =========
+
+    document.addEventListener("DOMContentLoaded", initApp);
+
 </script>
+
 </body>
 </html>
