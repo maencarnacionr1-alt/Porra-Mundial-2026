@@ -244,52 +244,53 @@
 </div>
 
 <script>
-    const URL_MAESTRA = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRvbv4wKVLcF-dhiuLmYtU3aR8diCVDA8EgQ-yxaZXXqotI_L2VSWcoFo0NwiPEXB0XJwOxu9prujQk/pub?gid=2071537923&single=true&output=csv";
-    const URL_RANKING = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRvbv4wKVLcF-dhiuLmYtU3aR8diCVDA8EgQ-yxaZXXqotI_L2VSWcoFo0NwiPEXB0XJwOxu9prujQk/pub?gid=0&single=true&output=csv";
-    const URL_TEAMS = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRvbv4wKVLcF-dhiuLmYtU3aR8diCVDA8EgQ-yxaZXXqotI_L2VSWcoFo0NwiPEXB0XJwOxu9prujQk/pub?gid=176911669&single=true&output=csvm";
+    // URLs de tus hojas de cálculo
+    const URL_EQUIPOS = "https://google.com";
+    const URL_RANKING = "https://google.com";
+    const URL_TEAMS = "https://google.com";
 
     let equiposDisponibles = [];
     let data = [];
 
-    // CARGA INICIAL
     async function initApp() {
         try {
-            console.log("Cargando datos...");
-            const [resEquipos, resRanking, resTeams] = await Promise.all([
-                fetch(URL_MAESTRA).then(r => r.text()),
-                fetch(URL_RANKING).then(r => r.text()),
-                fetch(URL_TEAMS).then(r => r.text())
-            ]);
-
-            // Procesar lista de equipos con limpieza extrema
+            // Intentamos cargar equipos (URL_MAESTRA)
+            const resEquipos = await fetch(URL_EQUIPOS).then(r => r.text());
             equiposDisponibles = resEquipos.replace(/^\uFEFF/, '').split(/\r?\n/)
                 .map(l => l.split(',')[0].replace(/^"|"$/g, '').trim())
                 .filter(e => e !== "" && e.toUpperCase() !== "EQUIPOS");
-            
             console.log("Equipos cargados:", equiposDisponibles.length);
 
-            // Procesar Ranking y Fichas
-            const rankingRows = parseCSV(resRanking);
-            const teamRows = parseCSV(resTeams);
+            // Intentamos cargar los otros datos
+            try {
+                const [resRanking, resTeams] = await Promise.all([
+                    fetch(URL_RANKING).then(r => r.ok ? r.text() : ""),
+                    fetch(URL_TEAMS).then(r => r.ok ? r.text() : "")
+                ]);
 
-            data = rankingRows.map(p => ({
-                name: p.name || "Sin nombre",
-                preguntas: p.preguntas || "0",
-                total: p.total || "0",
-                teams: teamRows.filter(t => t.name === p.name).map(t => ({
-                    pos: t.pos, team: t.team, coef: t.coef, fase: t.fase,
-                    dieciseisavos: t.dieciseisavos, octavos: t.octavos,
-                    cuartos: t.cuartos, semis: t.semis, terceros: t.terceros,
-                    final: t.final, puntos: t.puntos
-                }))
-            }));
+                if (resRanking && resTeams) {
+                    const rankingRows = parseCSV(resRanking);
+                    const teamRows = parseCSV(resTeams);
+                    data = rankingRows.map(p => ({
+                        name: p.name || "Sin nombre",
+                        preguntas: p.preguntas || "0",
+                        total: p.total || "0",
+                        teams: teamRows.filter(t => t.name === p.name).map(t => ({
+                            pos: t.pos, team: t.team, coef: t.coef, fase: t.fase,
+                            dieciseisavos: t.dieciseisavos, octavos: t.octavos,
+                            cuartos: t.cuartos, semis: t.semis, terceros: t.terceros,
+                            final: t.final, puntos: t.puntos
+                        }))
+                    }));
+                    data.sort((a, b) => parseFloat((b.total || "0").replace(',', '.')) - parseFloat((a.total || "0").replace(',', '.')));
+                }
+            } catch (e) { console.warn("Error cargando ranking/teams, la tabla estará vacía."); }
 
-            data.sort((a, b) => parseFloat(b.total.replace(',', '.')) - parseFloat(a.total.replace(',', '.')));
             renderRanking();
 
         } catch (err) {
-            console.error("Error crítico:", err);
-            document.getElementById('rankingBody').innerHTML = "<tr><td colspan='3'>Error al cargar datos. Verifica la conexión.</td></tr>";
+            console.error("Error crítico en init:", err);
+            document.getElementById('rankingBody').innerHTML = "<tr><td colspan='3'>Error al cargar equipos oficiales.</td></tr>";
         }
     }
 
@@ -298,7 +299,6 @@
         if (lines.length === 0) return [];
         const sep = lines[0].includes(";") ? ";" : ",";
         const headers = lines.shift().split(sep).map(h => h.trim().toLowerCase());
-        
         return lines.map(line => {
             const values = line.split(sep);
             const obj = {};
@@ -309,7 +309,10 @@
 
     function renderRanking() {
         const tbody = document.getElementById('rankingBody');
-        if (!data.length) { tbody.innerHTML = "<tr><td colspan='3'>No hay jugadores registrados.</td></tr>"; return; }
+        if (data.length === 0) {
+            tbody.innerHTML = "<tr><td colspan='3' style='text-align:center;'>No hay datos de ranking disponibles.</td></tr>";
+            return;
+        }
         tbody.innerHTML = data.map((p, i) => `
             <tr onclick="showPlayer(${i})">
                 <td style="font-weight:800; color:var(--pitch-green); text-align:center;">${i+1}º</td>
@@ -385,13 +388,6 @@
         });
     }
 
-    document.getElementById('registrationForm').onsubmit = (e) => {
-        e.preventDefault();
-        document.getElementById('registrationForm').classList.add('hidden');
-        document.getElementById('successMessage').classList.remove('hidden');
-    };
-
-    // INICIO ÚNICO
     document.addEventListener("DOMContentLoaded", initApp);
 </script>
 </body>
