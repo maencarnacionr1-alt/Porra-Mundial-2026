@@ -196,7 +196,7 @@
 
     document.addEventListener("DOMContentLoaded", () => {
         Promise.all([
-            fetch(URL_EQUIPOS).then(r => r.text()),
+            fetch(URL_MAESTRA).then(r => r.text()),
             fetch(URL_RANKING).then(r => r.text()),
             fetch(URL_TEAMS).then(r => r.text())
         ])
