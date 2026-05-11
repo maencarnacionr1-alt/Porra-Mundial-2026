@@ -454,22 +454,23 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // 1. Definimos las variables fuera para que todas tus funciones las vean
+// 1. Variables globales
 let equiposDisponibles = []; 
-const URL_RANKING = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRvbv4wKVLcF-dhiuLmYtU3aR8diCVDA8EgQ-yxaZXXqotI_L2VSWcoFo0NwiPEXB0XJwOxu9prujQk/pub?gid=2071537923&single=true&output=csv"; // Asegúrate de que esta URL esté bien definida
+const URL_RANKING = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRvbv4wKVLcF-dhiuLmYtU3aR8diCVDA8EgQ-yxaZXXqotI_L2VSWcoFo0NwiPEXB0XJwOxu9prujQk/pub?gid=2071537923&single=true&output=csv";
 
-async function cargarDatosIniciales() {
+async function cargarTodo() {
     try {
-        // Carga de equipos
-        const resEquipos = await fetch("https://google.com");
-        let texto = await resEquipos.text();
+        // Obtenemos el CSV (sirve para ambos propósitos)
+        const respuesta = await fetch(URL_RANKING);
+        const texto = await respuesta.text();
         
-        // Limpieza y guardado en la variable global
-        equiposDisponibles = texto.replace(/^\uFEFF/, '')
-            .split(/\r?\n/)
-            .map(e => e.trim().replace(/^"|"$/g, ''))
-            .filter(e => e !== "");
+        // Limpiamos el texto (quitar BOM de Google y espacios)
+        const lineas = texto.replace(/^\uFEFF/, '').split(/\r?\n/).filter(linea => linea.trim() !== "");
 
-        // 2. Rellenar los selectores inmediatamente
+        // --- PARTE A: RELLENAR SELECTS ---
+        // Asumimos que el nombre del equipo es la primera columna
+        equiposDisponibles = lineas.map(linea => linea.split(',')[0].replace(/^"|"$/g, '').trim());
+
         const opcionesHTML = `<option value="" disabled selected>Posición...</option>` + 
                              equiposDisponibles.map(e => `<option value="${e}">${e}</option>`).join('');
         
@@ -477,27 +478,25 @@ async function cargarDatosIniciales() {
             select.innerHTML = opcionesHTML;
         });
 
-        // 3. Cargar el Ranking
-        await cargarRanking();
+        // --- PARTE B: RELLENAR TABLA RANKING ---
+        // Saltamos la primera línea si es la cabecera (slice(1))
+        const filasTabla = lineas.slice(1).map(f => {
+            const c = f.split(",");
+            if(c.length < 2) return "";
+            // c[0]=Nombre, c[1]=PJ, c[3]=Puntos (ajusta el índice según tu Excel)
+            return `<tr><td>${c[0]}</td><td>${c[1]}</td><td style="text-align:right">${c[3] || 0}</td></tr>`;
+        }).join('');
 
-    } catch (e) {
-        console.error("Error cargando datos:", e);
+        const tablaBody = document.getElementById('rankingBody');
+        if (tablaBody) tablaBody.innerHTML = filasTabla;
+
+    } catch (error) {
+        console.error("Error cargando Google Sheets:", error);
     }
 }
 
-async function cargarRanking() {
-    if (!URL_RANKING) return; // Evita el error de "not defined"
-    try {
-        const res = await fetch(URL_RANKING);
-        const csv = await res.text();
-        const filas = csv.split("\n").slice(1);
-        document.getElementById('rankingBody').innerHTML = filas.map(f => {
-            const c = f.split(",");
-            if(c.length < 2) return "";
-            return `<tr><td>${c[0]}</td><td>${c[1]}</td><td style="text-align:right">${c[3] || 0}</td></tr>`;
-        }).join('');
-    } catch (e) { console.error("Error en ranking:", e); }
-}
+// Arrancar cuando la página esté lista
+document.addEventListener('DOMContentLoaded', cargarTodo);
 
 // Ejecutar todo al cargar la página
 window.onload = cargarDatosIniciales;
