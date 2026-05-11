@@ -90,22 +90,9 @@
             z-index: 99;
         }
 
-        .ranking-table tbody tr {
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .ranking-table tbody tr:hover {
-            background-color: var(--hover-row);
-            transform: scale(1.02);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-        }
-
-        .ranking-table td {
-            padding: 18px 15px;
-            border-bottom: 1px solid #f0f0f0;
-            font-size: 1.1rem;
-        }
+        .ranking-table tbody tr { cursor: pointer; transition: all 0.3s ease; }
+        .ranking-table tbody tr:hover { background-color: var(--hover-row); transform: scale(1.02); }
+        .ranking-table td { padding: 18px 15px; border-bottom: 1px solid #f0f0f0; font-size: 1.1rem; }
 
         #playerNameBig {
             font-family: 'Black Ops One', cursive; 
@@ -120,32 +107,9 @@
             -webkit-text-fill-color: transparent;
         }
 
-        .stats-row {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 25px;
-            margin-bottom: 50px;
-        }
-
-        .stat-card {
-            background: var(--soccer-dark);
-            color: white;
-            padding: 25px;
-            border-radius: 20px;
-            text-align: center;
-            border-bottom: 6px solid var(--gold);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-        }
-
-        .stat-card label { 
-            display: block; 
-            font-size: 0.75rem; 
-            color: var(--gold); 
-            text-transform: uppercase; 
-            font-weight: 800;
-            letter-spacing: 1.5px;
-            margin-bottom: 8px;
-        }
+        .stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; margin-bottom: 50px; }
+        .stat-card { background: var(--soccer-dark); color: white; padding: 25px; border-radius: 20px; text-align: center; border-bottom: 6px solid var(--gold); }
+        .stat-card label { display: block; font-size: 0.75rem; color: var(--gold); text-transform: uppercase; font-weight: 800; margin-bottom: 8px; }
         .stat-card span { font-size: 2.5rem; font-weight: 800; }
 
         .btn-return {
@@ -156,44 +120,17 @@
             cursor: pointer;
             font-weight: 800;
             color: var(--pitch-green);
-            transition: 0.3s;
             text-transform: uppercase;
             font-size: 0.8rem;
             margin-bottom: 10px;
         }
 
-        .teams-table { 
-            width: 100%; 
-            border-collapse: collapse; 
-            background: #fff;
-            border-radius: 15px;
-            overflow: hidden;
-        }
-        .teams-table th { 
-            background: #f8f9fa; 
-            color: #444; 
-            padding: 15px; 
-            font-weight: 800;
-            font-size: 0.75rem;
-            border-bottom: 2px solid #eee;
-        }
-        .teams-table td { 
-            padding: 15px; 
-            text-align: center; 
-            border-bottom: 1px solid #f0f0f0; 
-            font-weight: 600;
-        }
-        
+        .teams-table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 15px; overflow: hidden; }
+        .teams-table th { background: #f8f9fa; color: #444; padding: 15px; font-weight: 800; font-size: 0.75rem; border-bottom: 2px solid #eee; }
+        .teams-table td { padding: 15px; text-align: center; border-bottom: 1px solid #f0f0f0; font-weight: 600; }
         .points-final { font-weight: 800; color: var(--pitch-green); font-size: 1.1rem; }
 
-        .btn-registro-container {
-            position: absolute;
-            bottom: -20px;
-            left: 7px;
-            z-index: 1001;
-            transform: rotate(-5deg);
-        }
-
+        .btn-registro-container { position: absolute; bottom: -20px; left: 7px; z-index: 1001; transform: rotate(-5deg); }
         .btn-registro {
             background-color: var(--gold);
             color: var(--soccer-dark);
@@ -202,64 +139,23 @@
             border-radius: 10px 50px 50px 10px;
             font-weight: 800;
             cursor: pointer;
-            transition: all 0.3s ease;
             text-transform: uppercase;
             font-size: 0.65rem;
-            letter-spacing: 1px;
-            box-shadow: 5px 5px 15px rgba(0,0,0,0.3);
             display: flex;
             align-items: center;
             gap: 8px;
             text-decoration: none;
+            box-shadow: 5px 5px 15px rgba(0,0,0,0.3);
         }
 
-        .dot-online {
-            width: 8px;
-            height: 8px;
-            background-color: var(--pitch-green);
-            border-radius: 50%;
-            animation: pulse-dot 1.5s infinite;
-        }
+        .dot-online { width: 8px; height: 8px; background-color: var(--pitch-green); border-radius: 50%; animation: pulse-dot 1.5s infinite; }
+        @keyframes pulse-dot { 0% { transform: scale(1); } 50% { transform: scale(1.4); } 100% { transform: scale(1); } }
 
-        @keyframes pulse-dot {
-            0% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.4); opacity: 0.5; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-
-        /* Estilos Formulario */
-        .fase-container {
-            background: #fff;
-            padding: 25px;
-            border-radius: 20px;
-            margin-bottom: 25px;
-            border: 1px solid #eee;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.03);
-        }
-        .fase-title {
-            color: var(--pitch-green);
-            font-family: 'Black Ops One';
-            font-size: 1.4rem;
-            border-bottom: 3px solid var(--gold);
-            padding-bottom: 8px;
-            margin-bottom: 20px;
-            text-transform: uppercase;
-        }
+        .fase-container { background: #fff; padding: 25px; border-radius: 20px; margin-bottom: 25px; border: 1px solid #eee; }
+        .fase-title { color: var(--pitch-green); font-family: 'Black Ops One'; font-size: 1.4rem; border-bottom: 3px solid var(--gold); padding-bottom: 8px; margin-bottom: 20px; text-transform: uppercase; }
         .preg-label { font-weight: 800; display: block; margin-bottom: 5px; font-size: 0.85rem; color: #444; text-transform: uppercase; }
-        .equipo-select, .equipo-select-simple {
-            width: 100%;
-            padding: 12px;
-            border-radius: 10px;
-            border: 2px solid #ddd;
-            margin-bottom: 12px;
-            font-family: 'Inter', sans-serif;
-            font-weight: 600;
-            outline: none;
-            transition: border-color 0.3s;
-        }
-        .equipo-select:focus, .equipo-select-simple:focus { border-color: var(--pitch-green); }
+        .equipo-select, .equipo-select-simple { width: 100%; padding: 12px; border-radius: 10px; border: 2px solid #ddd; margin-bottom: 12px; font-family: 'Inter', sans-serif; font-weight: 600; }
         .grid-preguntas { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-
     </style>
 </head>
 <body>
@@ -274,7 +170,6 @@
         <h1>MUNDIAL ADQUIRA 2026</h1>
     </header>
 
-    <!-- RANKING GLOBAL -->
     <div id="rankingSection" class="view-section">
         <table class="ranking-table">
             <thead>
@@ -284,82 +179,50 @@
                     <th width="33%" style="text-align: right;">PUNTOS</th>
                 </tr>
             </thead>
-            <tbody id="rankingBody"></tbody>
+            <tbody id="rankingBody">
+                <tr><td colspan="3" style="text-align:center;">Cargando datos del mundial...</td></tr>
+            </tbody>
         </table>
     </div>
 
-    <!-- FORMULARIO DE REGISTRO COMPLETO -->
     <div id="registerSection" class="view-section hidden">
-        <button class="btn-return" onclick="showRanking()">← Volver al Ranking</button>
-        
+        <button class="btn-return" onclick="showRanking()">← Volver</button>
         <form id="registrationForm" style="max-width: 700px; margin: 0 auto;">
             <div style="margin-bottom: 30px; text-align: center;">
                 <label class="preg-label" style="font-size: 1.2rem;">Tu Nombre de Participante:</label>
                 <input type="text" name="nombre" required placeholder="Escribe tu nombre..." style="width: 80%; padding: 15px; border-radius: 15px; border: 3px solid var(--pitch-green); font-size: 1.2rem; text-align: center; font-weight: 700;">
             </div>
 
-            <!-- BLOQUE 1: PRIMERA FASE -->
             <div class="fase-container">
                 <div class="fase-title">Primera Fase</div>
-                
                 <label class="preg-label">Top 8 Equipos (Orden de preferencia):</label>
                 <div id="dropdownsContainer" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;"></div>
 
                 <div class="grid-preguntas" style="margin-top: 15px;">
-                    <div>
-                        <label class="preg-label">Más goles a favor</label>
-                        <select name="mas_goles" class="equipo-select-simple" required></select>
-                    </div>
-                    <div>
-                        <label class="preg-label">Menos goles en contra</label>
-                        <select name="menos_goles" class="equipo-select-simple" required></select>
-                    </div>
+                    <div><label class="preg-label">Más goles a favor</label><select name="mas_goles" class="equipo-select-simple" required></select></div>
+                    <div><label class="preg-label">Menos goles en contra</label><select name="menos_goles" class="equipo-select-simple" required></select></div>
                 </div>
             </div>
 
-            <!-- BLOQUE 2: SEGUNDA FASE -->
             <div class="fase-container">
                 <div class="fase-title">Segunda Fase</div>
                 <div class="grid-preguntas">
-                    <div>
-                        <label class="preg-label">Campeón</label>
-                        <select name="campeon" class="equipo-select-simple" required></select>
-                    </div>
-                    <div>
-                        <label class="preg-label">Subcampeón</label>
-                        <select name="subcampeon" class="equipo-select-simple" required></select>
-                    </div>
-                    <div>
-                        <label class="preg-label">Tercer Puesto</label>
-                        <select name="tercero" class="equipo-select-simple" required></select>
-                    </div>
-                    <div>
-                        <label class="preg-label">Cuarto Puesto</label>
-                        <select name="cuarto" class="equipo-select-simple" required></select>
-                    </div>
+                    <div><label class="preg-label">Campeón</label><select name="campeon" class="equipo-select-simple" required></select></div>
+                    <div><label class="preg-label">Subcampeón</label><select name="subcampeon" class="equipo-select-simple" required></select></div>
+                    <div><label class="preg-label">Tercer Puesto</label><select name="tercero" class="equipo-select-simple" required></select></div>
+                    <div><label class="preg-label">Revelación</label><select name="revelacion" class="equipo-select-simple" required></select></div>
                 </div>
             </div>
 
-            <!-- BLOQUE 3: BONUS -->
-            <div class="fase-container">
-                <div class="fase-title">Bonus Especial</div>
-                <label class="preg-label">Equipo Revelación del Mundial</label>
-                <select name="revelacion" class="equipo-select-simple" required></select>
-            </div>
-
-            <button type="submit" class="btn-registro" style="width: 100%; justify-content: center; padding: 20px; font-size: 1.2rem; border-radius: 20px;">
-                ENVIAR MIS PRONÓSTICOS 🏆
-            </button>
+            <button type="submit" class="btn-registro" style="width: 100%; justify-content: center; padding: 20px; font-size: 1.2rem; border-radius: 20px;">ENVIAR MIS PRONÓSTICOS 🏆</button>
         </form>
-
         <div id="successMessage" class="hidden" style="text-align:center; padding: 50px;">
             <h2 style="font-family: 'Black Ops One'; color: var(--pitch-green); font-size: 3rem;">¡ÉXITO!</h2>
-            <p style="font-weight: 800; font-size: 1.2rem;">Tus datos han sido registrados correctamente.</p>
+            <p>Tus datos han sido registrados correctamente.</p>
             <button class="btn-return" onclick="showRanking()">Volver al Inicio</button>
         </div>
     </div>
 
-    <!-- FICHA JUGADOR -->
     <div id="playerSection" class="view-section hidden">
         <button class="btn-return" onclick="showRanking()">← Volver al Ranking</button>
         <h2 id="playerNameBig">NOMBRE</h2>
@@ -381,7 +244,6 @@
 </div>
 
 <script>
-    // URLs ÚNICAS DE GOOGLE SHEETS
     const URL_MAESTRA = "https://google.com";
     const URL_RANKING = "https://google.com";
     const URL_TEAMS = "https://google.com";
@@ -389,28 +251,31 @@
     let equiposDisponibles = [];
     let data = [];
 
-    // ÚNICA ENTRADA DE CARGA
-    document.addEventListener("DOMContentLoaded", async () => {
+    // CARGA INICIAL
+    async function initApp() {
         try {
+            console.log("Cargando datos...");
             const [resEquipos, resRanking, resTeams] = await Promise.all([
                 fetch(URL_MAESTRA).then(r => r.text()),
                 fetch(URL_RANKING).then(r => r.text()),
                 fetch(URL_TEAMS).then(r => r.text())
             ]);
 
-            // Procesar equipos
+            // Procesar lista de equipos con limpieza extrema
             equiposDisponibles = resEquipos.replace(/^\uFEFF/, '').split(/\r?\n/)
                 .map(l => l.split(',')[0].replace(/^"|"$/g, '').trim())
-                .filter(e => e !== "" && e !== "EQUIPOS");
+                .filter(e => e !== "" && e.toUpperCase() !== "EQUIPOS");
+            
+            console.log("Equipos cargados:", equiposDisponibles.length);
 
-            // Procesar Ranking
+            // Procesar Ranking y Fichas
             const rankingRows = parseCSV(resRanking);
             const teamRows = parseCSV(resTeams);
 
             data = rankingRows.map(p => ({
-                name: p.name, 
-                preguntas: p.preguntas, 
-                total: p.total,
+                name: p.name || "Sin nombre",
+                preguntas: p.preguntas || "0",
+                total: p.total || "0",
                 teams: teamRows.filter(t => t.name === p.name).map(t => ({
                     pos: t.pos, team: t.team, coef: t.coef, fase: t.fase,
                     dieciseisavos: t.dieciseisavos, octavos: t.octavos,
@@ -419,30 +284,32 @@
                 }))
             }));
 
-            data.sort((a, b) => parseFloat((b.total || "0").replace(',', '.')) - parseFloat((a.total || "0").replace(',', '.')));
-            
+            data.sort((a, b) => parseFloat(b.total.replace(',', '.')) - parseFloat(a.total.replace(',', '.')));
             renderRanking();
-        } catch (err) { 
-            console.error("Error en la carga de datos:", err); 
+
+        } catch (err) {
+            console.error("Error crítico:", err);
+            document.getElementById('rankingBody').innerHTML = "<tr><td colspan='3'>Error al cargar datos. Verifica la conexión.</td></tr>";
         }
-    });
+    }
 
     function parseCSV(csv) {
         const lines = csv.trim().split("\n");
         if (lines.length === 0) return [];
-        const delimiter = lines[0].includes(";") ? ";" : ",";
-        const headers = lines.shift().split(delimiter);
+        const sep = lines[0].includes(";") ? ";" : ",";
+        const headers = lines.shift().split(sep).map(h => h.trim().toLowerCase());
+        
         return lines.map(line => {
-            const values = line.split(delimiter);
+            const values = line.split(sep);
             const obj = {};
-            headers.forEach((h, i) => obj[h.trim()] = values[i]?.trim());
+            headers.forEach((h, i) => obj[h] = values[i]?.trim().replace(/^"|"$/g, ''));
             return obj;
         });
     }
 
     function renderRanking() {
         const tbody = document.getElementById('rankingBody');
-        if (!tbody) return;
+        if (!data.length) { tbody.innerHTML = "<tr><td colspan='3'>No hay jugadores registrados.</td></tr>"; return; }
         tbody.innerHTML = data.map((p, i) => `
             <tr onclick="showPlayer(${i})">
                 <td style="font-weight:800; color:var(--pitch-green); text-align:center;">${i+1}º</td>
@@ -497,7 +364,7 @@
     }
 
     function renderSimpleDropdowns() {
-        const opts = `<option value="" disabled selected>Elegir equipo...</option>` + 
+        const opts = `<option value="" disabled selected>Elegir...</option>` + 
                      equiposDisponibles.map(e => `<option value="${e}">${e}</option>`).join('');
         document.querySelectorAll('.equipo-select-simple').forEach(s => s.innerHTML = opts);
     }
@@ -523,6 +390,9 @@
         document.getElementById('registrationForm').classList.add('hidden');
         document.getElementById('successMessage').classList.remove('hidden');
     };
+
+    // INICIO ÚNICO
+    document.addEventListener("DOMContentLoaded", initApp);
 </script>
 </body>
 </html>
