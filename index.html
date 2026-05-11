@@ -453,34 +453,45 @@ document.addEventListener("DOMContentLoaded", () => {
 
 });
 
-// Lista de equipos para el registro 
-   
-    async function cargarRanking() {
-        try {
-
-	// 1. Obtener equipos desde Google Sheets
+async function cargarRanking() {
+    try {
+        // 1. Obtener equipos desde Google Sheets
         const resEquipos = await fetch("https://docs.google.com/spreadsheets/d/e/2PACX-1vRvbv4wKVLcF-dhiuLmYtU3aR8diCVDA8EgQ-yxaZXXqotI_L2VSWcoFo0NwiPEXB0XJwOxu9prujQk/pub?gid=2071537923&single=true&output=csv");
-        const textoEquipos = await resEquipos.text();
-        const equiposDisponibles = textoEquipos.split(/\r?\n/).map(e => e.trim()).filter(e => e !== "");
+        let textoEquipos = await resEquipos.text();
+        
+        // LIMPIEZA CLAVE: Eliminar el carácter invisible BOM y comillas extra
+        textoEquipos = textoEquipos.replace(/^\uFEFF/, ''); 
+
+        const equiposDisponibles = textoEquipos
+            .split(/\r?\n/)
+            .map(e => e.trim().replace(/^"|"$/g, '')) // Quita espacios y comillas
+            .filter(e => e !== "");
 
         // 2. Llenar todos los select de la página
-        const selects = document.querySelectorAll('select'); // Asegúrate de que tus select usen esta etiqueta
-        const opcionesHTML = `<option value="">Selecciona equipo...</option>` + 
+        const selects = document.querySelectorAll('select');
+        
+        // Creamos las opciones. He puesto "Posición..." como el diseño de tu imagen
+        const opcionesHTML = `<option value="" disabled selected>Posición...</option>` + 
                              equiposDisponibles.map(e => `<option value="${e}">${e}</option>`).join('');
         
-        selects.forEach(select => select.innerHTML = opcionesHTML);
+        selects.forEach(select => {
+            select.innerHTML = opcionesHTML;
+        });
 
+        // 3. Tu código de la tabla Ranking (sin cambios)
+        const res = await fetch(URL_RANKING);
+        const csv = await res.text();
+        const filas = csv.split("\n").slice(1);
+        document.getElementById('rankingBody').innerHTML = filas.map(f => {
+            const c = f.split(",");
+            if(c.length < 2) return "";
+            return `<tr><td>${c[0]}</td><td>${c[1]}</td><td style="text-align:right">${c[3] || 0}</td></tr>`;
+        }).join('');
 
-            const res = await fetch(URL_RANKING);
-            const csv = await res.text();
-            const filas = csv.split("\n").slice(1);
-            document.getElementById('rankingBody').innerHTML = filas.map(f => {
-                const c = f.split(",");
-                if(c.length < 2) return "";
-                return `<tr><td>${c[0]}</td><td>${c[1]}</td><td style="text-align:right">${c[3] || 0}</td></tr>`;
-            }).join('');
-        } catch (e) { console.error(e); }
+    } catch (e) { 
+        console.error("Error detallado:", e); 
     }
+}
 
     function showRegister() {
         document.getElementById('rankingSection').classList.add('hidden');
