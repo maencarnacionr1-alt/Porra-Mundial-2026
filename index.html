@@ -690,10 +690,10 @@
         renderDropdowns();
         renderSimpleDropdowns();
 
-        renderFaseDropdowns('octavosContainer', 'octavos', 8);
-        renderFaseDropdowns('cuartosContainer', 'cuartos', 4);
-        renderFaseDropdowns('semisContainer', 'semis', 2);
-        renderFaseDropdowns('finalistasContainer', 'finalistas', 2);
+       	renderFaseDropdowns('octavosContainer', 'octavos', 8);
+	renderFaseDropdowns('cuartosContainer', 'cuartos', 4);
+	renderFaseDropdowns('semisContainer', 'semis', 2);
+	renderFaseDropdowns('finalistasContainer', 'finalistas', 2);
     };
 
 
@@ -791,33 +791,65 @@
 
     function renderFaseDropdowns(containerId, prefix, cantidad) {
 
-        const container = document.getElementById(containerId);
+    const container = document.getElementById(containerId);
 
-        container.innerHTML = '';
+    container.innerHTML = '';
 
-        for (let i = 1; i <= cantidad; i++) {
+    for (let i = 1; i <= cantidad; i++) {
 
-            container.innerHTML += `
+        const div = document.createElement('div');
 
-                <div>
+        div.innerHTML = `
 
-                    <label class="preg-label">
-                        ${prefix.toUpperCase()} ${i}
-                    </label>
+            <label class="preg-label">
+                ${prefix.toUpperCase()} ${i}
+            </label>
 
-                    <select
-                        name="${prefix}${i}"
-                        class="equipo-select-simple"
-                        required
-                    >
-                    </select>
+            <select
+                name="${prefix}${i}"
+                class="equipo-select ${prefix}-select"
+                required
+            ></select>
+        `;
 
-                </div>
-            `;
-        }
-
-        renderSimpleDropdowns();
+        container.appendChild(div);
     }
+
+    updateFaseOptions(prefix);
+}
+
+
+
+function updateFaseOptions(prefix) {
+
+    const selects = document.querySelectorAll(`.${prefix}-select`);
+
+    const selected = Array.from(selects)
+        .map(s => s.value)
+        .filter(v => v !== "");
+
+    selects.forEach((s, i) => {
+
+        const val = s.value;
+
+        s.innerHTML =
+            `<option value="">Elegir ${i + 1}...</option>`;
+
+        equiposDisponibles.forEach(e => {
+
+            if (!selected.includes(e) || e === val) {
+
+                const opt = new Option(e, e);
+
+                if (e === val) opt.selected = true;
+
+                s.add(opt);
+            }
+        });
+
+        s.addEventListener('change', () => updateFaseOptions(prefix));
+    });
+}
 
 
     function updateOptions() {
