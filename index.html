@@ -528,211 +528,142 @@
 
 <script>
 
-    // ========= URLs =========
+const URL_MAESTRA =
+    "https://docs.google.com/spreadsheets/d/e/2PACX-1vRvbv4wKVLcF-dhiuLmYtU3aR8diCVDA8EgQ-yxaZXXqotI_L2VSWcoFo0NwiPEXB0XJwOxu9prujQk/pub?gid=2071537923&single=true&output=csv";
 
-    const URL_MAESTRA =
-        "https://docs.google.com/spreadsheets/d/e/2PACX-1vRvbv4wKVLcF-dhiuLmYtU3aR8diCVDA8EgQ-yxaZXXqotI_L2VSWcoFo0NwiPEXB0XJwOxu9prujQk/pub?gid=2071537923&single=true&output=csv";
+const URL_RANKING =
+    "https://docs.google.com/spreadsheets/d/e/2PACX-1vRvbv4wKVLcF-dhiuLmYtU3aR8diCVDA8EgQ-yxaZXXqotI_L2VSWcoFo0NwiPEXB0XJwOxu9prujQk/pub?gid=0&single=true&output=csv";
 
-    const URL_RANKING =
-        "https://docs.google.com/spreadsheets/d/e/2PACX-1vRvbv4wKVLcF-dhiuLmYtU3aR8diCVDA8EgQ-yxaZXXqotI_L2VSWcoFo0NwiPEXB0XJwOxu9prujQk/pub?gid=0&single=true&output=csv";
+const URL_TEAMS =
+    "https://docs.google.com/spreadsheets/d/e/2PACX-1vRvbv4wKVLcF-dhiuLmYtU3aR8diCVDA8EgQ-yxaZXXqotI_L2VSWcoFo0NwiPEXB0XJwOxu9prujQk/pub?gid=176911669&single=true&output=csv";
 
-    const URL_TEAMS =
-        "https://docs.google.com/spreadsheets/d/e/2PACX-1vRvbv4wKVLcF-dhiuLmYtU3aR8diCVDA8EgQ-yxaZXXqotI_L2VSWcoFo0NwiPEXB0XJwOxu9prujQk/pub?gid=176911669&single=true&output=csv";
+const GOOGLE_SCRIPT_URL =
+    "https://script.google.com/macros/s/AKfycby8LWIhR9PAJc99DblzR_unqfmhAGNvrYrTm_9HVUrX27lByf8dARBz2o9T2XJpP3BaVA/exec";
 
+let equiposDisponibles = [];
+let data = [];
 
-    // ========= GOOGLE APPS SCRIPT =========
-    // REEMPLAZA ESTA URL POR TU WEB APP DE APPS SCRIPT
+const GRUPOS = 12;
 
-    const GOOGLE_SCRIPT_URL =
-        "https://script.google.com/macros/s/AKfycby8LWIhR9PAJc99DblzR_unqfmhAGNvrYrTm_9HVUrX27lByf8dARBz2o9T2XJpP3BaVA/exec";
+// ================= INIT =================
 
+async function initApp() {
 
-    let equiposDisponibles = [];
-    let data = [];
+    try {
 
-    const GRUPOS = 12;
+        const [resEquipos, resRanking, resTeams] = await Promise.all([
+            fetch(URL_MAESTRA).then(r => r.text()),
+            fetch(URL_RANKING).then(r => r.text()),
+            fetch(URL_TEAMS).then(r => r.text())
+        ]);
 
-    // ========= INIT =========
+        equiposDisponibles = resEquipos
+            .replace(/^\uFEFF/, '')
+            .split(/\r?\n/)
+            .map(l => l.split(',')[0].replace(/^"|"$/g, '').trim())
+            .filter(e => e);
 
-    async function initApp() {
+        const rankingRows = parseCSV(resRanking);
+        const teamRows = parseCSV(resTeams);
 
-        try {
+        data = rankingRows.map(p => ({
+            name: p.name || "",
+            preguntas: p.preguntas || "0",
+            total: p.total || "0",
+            teams: teamRows.filter(t => t.name === p.name)
+        }));
 
-            console.log("Cargando datos...");
+        renderRanking();
 
-            const [resEquipos, resRanking, resTeams] = await Promise.all([
-
-                fetch(URL_MAESTRA).then(r => r.text()),
-                fetch(URL_RANKING).then(r => r.text()),
-                fetch(URL_TEAMS).then(r => r.text())
-
-            ]);
-
-            equiposDisponibles = resEquipos
-                .replace(/^\uFEFF/, '')
-                .split(/\r?\n/)
-                .map(l => l.split(',')[0].replace(/^"|"$/g, '').trim())
-                .filter(e => e !== "" && e.toUpperCase() !== "EQUIPOS");
-
-            console.log("Equipos cargados:", equiposDisponibles.length);
-
-            const rankingRows = parseCSV(resRanking);
-            const teamRows = parseCSV(resTeams);
-
-            data = rankingRows.map(p => ({
-
-                name: p.name || "Sin nombre",
-                preguntas: p.preguntas || "0",
-                total: p.total || "0",
-
-                teams: teamRows
-                    .filter(t => t.name === p.name)
-                    .map(t => ({
-                        pos: t.pos,
-                        team: t.team,
-                        coef: t.coef,
-                        fase: t.fase,
-                        dieciseisavos: t.dieciseisavos,
-                        octavos: t.octavos,
-                        cuartos: t.cuartos,
-                        semis: t.semis,
-                        terceros: t.terceros,
-                        final: t.final,
-                        puntos: t.puntos
-                    }))
-
-            }));
-
-            data.sort((a, b) =>
-                parseFloat(b.total.replace(',', '.')) -
-                parseFloat(a.total.replace(',', '.'))
-            );
-
-            renderRanking();
-
-        } catch (err) {
-
-            console.error("Error crítico:", err);
-
-            document.getElementById('rankingBody').innerHTML =
-                "<tr><td colspan='3'>Error al cargar datos. Verifica la conexión.</td></tr>";
-        }
+    } catch (err) {
+        console.error(err);
     }
+}
 
+// ================= CSV =================
 
-    // ========= CSV =========
+function parseCSV(csv) {
 
-    function parseCSV(csv) {
+    const lines = csv.trim().split("\n");
+    const sep = lines[0].includes(";") ? ";" : ",";
+    const headers = lines.shift().split(sep);
 
-        const lines = csv.trim().split("\n");
+    return lines.map(line => {
+        const values = line.split(sep);
+        const obj = {};
+        headers.forEach((h, i) => obj[h.trim().toLowerCase()] = values[i]);
+        return obj;
+    });
+}
 
-        if (lines.length === 0) return [];
+// ================= RANKING =================
 
-        const sep = lines[0].includes(";") ? ";" : ",";
+function renderRanking() {
 
-        const headers = lines.shift()
-            .split(sep)
-            .map(h => h.trim().toLowerCase());
+    const tbody = document.getElementById("rankingBody");
 
-        return lines.map(line => {
-
-            const values = line.split(sep);
-
-            const obj = {};
-
-            headers.forEach((h, i) => {
-
-                obj[h] = values[i]?.trim().replace(/^"|"$/g, '');
-
-            });
-
-            return obj;
-        });
-    }
-
-
-    // ========= RANKING =========
-
-    function renderRanking() {
-
-        const tbody = document.getElementById('rankingBody');
-
-        if (!data.length) {
-
-            tbody.innerHTML =
-                "<tr><td colspan='3'>No hay jugadores registrados.</td></tr>";
-
-            return;
-        }
-
-        tbody.innerHTML = data.map((p, i) => `
-
+    tbody.innerHTML = data.length
+        ? data.map((p, i) => `
             <tr onclick="showPlayer(${i})">
-
-                <td style="font-weight:800; color:var(--pitch-green); text-align:center;">
-                    ${i+1}º
-                </td>
-
-                <td style="font-weight:600;">
-                    ${p.name}
-                </td>
-
-                <td style="text-align:right; font-weight:800; color:var(--pitch-green);">
-                    ${p.total}
-                </td>
-
+                <td>${i + 1}º</td>
+                <td>${p.name}</td>
+                <td>${p.total}</td>
             </tr>
+        `).join("")
+        : "<tr><td colspan='3'>Sin datos</td></tr>";
+}
 
-        `).join('');
-    }
+// ================= VISTAS =================
 
+window.showRanking = function () {
 
-    // ========= VISTAS =========
+    document.querySelectorAll(".view-section")
+        .forEach(s => s.classList.add("hidden"));
 
-function renderGrupos(containerId, prefix, label) {
+    document.getElementById("rankingSection")
+        .classList.remove("hidden");
+};
+
+window.showRegister = function () {
+
+    document.querySelectorAll(".view-section")
+        .forEach(s => s.classList.add("hidden"));
+
+    document.getElementById("registerSection")
+        .classList.remove("hidden");
+
+    if (!equiposDisponibles.length) return;
+
+    renderSimpleDropdowns();
+
+    renderDynamicSection("top8Container", "top", 8, "Top 8");
+
+    renderGrupos("primerosGrupoContainer", "grupo_primero", "1º");
+    renderGrupos("segundosGrupoContainer", "grupo_segundo", "2º");
+    renderGrupos("mejoresTercerosContainer", "mejor_tercero", "3º");
+
+    renderDynamicSection("octavosContainer", "octavos", 16, "Octavos");
+    renderDynamicSection("cuartosContainer", "cuartos", 8, "Cuartos");
+    renderDynamicSection("semisContainer", "semis", 4, "Semis");
+    renderDynamicSection("finalistasContainer", "finalistas", 2, "Final");
+};
+
+// ================= DINÁMICOS =================
+
+function renderDynamicSection(containerId, prefix, cantidad, label) {
 
     const container = document.getElementById(containerId);
-    container.innerHTML = '';
+    container.innerHTML = "";
 
-    for (let i = 0; i < GRUPOS; i++) {
-
-        const grupo = String.fromCharCode(65 + i); // A-L
+    for (let i = 1; i <= cantidad; i++) {
 
         container.innerHTML += `
             <div>
-                <label class="preg-label">
-                    ${label} Grupo ${grupo}
-                </label>
-
-                <select name="${prefix}${i+1}" class="equipo-select ${prefix}-select" required></select>
+                <label class="preg-label">${label} ${i}</label>
+                <select name="${prefix}${i}" class="equipo-select ${prefix}-select"></select>
             </div>
         `;
     }
-
-    updateDynamicOptions(prefix);
-}
-
-    for (let i = 1; i <= amount; i++) {
-
-        let label = `${titlePrefix} ${i}`;
-
-        if (prefix === 'grupo_primero') {
-            label = `Grupo ${String.fromCharCode(64 + i)} - 1º`;
-        }
-
-        if (prefix === 'grupo_segundo') {
-            label = `Grupo ${String.fromCharCode(64 + i)} - 2º`;
-        }
-
-        html += `
-            <div>
-                <label class="preg-label">${label}</label>
-                <select name="${prefix}${i}" class="equipo-select ${prefix}-select" required></select>
-            </div>
-        `;
-    }
-
-    container.innerHTML = html;
 
     updateDynamicOptions(prefix);
 }
@@ -741,305 +672,99 @@ function updateDynamicOptions(prefix) {
 
     const selects = document.querySelectorAll(`.${prefix}-select`);
 
-    const selected = Array.from(selects)
-        .map(s => s.value)
-        .filter(v => v !== '');
+    const selected = Array.from(selects).map(s => s.value).filter(Boolean);
 
-    selects.forEach((select) => {
+    selects.forEach(sel => {
 
-        const current = select.value;
+        const current = sel.value;
 
-        select.innerHTML = `<option value="">Elegir...</option>`;
-
-        equiposDisponibles.forEach(team => {
-
-            if (!selected.includes(team) || team === current) {
-
-                const option = new Option(team, team);
-
-                if (team === current) {
-                    option.selected = true;
-                }
-
-                select.add(option);
-            }
-        });
-
-    window.showRegister = function() {
-
-    document.querySelectorAll('.view-section')
-        .forEach(s => s.classList.add('hidden'));
-
-    document.getElementById('registerSection')
-        .classList.remove('hidden');
-
-    if (!equiposDisponibles || equiposDisponibles.length === 0) {
-        console.error("Equipos no cargados aún");
-        return;
-    }
-
-    // 🔹 dropdown simples
-    renderSimpleDropdowns();
-
-    // 🔹 TOP 8
-    renderDynamicSection('top8Container', 'top', 8, 'Top 8');
-
-    // 🔹 FASE DE GRUPOS (12 grupos)
-    renderGrupos('primerosGrupoContainer', 'grupo_primero', '1º');
-    renderGrupos('segundosGrupoContainer', 'grupo_segundo', '2º');
-    renderGrupos('mejoresTercerosContainer', 'mejor_tercero', '3º mejor');
-
-    // 🔹 estadísticas de grupo
-    renderSimpleDropdowns();
-
-    // 🔹 ELIMINATORIAS (32 equipos ya estructurados)
-    renderDynamicSection('octavosContainer', 'octavos', 16, 'Octavos');
-    renderDynamicSection('cuartosContainer', 'cuartos', 8, 'Cuartos');
-    renderDynamicSection('semisContainer', 'semis', 4, 'Semis');
-    renderDynamicSection('finalistasContainer', 'finalistas', 2, 'Final');
-
-};
-
-
-    window.showRanking = function() {
-
-        document.querySelectorAll('.view-section')
-            .forEach(s => s.classList.add('hidden'));
-
-        document.getElementById('rankingSection')
-            .classList.remove('hidden');
-    };
-
-
-    window.showPlayer = function(idx) {
-
-        const p = data[idx];
-
-        document.querySelectorAll('.view-section')
-            .forEach(s => s.classList.add('hidden'));
-
-        document.getElementById('playerSection')
-            .classList.remove('hidden');
-
-        document.getElementById('playerNameBig').textContent = p.name;
-        document.getElementById('statTotal').textContent = p.total;
-        document.getElementById('statPreguntas').textContent = p.preguntas;
-        document.getElementById('statPos').textContent = (idx + 1) + "º";
-
-        document.getElementById('teamsBody').innerHTML = p.teams.map(t => `
-
-            <tr>
-
-                <td>${t.pos}</td>
-
-                <td style="text-align:left; font-weight:700;">
-                    ${t.team}
-                </td>
-
-                <td>${t.coef}</td>
-                <td>${t.fase}</td>
-                <td>${t.dieciseisavos}</td>
-                <td>${t.octavos || 0}</td>
-                <td>${t.cuartos || 0}</td>
-                <td>${t.semis || 0}</td>
-                <td>${t.terceros || 0}</td>
-                <td>${t.final || 0}</td>
-
-                <td class="points-final">
-                    ${t.puntos}
-                </td>
-
-            </tr>
-
-        `).join('');
-    };
-
-
-    // ========= DROPDOWNS =========
-
-    function renderDropdowns() {
-
-        const container = document.getElementById('dropdownsContainer');
-
-        container.innerHTML = '';
-
-        for (let i = 1; i <= 8; i++) {
-
-            const sel = document.createElement('select');
-
-            sel.name = `top${i}`;
-            sel.className = 'equipo-select';
-            sel.required = true;
-
-            sel.addEventListener('change', updateOptions);
-
-            container.appendChild(sel);
-        }
-
-        updateOptions();
-    }
-
-
-    function renderSimpleDropdowns() {
-
-        const opts =
-            `<option value="" disabled selected>Elegir...</option>` +
-            equiposDisponibles.map(e =>
-                `<option value="${e}">${e}</option>`
-            ).join('');
-
-        document.querySelectorAll('.equipo-select-simple')
-            .forEach(s => s.innerHTML = opts);
-    }
-
-
-    function renderFaseDropdowns(containerId, prefix, cantidad) {
-
-    const container = document.getElementById(containerId);
-
-    container.innerHTML = '';
-
-    for (let i = 1; i <= cantidad; i++) {
-
-        const div = document.createElement('div');
-
-        div.innerHTML = `
-
-            <label class="preg-label">
-                ${prefix.toUpperCase()} ${i}
-            </label>
-
-            <select
-                name="${prefix}${i}"
-                class="equipo-select ${prefix}-select"
-                required
-            ></select>
-        `;
-
-        container.appendChild(div);
-    }
-
-    updateFaseOptions(prefix);
-}
-
-
-
-function updateFaseOptions(prefix) {
-
-    const selects = document.querySelectorAll(`.${prefix}-select`);
-
-    const selected = Array.from(selects)
-        .map(s => s.value)
-        .filter(v => v !== "");
-
-    selects.forEach((s, i) => {
-
-        const val = s.value;
-
-        s.innerHTML =
-            `<option value="">Elegir ${i + 1}...</option>`;
+        sel.innerHTML = `<option value="">Elegir...</option>`;
 
         equiposDisponibles.forEach(e => {
 
-            if (!selected.includes(e) || e === val) {
+            if (!selected.includes(e) || e === current) {
 
                 const opt = new Option(e, e);
-
-                if (e === val) opt.selected = true;
-
-                s.add(opt);
+                if (e === current) opt.selected = true;
+                sel.add(opt);
             }
         });
 
-        s.addEventListener('change', () => updateFaseOptions(prefix));
+        sel.onchange = () => updateDynamicOptions(prefix);
     });
 }
 
+// ================= GRUPOS =================
 
-    function updateOptions() {
+function renderGrupos(containerId, prefix, label) {
 
-        const selects = document.querySelectorAll('.equipo-select');
+    const container = document.getElementById(containerId);
+    container.innerHTML = "";
 
-        const selected = Array.from(selects)
-            .map(s => s.value)
-            .filter(v => v !== "");
+    for (let i = 0; i < GRUPOS; i++) {
 
-        selects.forEach((s, i) => {
+        const grupo = String.fromCharCode(65 + i);
 
-            const val = s.value;
-
-            s.innerHTML =
-                `<option value="">Posición ${i + 1}...</option>`;
-
-            equiposDisponibles.forEach(e => {
-
-                if (!selected.includes(e) || e === val) {
-
-                    const opt = new Option(e, e);
-
-                    if (e === val) opt.selected = true;
-
-                    s.add(opt);
-                }
-            });
-        });
+        container.innerHTML += `
+            <div>
+                <label class="preg-label">${label} Grupo ${grupo}</label>
+                <select name="${prefix}${i + 1}" class="equipo-select ${prefix}-select"></select>
+            </div>
+        `;
     }
 
+    updateDynamicOptions(prefix);
+}
 
-    // ========= ENVÍO GOOGLE SHEETS =========
+// ================= SIMPLE =================
 
-   document.getElementById('registrationForm').onsubmit = async (e) => {
+function renderSimpleDropdowns() {
+
+    const html = `<option value="">Elegir...</option>` +
+        equiposDisponibles.map(e => `<option value="${e}">${e}</option>`).join("");
+
+    document.querySelectorAll(".equipo-select-simple")
+        .forEach(s => s.innerHTML = html);
+}
+
+// ================= PLAYER =================
+
+window.showPlayer = function (i) {
+
+    const p = data[i];
+
+    document.querySelectorAll(".view-section")
+        .forEach(s => s.classList.add("hidden"));
+
+    document.getElementById("playerSection")
+        .classList.remove("hidden");
+
+    document.getElementById("playerNameBig").textContent = p.name;
+    document.getElementById("statTotal").textContent = p.total;
+};
+
+// ================= FORM =================
+
+document.getElementById("registrationForm").onsubmit = async (e) => {
 
     e.preventDefault();
 
-    try {
+    const formData = new FormData(e.target);
+    const obj = {};
 
-        const form = e.target;
+    formData.forEach((v, k) => obj[k] = v);
 
-        const formData = new FormData(form);
+    await fetch(GOOGLE_SCRIPT_URL, {
+        method: "POST",
+        body: JSON.stringify(obj)
+    });
 
-        const dataObj = {};
-
-        formData.forEach((value, key) => {
-            dataObj[key] = value;
-        });
-
-        console.log("Enviando:", dataObj);
-
-        const response = await fetch(GOOGLE_SCRIPT_URL, {
-
-            method: 'POST',
-
-            headers: {
-                'Content-Type': 'text/plain;charset=utf-8'
-            },
-
-            body: JSON.stringify(dataObj)
-
-        });
-
-        const result = await response.text();
-
-        console.log("Respuesta:", result);
-
-        document.getElementById('registrationForm')
-            .classList.add('hidden');
-
-        document.getElementById('successMessage')
-            .classList.remove('hidden');
-
-    } catch (error) {
-
-        console.error("ERROR:", error);
-
-        alert("Error enviando datos.");
-    }
+    alert("Enviado correctamente");
 };
 
+// ================= START =================
 
-    // ========= START =========
-
-    document.addEventListener("DOMContentLoaded", initApp);
+document.addEventListener("DOMContentLoaded", initApp);
 
 </script>
 
