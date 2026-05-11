@@ -550,6 +550,7 @@
     let equiposDisponibles = [];
     let data = [];
 
+    const GRUPOS = 12;
 
     // ========= INIT =========
 
@@ -687,14 +688,32 @@
 
 
     // ========= VISTAS =========
-function renderDynamicSection(containerId, prefix, amount, titlePrefix) {
+
+function renderGrupos(containerId, prefix, label) {
 
     const container = document.getElementById(containerId);
-
     container.innerHTML = '';
 
-    let html = '';
+    for (let i = 0; i < GRUPOS; i++) {
 
+        const grupo = String.fromCharCode(65 + i); // A-L
+
+        container.innerHTML += `
+            <div>
+                <label class="preg-label">
+                    ${label} Grupo ${grupo}
+                </label>
+
+                <select name="${prefix}${i+1}" class="equipo-select ${prefix}-select" required></select>
+            </div>
+        `;
+    }
+
+    updateDynamicOptions(prefix);
+}
+
+    
+}
     for (let i = 1; i <= amount; i++) {
 
         let label = `${titlePrefix} ${i}`;
@@ -759,71 +778,31 @@ function updateDynamicOptions(prefix) {
     document.getElementById('registerSection')
         .classList.remove('hidden');
 
+    if (!equiposDisponibles || equiposDisponibles.length === 0) {
+        console.error("Equipos no cargados aún");
+        return;
+    }
+
+    // 🔹 dropdown simples
     renderSimpleDropdowns();
 
-    // TOP 8
-    renderDynamicSection(
-        'top8Container',
-        'top',
-        8,
-        'Top'
-    );
+    // 🔹 TOP 8
+    renderDynamicSection('top8Container', 'top', 8, 'Top 8');
 
-    // PRIMEROS
-    renderDynamicSection(
-        'primerosGrupoContainer',
-        'grupo_primero',
-        8,
-        'Grupo'
-    );
+    // 🔹 FASE DE GRUPOS (12 grupos)
+    renderGrupos('primerosGrupoContainer', 'grupo_primero', '1º');
+    renderGrupos('segundosGrupoContainer', 'grupo_segundo', '2º');
+    renderGrupos('mejoresTercerosContainer', 'mejor_tercero', '3º mejor');
 
-    // SEGUNDOS
-    renderDynamicSection(
-        'segundosGrupoContainer',
-        'grupo_segundo',
-        8,
-        'Grupo'
-    );
+    // 🔹 estadísticas de grupo
+    renderSimpleDropdowns();
 
-    // MEJORES TERCEROS
-    renderDynamicSection(
-        'mejoresTercerosContainer',
-        'mejor_tercero',
-        8,
-        'Mejor tercero'
-    );
+    // 🔹 ELIMINATORIAS (32 equipos ya estructurados)
+    renderDynamicSection('octavosContainer', 'octavos', 16, 'Octavos');
+    renderDynamicSection('cuartosContainer', 'cuartos', 8, 'Cuartos');
+    renderDynamicSection('semisContainer', 'semis', 4, 'Semis');
+    renderDynamicSection('finalistasContainer', 'finalistas', 2, 'Final');
 
-    // OCTAVOS
-    renderDynamicSection(
-        'octavosContainer',
-        'octavos',
-        16,
-        'Octavos'
-    );
-
-    // CUARTOS
-    renderDynamicSection(
-        'cuartosContainer',
-        'cuartos',
-        8,
-        'Cuartos'
-    );
-
-    // SEMIS
-    renderDynamicSection(
-        'semisContainer',
-        'semis',
-        4,
-        'Semis'
-    );
-
-    // FINALISTAS
-    renderDynamicSection(
-        'finalistasContainer',
-        'finalistas',
-        2,
-        'Finalista'
-    );
 };
 
 
