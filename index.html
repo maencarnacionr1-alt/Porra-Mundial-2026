@@ -293,11 +293,9 @@
         <h1>MUNDIAL ADQUIRA 2026</h1>
     </header>
 
-    <!-- RANKING -->
     <div id="rankingSection" class="view-section">
 
         <table class="ranking-table">
-
             <thead>
                 <tr>
                     <th width="33%">POSICIÓN</th>
@@ -313,12 +311,10 @@
                     </td>
                 </tr>
             </tbody>
-
         </table>
 
     </div>
 
-    <!-- REGISTRO -->
     <div id="registerSection" class="view-section hidden">
 
         <button class="btn-return" onclick="showRanking()">
@@ -327,9 +323,7 @@
 
         <form id="registrationForm" style="max-width:700px; margin:0 auto;">
 
-            <!-- NOMBRE -->
             <div style="margin-bottom:30px; text-align:center;">
-
                 <label class="preg-label" style="font-size:1.2rem;">
                     Nombre de Participante:
                 </label>
@@ -341,7 +335,6 @@
                     placeholder="Escribe tu nombre..."
                     style="width:80%; padding:15px; border-radius:15px; border:3px solid var(--pitch-green); font-size:1.2rem; text-align:center; font-weight:700;"
                 >
-
             </div>
 
             <!-- PRIMERA FASE -->
@@ -446,7 +439,6 @@
                 </div>
             </div>
 
-            <!-- BOTÓN -->
             <button
                 type="submit"
                 class="btn-registro"
@@ -457,7 +449,6 @@
 
         </form>
 
-        <!-- SUCCESS -->
         <div id="successMessage"
             class="hidden"
             style="text-align:center; padding:50px;">
@@ -473,16 +464,62 @@
             </button>
 
         </div>
-
     </div>
 
+    <div id="playerSection" class="view-section hidden">
+
+        <button class="btn-return" onclick="showRanking()">
+            ← Volver al Ranking
+        </button>
+
+        <h2 id="playerNameBig">NOMBRE</h2>
+
+        <div class="stats-row">
+
+            <div class="stat-card">
+                <label>Puntos Finales</label>
+                <span id="statTotal">0</span>
+            </div>
+
+            <div class="stat-card">
+                <label>Preguntas</label>
+                <span id="statPreguntas">0</span>
+            </div>
+
+            <div class="stat-card">
+                <label>Ranking</label>
+                <span id="statPos">#0</span>
+            </div>
+
+        </div>
+
+        <table class="teams-table">
+
+            <thead>
+                <tr>
+                    <th>POS</th>
+                    <th style="text-align:left">EQUIPO</th>
+                    <th>COEF</th>
+                    <th>1ª F</th>
+                    <th>16VOS</th>
+                    <th>8VOS</th>
+                    <th>4TOS</th>
+                    <th>SEMIS</th>
+                    <th>3º</th>
+                    <th>FINAL</th>
+                    <th>TOTAL</th>
+                </tr>
+            </thead>
+
+            <tbody id="teamsBody"></tbody>
+
+        </table>
+    </div>
 </div>
 
 <script>
 
-    // ================================
-    // URLS
-    // ================================
+    // ========= URLs =========
 
     const URL_MAESTRA =
         "https://docs.google.com/spreadsheets/d/e/2PACX-1vRvbv4wKVLcF-dhiuLmYtU3aR8diCVDA8EgQ-yxaZXXqotI_L2VSWcoFo0NwiPEXB0XJwOxu9prujQk/pub?gid=2071537923&single=true&output=csv";
@@ -493,20 +530,25 @@
     const URL_TEAMS =
         "https://docs.google.com/spreadsheets/d/e/2PACX-1vRvbv4wKVLcF-dhiuLmYtU3aR8diCVDA8EgQ-yxaZXXqotI_L2VSWcoFo0NwiPEXB0XJwOxu9prujQk/pub?gid=176911669&single=true&output=csv";
 
-    // CAMBIAR POR TU WEB APP
+
+    // ========= GOOGLE APPS SCRIPT =========
+    // REEMPLAZA ESTA URL POR TU WEB APP DE APPS SCRIPT
+
     const GOOGLE_SCRIPT_URL =
         "https://script.google.com/macros/s/PEGA_AQUI_TU_WEBAPP_URL/exec";
+
 
     let equiposDisponibles = [];
     let data = [];
 
-    // ================================
-    // INIT
-    // ================================
+
+    // ========= INIT =========
 
     async function initApp() {
 
         try {
+
+            console.log("Cargando datos...");
 
             const [resEquipos, resRanking, resTeams] = await Promise.all([
 
@@ -522,35 +564,120 @@
                 .map(l => l.split(',')[0].replace(/^"|"$/g, '').trim())
                 .filter(e => e !== "" && e.toUpperCase() !== "EQUIPOS");
 
+            console.log("Equipos cargados:", equiposDisponibles.length);
+
+            const rankingRows = parseCSV(resRanking);
+            const teamRows = parseCSV(resTeams);
+
+            data = rankingRows.map(p => ({
+
+                name: p.name || "Sin nombre",
+                preguntas: p.preguntas || "0",
+                total: p.total || "0",
+
+                teams: teamRows
+                    .filter(t => t.name === p.name)
+                    .map(t => ({
+                        pos: t.pos,
+                        team: t.team,
+                        coef: t.coef,
+                        fase: t.fase,
+                        dieciseisavos: t.dieciseisavos,
+                        octavos: t.octavos,
+                        cuartos: t.cuartos,
+                        semis: t.semis,
+                        terceros: t.terceros,
+                        final: t.final,
+                        puntos: t.puntos
+                    }))
+
+            }));
+
+            data.sort((a, b) =>
+                parseFloat(b.total.replace(',', '.')) -
+                parseFloat(a.total.replace(',', '.'))
+            );
+
             renderRanking();
 
         } catch (err) {
 
-            console.error(err);
+            console.error("Error crítico:", err);
 
+            document.getElementById('rankingBody').innerHTML =
+                "<tr><td colspan='3'>Error al cargar datos. Verifica la conexión.</td></tr>";
         }
     }
 
-    // ================================
-    // RENDER RANKING
-    // ================================
+
+    // ========= CSV =========
+
+    function parseCSV(csv) {
+
+        const lines = csv.trim().split("\n");
+
+        if (lines.length === 0) return [];
+
+        const sep = lines[0].includes(";") ? ";" : ",";
+
+        const headers = lines.shift()
+            .split(sep)
+            .map(h => h.trim().toLowerCase());
+
+        return lines.map(line => {
+
+            const values = line.split(sep);
+
+            const obj = {};
+
+            headers.forEach((h, i) => {
+
+                obj[h] = values[i]?.trim().replace(/^"|"$/g, '');
+
+            });
+
+            return obj;
+        });
+    }
+
+
+    // ========= RANKING =========
 
     function renderRanking() {
 
         const tbody = document.getElementById('rankingBody');
 
-        tbody.innerHTML = `
-            <tr>
-                <td colspan="3" style="text-align:center;">
-                    Ranking cargado correctamente.
+        if (!data.length) {
+
+            tbody.innerHTML =
+                "<tr><td colspan='3'>No hay jugadores registrados.</td></tr>";
+
+            return;
+        }
+
+        tbody.innerHTML = data.map((p, i) => `
+
+            <tr onclick="showPlayer(${i})">
+
+                <td style="font-weight:800; color:var(--pitch-green); text-align:center;">
+                    ${i+1}º
                 </td>
+
+                <td style="font-weight:600;">
+                    ${p.name}
+                </td>
+
+                <td style="text-align:right; font-weight:800; color:var(--pitch-green);">
+                    ${p.total}
+                </td>
+
             </tr>
-        `;
+
+        `).join('');
     }
 
-    // ================================
-    // VISTAS
-    // ================================
+
+    // ========= VISTAS =========
 
     window.showRegister = function() {
 
@@ -561,7 +688,6 @@
             .classList.remove('hidden');
 
         renderDropdowns();
-
         renderSimpleDropdowns();
 
         renderFaseDropdowns('octavosContainer', 'octavos', 8);
@@ -569,6 +695,7 @@
         renderFaseDropdowns('semisContainer', 'semis', 2);
         renderFaseDropdowns('finalistasContainer', 'finalistas', 2);
     };
+
 
     window.showRanking = function() {
 
@@ -579,9 +706,52 @@
             .classList.remove('hidden');
     };
 
-    // ================================
-    // TOP 8
-    // ================================
+
+    window.showPlayer = function(idx) {
+
+        const p = data[idx];
+
+        document.querySelectorAll('.view-section')
+            .forEach(s => s.classList.add('hidden'));
+
+        document.getElementById('playerSection')
+            .classList.remove('hidden');
+
+        document.getElementById('playerNameBig').textContent = p.name;
+        document.getElementById('statTotal').textContent = p.total;
+        document.getElementById('statPreguntas').textContent = p.preguntas;
+        document.getElementById('statPos').textContent = (idx + 1) + "º";
+
+        document.getElementById('teamsBody').innerHTML = p.teams.map(t => `
+
+            <tr>
+
+                <td>${t.pos}</td>
+
+                <td style="text-align:left; font-weight:700;">
+                    ${t.team}
+                </td>
+
+                <td>${t.coef}</td>
+                <td>${t.fase}</td>
+                <td>${t.dieciseisavos}</td>
+                <td>${t.octavos || 0}</td>
+                <td>${t.cuartos || 0}</td>
+                <td>${t.semis || 0}</td>
+                <td>${t.terceros || 0}</td>
+                <td>${t.final || 0}</td>
+
+                <td class="points-final">
+                    ${t.puntos}
+                </td>
+
+            </tr>
+
+        `).join('');
+    };
+
+
+    // ========= DROPDOWNS =========
 
     function renderDropdowns() {
 
@@ -604,6 +774,51 @@
 
         updateOptions();
     }
+
+
+    function renderSimpleDropdowns() {
+
+        const opts =
+            `<option value="" disabled selected>Elegir...</option>` +
+            equiposDisponibles.map(e =>
+                `<option value="${e}">${e}</option>`
+            ).join('');
+
+        document.querySelectorAll('.equipo-select-simple')
+            .forEach(s => s.innerHTML = opts);
+    }
+
+
+    function renderFaseDropdowns(containerId, prefix, cantidad) {
+
+        const container = document.getElementById(containerId);
+
+        container.innerHTML = '';
+
+        for (let i = 1; i <= cantidad; i++) {
+
+            container.innerHTML += `
+
+                <div>
+
+                    <label class="preg-label">
+                        ${prefix.toUpperCase()} ${i}
+                    </label>
+
+                    <select
+                        name="${prefix}${i}"
+                        class="equipo-select-simple"
+                        required
+                    >
+                    </select>
+
+                </div>
+            `;
+        }
+
+        renderSimpleDropdowns();
+    }
+
 
     function updateOptions() {
 
@@ -634,89 +849,8 @@
         });
     }
 
-    // ================================
-    // DROPDOWNS SIMPLES
-    // ================================
 
-    function renderSimpleDropdowns() {
-
-        const opts =
-            `<option value="" disabled selected>Elegir...</option>` +
-            equiposDisponibles.map(e =>
-                `<option value="${e}">${e}</option>`
-            ).join('');
-
-        document.querySelectorAll('.equipo-select-simple')
-            .forEach(s => s.innerHTML = opts);
-    }
-
-    // ================================
-    // NUEVAS FASES CON EXCLUSIÓN
-    // ================================
-
-    function renderFaseDropdowns(containerId, prefix, cantidad) {
-
-        const container = document.getElementById(containerId);
-
-        container.innerHTML = '';
-
-        for (let i = 1; i <= cantidad; i++) {
-
-            const div = document.createElement('div');
-
-            div.innerHTML = `
-
-                <label class="preg-label">
-                    ${prefix.toUpperCase()} ${i}
-                </label>
-
-                <select
-                    name="${prefix}${i}"
-                    class="equipo-select ${prefix}-select"
-                    required
-                ></select>
-            `;
-
-            container.appendChild(div);
-        }
-
-        updateFaseOptions(prefix);
-    }
-
-    function updateFaseOptions(prefix) {
-
-        const selects = document.querySelectorAll(`.${prefix}-select`);
-
-        const selected = Array.from(selects)
-            .map(s => s.value)
-            .filter(v => v !== "");
-
-        selects.forEach((s, i) => {
-
-            const val = s.value;
-
-            s.innerHTML =
-                `<option value="">Elegir ${i + 1}...</option>`;
-
-            equiposDisponibles.forEach(e => {
-
-                if (!selected.includes(e) || e === val) {
-
-                    const opt = new Option(e, e);
-
-                    if (e === val) opt.selected = true;
-
-                    s.add(opt);
-                }
-            });
-
-            s.addEventListener('change', () => updateFaseOptions(prefix));
-        });
-    }
-
-    // ================================
-    // ENVÍO GOOGLE SHEETS
-    // ================================
+    // ========= ENVÍO GOOGLE SHEETS =========
 
     document.getElementById('registrationForm').onsubmit = async (e) => {
 
@@ -724,7 +858,9 @@
 
         try {
 
-            const formData = new FormData(e.target);
+            const form = e.target;
+
+            const formData = new FormData(form);
 
             const dataObj = {};
 
@@ -754,18 +890,16 @@
             document.getElementById('successMessage')
                 .classList.remove('hidden');
 
-        } catch (err) {
+        } catch (error) {
 
-            console.error(err);
+            console.error(error);
 
             alert("Error enviando datos.");
-
         }
     };
 
-    // ================================
-    // START
-    // ================================
+
+    // ========= START =========
 
     document.addEventListener("DOMContentLoaded", initApp);
 
