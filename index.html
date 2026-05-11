@@ -687,6 +687,39 @@
 
 
     // ========= VISTAS =========
+function renderDynamicSection(containerId, prefix, amount, titlePrefix) {
+
+    const container = document.getElementById(containerId);
+
+    container.innerHTML = '';
+
+    let html = '';
+
+    for (let i = 1; i <= amount; i++) {
+
+        let label = `${titlePrefix} ${i}`;
+
+        if (prefix === 'grupo_primero') {
+            label = `Grupo ${String.fromCharCode(64 + i)} - 1º`;
+        }
+
+        if (prefix === 'grupo_segundo') {
+            label = `Grupo ${String.fromCharCode(64 + i)} - 2º`;
+        }
+
+        html += `
+            <div>
+                <label class="preg-label">${label}</label>
+                <select name="${prefix}${i}" class="equipo-select ${prefix}-select" required></select>
+            </div>
+        `;
+    }
+
+    container.innerHTML = html;
+
+    updateDynamicOptions(prefix);
+}
+
 
     window.showRegister = function() {
 
