@@ -535,7 +535,7 @@
     // REEMPLAZA ESTA URL POR TU WEB APP DE APPS SCRIPT
 
     const GOOGLE_SCRIPT_URL =
-        "https://script.google.com/macros/s/AKfycbyEKxW9OqN0gAAkHdddTL5tj-i86FPSDko7oz3osuL6z243An9QOL3_VQj7e_YNoPeEdg/exec";
+        "https://script.google.com/macros/s/AKfycbwJiWYcUC3NVDtMFPqajX_jY1HGvmc0fwvBTMR956l5YYXNGvrS0WJUACCa1Bn9LxzxjA/exec";
 
 
     let equiposDisponibles = [];
@@ -906,15 +906,18 @@ function updateFaseOptions(prefix) {
 
                 method: 'POST',
 
-                mode: 'no-cors',
+                mode: JSON.stringify(dataObj),
 
-                headers: {
-                    'Content-Type': 'application/json'
+                headers: {	
+                    "Content-Type": "text/plain;charset=utf-8"
                 },
-
-                body: JSON.stringify(dataObj)
-
+            	body: JSON.stringify(dataObj)
+	
             });
+
+	    const result = await response.text();
+
+            console.log(result);
 
             document.getElementById('registrationForm')
                 .classList.add('hidden');
