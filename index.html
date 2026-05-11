@@ -160,6 +160,7 @@
             transition: 0.3s;
             text-transform: uppercase;
             font-size: 0.8rem;
+            margin-bottom: 10px;
         }
 
         .teams-table { 
@@ -227,15 +228,39 @@
             100% { transform: scale(1); opacity: 1; }
         }
 
-        .equipo-select {
+        /* Estilos Formulario */
+        .fase-container {
+            background: #fff;
+            padding: 25px;
+            border-radius: 20px;
+            margin-bottom: 25px;
+            border: 1px solid #eee;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.03);
+        }
+        .fase-title {
+            color: var(--pitch-green);
+            font-family: 'Black Ops One';
+            font-size: 1.4rem;
+            border-bottom: 3px solid var(--gold);
+            padding-bottom: 8px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+        .preg-label { font-weight: 800; display: block; margin-bottom: 5px; font-size: 0.85rem; color: #444; text-transform: uppercase; }
+        .equipo-select, .equipo-select-simple {
             width: 100%;
             padding: 12px;
             border-radius: 10px;
             border: 2px solid #ddd;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             font-family: 'Inter', sans-serif;
             font-weight: 600;
+            outline: none;
+            transition: border-color 0.3s;
         }
+        .equipo-select:focus, .equipo-select-simple:focus { border-color: var(--pitch-green); }
+        .grid-preguntas { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+
     </style>
 </head>
 <body>
@@ -250,7 +275,7 @@
         <h1>MUNDIAL ADQUIRA 2026</h1>
     </header>
 
-    <!-- RANKING -->
+    <!-- RANKING GLOBAL -->
     <div id="rankingSection" class="view-section">
         <table class="ranking-table">
             <thead>
@@ -264,28 +289,80 @@
         </table>
     </div>
 
-    <!-- REGISTRO -->
+    <!-- FORMULARIO DE REGISTRO COMPLETO -->
     <div id="registerSection" class="view-section hidden">
-        <button class="btn-return" onclick="showRanking()" style="margin-bottom:20px;">← Volver</button>
-        <form id="registrationForm" style="max-width: 500px; margin: 0 auto;">
-            <div style="margin-bottom: 20px;">
-                <label style="font-weight: 800; display: block; margin-bottom: 8px;">TU NOMBRE:</label>
-                <input type="text" name="nombre" required style="width: 100%; padding: 12px; border-radius: 10px; border: 2px solid #ddd;">
+        <button class="btn-return" onclick="showRanking()">← Volver al Ranking</button>
+        
+        <form id="registrationForm" style="max-width: 700px; margin: 0 auto;">
+            <div style="margin-bottom: 30px; text-align: center;">
+                <label class="preg-label" style="font-size: 1.2rem;">Tu Nombre de Participante:</label>
+                <input type="text" name="nombre" required placeholder="Escribe tu nombre..." style="width: 80%; padding: 15px; border-radius: 15px; border: 3px solid var(--pitch-green); font-size: 1.2rem; text-align: center; font-weight: 700;">
             </div>
-            <label style="font-weight: 800; display: block; margin-bottom: 10px;">TOP 8 EQUIPOS (Ordenados 1-8):</label>
-            <div id="dropdownsContainer"></div>
-            <button type="submit" class="btn-registro" style="width: 100%; justify-content: center; margin-top: 20px; font-size: 1rem; padding: 15px; border-radius:15px;">
-                ENVIAR PRONÓSTICOS
+
+            <!-- BLOQUE 1: PRIMERA FASE -->
+            <div class="fase-container">
+                <div class="fase-title">Primera Fase</div>
+                
+                <label class="preg-label">Top 8 Equipos (Orden de preferencia):</label>
+                <div id="dropdownsContainer" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;"></div>
+
+                <div class="grid-preguntas" style="margin-top: 15px;">
+                    <div>
+                        <label class="preg-label">Más goles a favor</label>
+                        <select name="mas_goles" class="equipo-select-simple" required></select>
+                    </div>
+                    <div>
+                        <label class="preg-label">Menos goles en contra</label>
+                        <select name="menos_goles" class="equipo-select-simple" required></select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BLOQUE 2: SEGUNDA FASE -->
+            <div class="fase-container">
+                <div class="fase-title">Segunda Fase</div>
+                <div class="grid-preguntas">
+                    <div>
+                        <label class="preg-label">Campeón</label>
+                        <select name="campeon" class="equipo-select-simple" required></select>
+                    </div>
+                    <div>
+                        <label class="preg-label">Subcampeón</label>
+                        <select name="subcampeon" class="equipo-select-simple" required></select>
+                    </div>
+                    <div>
+                        <label class="preg-label">Tercer Puesto</label>
+                        <select name="tercero" class="equipo-select-simple" required></select>
+                    </div>
+                    <div>
+                        <label class="preg-label">Cuarto Puesto</label>
+                        <select name="cuarto" class="equipo-select-simple" required></select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BLOQUE 3: BONUS -->
+            <div class="fase-container">
+                <div class="fase-title">Bonus Especial</div>
+                <label class="preg-label">Equipo Revelación del Mundial</label>
+                <select name="revelacion" class="equipo-select-simple" required></select>
+            </div>
+
+            <button type="submit" class="btn-registro" style="width: 100%; justify-content: center; padding: 20px; font-size: 1.2rem; border-radius: 20px;">
+                ENVIAR MIS PRONÓSTICOS 🏆
             </button>
         </form>
-        <div id="successMessage" class="hidden" style="text-align:center; color:var(--pitch-green); font-weight:800; padding: 20px;">
-            ¡PRONÓSTICOS ENVIADOS CON ÉXITO!
+
+        <div id="successMessage" class="hidden" style="text-align:center; padding: 50px;">
+            <h2 style="font-family: 'Black Ops One'; color: var(--pitch-green); font-size: 3rem;">¡ÉXITO!</h2>
+            <p style="font-weight: 800; font-size: 1.2rem;">Tus datos han sido registrados correctamente.</p>
+            <button class="btn-return" onclick="showRanking()">Volver al Inicio</button>
         </div>
     </div>
 
     <!-- FICHA JUGADOR -->
     <div id="playerSection" class="view-section hidden">
-        <button class="btn-return" onclick="showRanking()">← Volver al Ranking Global</button>
+        <button class="btn-return" onclick="showRanking()">← Volver al Ranking</button>
         <h2 id="playerNameBig">NOMBRE</h2>
         <div class="stats-row">
             <div class="stat-card"><label>Puntos Finales</label><span id="statTotal">0</span></div>
@@ -295,17 +372,8 @@
         <table class="teams-table">
             <thead>
                 <tr>
-                    <th>POS</th>
-                    <th style="text-align:left">EQUIPO</th>
-                    <th>COEF</th>
-                    <th>1ª F</th>
-                    <th>16VOS</th>
-                    <th>8VOS</th>
-                    <th>4TOS</th>
-                    <th>SEMIS</th>
-                    <th>3º</th>
-                    <th>FINAL</th>
-                    <th>TOTAL</th>
+                    <th>POS</th><th style="text-align:left">EQUIPO</th><th>COEF</th><th>1ª F</th>
+                    <th>16VOS</th><th>8VOS</th><th>4TOS</th><th>SEMIS</th><th>3º</th><th>FINAL</th><th>TOTAL</th>
                 </tr>
             </thead>
             <tbody id="teamsBody"></tbody>
@@ -314,6 +382,7 @@
 </div>
 
 <script>
+    // URLs de Google Sheets
     const URL_EQUIPOS_OFICIAL = "https://google.com";
     const URL_RANKING = "https://google.com";
     const URL_TEAMS = "https://google.com";
@@ -321,9 +390,9 @@
     let equiposDisponibles = [];
     let data = [];
 
-    document.addEventListener("DOMContentLoaded", cargarAplicacion);
+    document.addEventListener("DOMContentLoaded", cargarTodo);
 
-    async function cargarAplicacion() {
+    async function cargarTodo() {
         try {
             const [resEquipos, resRanking, resTeams] = await Promise.all([
                 fetch(URL_EQUIPOS_OFICIAL).then(r => r.text()),
@@ -331,36 +400,29 @@
                 fetch(URL_TEAMS).then(r => r.text())
             ]);
 
-            // 1. Procesar Lista Maestra de Equipos
-            equiposDisponibles = resEquipos.replace(/^\uFEFF/, '')
-                .split(/\r?\n/)
-                .map(linea => linea.split(',')[0].replace(/^"|"$/g, '').trim())
+            // Procesar equipos
+            equiposDisponibles = resEquipos.replace(/^\uFEFF/, '').split(/\r?\n/)
+                .map(l => l.split(',')[0].replace(/^"|"$/g, '').trim())
                 .filter(e => e !== "" && e !== "EQUIPOS");
 
-            // 2. Procesar Datos de Jugadores
+            // Procesar Ranking
             const rankingRows = parseCSV(resRanking);
             const teamRows = parseCSV(resTeams);
 
-            data = rankingRows.map(player => ({
-                name: player.name,
-                preguntas: player.preguntas,
-                total: player.total,
-                teams: teamRows
-                    .filter(t => t.name === player.name)
-                    .map(t => ({
-                        pos: t.pos, team: t.team, coef: t.coef, fase: t.fase,
-                        dieciseisavos: t.dieciseisavos, octavos: t.octavos,
-                        cuartos: t.cuartos, semis: t.semis, terceros: t.terceros,
-                        final: t.final, puntos: t.puntos
-                    }))
+            data = rankingRows.map(p => ({
+                name: p.name, preguntas: p.preguntas, total: p.total,
+                teams: teamRows.filter(t => t.name === p.name).map(t => ({
+                    pos: t.pos, team: t.team, coef: t.coef, fase: t.fase,
+                    dieciseisavos: t.dieciseisavos, octavos: t.octavos,
+                    cuartos: t.cuartos, semis: t.semis, terceros: t.terceros,
+                    final: t.final, puntos: t.puntos
+                }))
             }));
 
             data.sort((a, b) => parseFloat(b.total.replace(',', '.')) - parseFloat(a.total.replace(',', '.')));
             renderRanking();
 
-        } catch (err) {
-            console.error("Error inicializando:", err);
-        }
+        } catch (err) { console.error("Error:", err); }
     }
 
     function parseCSV(csv) {
@@ -375,40 +437,20 @@
     }
 
     function renderRanking() {
-        const tbody = document.getElementById('rankingBody');
-        tbody.innerHTML = data.map((p, i) => `
+        document.getElementById('rankingBody').innerHTML = data.map((p, i) => `
             <tr onclick="showPlayer(${i})">
                 <td style="font-weight:800; color:var(--pitch-green); text-align:center;">${i+1}º</td>
-                <td style="font-weight:600; color:var(--soccer-dark);">${p.name}</td>
+                <td>${p.name}</td>
                 <td style="text-align:right; font-weight:800; color:var(--pitch-green);">${p.total}</td>
             </tr>
         `).join('');
     }
 
-    window.showPlayer = function(idx) {
-        const p = data[idx];
-        document.getElementById('rankingSection').classList.add('hidden');
-        document.getElementById('playerSection').classList.remove('hidden');
-        document.getElementById('playerNameBig').textContent = p.name;
-        document.getElementById('statTotal').textContent = p.total;
-        document.getElementById('statPreguntas').textContent = p.preguntas;
-        document.getElementById('statPos').textContent = (idx + 1) + "º";
-
-        document.getElementById('teamsBody').innerHTML = p.teams.map(t => `
-            <tr>
-                <td>${t.pos}</td>
-                <td style="text-align:left; font-weight:700;">${t.team}</td>
-                <td>${t.coef}</td>
-                <td>${t.fase}</td>
-                <td>${t.dieciseisavos}</td>
-                <td>${t.octavos || 0}</td>
-                <td>${t.cuartos || 0}</td>
-                <td>${t.semis || 0}</td>
-                <td>${t.terceros || 0}</td>
-                <td>${t.final || 0}</td>
-                <td class="points-final">${t.puntos}</td>
-            </tr>
-        `).join('');
+    window.showRegister = function() {
+        document.querySelectorAll('.view-section').forEach(s => s.classList.add('hidden'));
+        document.getElementById('registerSection').classList.remove('hidden');
+        renderDropdowns();
+        renderSimpleDropdowns();
     };
 
     window.showRanking = function() {
@@ -416,10 +458,22 @@
         document.getElementById('rankingSection').classList.remove('hidden');
     };
 
-    window.showRegister = function() {
+    window.showPlayer = function(idx) {
+        const p = data[idx];
         document.querySelectorAll('.view-section').forEach(s => s.classList.add('hidden'));
-        document.getElementById('registerSection').classList.remove('hidden');
-        renderDropdowns();
+        document.getElementById('playerSection').classList.remove('hidden');
+        document.getElementById('playerNameBig').textContent = p.name;
+        document.getElementById('statTotal').textContent = p.total;
+        document.getElementById('statPreguntas').textContent = p.preguntas;
+        document.getElementById('statPos').textContent = (idx + 1) + "º";
+        document.getElementById('teamsBody').innerHTML = p.teams.map(t => `
+            <tr>
+                <td>${t.pos}</td><td style="text-align:left; font-weight:700;">${t.team}</td>
+                <td>${t.coef}</td><td>${t.fase}</td><td>${t.dieciseisavos}</td>
+                <td>${t.octavos || 0}</td><td>${t.cuartos || 0}</td><td>${t.semis || 0}</td>
+                <td>${t.terceros || 0}</td><td>${t.final || 0}</td><td class="points-final">${t.puntos}</td>
+            </tr>
+        `).join('');
     };
 
     function renderDropdowns() {
@@ -434,6 +488,12 @@
             container.appendChild(sel);
         }
         updateOptions();
+    }
+
+    function renderSimpleDropdowns() {
+        const opts = `<option value="" disabled selected>Elegir...</option>` + 
+                     equiposDisponibles.map(e => `<option value="${e}">${e}</option>`).join('');
+        document.querySelectorAll('.equipo-select-simple').forEach(s => s.innerHTML = opts);
     }
 
     function updateOptions() {
