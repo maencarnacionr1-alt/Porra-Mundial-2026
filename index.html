@@ -720,7 +720,37 @@ function renderDynamicSection(containerId, prefix, amount, titlePrefix) {
     updateDynamicOptions(prefix);
 }
 
+function updateDynamicOptions(prefix) {
 
+    const selects = document.querySelectorAll(`.${prefix}-select`);
+
+    const selected = Array.from(selects)
+        .map(s => s.value)
+        .filter(v => v !== '');
+
+    selects.forEach((select) => {
+
+        const current = select.value;
+
+        select.innerHTML = `<option value="">Elegir...</option>`;
+
+        equiposDisponibles.forEach(team => {
+
+            if (!selected.includes(team) || team === current) {
+
+                const option = new Option(team, team);
+
+                if (team === current) {
+                    option.selected = true;
+                }
+
+                select.add(option);
+            }
+        });
+
+        select.onchange = () => updateDynamicOptions(prefix);
+    });
+}
     window.showRegister = function() {
 
     document.querySelectorAll('.view-section')
