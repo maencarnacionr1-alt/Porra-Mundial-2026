@@ -548,56 +548,48 @@ const GRUPOS = 12;
 // ================= INIT =================
 async function initApp() {
 
-  try {
+  const [eq, rank, teams] = await Promise.all([
+    fetch(URL_MAESTRA).then(r => r.text()),
+    fetch(URL_RANKING).then(r => r.text()),
+    fetch(URL_TEAMS).then(r => r.text())
+  ]);
 
-    const [equiposCSV, rankingCSV, teamsCSV] = await Promise.all([
-      fetch(URL_MAESTRA).then(r => r.text()),
-      fetch(URL_RANKING).then(r => r.text()),
-      fetch(URL_TEAMS).then(r => r.text())
-    ]);
+  equiposDisponibles = eq
+    .split("\n")
+    .map(l => l.replace(/"/g, "").trim())
+    .filter(Boolean);
 
-    equiposDisponibles = equiposCSV
-      .split("\n")
-      .map(l => l.replace(/"/g, "").trim())
-      .filter(Boolean);
+  const rankingRows = parseCSV(rank);
+  const teamRows = parseCSV(teams);
 
-    const rankingRows = parseCSV(rankingCSV);
-    const teamRows = parseCSV(teamsCSV);
+  data = rankingRows.map(p => ({
+    name: p.name,
+    preguntas: p.preguntas,
+    total: p.total,
+    teams: teamRows
+      .filter(t => t.name === p.name)
+      .map(t => ({
+        pos: t.pos || "",
+        team: t.team || "",
+        coef: t.coef || "",
+        fase: t.fase || "",
+        dieciseisavos: t.dieciseisavos || "",
+        octavos: t.octavos || "",
+        cuartos: t.cuartos || "",
+        semis: t.semis || "",
+        terceros: t.terceros || "",
+        final: t.final || "",
+        puntos: t.puntos || ""
+      }))
+  }));
 
-    data = rankingRows.map(p => ({
-      name: p.name || "",
-      preguntas: p.preguntas || "0",
-      total: p.total || "0",
-      teams: teamRows
-        .filter(t => t.name === p.name)
-        .map(t => ({
-          pos: t.pos || "-",
-          team: t.team || "-",
-          coef: t.coef || "0",
-          fase: t.fase || "",
-          dieciseisavos: t.dieciseisavos || "",
-          octavos: t.octavos || "",
-          cuartos: t.cuartos || "",
-          semis: t.semis || "",
-          terceros: t.terceros || "",
-          final: t.final || "",
-          puntos: t.puntos || "0"
-        }))
-    }));
-
-    data.sort((a, b) =>
-      parseFloat(b.total) - parseFloat(a.total)
-    );
-
-    renderRanking();
-
-  } catch (err) {
-    console.error(err);
-  }
+  renderRanking();
+  enableAutoFillOctavos();
 }
 
 // ================= CSV =================
 function parseCSV(csv) {
+
   const lines = csv.trim().split("\n");
   const sep = lines[0].includes(";") ? ";" : ",";
   const headers = lines.shift().split(sep).map(h => h.trim().toLowerCase());
@@ -615,24 +607,29 @@ function renderRanking() {
 
   const tbody = document.getElementById("rankingBody");
 
-  tbody.innerHTML = data.length ? data.map((p, i) => `
+  tbody.innerHTML = data.map((p, i) => `
     <tr onclick="showPlayer(${i})">
       <td>${i + 1}º</td>
       <td>${p.name}</td>
       <td style="text-align:right">${p.total}</td>
     </tr>
-  `).join("") : "<tr><td colspan='3'>Sin datos</td></tr>";
+  `).join("");
 }
 
 // ================= VISTAS =================
 window.showRanking = function () {
-  document.querySelectorAll(".view-section").forEach(s => s.classList.add("hidden"));
+
+  document.querySelectorAll(".view-section")
+    .forEach(s => s.classList.add("hidden"));
+
   document.getElementById("rankingSection").classList.remove("hidden");
 };
 
 window.showRegister = function () {
 
-  document.querySelectorAll(".view-section").forEach(s => s.classList.add("hidden"));
+  document.querySelectorAll(".view-section")
+    .forEach(s => s.classList.add("hidden"));
+
   document.getElementById("registerSection").classList.remove("hidden");
 
   renderTop8();
@@ -653,7 +650,9 @@ window.showPlayer = function (i) {
 
   const p = data[i];
 
-  document.querySelectorAll(".view-section").forEach(s => s.classList.add("hidden"));
+  document.querySelectorAll(".view-section")
+    .forEach(s => s.classList.add("hidden"));
+
   document.getElementById("playerSection").classList.remove("hidden");
 
   document.getElementById("playerNameBig").textContent = p.name;
@@ -685,9 +684,7 @@ function renderTop8() {
   c.innerHTML = "";
 
   for (let i = 1; i <= 8; i++) {
-    c.innerHTML += `
-      <select name="top${i}" class="equipo-select-simple" required></select>
-    `;
+    c.innerHTML += `<select name="top${i}" class="equipo-select-simple"></select>`;
   }
 }
 
@@ -715,9 +712,7 @@ function renderEliminatorias(containerId, prefix, n) {
   c.innerHTML = "";
 
   for (let i = 1; i <= n; i++) {
-    c.innerHTML += `
-      <select name="${prefix}${i}" class="equipo-select-simple"></select>
-    `;
+    c.innerHTML += `<select name="${prefix}${i}" class="equipo-select-simple"></select>`;
   }
 }
 
@@ -725,10 +720,57 @@ function renderSimpleDropdowns() {
 
   const html =
     `<option value="">Elegir...</option>` +
-    equiposDisponibles.map(e => `<option>${e}</option>`).join("");
+    equiposDisponibles.map(e => `<option value="${e}">${e}</option>`).join("");
 
   document.querySelectorAll(".equipo-select-simple")
     .forEach(s => s.innerHTML = html);
+}
+
+// ================= AUTOCOMPLETE OCTAVOS =================
+function autoFillOctavos() {
+
+  const primeros = [...document.querySelectorAll('[name^="grupo1"]')].map(s => s.value).filter(Boolean);
+  const segundos = [...document.querySelectorAll('[name^="grupo2"]')].map(s => s.value).filter(Boolean);
+  const terceros = [...document.querySelectorAll('[name^="terceros"]')].map(s => s.value).filter(Boolean);
+
+  if (primeros.length < GRUPOS || segundos.length < GRUPOS || terceros.length < 8) return;
+
+  const octavos = [
+    primeros[0], segundos[1],
+    primeros[1], segundos[0],
+    primeros[2], terceros[0],
+    primeros[3], segundos[2],
+    primeros[4], segundos[3],
+    primeros[5], terceros[1],
+    primeros[6], segundos[4],
+    primeros[7], segundos[5],
+    primeros[8], terceros[2],
+    primeros[9], segundos[6],
+    primeros[10], segundos[7],
+    primeros[11], terceros[3],
+    segundos[8], terceros[4],
+    segundos[9], terceros[5],
+    segundos[10], terceros[6],
+    segundos[11], terceros[7]
+  ];
+
+  document.querySelectorAll('[name^="octavos"]').forEach((s, i) => {
+    if (octavos[i]) s.value = octavos[i];
+  });
+}
+
+// activa escucha global
+function enableAutoFillOctavos() {
+
+  document.addEventListener("change", (e) => {
+
+    if (
+      e.target.name?.startsWith("grupo") ||
+      e.target.name?.startsWith("terceros")
+    ) {
+      autoFillOctavos();
+    }
+  });
 }
 
 // ================= ENVÍO =================
@@ -736,10 +778,8 @@ document.getElementById("registrationForm").onsubmit = async (e) => {
 
   e.preventDefault();
 
-  const formData = new FormData(e.target);
   const obj = {};
-
-  formData.forEach((v, k) => obj[k] = v);
+  new FormData(e.target).forEach((v, k) => obj[k] = v);
 
   await fetch(GOOGLE_SCRIPT_URL, {
     method: "POST",
