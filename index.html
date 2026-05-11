@@ -453,12 +453,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
 });
 
-// Lista de equipos para el registro (Puedes editarla)
-    const equiposDisponibles = ["Argentina", "Brasil", "España", "Francia", "Alemania", "Portugal", "Inglaterra", "Uruguay", "Italia", "Holanda", "Bélgica", "Colombia"];
-
+// Lista de equipos para el registro 
+   
     async function cargarRanking() {
         try {
-
 
 	// 1. Obtener equipos desde Google Sheets
         const resEquipos = await fetch("https://docs.google.com/spreadsheets/d/e/2PACX-1vRvbv4wKVLcF-dhiuLmYtU3aR8diCVDA8EgQ-yxaZXXqotI_L2VSWcoFo0NwiPEXB0XJwOxu9prujQk/pub?gid=2071537923&single=true&output=csv");
