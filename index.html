@@ -529,16 +529,16 @@
 <script>
 
 const URL_MAESTRA =
-    "https://docs.google.com/spreadsheets/d/e/2PACX-1vRvbv4wKVLcF-dhiuLmYtU3aR8diCVDA8EgQ-yxaZXXqotI_L2VSWcoFo0NwiPEXB0XJwOxu9prujQk/pub?gid=2071537923&single=true&output=csv";
+  "https://docs.google.com/spreadsheets/d/e/2PACX-1vRvbv4wKVLcF-dhiuLmYtU3aR8diCVDA8EgQ-yxaZXXqotI_L2VSWcoFo0NwiPEXB0XJwOxu9prujQk/pub?gid=2071537923&single=true&output=csv";
 
 const URL_RANKING =
-    "https://docs.google.com/spreadsheets/d/e/2PACX-1vRvbv4wKVLcF-dhiuLmYtU3aR8diCVDA8EgQ-yxaZXXqotI_L2VSWcoFo0NwiPEXB0XJwOxu9prujQk/pub?gid=0&single=true&output=csv";
+  "https://docs.google.com/spreadsheets/d/e/2PACX-1vRvbv4wKVLcF-dhiuLmYtU3aR8diCVDA8EgQ-yxaZXXqotI_L2VSWcoFo0NwiPEXB0XJwOxu9prujQk/pub?gid=0&single=true&output=csv";
 
 const URL_TEAMS =
-    "https://docs.google.com/spreadsheets/d/e/2PACX-1vRvbv4wKVLcF-dhiuLmYtU3aR8diCVDA8EgQ-yxaZXXqotI_L2VSWcoFo0NwiPEXB0XJwOxu9prujQk/pub?gid=176911669&single=true&output=csv";
+  "https://docs.google.com/spreadsheets/d/e/2PACX-1vRvbv4wKVLcF-dhiuLmYtU3aR8diCVDA8EgQ-yxaZXXqotI_L2VSWcoFo0NwiPEXB0XJwOxu9prujQk/pub?gid=176911669&single=true&output=csv";
 
 const GOOGLE_SCRIPT_URL =
-    "https://script.google.com/macros/s/AKfycby8LWIhR9PAJc99DblzR_unqfmhAGNvrYrTm_9HVUrX27lByf8dARBz2o9T2XJpP3BaVA/exec";
+  "https://script.google.com/macros/s/AKfycby8LWIhR9PAJc99DblzR_unqfmhAGNvrYrTm_9HVUrX27lByf8dARBz2o9T2XJpP3BaVA/exec";
 
 let equiposDisponibles = [];
 let data = [];
@@ -546,224 +546,211 @@ let data = [];
 const GRUPOS = 12;
 
 // ================= INIT =================
-
 async function initApp() {
 
-    try {
+  try {
 
-        const [resEquipos, resRanking, resTeams] = await Promise.all([
-            fetch(URL_MAESTRA).then(r => r.text()),
-            fetch(URL_RANKING).then(r => r.text()),
-            fetch(URL_TEAMS).then(r => r.text())
-        ]);
+    const [equiposCSV, rankingCSV, teamsCSV] = await Promise.all([
+      fetch(URL_MAESTRA).then(r => r.text()),
+      fetch(URL_RANKING).then(r => r.text()),
+      fetch(URL_TEAMS).then(r => r.text())
+    ]);
 
-        equiposDisponibles = resEquipos
-            .replace(/^\uFEFF/, '')
-            .split(/\r?\n/)
-            .map(l => l.split(',')[0].replace(/^"|"$/g, '').trim())
-            .filter(e => e);
+    equiposDisponibles = equiposCSV
+      .split("\n")
+      .map(l => l.replace(/"/g, "").trim())
+      .filter(Boolean);
 
-        const rankingRows = parseCSV(resRanking);
-        const teamRows = parseCSV(resTeams);
+    const rankingRows = parseCSV(rankingCSV);
+    const teamRows = parseCSV(teamsCSV);
 
-        data = rankingRows.map(p => ({
-            name: p.name || "",
-            preguntas: p.preguntas || "0",
-            total: p.total || "0",
-            teams: teamRows.filter(t => t.name === p.name)
-        }));
+    data = rankingRows.map(p => ({
+      name: p.name || "",
+      preguntas: p.preguntas || "0",
+      total: p.total || "0",
+      teams: teamRows
+        .filter(t => t.name === p.name)
+        .map(t => ({
+          pos: t.pos || "-",
+          team: t.team || "-",
+          coef: t.coef || "0",
+          fase: t.fase || "",
+          dieciseisavos: t.dieciseisavos || "",
+          octavos: t.octavos || "",
+          cuartos: t.cuartos || "",
+          semis: t.semis || "",
+          terceros: t.terceros || "",
+          final: t.final || "",
+          puntos: t.puntos || "0"
+        }))
+    }));
 
-        renderRanking();
+    data.sort((a, b) =>
+      parseFloat(b.total) - parseFloat(a.total)
+    );
 
-    } catch (err) {
-        console.error(err);
-    }
+    renderRanking();
+
+  } catch (err) {
+    console.error(err);
+  }
 }
 
 // ================= CSV =================
-
 function parseCSV(csv) {
+  const lines = csv.trim().split("\n");
+  const sep = lines[0].includes(";") ? ";" : ",";
+  const headers = lines.shift().split(sep).map(h => h.trim().toLowerCase());
 
-    const lines = csv.trim().split("\n");
-    const sep = lines[0].includes(";") ? ";" : ",";
-    const headers = lines.shift().split(sep);
-
-    return lines.map(line => {
-        const values = line.split(sep);
-        const obj = {};
-        headers.forEach((h, i) => obj[h.trim().toLowerCase()] = values[i]);
-        return obj;
-    });
+  return lines.map(line => {
+    const values = line.split(sep);
+    const obj = {};
+    headers.forEach((h, i) => obj[h] = values[i]?.replace(/"/g, ""));
+    return obj;
+  });
 }
 
 // ================= RANKING =================
-
 function renderRanking() {
 
-    const tbody = document.getElementById("rankingBody");
+  const tbody = document.getElementById("rankingBody");
 
-    tbody.innerHTML = data.length
-        ? data.map((p, i) => `
-            <tr onclick="showPlayer(${i})">
-                <td>${i + 1}º</td>
-                <td>${p.name}</td>
-                <td>${p.total}</td>
-            </tr>
-        `).join("")
-        : "<tr><td colspan='3'>Sin datos</td></tr>";
+  tbody.innerHTML = data.length ? data.map((p, i) => `
+    <tr onclick="showPlayer(${i})">
+      <td>${i + 1}º</td>
+      <td>${p.name}</td>
+      <td style="text-align:right">${p.total}</td>
+    </tr>
+  `).join("") : "<tr><td colspan='3'>Sin datos</td></tr>";
 }
 
 // ================= VISTAS =================
-
 window.showRanking = function () {
-
-    document.querySelectorAll(".view-section")
-        .forEach(s => s.classList.add("hidden"));
-
-    document.getElementById("rankingSection")
-        .classList.remove("hidden");
+  document.querySelectorAll(".view-section").forEach(s => s.classList.add("hidden"));
+  document.getElementById("rankingSection").classList.remove("hidden");
 };
 
 window.showRegister = function () {
 
-    document.querySelectorAll(".view-section")
-        .forEach(s => s.classList.add("hidden"));
+  document.querySelectorAll(".view-section").forEach(s => s.classList.add("hidden"));
+  document.getElementById("registerSection").classList.remove("hidden");
 
-    document.getElementById("registerSection")
-        .classList.remove("hidden");
+  renderTop8();
+  renderGrupos("primerosGrupoContainer", "grupo1");
+  renderGrupos("segundosGrupoContainer", "grupo2");
+  renderGrupos("mejoresTercerosContainer", "terceros");
 
-    if (!equiposDisponibles.length) return;
+  renderEliminatorias("octavosContainer", "octavos", 16);
+  renderEliminatorias("cuartosContainer", "cuartos", 8);
+  renderEliminatorias("semisContainer", "semis", 4);
+  renderEliminatorias("finalistasContainer", "final", 2);
 
-    renderSimpleDropdowns();
-
-    renderDynamicSection("top8Container", "top", 8, "Top 8");
-
-    renderGrupos("primerosGrupoContainer", "grupo_primero", "1º");
-    renderGrupos("segundosGrupoContainer", "grupo_segundo", "2º");
-    renderGrupos("mejoresTercerosContainer", "mejor_tercero", "3º");
-
-    renderDynamicSection("octavosContainer", "octavos", 16, "Octavos");
-    renderDynamicSection("cuartosContainer", "cuartos", 8, "Cuartos");
-    renderDynamicSection("semisContainer", "semis", 4, "Semis");
-    renderDynamicSection("finalistasContainer", "finalistas", 2, "Final");
+  renderSimpleDropdowns();
 };
 
-// ================= DINÁMICOS =================
+// ================= PLAYER =================
+window.showPlayer = function (i) {
 
-function renderDynamicSection(containerId, prefix, cantidad, label) {
+  const p = data[i];
 
-    const container = document.getElementById(containerId);
-    container.innerHTML = "";
+  document.querySelectorAll(".view-section").forEach(s => s.classList.add("hidden"));
+  document.getElementById("playerSection").classList.remove("hidden");
 
-    for (let i = 1; i <= cantidad; i++) {
+  document.getElementById("playerNameBig").textContent = p.name;
+  document.getElementById("statTotal").textContent = p.total;
+  document.getElementById("statPreguntas").textContent = p.preguntas;
+  document.getElementById("statPos").textContent = (i + 1) + "º";
 
-        container.innerHTML += `
-            <div>
-                <label class="preg-label">${label} ${i}</label>
-                <select name="${prefix}${i}" class="equipo-select ${prefix}-select"></select>
-            </div>
-        `;
-    }
+  document.getElementById("teamsBody").innerHTML = p.teams.map(t => `
+    <tr>
+      <td>${t.pos}</td>
+      <td>${t.team}</td>
+      <td>${t.coef}</td>
+      <td>${t.fase}</td>
+      <td>${t.dieciseisavos}</td>
+      <td>${t.octavos}</td>
+      <td>${t.cuartos}</td>
+      <td>${t.semis}</td>
+      <td>${t.terceros}</td>
+      <td>${t.final}</td>
+      <td>${t.puntos}</td>
+    </tr>
+  `).join("");
+};
 
-    updateDynamicOptions(prefix);
+// ================= DROPDOWNS =================
+function renderTop8() {
+
+  const c = document.getElementById("top8Container");
+  c.innerHTML = "";
+
+  for (let i = 1; i <= 8; i++) {
+    c.innerHTML += `
+      <select name="top${i}" class="equipo-select-simple" required></select>
+    `;
+  }
 }
 
-function updateDynamicOptions(prefix) {
+function renderGrupos(containerId, prefix) {
 
-    const selects = document.querySelectorAll(`.${prefix}-select`);
+  const c = document.getElementById(containerId);
+  c.innerHTML = "";
 
-    const selected = Array.from(selects).map(s => s.value).filter(Boolean);
+  for (let i = 0; i < GRUPOS; i++) {
 
-    selects.forEach(sel => {
+    const letra = String.fromCharCode(65 + i);
 
-        const current = sel.value;
-
-        sel.innerHTML = `<option value="">Elegir...</option>`;
-
-        equiposDisponibles.forEach(e => {
-
-            if (!selected.includes(e) || e === current) {
-
-                const opt = new Option(e, e);
-                if (e === current) opt.selected = true;
-                sel.add(opt);
-            }
-        });
-
-        sel.onchange = () => updateDynamicOptions(prefix);
-    });
+    c.innerHTML += `
+      <div>
+        <label>Grupo ${letra}</label>
+        <select name="${prefix}${i}" class="equipo-select-simple"></select>
+      </div>
+    `;
+  }
 }
 
-// ================= GRUPOS =================
+function renderEliminatorias(containerId, prefix, n) {
 
-function renderGrupos(containerId, prefix, label) {
+  const c = document.getElementById(containerId);
+  c.innerHTML = "";
 
-    const container = document.getElementById(containerId);
-    container.innerHTML = "";
-
-    for (let i = 0; i < GRUPOS; i++) {
-
-        const grupo = String.fromCharCode(65 + i);
-
-        container.innerHTML += `
-            <div>
-                <label class="preg-label">${label} Grupo ${grupo}</label>
-                <select name="${prefix}${i + 1}" class="equipo-select ${prefix}-select"></select>
-            </div>
-        `;
-    }
-
-    updateDynamicOptions(prefix);
+  for (let i = 1; i <= n; i++) {
+    c.innerHTML += `
+      <select name="${prefix}${i}" class="equipo-select-simple"></select>
+    `;
+  }
 }
-
-// ================= SIMPLE =================
 
 function renderSimpleDropdowns() {
 
-    const html = `<option value="">Elegir...</option>` +
-        equiposDisponibles.map(e => `<option value="${e}">${e}</option>`).join("");
+  const html =
+    `<option value="">Elegir...</option>` +
+    equiposDisponibles.map(e => `<option>${e}</option>`).join("");
 
-    document.querySelectorAll(".equipo-select-simple")
-        .forEach(s => s.innerHTML = html);
+  document.querySelectorAll(".equipo-select-simple")
+    .forEach(s => s.innerHTML = html);
 }
 
-// ================= PLAYER =================
-
-window.showPlayer = function (i) {
-
-    const p = data[i];
-
-    document.querySelectorAll(".view-section")
-        .forEach(s => s.classList.add("hidden"));
-
-    document.getElementById("playerSection")
-        .classList.remove("hidden");
-
-    document.getElementById("playerNameBig").textContent = p.name;
-    document.getElementById("statTotal").textContent = p.total;
-};
-
-// ================= FORM =================
-
+// ================= ENVÍO =================
 document.getElementById("registrationForm").onsubmit = async (e) => {
 
-    e.preventDefault();
+  e.preventDefault();
 
-    const formData = new FormData(e.target);
-    const obj = {};
+  const formData = new FormData(e.target);
+  const obj = {};
 
-    formData.forEach((v, k) => obj[k] = v);
+  formData.forEach((v, k) => obj[k] = v);
 
-    await fetch(GOOGLE_SCRIPT_URL, {
-        method: "POST",
-        body: JSON.stringify(obj)
-    });
+  await fetch(GOOGLE_SCRIPT_URL, {
+    method: "POST",
+    headers: { "Content-Type": "text/plain;charset=utf-8" },
+    body: JSON.stringify(obj)
+  });
 
-    alert("Enviado correctamente");
+  alert("Enviado correctamente");
 };
 
 // ================= START =================
-
 document.addEventListener("DOMContentLoaded", initApp);
 
 </script>
