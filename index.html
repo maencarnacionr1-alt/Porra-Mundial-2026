@@ -848,6 +848,9 @@ window.showRegister = function () {
 // ================= PLAYER =================
 window.showPlayer = function (i) {
 
+// ocultar botón + contador
+  document.querySelector(".btn-registro-container").style.display = "none";
+
   const p = data[i];
 
   document.querySelectorAll(".view-section")
