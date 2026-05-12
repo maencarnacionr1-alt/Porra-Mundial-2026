@@ -847,6 +847,7 @@ const GOOGLE_SCRIPT_URL =
   "https://script.google.com/macros/s/AKfycby8LWIhR9PAJc99DblzR_unqfmhAGNvrYrTm_9HVUrX27lByf8dARBz2o9T2XJpP3BaVA/exec";
 
 let equiposDisponibles = [];
+let equiposPorGrupo = {};
 let data = [];
 
 const GRUPOS = 12;
@@ -860,10 +861,22 @@ async function initApp() {
     fetch(URL_TEAMS).then(r => r.text())
   ]);
 
-  equiposDisponibles = eq
-    .split("\n")
-    .map(l => l.replace(/"/g, "").trim())
-    .filter(Boolean);
+  const equiposRows = parseCSV(eq);
+
+equiposDisponibles = equiposRows.map(r => r.equipo);
+
+equiposPorGrupo = {};
+
+equiposRows.forEach(r => {
+
+    const grupo = r.grupo?.trim();
+
+    if (!equiposPorGrupo[grupo]) {
+        equiposPorGrupo[grupo] = [];
+    }
+
+    equiposPorGrupo[grupo].push(r.equipo);
+});
 
   const rankingRows = parseCSV(rank);
   const teamRows = parseCSV(teams);
@@ -1037,6 +1050,9 @@ function renderGrupos(containerId, prefix) {
 
         const letra = String.fromCharCode(65 + i);
 
+        const equiposGrupo =
+            equiposPorGrupo[letra] || [];
+
         c.innerHTML += `
 
             <div>
@@ -1047,15 +1063,29 @@ function renderGrupos(containerId, prefix) {
 
                 <select
                     name="${prefix}${i}"
-                    class="equipo-select-simple"
+                    class="equipo-select-simple grupo-select"
+                    data-grupo="${letra}"
                     required
-                ></select>
+                >
+
+                    <option value="">
+                        Elegir...
+                    </option>
+
+                    ${equiposGrupo.map(eq => `
+                        <option value="${eq}">
+                            ${eq}
+                        </option>
+                    `).join("")}
+
+                </select>
 
             </div>
 
         `;
     }
 }
+
 function renderEliminatorias(containerId, prefix, n) {
 
   const c = document.getElementById(containerId);
