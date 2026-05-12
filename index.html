@@ -1027,10 +1027,11 @@ function renderTop8() {
         <label class="preg-label">
           Equipo ${i}
         </label>
-
+	
         <select
           name="top${i}"
           class="equipo-select-simple"
+       	  data-section="top8"
           required
         ></select>
 
@@ -1043,6 +1044,10 @@ function renderTop8() {
 function renderGrupos(containerId, prefix) {
 
     const c = document.getElementById(containerId);
+
+
+
+
 
     c.innerHTML = "";
 
@@ -1065,6 +1070,7 @@ function renderGrupos(containerId, prefix) {
                     name="${prefix}${i}"
                     class="equipo-select-simple grupo-select"
                     data-grupo="${letra}"
+		    data-section="${prefix}"
                     required
                 >
 
@@ -1092,58 +1098,64 @@ function renderEliminatorias(containerId, prefix, n) {
   c.innerHTML = "";
 
   for (let i = 1; i <= n; i++) {
-    c.innerHTML += `<select name="${prefix}${i}" class="equipo-select-simple"></select>`;
+    c.innerHTML += `<select name="${prefix}${i}" class="equipo-select-simple" data-section="${prefix}"></select>`;
   }
 }
 
 function renderSimpleDropdowns() {
 
-  const selects = document.querySelectorAll(
-    ".equipo-select-simple:not(.grupo-select)"
-);
+    const selects = document.querySelectorAll(
+        ".equipo-select-simple:not(.grupo-select)"
+    );
 
-  const optionsHTML =
-    `<option value="">Elegir...</option>` +
-    equiposDisponibles.map(e => `<option value="${e}">${e}</option>`).join("");
+    function refreshDropdowns() {
 
-  // función que recalcula selecciones globales
-  function getSelectedValues() {
-    return Array.from(selects)
-      .map(s => s.value)
-      .filter(v => v);
-  }
+        selects.forEach(select => {
 
-  function refreshDropdowns() {
+            const section =
+                select.dataset.section;
 
-    const selected = getSelectedValues();
+            const sectionSelects =
+                document.querySelectorAll(
+                    `.equipo-select-simple[data-section="${section}"]:not(.grupo-select)`
+                );
 
-    selects.forEach(select => {
+            const selected =
+                Array.from(sectionSelects)
+                    .map(s => s.value)
+                    .filter(v => v);
 
-      const current = select.value;
+            const current = select.value;
 
-      select.innerHTML = `<option value="">Elegir...</option>`;
+            select.innerHTML =
+                `<option value="">Elegir...</option>`;
 
-      equiposDisponibles.forEach(team => {
+            equiposDisponibles.forEach(team => {
 
-        // 🔴 BLOQUEO DUPLICADOS (excepto el actual seleccionado)
-        if (!selected.includes(team) || team === current) {
+                if (
+                    !selected.includes(team)
+                    || team === current
+                ) {
 
-          const option = document.createElement("option");
-          option.value = team;
-          option.textContent = team;
+                    const option =
+                        document.createElement("option");
 
-          if (team === current) option.selected = true;
+                    option.value = team;
+                    option.textContent = team;
 
-          select.appendChild(option);
-        }
-      });
+                    if (team === current) {
+                        option.selected = true;
+                    }
 
-      // importante: refrescar cuando cambia
-      select.onchange = refreshDropdowns;
-    });
-  }
+                    select.appendChild(option);
+                }
+            });
 
-  refreshDropdowns();
+            select.onchange = refreshDropdowns;
+        });
+    }
+
+    refreshDropdowns();
 }
 
 // activa escucha global
