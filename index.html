@@ -1098,7 +1098,9 @@ function renderEliminatorias(containerId, prefix, n) {
 
 function renderSimpleDropdowns() {
 
-  const selects = document.querySelectorAll(".equipo-select-simple");
+  const selects = document.querySelectorAll(
+    ".equipo-select-simple:not(.grupo-select)"
+);
 
   const optionsHTML =
     `<option value="">Elegir...</option>` +
