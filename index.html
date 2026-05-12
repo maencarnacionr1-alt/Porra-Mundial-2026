@@ -193,13 +193,18 @@
             font-size: 1.1rem;
         }
 
-        .btn-registro-container {
-            position: absolute;
-            bottom: -20px;
-            left: 7px;
-            z-index: 1001;
-            transform: rotate(-5deg);
-        }
+	.btn-registro-container{
+           position:absolute;
+           left:20px;
+           bottom:-78px;
+           z-index:1001;
+
+           display:flex;
+           flex-direction:column;
+           align-items:flex-start;
+
+           transform:rotate(-5deg);
+	}
 
         .btn-registro {
             background-color: var(--gold);
@@ -216,6 +221,7 @@
             gap: 8px;
             text-decoration: none;
             box-shadow: 5px 5px 15px rgba(0,0,0,0.3);
+	    white-space: nowrap;
         }
 
         .dot-online {
@@ -279,20 +285,37 @@
 	/* ================= CONTADOR ================= */
 
 #countdownBox{
-    margin-top:12px;
-    background:rgba(0,0,0,0.35);
+
+    margin-top:10px;
+
+    width:230px;
+
+    background:rgba(0,0,0,0.78);
+
     color:white;
-    padding:10px 14px;
-    border-radius:14px;
-    font-size:0.75rem;
+
+    padding:12px;
+
+    border-radius:18px;
+
+    font-size:0.78rem;
+
     font-weight:800;
-    line-height:1.4;
+
     text-align:center;
-    border:1px solid rgba(255,255,255,0.2);
-    backdrop-filter: blur(6px);
-    width:220px;
+
+    line-height:1.4;
+
+    border:2px solid rgba(255,255,255,0.12);
+
+    backdrop-filter:blur(8px);
+
+    box-shadow:0 8px 25px rgba(0,0,0,0.35);
 }
 
+header{
+    overflow:visible !important;
+}
 .countdown-finished{
     background:#b71c1c !important;
     color:white !important;
@@ -866,6 +889,35 @@ function renderTop8() {
   }
 }
 
+function renderGrupos(containerId, prefix) {
+
+    const c = document.getElementById(containerId);
+
+    c.innerHTML = "";
+
+    for (let i = 0; i < GRUPOS; i++) {
+
+        const letra = String.fromCharCode(65 + i);
+
+        c.innerHTML += `
+
+            <div>
+
+                <label class="preg-label">
+                    Grupo ${letra}
+                </label>
+
+                <select
+                    name="${prefix}${i}"
+                    class="equipo-select-simple"
+                    required
+                ></select>
+
+            </div>
+
+        `;
+    }
+}
 function renderEliminatorias(containerId, prefix, n) {
 
   const c = document.getElementById(containerId);
