@@ -69,6 +69,9 @@
         .view-section { padding: 40px; }
         .hidden { display: none; }
 
+	.only-ranking{
+    	 display:block;
+	}
         .ranking-table {
             width: 100%;
             max-width: 500px;
@@ -195,15 +198,15 @@
 
 	.btn-registro-container{
            position:absolute;
-           left:20px;
+           left:15px;
            bottom:-78px;
            z-index:1001;
-
+       	   transform:rotate(-5deg);
            display:flex;
            flex-direction:column;
            align-items:flex-start;
-
-           transform:rotate(-5deg);
+       	   gap: 14px;
+           
 	}
 
         .btn-registro {
@@ -284,33 +287,17 @@
 
 	/* ================= CONTADOR ================= */
 
-#countdownBox{
-
-    margin-top:10px;
-
-    width:230px;
-
-    background:rgba(0,0,0,0.78);
-
-    color:white;
-
-    padding:12px;
-
-    border-radius:18px;
-
-    font-size:0.78rem;
-
-    font-weight:800;
-
-    text-align:center;
-
-    line-height:1.4;
-
-    border:2px solid rgba(255,255,255,0.12);
-
-    backdrop-filter:blur(8px);
-
-    box-shadow:0 8px 25px rgba(0,0,0,0.35);
+.countdown-box {
+    background: rgba(20,20,20,0.94);
+    color: white;
+    padding: 16px 20px;
+    border-radius: 22px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.45);
+    width: 260px;
+    text-align: center;
+    border: 2px solid rgba(255,255,255,0.06);
+    margin-left: 20px;
 }
 
 header{
@@ -414,7 +401,7 @@ header{
         </a>
 
         <!-- CONTADOR -->
-        <div id="countdownBox">
+        <div id="countdownBox" class="only-ranking">
             ⏳ Cargando contador...
         </div>
 
@@ -801,6 +788,10 @@ window.showRanking = function () {
     .forEach(s => s.classList.add("hidden"));
 
   document.getElementById("rankingSection").classList.remove("hidden");
+  document.getElementById("countdownBox").style.display = "block";
+
+// MOSTRAR BOTÓN + CONTADOR
+  document.querySelector(".btn-registro-container").style.display = "flex";
 };
 
 window.showRegister = function () {
@@ -808,7 +799,10 @@ window.showRegister = function () {
   document.querySelectorAll(".view-section")
     .forEach(s => s.classList.add("hidden"));
 
+// OCULTAR BOTÓN + CONTADOR
+  document.querySelector(".btn-registro-container").style.display = "none";
   document.getElementById("registerSection").classList.remove("hidden");
+  document.getElementById("countdownBox").style.display = "none";
 
   renderTop8();
   renderGrupos("primerosGrupoContainer", "grupo1");
@@ -832,7 +826,7 @@ window.showPlayer = function (i) {
     .forEach(s => s.classList.add("hidden"));
 
   document.getElementById("playerSection").classList.remove("hidden");
-
+  document.getElementById("countdownBox").style.display = "none";
   document.getElementById("playerNameBig").textContent = p.name;
   document.getElementById("statTotal").textContent = p.total;
   document.getElementById("statPreguntas").textContent = p.preguntas;
