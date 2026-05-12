@@ -846,6 +846,7 @@ const URL_TEAMS =
 const GOOGLE_SCRIPT_URL =
   "https://script.google.com/macros/s/AKfycby8LWIhR9PAJc99DblzR_unqfmhAGNvrYrTm_9HVUrX27lByf8dARBz2o9T2XJpP3BaVA/exec";
 
+let selectsGlobalesGrupos = [];
 let equiposDisponibles = [];
 let equiposPorGrupo = {};
 let data = [];
@@ -1045,10 +1046,6 @@ function renderGrupos(containerId, prefix) {
 
     const c = document.getElementById(containerId);
 
-
-
-
-
     c.innerHTML = "";
 
     for (let i = 0; i < GRUPOS; i++) {
@@ -1070,7 +1067,7 @@ function renderGrupos(containerId, prefix) {
                     name="${prefix}${i}"
                     class="equipo-select-simple grupo-select"
                     data-grupo="${letra}"
-		    data-section="${prefix}"
+                    data-section="grupos"
                     required
                 >
 
@@ -1104,33 +1101,47 @@ function renderEliminatorias(containerId, prefix, n) {
 
 function renderSimpleDropdowns() {
 
-    const selects = document.querySelectorAll(
-        ".equipo-select-simple:not(.grupo-select)"
+    const allSelects = document.querySelectorAll(
+        ".equipo-select-simple"
     );
 
     function refreshDropdowns() {
 
-        selects.forEach(select => {
+        allSelects.forEach(select => {
+
+            const current = select.value;
 
             const section =
-                select.dataset.section;
+                select.dataset.section || "default";
 
+            // selects de la misma sección
             const sectionSelects =
                 document.querySelectorAll(
-                    `.equipo-select-simple[data-section="${section}"]:not(.grupo-select)`
+                    `.equipo-select-simple[data-section="${section}"]`
                 );
 
+            // valores elegidos en esa sección
             const selected =
                 Array.from(sectionSelects)
                     .map(s => s.value)
-                    .filter(v => v);
+                    .filter(Boolean);
 
-            const current = select.value;
+            // grupos → solo equipos del grupo
+            let equiposBase = equiposDisponibles;
+
+            if (select.classList.contains("grupo-select")) {
+
+                const grupo =
+                    select.dataset.grupo;
+
+                equiposBase =
+                    equiposPorGrupo[grupo] || [];
+            }
 
             select.innerHTML =
                 `<option value="">Elegir...</option>`;
 
-            equiposDisponibles.forEach(team => {
+            equiposBase.forEach(team => {
 
                 if (
                     !selected.includes(team)
