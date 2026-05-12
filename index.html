@@ -293,19 +293,20 @@
 	/* ================= CONTADOR ================= */
 
 .countdown-box {
-
-    background: #1b1b1b;
-    color: white;
+    background: #e0e0e0;
+    color: #2b2b2b;
     padding: 18px 22px;
     border-radius: 22px;
     width: 270px;
     text-align: center;
-    border: 2px solid rgba(255,255,255,0.08);
-    box-shadow:  0 20px 45px rgba(0,0,0,0.45),
-       		 inset 0 1px 0 rgba(255,255,255,0.05);
-    margin-left: 10px;
     position: relative;
-    overflow: hidden;
+
+    /* Neumorphism base */
+    box-shadow: 
+        8px 8px 16px rgba(0, 0, 0, 0.12),
+        -8px -8px 16px rgba(255, 255, 255, 0.8);
+
+    border: none;
 }
 
 .countdown-box::before {
@@ -334,6 +335,118 @@ header{
 .countdown-finished{
     background:#b71c1c !important;
     color:white !important;
+}
+
+/* ================= FLIP CLOCK ================= */
+
+.flip-clock {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 6px;
+}
+
+.flip-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.flip-label {
+    font-size: 0.7rem;
+    margin-top: 4px;
+    opacity: 0.7;
+}
+
+.flip {
+    position: relative;
+
+    width: 52px;
+    height: 64px;
+
+    background: linear-gradient(
+    to bottom,
+    #2a2a2a,
+    #111
+);
+
+    color: white;
+
+    border-radius: 12px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 1.4rem;
+    font-weight: 700;
+
+    overflow: hidden;
+
+    box-shadow:
+        inset 0 1px 1px rgba(255,255,255,0.08),
+        0 4px 10px rgba(0,0,0,0.25);
+
+    font-variant-numeric: tabular-nums;
+
+    transform-style: preserve-3d;
+
+    backface-visibility: hidden;
+}
+
+.flip::before {
+    content: "";
+
+    position: absolute;
+
+    top: 50%;
+    left: 0;
+
+    width: 100%;
+    height: 1px;
+
+    background: rgba(255,255,255,0.12);
+
+    z-index: 2;
+}
+
+.flip-anim {
+    animation: flipAnim 0.55s ease;
+}
+
+@keyframes flipAnim {
+
+    0% {
+        transform: rotateX(0deg);
+    }
+
+    50% {
+        transform: rotateX(-90deg);
+    }
+
+    100% {
+        transform: rotateX(0deg);
+    }
+}
+
+/* Texto superior */
+.countdown-box {
+    color: #1a1a1a;
+}
+
+/* Labels */
+.flip-label {
+    color: #1a1a1a;
+    opacity: 1;
+    font-weight: 600;
+}
+
+/* Texto "Faltan para el Mundial" */
+.countdown-title {
+    color: #1a1a1a;
+    font-weight: 700;
 }
 
 /* ================= TOOLTIPS ================= */
@@ -425,7 +538,7 @@ header{
             id="btnRegistro"
         >
             <div class="dot-online"></div>
-            ¡Regístrate y participa!
+            ¡Regístrate!
         </a>
 
         <!-- CONTADOR -->
@@ -1034,12 +1147,61 @@ document.getElementById("registrationForm").onsubmit = async (e) => {
 
 // ================= CONTADOR MUNDIAL =================
 
+// ================= CONTADOR MUNDIAL =================
+
 const FECHA_MUNDIAL = new Date("2026-06-11T00:00:00");
 
 function iniciarContador() {
 
     const box = document.getElementById("countdownBox");
     const boton = document.getElementById("btnRegistro");
+
+    // Estructura HTML inicial
+    box.innerHTML = `
+        <div class="countdown-title" style="margin-bottom:10px;">
+    ⏳ Faltan para el Mundial
+	</div>
+
+        <div class="flip-clock">
+
+            <div class="flip-group">
+                <div class="flip" id="flipDias">00</div>
+                <div class="flip-label">Días</div>
+            </div>
+
+            <div class="flip-group">
+                <div class="flip" id="flipHoras">00</div>
+                <div class="flip-label">Horas</div>
+            </div>
+
+            <div class="flip-group">
+                <div class="flip" id="flipMin">00</div>
+                <div class="flip-label">Min</div>
+            </div>
+
+            <div class="flip-group">
+                <div class="flip" id="flipSeg">00</div>
+                <div class="flip-label">Seg</div>
+            </div>
+
+        </div>
+    `;
+
+    function animarFlip(id, valor) {
+
+        const el = document.getElementById(id);
+
+        if (el.textContent !== valor) {
+
+            el.textContent = valor;
+
+            el.classList.remove("flip-anim");
+
+            void el.offsetWidth;
+
+            el.classList.add("flip-anim");
+        }
+    }
 
     function actualizar() {
 
@@ -1049,13 +1211,14 @@ function iniciarContador() {
 
         if (diferencia <= 0) {
 
-            box.innerHTML =
-                "🔒 Pronósticos cerrados";
+            box.innerHTML = "🔒 Pronósticos cerrados";
 
             box.classList.add("countdown-finished");
 
-            boton.style.pointerEvents = "none";
-            boton.style.opacity = "0.5";
+            if (boton) {
+                boton.style.pointerEvents = "none";
+                boton.style.opacity = "0.5";
+            }
 
             return;
         }
@@ -1069,24 +1232,35 @@ function iniciarContador() {
         const minutos =
             Math.floor((diferencia / (1000 * 60)) % 60);
 
-	const segundos =
-            Math.floor((diferencia / (1000 * 60)) % 60);
+        const segundos =
+            Math.floor((diferencia / 1000) % 60);
 
+        animarFlip(
+            "flipDias",
+            String(dias).padStart(2, "0")
+        );
 
-        box.innerHTML = `
-            ⏳ Faltan<br>
-            <span style="font-size:1rem;">
-                ${dias} días · ${horas}h · ${minutos}m . ${segundos}s
-            </span>
-            <br>
-            para el inicio del Mundial
-        `;
+        animarFlip(
+            "flipHoras",
+            String(horas).padStart(2, "0")
+        );
+
+        animarFlip(
+            "flipMin",
+            String(minutos).padStart(2, "0")
+        );
+
+        animarFlip(
+            "flipSeg",
+            String(segundos).padStart(2, "0")
+        );
     }
 
     actualizar();
 
-    setInterval(actualizar, 60000);
+    setInterval(actualizar, 1000);
 }
+
 // ================= START =================
 document.addEventListener("DOMContentLoaded", () => {
 
