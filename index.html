@@ -718,45 +718,50 @@ function renderEliminatorias(containerId, prefix, n) {
 
 function renderSimpleDropdowns() {
 
-  const html =
+  const selects = document.querySelectorAll(".equipo-select-simple");
+
+  const optionsHTML =
     `<option value="">Elegir...</option>` +
     equiposDisponibles.map(e => `<option value="${e}">${e}</option>`).join("");
 
-  document.querySelectorAll(".equipo-select-simple")
-    .forEach(s => s.innerHTML = html);
-}
+  // función que recalcula selecciones globales
+  function getSelectedValues() {
+    return Array.from(selects)
+      .map(s => s.value)
+      .filter(v => v);
+  }
 
-// ================= AUTOCOMPLETE OCTAVOS =================
-function autoFillOctavos() {
+  function refreshDropdowns() {
 
-  const primeros = [...document.querySelectorAll('[name^="grupo1"]')].map(s => s.value).filter(Boolean);
-  const segundos = [...document.querySelectorAll('[name^="grupo2"]')].map(s => s.value).filter(Boolean);
-  const terceros = [...document.querySelectorAll('[name^="terceros"]')].map(s => s.value).filter(Boolean);
+    const selected = getSelectedValues();
 
-  if (primeros.length < GRUPOS || segundos.length < GRUPOS || terceros.length < 8) return;
+    selects.forEach(select => {
 
-  const octavos = [
-    primeros[0], segundos[1],
-    primeros[1], segundos[0],
-    primeros[2], terceros[0],
-    primeros[3], segundos[2],
-    primeros[4], segundos[3],
-    primeros[5], terceros[1],
-    primeros[6], segundos[4],
-    primeros[7], segundos[5],
-    primeros[8], terceros[2],
-    primeros[9], segundos[6],
-    primeros[10], segundos[7],
-    primeros[11], terceros[3],
-    segundos[8], terceros[4],
-    segundos[9], terceros[5],
-    segundos[10], terceros[6],
-    segundos[11], terceros[7]
-  ];
+      const current = select.value;
 
-  document.querySelectorAll('[name^="octavos"]').forEach((s, i) => {
-    if (octavos[i]) s.value = octavos[i];
-  });
+      select.innerHTML = `<option value="">Elegir...</option>`;
+
+      equiposDisponibles.forEach(team => {
+
+        // 🔴 BLOQUEO DUPLICADOS (excepto el actual seleccionado)
+        if (!selected.includes(team) || team === current) {
+
+          const option = document.createElement("option");
+          option.value = team;
+          option.textContent = team;
+
+          if (team === current) option.selected = true;
+
+          select.appendChild(option);
+        }
+      });
+
+      // importante: refrescar cuando cambia
+      select.onchange = refreshDropdowns;
+    });
+  }
+
+  refreshDropdowns();
 }
 
 // activa escucha global
