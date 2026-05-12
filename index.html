@@ -7,6 +7,14 @@
     <link href="https://googleapis.com" rel="stylesheet">
 
     <style>
+
+*{
+    box-sizing:border-box;
+}
+
+html,body{
+    overflow-x:hidden;
+}
         :root {
             --pitch-green: #1b5e20;
             --grass-light: #2e7d32;
@@ -37,6 +45,7 @@
             box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4);
             border: 1px solid rgba(255, 255, 255, 0.2);
             animation: slideUp 0.6s ease-out;
+	    overflow:hidden
         }
 
         @keyframes slideUp {
@@ -197,14 +206,16 @@
         }
 
 	.btn-registro-container{
-           
-           display:flex;
-           flex-direction:column;
-           align-items:flex-start;
-       	   gap: 18px;
+    		width:100%;
 
-	   padding:20px 25px 0 25px;
-           
+    		display:flex;
+    		flex-direction:column;
+    		align-items:center;
+    		justify-content:center;
+
+    		gap:18px;
+
+    		padding:18px;
 	}
 
         .btn-registro {
@@ -222,6 +233,9 @@
             gap: 8px;
             text-decoration: none;
             box-shadow: 0 10px 25px rgba(0,0,0,0.35);
+	    width:100%;
+            max-width:320px;
+            justify-content:center;
 
    	    transition: 0.25s;
 	}
@@ -530,6 +544,7 @@ table {
 
 .view-section {
     padding: 25px;
+    overflow-x:hidden;
 }
 
 #registrationForm {
@@ -666,8 +681,22 @@ table {
     }
 
     .ranking-table th {
-        top: 0;
-    }
+    padding: 15px;
+    text-align: left;
+    color: #666;
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    border-bottom: 2px solid #eee;
+    letter-spacing: 1px;
+
+    position: sticky;
+    top: 0;
+
+    background: white;
+
+    z-index: 50;
+}
 
     .btn-registro {
         width: 100%;
@@ -689,8 +718,9 @@ table {
     }
 
     .tooltip-box {
-        width: 220px;
-        left: -90px;
+         left:50%;
+         transform:translateX(-50%);
+         max-width:220px;
     }
 
     .flip {
