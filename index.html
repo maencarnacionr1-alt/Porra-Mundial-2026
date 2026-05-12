@@ -275,6 +275,100 @@
             grid-template-columns: 1fr 1fr;
             gap: 15px;
         }
+
+	/* ================= CONTADOR ================= */
+
+#countdownBox{
+    margin-top:12px;
+    background:rgba(0,0,0,0.35);
+    color:white;
+    padding:10px 14px;
+    border-radius:14px;
+    font-size:0.75rem;
+    font-weight:800;
+    line-height:1.4;
+    text-align:center;
+    border:1px solid rgba(255,255,255,0.2);
+    backdrop-filter: blur(6px);
+    width:220px;
+}
+
+.countdown-finished{
+    background:#b71c1c !important;
+    color:white !important;
+}
+
+/* ================= TOOLTIPS ================= */
+
+.title-with-tooltip{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.tooltip-icon{
+    width:24px;
+    height:24px;
+    border-radius:50%;
+    background:var(--gold);
+    color:#111;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:900;
+    cursor:pointer;
+    position:relative;
+    font-size:0.8rem;
+}
+
+.tooltip-box{
+    position:absolute;
+    top:35px;
+    left:0;
+    width:260px;
+    background:#111;
+    color:white;
+    padding:14px;
+    border-radius:14px;
+    font-size:0.75rem;
+    line-height:1.5;
+    text-transform:none;
+    font-family:'Inter', sans-serif;
+    font-weight:600;
+    opacity:0;
+    visibility:hidden;
+    transition:0.25s;
+    z-index:9999;
+    box-shadow:0 10px 25px rgba(0,0,0,0.35);
+}
+
+.tooltip-icon:hover .tooltip-box{
+    opacity:1;
+    visibility:visible;
+}
+
+/* ================= TOP 8 ORDEN ================= */
+
+.top8-card{
+    background:#f8f9fa;
+    border:2px solid #e0e0e0;
+    border-radius:16px;
+    padding:12px;
+    position:relative;
+}
+
+.top8-rank{
+    position:absolute;
+    top:-10px;
+    left:12px;
+    background:var(--gold);
+    color:#111;
+    padding:4px 10px;
+    border-radius:30px;
+    font-size:0.75rem;
+    font-weight:900;
+    box-shadow:0 4px 10px rgba(0,0,0,0.15);
+}
     </style>
 </head>
 
@@ -283,14 +377,27 @@
 <div class="main-container">
 
     <header>
+
         <div class="btn-registro-container">
-            <a href="javascript:void(0)" onclick="showRegister()" class="btn-registro">
-                <div class="dot-online"></div>
-                ¡Regístrate y participa!
-            </a>
+
+        <a
+            href="javascript:void(0)"
+            onclick="showRegister()"
+            class="btn-registro"
+            id="btnRegistro"
+        >
+            <div class="dot-online"></div>
+            ¡Regístrate y participa!
+        </a>
+
+        <!-- CONTADOR -->
+        <div id="countdownBox">
+            ⏳ Cargando contador...
         </div>
 
-        <h1>MUNDIAL ADQUIRA 2026</h1>
+    </div>
+
+    <h1>MUNDIAL ADQUIRA 2026</h1>
     </header>
 
     <div id="rankingSection" class="view-section">
@@ -344,9 +451,37 @@
 
         <div class="fase-container">
 
-            <div class="fase-title">
-                TOP 8 EQUIPOS
-            </div>
+           <div class="fase-title title-with-tooltip">
+
+    <span>TOP 8 EQUIPOS</span>
+
+    <div class="tooltip-icon">
+
+        ?
+
+        <div class="tooltip-box">
+            Selecciona los 8 equipos que crees que llegarán más lejos
+            en el torneo.
+
+            <br><br>
+
+            El ORDEN es muy importante:
+
+            <br><br>
+
+            🥇 El 1º tendrá el coeficiente más alto.<br>
+            🥈 El 2º un coeficiente menor.<br>
+            🥉 Y así sucesivamente hasta el 8º.
+
+            <br><br>
+
+            Cuanto mejor rinda el equipo en el torneo,
+            más puntos generará.
+        </div>
+
+    </div>
+
+</div>
 
             <div id="top8Container"
                 style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
@@ -358,9 +493,29 @@
 
         <div class="fase-container">
 
-            <div class="fase-title">
-                FASE DE GRUPOS
-            </div>
+            <div class="fase-title title-with-tooltip">
+
+    <span>ELIMINATORIAS</span>
+
+    <div class="tooltip-icon">
+
+        ?
+
+        <div class="tooltip-box">
+
+            A partir de octavos deberás predecir
+            qué equipos avanzarán ronda a ronda
+            hasta llegar a la final.
+
+            <br><br>
+
+            Cada acierto otorgará puntos.
+
+        </div>
+
+    </div>
+
+</div>
 
             <h3 style="color:var(--pitch-green)">
                 Primeros de Grupo
@@ -678,30 +833,35 @@ window.showPlayer = function (i) {
 };
 
 // ================= DROPDOWNS =================
+
 function renderTop8() {
 
   const c = document.getElementById("top8Container");
+
   c.innerHTML = "";
 
   for (let i = 1; i <= 8; i++) {
-    c.innerHTML += `<select name="top${i}" class="equipo-select-simple"></select>`;
-  }
-}
-
-function renderGrupos(containerId, prefix) {
-
-  const c = document.getElementById(containerId);
-  c.innerHTML = "";
-
-  for (let i = 0; i < GRUPOS; i++) {
-
-    const letra = String.fromCharCode(65 + i);
 
     c.innerHTML += `
-      <div>
-        <label>Grupo ${letra}</label>
-        <select name="${prefix}${i}" class="equipo-select-simple"></select>
+
+      <div class="top8-card">
+
+        <div class="top8-rank">
+          ${i}º
+        </div>
+
+        <label class="preg-label">
+          Equipo ${i}
+        </label>
+
+        <select
+          name="top${i}"
+          class="equipo-select-simple"
+          required
+        ></select>
+
       </div>
+
     `;
   }
 }
@@ -795,8 +955,65 @@ document.getElementById("registrationForm").onsubmit = async (e) => {
   alert("Enviado correctamente");
 };
 
+// ================= CONTADOR MUNDIAL =================
+
+const FECHA_MUNDIAL = new Date("2026-06-11T00:00:00");
+
+function iniciarContador() {
+
+    const box = document.getElementById("countdownBox");
+    const boton = document.getElementById("btnRegistro");
+
+    function actualizar() {
+
+        const ahora = new Date();
+
+        const diferencia = FECHA_MUNDIAL - ahora;
+
+        if (diferencia <= 0) {
+
+            box.innerHTML =
+                "🔒 Pronósticos cerrados";
+
+            box.classList.add("countdown-finished");
+
+            boton.style.pointerEvents = "none";
+            boton.style.opacity = "0.5";
+
+            return;
+        }
+
+        const dias =
+            Math.floor(diferencia / (1000 * 60 * 60 * 24));
+
+        const horas =
+            Math.floor((diferencia / (1000 * 60 * 60)) % 24);
+
+        const minutos =
+            Math.floor((diferencia / (1000 * 60)) % 60);
+
+        box.innerHTML = `
+            ⏳ Faltan<br>
+            <span style="font-size:1rem;">
+                ${dias} días · ${horas}h · ${minutos}m
+            </span>
+            <br>
+            para el inicio del Mundial
+        `;
+    }
+
+    actualizar();
+
+    setInterval(actualizar, 60000);
+}
 // ================= START =================
-document.addEventListener("DOMContentLoaded", initApp);
+document.addEventListener("DOMContentLoaded", () => {
+
+    initApp();
+
+    iniciarContador();
+
+});
 
 </script>
 
