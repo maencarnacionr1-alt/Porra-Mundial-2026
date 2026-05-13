@@ -91,19 +91,23 @@ html,body{
         }
 
         .ranking-table th {
-            padding: 15px;
-            text-align: left;
-            color: #666;
-            font-weight: 800;
-            text-transform: uppercase;
-            font-size: 0.8rem;
-            border-bottom: 2px solid #eee;
-            letter-spacing: 1px;
-            position: sticky;
-            top: px;
-            background: white;
-            z-index: 99;
-        }
+
+   		position: sticky;
+    		top: 260px;
+
+    		background: white;
+
+    		z-index: 150;
+
+    		padding: 15px;
+    		text-align: left;
+    		color: #666;
+    		font-weight: 800;
+    		text-transform: uppercase;
+    		font-size: 0.8rem;
+    		border-bottom: 2px solid #eee;
+    		letter-spacing: 1px;
+	}
 
         .ranking-table tbody tr {
             cursor: pointer;
@@ -308,6 +312,13 @@ html,body{
             grid-template-columns: 1fr 1fr;
             gap: 15px;
         }
+
+	.top-fixed-zone{
+   	 position: sticky;
+   	 top: 0;
+   	 z-index: 200;
+   	 background: rgba(255,255,255,0.98);
+	}
 
 	/* ================= CONTADOR ================= */
 
@@ -695,7 +706,7 @@ table {
     letter-spacing: 1px;
 
     position: sticky;
-    top: 0px;
+    top: 220px;
     background: white;
     z-index: 50;
    }
@@ -808,10 +819,12 @@ h1{
 <body>
 
 <div class="main-container">
+<div class="top-fixed-zone">
 
     <header>
   <h1>MUNDIAL ADQUIRA 2026</h1>
     </header>
+
      <div class="btn-registro-container">
 
         <a
@@ -828,7 +841,7 @@ h1{
         <div id="countdownBox" class="only-ranking">
             ⏳ Cargando contador...
         </div>
-
+      </div>	
     </div>
 
     <div id="rankingSection" class="view-section">
@@ -1213,7 +1226,7 @@ function renderRanking() {
     <tr onclick="showPlayer(${i})">
       <td>${i + 1}º</td>
       <td>${p.name}</td>
-      <td style="text-align:right">${p.total}</td>
+      <td style="text-align:left">${p.total}</td>
     </tr>
   `).join("");
 }
