@@ -890,19 +890,38 @@ table {
     }
 
     .btn-return {
-        width: 100%;
-        display: block;
-        text-align: center;
-    }
+
+    width: auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-start;
+    text-align: left;
+
+    font-size: 0.7rem;
+    padding: 6px 12px;
+    border-radius: 30px;
+
+    margin: 10px 0 15px 0;
+}
+
+.btn-return {
+    position: sticky;
+    left: 10px;
+}
 
     #playerNameBig {
         font-size: 2rem;
         line-height: 1.2;
     }
 
-    .stat-card span {
-        font-size: 2rem;
+   .stat-card label {
+    	font-size: 0.65rem;
+    	letter-spacing: 0.5px;
     }
+
+.stat-card span {
+    font-size: 1.4rem; 
+}
 
     .tooltip-box {
          left:50%;
