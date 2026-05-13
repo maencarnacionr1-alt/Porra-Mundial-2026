@@ -295,10 +295,18 @@ html,body{
         }
 
 	.top-fixed-zone{
-   	 position: sticky;
-   	 top: 0;
-   	 z-index: 200;
-   	 background: rgba(255,255,255,0.98);
+    		position: fixed;
+    		top: 0;
+    		left: 50%;
+    		transform: translateX(-50%);
+    		width: 100%;
+    		max-width: 1100px;
+    		z-index: 9999;
+    		background: rgba(255,255,255,0.98);
+	}
+
+	#rankingSection{
+        padding-top: 320px;
 	}
 
 	/* ================= CONTADOR ================= */
@@ -769,7 +777,9 @@ h1{
     justify-content:center;
 }
 
-
+#rankingSection{
+    padding-top: 280px;
+}
 }
 
 @media (max-height: 500px) and (orientation: landscape){
@@ -802,6 +812,15 @@ h1{
 .ranking-table th,
 .ranking-table td{
     text-align:center;
+}
+
+.ranking-table{
+    table-layout: fixed;
+}
+
+.ranking-table th,
+.ranking-table td{
+    text-align:center !important;
 }
     </style>
 </head>
