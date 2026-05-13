@@ -1109,37 +1109,70 @@ h1{
     position: relative;
 }
 
-.select-check {
+.select-wrapper{
+    position:relative;
+}
 
-    position: absolute;
+/* select más limpio */
+.equipo-select-simple{
 
-    right: 12px;
-    top: 50%;
+    appearance:none;
+    -webkit-appearance:none;
+    -moz-appearance:none;
 
-    transform: translateY(-50%);
+    padding-right:45px;
+}
 
-    width: 22px;
-    height: 22px;
+/* check */
+.select-check{
 
-    border-radius: 50%;
+    position:absolute;
 
-    background: #2e7d32;
+    right:38px;
+    top:50%;
 
-    color: white;
+    transform:translateY(-50%);
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    width:20px;
+    height:20px;
 
-    font-size: 0.75rem;
-    font-weight: 900;
+    border-radius:50%;
 
-    opacity: 0;
-    visibility: hidden;
+    background:#2e7d32;
+    color:white;
 
-    transition: 0.25s ease;
+    display:flex;
+    align-items:center;
+    justify-content:center;
 
-    pointer-events: none;
+    font-size:0.7rem;
+    font-weight:900;
+
+    opacity:0;
+    visibility:hidden;
+
+    transition:0.25s ease;
+
+    pointer-events:none;
+}
+
+/* flecha custom */
+.select-wrapper::after{
+
+    content:"⌄";
+
+    position:absolute;
+
+    right:14px;
+    top:50%;
+
+    transform:translateY(-50%);
+
+    color:#555;
+
+    font-size:0.9rem;
+
+    pointer-events:none;
 }
 
 .select-wrapper.completed .select-check {
