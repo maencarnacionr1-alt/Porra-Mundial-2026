@@ -826,28 +826,11 @@ h1{
 }
 
 .ranking-table thead th{
-    position: sticky;
+    position: relative;
     top: 0;
     background: white;
-    z-index: 100;
-}
-
-.ranking-header-fixed{
-    position: sticky;
-    top: 260px; /* debajo de tu header + contador */
-    z-index: 9999;
-
-    display: grid;
-    grid-template-columns: 33% 33% 33%;
-
-    background: white;
-    padding: 15px 0;
-
-    font-weight: 800;
-    text-transform: uppercase;
-    font-size: 0.8rem;
-
-    border-bottom: 2px solid #eee;
+    z-index: 5;
+    box-shadow: 0 2px 0 rgba(0,0,0,0.1);
 }
     </style>
 </head>
@@ -882,15 +865,14 @@ h1{
 
     <div id="rankingSection" class="view-section">
 
-	<div class="ranking-header-fixed">
-
-   		 <div>POSICIÓN</div>
-   		 <div>JUGADOR</div>
-    		 <div>PUNTOS</div>
-	</div>
-
         <table class="ranking-table">
-          
+            <thead>
+                <tr>
+                    <th width="33%">POSICIÓN</th>
+                    <th width="33%">JUGADOR</th>
+                    <th width="33%">PUNTOS</th>
+                </tr>
+            </thead>
 
             <tbody id="rankingBody">
                 <tr>
