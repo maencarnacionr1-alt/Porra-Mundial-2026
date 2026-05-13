@@ -56,7 +56,7 @@ html,body{
         header {
             background: linear-gradient(135deg, var(--soccer-dark) 0%, var(--pitch-green) 100%);
             color: white;
-            padding: 20px;
+            padding: 22px 18px;
             text-align: center;
             border-bottom: 8px solid var(--gold);
             position: sticky;
@@ -98,7 +98,7 @@ html,body{
             border-bottom: 2px solid #eee;
             letter-spacing: 1px;
             position: sticky;
-            top: 106px;
+            top: 95px;
             background: white;
             z-index: 99;
         }
@@ -110,8 +110,12 @@ html,body{
 
         .ranking-table tbody tr:hover {
             background-color: var(--hover-row);
-            transform: scale(1.02);
         }
+
+	@media (hover:hover){
+   	  .ranking-table tbody tr:hover{
+      		transform: scale(1.01);
+   	}
 
         .ranking-table td {
             padding: 18px 15px;
@@ -341,9 +345,6 @@ html,body{
     pointer-events: none;
 }
 
-header{
-    overflow:visible !important;
-}
 .countdown-finished{
     background:#b71c1c !important;
     color:white !important;
@@ -691,12 +692,10 @@ table {
     letter-spacing: 1px;
 
     position: sticky;
-    top: 0;
-
+    top: 78px;
     background: white;
-
     z-index: 50;
-}
+   }
 
     .btn-registro {
         width: 100%;
@@ -734,24 +733,23 @@ table {
         box-sizing: border-box;
     }
 
-	.btn-registro-container{
-    position: static;
-    width: 100%;
-    margin-top: 18px;
+   .btn-registro-container{
+
+    width:100%;
 
     display:flex;
     flex-direction:column;
-    align-items:center;
-    padding:18px;
-}
 
-header{
-    display:flex;
-    flex-direction:column;
     align-items:center;
     justify-content:center;
-    gap:18px;
-}
+
+    gap:16px;
+
+    padding:20px 15px;
+
+    background:white;
+  }
+
 
 h1{
     order:1;
@@ -776,6 +774,28 @@ h1{
 
 }
 
+@media (max-height: 500px) and (orientation: landscape){
+
+    header{
+        position: relative;
+    }
+
+    .ranking-table th{
+        top:0;
+    }
+
+    h1{
+        font-size:1.2rem;
+    }
+
+    .btn-registro-container{
+        padding:12px;
+    }
+
+    .countdown-box{
+        max-width:260px;
+    }
+}
     </style>
 </head>
 
