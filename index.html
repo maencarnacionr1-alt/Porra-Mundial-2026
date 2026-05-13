@@ -1001,31 +1001,34 @@ h1{
     position: relative;
 }
 
-.ranking-table thead{
-    position: sticky;
-    top: 0;
-    z-index: 500;
-}
-
 .ranking-table thead th{
 
     position: sticky;
 
-    top: 0;
+    top: 190px;
+
+    z-index: 2000;
 
     background: rgba(255,255,255,0.98);
 
     backdrop-filter: blur(6px);
-
-    z-index: 500;
 
     border-top: 1px solid rgba(0,0,0,0.06);
 
     border-bottom: 1px solid rgba(0,0,0,0.08);
 
     box-shadow:
-        0 2px 8px rgba(0,0,0,0.04);
+        0 3px 10px rgba(0,0,0,0.05);
 
+}
+
+.ranking-table{
+    overflow: visible;
+}
+
+.ranking-table tbody tr{
+    position: relative;
+    z-index: 1;
 }
     </style>
 </head>
