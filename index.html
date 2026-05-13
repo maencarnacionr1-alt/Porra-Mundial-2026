@@ -895,7 +895,7 @@ header {
     padding: 12px 15px 8px; /* baja altura del header */
 }
 
-top-fixed-zone {
+.top-fixed-zone {
     padding-bottom: 0;
 }
 
@@ -1082,6 +1082,71 @@ h1{
     z-index: 10;
     background: #fff;
 }
+
+/* ===============================
+   CAMPOS COMPLETADOS
+================================ */
+
+.select-completed {
+
+    border: 2px solid #2e7d32 !important;
+
+    background:
+        linear-gradient(
+            to right,
+            rgba(46,125,50,0.08),
+            rgba(46,125,50,0.03)
+        );
+
+    box-shadow:
+        0 0 0 3px rgba(46,125,50,0.10);
+
+    transition: 0.25s ease;
+}
+
+/* icono check */
+.select-wrapper {
+    position: relative;
+}
+
+.select-check {
+
+    position: absolute;
+
+    right: 12px;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    width: 22px;
+    height: 22px;
+
+    border-radius: 50%;
+
+    background: #2e7d32;
+
+    color: white;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 0.75rem;
+    font-weight: 900;
+
+    opacity: 0;
+    visibility: hidden;
+
+    transition: 0.25s ease;
+
+    pointer-events: none;
+}
+
+.select-wrapper.completed .select-check {
+    opacity: 1;
+    visibility: visible;
+}
+
     </style>
 </head>
 
@@ -1593,13 +1658,16 @@ function renderTop8() {
           Equipo ${i}
         </label>
 	
+     <div class="select-wrapper">
         <select
           name="top${i}"
           class="equipo-select-simple"
        	  data-section="top8"
           required
         ></select>
+    <div class="select-check">✓</div>
 
+       </div>
       </div>
 
     `;
@@ -1626,7 +1694,7 @@ function renderGrupos(containerId, prefix) {
                 <label class="preg-label">
                     Grupo ${letra}
                 </label>
-
+       <div class="select-wrapper">
                 <select
                     name="${prefix}${i}"
                     class="equipo-select-simple grupo-select"
@@ -1646,7 +1714,9 @@ function renderGrupos(containerId, prefix) {
                     `).join("")}
 
                 </select>
+       <div class="select-check">✓</div>
 
+            </div>
             </div>
 
         `;
@@ -1659,14 +1729,32 @@ function renderEliminatorias(containerId, prefix, n) {
   c.innerHTML = "";
 
   for (let i = 1; i <= n; i++) {
-    c.innerHTML += `<select name="${prefix}${i}" class="equipo-select-simple" data-section="${prefix}"></select>`;
+
+    c.innerHTML += `
+
+      <div class="select-wrapper">
+
+        <select 
+          name="${prefix}${i}" 
+          class="equipo-select-simple" 
+          data-section="${prefix}"
+          required
+        >
+          <option value="">Elegir...</option>
+        </select>
+
+        <div class="select-check">✓</div>
+
+      </div>
+
+    `;
   }
 }
 
 function renderSimpleDropdowns() {
 
     const allSelects = document.querySelectorAll(
-        ".equipo-select-simple"
+        "select"
     );
 
     function refreshDropdowns() {
@@ -1731,6 +1819,43 @@ function renderSimpleDropdowns() {
     }
 
     refreshDropdowns();
+}
+
+function enableVisualChecks() {
+
+    document.addEventListener("change", (e) => {
+
+        if (
+            e.target.matches(
+                "select"
+            )
+        ) {
+
+            const wrapper =
+                e.target.closest(".select-wrapper");
+
+            if (!wrapper) return;
+
+            if (e.target.value !== "") {
+
+                wrapper.classList.add("completed");
+
+                e.target.classList.add(
+                    "select-completed"
+                );
+
+            } else {
+
+                wrapper.classList.remove(
+                    "completed"
+                );
+
+                e.target.classList.remove(
+                    "select-completed"
+                );
+            }
+        }
+    });
 }
 
 // activa escucha global
@@ -1812,7 +1937,65 @@ document.getElementById("registrationForm").onsubmit = async (e) => {
     body: JSON.stringify(obj)
   });
 
-  mostrarConfirmacion();
+  document.getElementById("registrationForm").innerHTML = `
+
+    <div style="
+        background:white;
+        border-radius:25px;
+        padding:40px 25px;
+        text-align:center;
+        box-shadow:0 10px 30px rgba(0,0,0,0.12);
+    ">
+
+        <div style="
+            width:80px;
+            height:80px;
+            border-radius:50%;
+            background:#2e7d32;
+            margin:0 auto 20px auto;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            color:white;
+            font-size:2rem;
+            font-weight:900;
+        ">
+            ✓
+        </div>
+
+        <h2 style="
+            margin:0 0 10px 0;
+            color:#1b5e20;
+            font-size:2rem;
+        ">
+            Pronósticos enviados
+        </h2>
+
+        <p style="
+            color:#555;
+            font-size:1rem;
+            line-height:1.6;
+            max-width:500px;
+            margin:0 auto 25px auto;
+        ">
+            Tus predicciones se han guardado correctamente.
+            Ya formas parte del Mundial Adquira 2026.
+        </p>
+
+        <button
+            onclick="showRanking()"
+            class="btn-registro"
+            style="
+                margin:0 auto;
+                justify-content:center;
+            "
+        >
+            Volver al Ranking
+        </button>
+
+    </div>
+
+`;
 };
 
 
@@ -1936,6 +2119,8 @@ document.addEventListener("DOMContentLoaded", () => {
     initApp();
 
     iniciarContador();
+
+    enableVisualChecks();
 
 });
 
