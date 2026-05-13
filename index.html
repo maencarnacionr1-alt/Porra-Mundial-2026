@@ -876,14 +876,23 @@ table {
     display: table-header-group;
    }
 
-  .btn-registro{
-        
-        justify-content: center;
-        align-items: center;
-        white-space: normal;
-	flex-direction: column;
-        gap: 6px;
-    }
+  .btn-registro {
+    flex-direction: row !important;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    white-space: nowrap;
+}
+
+.btn-registro-container {
+    padding: 10px 15px 8px 15px; /* menos espacio arriba */
+    gap: 10px;
+   }
+
+header {
+    padding: 14px 15px 18px; /* reduce altura superior */
+}
 
 #btnRegistro{
         margin-left: 0;
