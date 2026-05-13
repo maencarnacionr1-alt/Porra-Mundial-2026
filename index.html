@@ -1123,40 +1123,50 @@ h1{
     padding-right:45px;
 }
 
-/* check */
-.select-check{
+.equipo-select-simple{
 
-    position:absolute;
+    appearance:none;
+    -webkit-appearance:none;
+    -moz-appearance:none;
 
-    right:38px;
-    top:50%;
+    width:100%;
 
-    transform:translateY(-50%);
+    padding:12px 42px 12px 14px;
 
-    width:20px;
-    height:20px;
+    border-radius:12px;
 
-    border-radius:50%;
+    border:2px solid #d0d0d0;
 
-    background:#2e7d32;
-    color:white;
+    background:white;
 
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    font-size:0.7rem;
-    font-weight:900;
-
-    opacity:0;
-    visibility:hidden;
+    font-weight:700;
 
     transition:0.25s ease;
 
-    pointer-events:none;
+    background-image:none;
 }
 
-/* flecha custom */
+/* estado completado */
+.select-completed{
+
+    border:2px solid #2e7d32 !important;
+
+    background:
+        linear-gradient(
+            to right,
+            rgba(46,125,50,0.06),
+            rgba(46,125,50,0.02)
+        );
+
+    color:#111;
+}
+
+/* check integrado */
+.select-completed::after{
+    content:"✓";
+}
+
+/* flecha */
 .select-wrapper::after{
 
     content:"⌄";
@@ -1168,9 +1178,9 @@ h1{
 
     transform:translateY(-50%);
 
-    color:#555;
+    font-size:0.8rem;
 
-    font-size:0.9rem;
+    color:#666;
 
     pointer-events:none;
 }
@@ -1698,7 +1708,6 @@ function renderTop8() {
        	  data-section="top8"
           required
         ></select>
-    <div class="select-check">✓</div>
 
        </div>
       </div>
@@ -1747,7 +1756,6 @@ function renderGrupos(containerId, prefix) {
                     `).join("")}
 
                 </select>
-       <div class="select-check">✓</div>
 
             </div>
             </div>
@@ -1775,8 +1783,6 @@ function renderEliminatorias(containerId, prefix, n) {
         >
           <option value="">Elegir...</option>
         </select>
-
-        <div class="select-check">✓</div>
 
       </div>
 
@@ -1859,29 +1865,16 @@ function enableVisualChecks() {
     document.addEventListener("change", (e) => {
 
         if (
-            e.target.matches(
-                "select"
-            )
+            e.target.matches(".equipo-select-simple")
         ) {
 
-            const wrapper =
-                e.target.closest(".select-wrapper");
-
-            if (!wrapper) return;
-
             if (e.target.value !== "") {
-
-                wrapper.classList.add("completed");
 
                 e.target.classList.add(
                     "select-completed"
                 );
 
             } else {
-
-                wrapper.classList.remove(
-                    "completed"
-                );
 
                 e.target.classList.remove(
                     "select-completed"
