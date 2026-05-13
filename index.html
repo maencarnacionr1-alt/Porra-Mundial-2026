@@ -1499,8 +1499,33 @@ document.getElementById("registrationForm").onsubmit = async (e) => {
 
   e.preventDefault();
 
-  const obj = {};
-  new FormData(e.target).forEach((v, k) => obj[k] = v);
+  const formData = new FormData(e.target);
+
+  const obj = {
+    nombre: formData.get("nombre"),
+
+    top8: Array.from({ length: 8 }, (_, i) =>
+      formData.get(`top${i + 1}`) || ""
+    ).join("|"),
+
+    grupos: Array.from(formData.keys())
+      .filter(k => k.startsWith("primerosGrupo") || k.startsWith("segundosGrupo") || k.startsWith("mejoresTerceros"))
+      .map(k => `${k}:${formData.get(k) || ""}`)
+      .join("|"),
+
+    eliminatorias: Array.from(formData.keys())
+      .filter(k => ["octavos", "cuartos", "semis", "final"].some(p => k.startsWith(p)))
+      .map(k => `${k}:${formData.get(k) || ""}`)
+      .join("|"),
+
+    extra: {
+      mas_goles: formData.get("mas_goles"),
+      menos_goles: formData.get("menos_goles"),
+      campeon: formData.get("campeon"),
+      subcampeon: formData.get("subcampeon"),
+      tercero: formData.get("tercero")
+    }
+  };
 
   await fetch(GOOGLE_SCRIPT_URL, {
     method: "POST",
