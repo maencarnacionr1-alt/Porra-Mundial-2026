@@ -100,7 +100,7 @@ html,body{
             border-bottom: 2px solid #eee;
             letter-spacing: 1px;
             position: sticky;
-            top: 95px;
+            top: px;
             background: white;
             z-index: 99;
         }
@@ -633,7 +633,7 @@ table {
     }
 
     header {
-        position: relative;
+        position:relative !important;
         top: auto;
         padding: 20px 15px 30px;
         border-radius: 0;
@@ -695,11 +695,14 @@ table {
     letter-spacing: 1px;
 
     position: sticky;
-    top: 78px;
+    top: 0px;
     background: white;
     z-index: 50;
    }
 
+   .ranking-table thead{
+    display: table-header-group;
+  }
     .btn-registro {
         width: 100%;
         justify-content: center;
@@ -835,7 +838,7 @@ h1{
                 <tr>
                     <th width="33%">POSICIÓN</th>
                     <th width="33%">JUGADOR</th>
-                    <th width="33%" style="text-align:right;">PUNTOS</th>
+                    <th width="33%">PUNTOS</th>
                 </tr>
             </thead>
 
