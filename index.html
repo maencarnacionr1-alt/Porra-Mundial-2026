@@ -121,30 +121,6 @@ html,body{
     border-bottom: 1px solid rgba(255,215,0,0.45);
 }
 
-.ranking-table tbody tr::after{
-
-    content:"";
-
-    position:absolute;
-
-    left:0;
-    bottom:0;
-
-    width:0%;
-    height:2px;
-
-    background: linear-gradient(
-        90deg,
-        var(--gold),
-        var(--pitch-green)
-    );
-
-    transition: width 0.3s ease;
-}
-
-.ranking-table tbody tr:hover::after{
-    width:100%;
-}
 
 .ranking-table tbody tr:hover td{
 
@@ -153,12 +129,77 @@ html,body{
     transition: color 0.25s ease;
 }
 
-        .ranking-table td {
-            padding: 18px 15px;
-            border-bottom: 1px solid #f0f0f0;
-            font-size: 1.1rem;
-	    text-align:center;
-        }
+        .ranking-table td{
+
+    padding: 18px 15px;
+
+    font-size: 1.1rem;
+
+    text-align: center;
+
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+
+    transition: color 0.25s ease;
+}
+
+/* ===============================
+   MEJORA VISUAL TABLA RANKING
+   ESTILO APP DEPORTIVA PRO
+================================ */
+
+/* borde general más premium */
+.ranking-table {
+    border: 2px solid rgba(0,0,0,0.08);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+}
+
+/* encabezado más “tarjeta app” */
+.ranking-table thead th {
+    background: white;
+    border-bottom: 2px solid rgba(0,0,0,0.08);
+    position: relative;
+}
+
+/* línea animada debajo del header */
+.ranking-table thead th::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 3px;
+    width: 0%;
+    background: linear-gradient(90deg, var(--gold), var(--pitch-green));
+    transition: width 0.35s ease;
+}
+
+/* activa la línea al hover de la tabla */
+.ranking-table:hover thead th::after {
+    width: 100%;
+}
+
+/* filas más “app deportiva” */
+.ranking-table tbody tr {
+    transition: all 0.25s ease;
+}
+
+/* hover más visible y moderno */
+.ranking-table tbody tr:hover {
+    background: rgba(46,125,50,0.06);
+    transform: scale(1.01);
+}
+
+/* efecto en celdas (más pro) */
+.ranking-table tbody tr:hover td {
+    color: var(--pitch-green);
+    font-weight: 700;
+}
+
+/* separador más limpio */
+.ranking-table td {
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+}
 
         #playerNameBig {
             font-family: 'Black Ops One', cursive;
@@ -747,6 +788,52 @@ table {
         font-size: 16px;
     }
 
+
+.ranking-table{
+
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+
+    border-collapse: collapse;
+
+    background: white;
+
+    border: 2px solid rgba(0,0,0,0.08);
+    border-radius: 16px;
+
+    overflow: hidden;
+
+    box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+
+    transition:
+        border-color 0.3s ease,
+        box-shadow 0.3s ease,
+        transform 0.3s ease;
+}
+
+.ranking-table:hover{
+
+    border-color: rgba(255,215,0,0.45);
+
+    box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+
+    transform: translateY(-2px);
+}
+
+.ranking-table thead th{
+
+    background: #fff;
+
+    border-bottom: 2px solid rgba(0,0,0,0.08);
+
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+
+    padding: 15px;
+}
+
     .ranking-table th,
     .ranking-table td,
     .teams-table th,
@@ -887,17 +974,9 @@ h1{
     }
 }
 
-.ranking-table{
-    table-layout: fixed;
-}
-
 .ranking-table th,
 .ranking-table td{
     text-align:center;
-}
-
-.ranking-table{
-    table-layout: fixed;
 }
 
 .ranking-table th,
