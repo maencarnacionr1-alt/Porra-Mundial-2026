@@ -981,6 +981,38 @@ h1{
 #playerSection{
     padding-top:110px;
 }
+
+/* =========================
+   ESTADÍSTICAS MÁS COMPACTAS
+   ========================= */
+
+.stats-row {
+    gap: 10px;
+    margin-bottom: 25px;
+}
+
+/* evita que estiren en columna completa */
+.stat-card {
+    padding: 12px 10px;
+    border-radius: 14px;
+    border-bottom: 4px solid var(--gold);
+
+    /* clave: evitar que ocupen demasiado */
+    width: 100%;
+    max-width: 160px;
+    margin: 0 auto;
+}
+
+/* texto más compacto */
+.stat-card label {
+    font-size: 0.6rem;
+    margin-bottom: 4px;
+}
+
+.stat-card span {
+    font-size: 1.2rem;
+}
+
 }
 
 @media (max-height: 500px) and (orientation: landscape){
