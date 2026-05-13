@@ -222,15 +222,14 @@ html,body{
             font-size: 0.78rem;
             display: flex;
             align-items: center;
+	    justify-content: center;
             gap: 8px;
             text-decoration: none;
             box-shadow: 0 10px 25px rgba(0,0,0,0.35);
-	    width:100%;
-            max-width:320px;
-            justify-content:center;
-	    flex-wrap: wrap; 
-            text-align: center;
-            line-height: 1.2;
+	    width:fit-content;
+	    margin: 0 auto;
+            white-space: nowrap;
+
 
    	    transition: 0.25s;
 	}
@@ -724,11 +723,10 @@ table {
    }
 
   .btn-registro{
-        text-align: center;
+        
         justify-content: center;
         align-items: center;
         white-space: normal;
-        line-height: 1.2;
 	flex-direction: column;
         gap: 6px;
     }
