@@ -704,9 +704,10 @@ table {
     display: table-header-group;
    }
     .btn-registro {
-        width: 100%;
-        justify-content: center;
-        border-radius: 14px;
+    	text-align: center;
+   	justify-content: center;
+    	align-items: center;
+}
     }
 
     .btn-return {
@@ -772,9 +773,11 @@ h1{
 }
 
 .btn-registro{
-    width:100%;
-    max-width:320px;
-    justify-content:center;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    white-space: normal;
+    line-height: 1.2;
 }
 
 #rankingSection{
@@ -1495,37 +1498,63 @@ function enableAutoFillOctavos() {
 }
 
 // ================= ENVÍO =================
+
+function mostrarConfirmacion() {
+  const modal = document.createElement("div");
+
+  modal.innerHTML = `
+    <div style="
+      position:fixed;
+      top:0;left:0;right:0;bottom:0;
+      background:rgba(0,0,0,0.6);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      z-index:99999;
+    ">
+      <div style="
+        background:white;
+        padding:30px;
+        border-radius:20px;
+        text-align:center;
+        max-width:300px;
+        font-family:Inter;
+      ">
+        <h2 style="margin:0 0 10px;">✔ Enviado</h2>
+        <p style="margin:0;">Tus pronósticos se han guardado correctamente.</p>
+        <button onclick="this.closest('div').parentElement.remove()" 
+          style="
+            margin-top:15px;
+            padding:10px 20px;
+            border:none;
+            border-radius:10px;
+            background:#1b5e20;
+            color:white;
+            cursor:pointer;
+          ">
+          OK
+        </button>
+      </div>
+    </div>
+  `;
+
+  document.body.appendChild(modal);
+}
+
 document.getElementById("registrationForm").onsubmit = async (e) => {
 
   e.preventDefault();
 
-  const formData = new FormData(e.target);
+  const obj = {};
 
-  const obj = {
-    nombre: formData.get("nombre"),
+  new FormData(e.target).forEach((v, k) => {
 
-    top8: Array.from({ length: 8 }, (_, i) =>
-      formData.get(`top${i + 1}`) || ""
-    ).join("|"),
-
-    grupos: Array.from(formData.keys())
-      .filter(k => k.startsWith("primerosGrupo") || k.startsWith("segundosGrupo") || k.startsWith("mejoresTerceros"))
-      .map(k => `${k}:${formData.get(k) || ""}`)
-      .join("|"),
-
-    eliminatorias: Array.from(formData.keys())
-      .filter(k => ["octavos", "cuartos", "semis", "final"].some(p => k.startsWith(p)))
-      .map(k => `${k}:${formData.get(k) || ""}`)
-      .join("|"),
-
-    extra: {
-      mas_goles: formData.get("mas_goles"),
-      menos_goles: formData.get("menos_goles"),
-      campeon: formData.get("campeon"),
-      subcampeon: formData.get("subcampeon"),
-      tercero: formData.get("tercero")
+    // evita arrays rotos o undefined
+    if (v !== "" && v !== null && v !== undefined) {
+      obj[k] = v;
     }
-  };
+
+  });
 
   await fetch(GOOGLE_SCRIPT_URL, {
     method: "POST",
@@ -1533,9 +1562,8 @@ document.getElementById("registrationForm").onsubmit = async (e) => {
     body: JSON.stringify(obj)
   });
 
-  alert("Enviado correctamente");
+  mostrarConfirmacion();
 };
-
 
 
 // ================= CONTADOR MUNDIAL =================
