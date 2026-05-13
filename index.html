@@ -82,28 +82,77 @@ html,body{
 	.only-ranking{
     	 display:block;
 	}
-        .ranking-table {
-            width: 100%;
-            max-width: 500px;
-            margin: 0 auto;
-            border-collapse: collapse;
-        }
+        
+	.ranking-table {
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+    border-collapse: collapse;
+}
 
-        .ranking-table tbody tr {
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
+.ranking-table tbody tr{
 
-        .ranking-table tbody tr:hover {
-            background-color: var(--hover-row);
-        }
+    position: relative;
 
-	@media (hover:hover){
-   	  .ranking-table tbody tr:hover{
-      		transform: scale(1.01);
-   	}
+    cursor: pointer;
 
-	}
+    transition:
+        background 0.25s ease,
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        border-bottom 0.25s ease;
+
+    border-bottom: 1px solid rgba(0,0,0,0.08);
+}
+
+.ranking-table tbody tr:hover{
+
+    background: linear-gradient(
+        90deg,
+        rgba(46,125,50,0.08),
+        rgba(255,215,0,0.10)
+    );
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 6px 18px rgba(0,0,0,0.08);
+
+    border-bottom: 1px solid rgba(255,215,0,0.45);
+}
+
+.ranking-table tbody tr::after{
+
+    content:"";
+
+    position:absolute;
+
+    left:0;
+    bottom:0;
+
+    width:0%;
+    height:2px;
+
+    background: linear-gradient(
+        90deg,
+        var(--gold),
+        var(--pitch-green)
+    );
+
+    transition: width 0.3s ease;
+}
+
+.ranking-table tbody tr:hover::after{
+    width:100%;
+}
+
+.ranking-table tbody tr:hover td{
+
+    color: var(--pitch-green);
+
+    transition: color 0.25s ease;
+}
+
         .ranking-table td {
             padding: 18px 15px;
             border-bottom: 1px solid #f0f0f0;
@@ -232,6 +281,11 @@ html,body{
 
 
    	    transition: 0.25s;
+	}
+
+	#btnRegistro{
+    	align-self: flex-start;
+    	margin-left: 20px;
 	}
 
 	.btn-registro:hover {
@@ -729,6 +783,10 @@ table {
         white-space: normal;
 	flex-direction: column;
         gap: 6px;
+    }
+
+#btnRegistro{
+        margin-left: 0;
     }
 
     .btn-return {
