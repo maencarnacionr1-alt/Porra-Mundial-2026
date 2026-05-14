@@ -10,6 +10,10 @@
 
     <style>
 
+html {
+    scroll-behavior: smooth;
+}
+
 *{
     box-sizing:border-box;
 }
@@ -46,7 +50,7 @@ html,body{
             box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4);
             border: 1px solid rgba(255, 255, 255, 0.2);
             animation: slideUp 0.6s ease-out;
-	    
+	    position: relative;
         }
 
         @keyframes slideUp {
@@ -77,7 +81,13 @@ html,body{
         }
 
         .view-section { padding: 40px; }
-        .hidden { display: none; }
+
+        .hidden {
+    		opacity: 0;
+    		transform: translateX(40px);
+    		pointer-events: none;
+    		position: absolute;
+	}
 
 	.only-ranking{
     	 display:block;
@@ -684,6 +694,7 @@ table {
 .view-section {
     padding: 25px;
     overflow-x:hidden;
+    transition: all 0.35s ease;
 }
 
 #registrationForm {
@@ -721,6 +732,7 @@ table {
 
     .main-container {
         border-radius: 20px;
+	position: relative;
     }
 
     header {
@@ -765,6 +777,7 @@ table {
     .main-container {
         border-radius: 0;
         min-height: 100vh;
+	position: relative;
     }
 
     header {
@@ -780,6 +793,7 @@ table {
 
     .view-section {
         padding: 18px;
+	transition: all 0.35s ease;
     }
 
     .fase-container {
