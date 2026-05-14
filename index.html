@@ -396,7 +396,12 @@ html,body{
             margin-bottom: 12px;
             font-family: 'Inter', sans-serif;
             font-weight: 600;
+	    color: #bdbdbd;
         }
+
+        .equipo-select-simple.has-value {
+            color: #333;
+	}
 
         .grid-preguntas {
             display: grid;
@@ -725,7 +730,7 @@ table {
     }
 
     .stats-row {
-        grid-template-columns: 1fr;
+         grid-template-columns: repeat(3, 1fr);
     }
 
     #playerNameBig {
@@ -1156,97 +1161,6 @@ h1{
     pointer-events:none;
 }
 
-/* ===============================
-   SEARCHABLE SELECT
-================================ */
-
-.search-select-container{
-    position:relative;
-    width:100%;
-}
-
-.search-input{
-
-    width:100%;
-
-    padding:12px 14px;
-
-    border-radius:12px;
-
-    border:2px solid #d6d6d6;
-
-    font-weight:700;
-
-    font-family:'Inter', sans-serif;
-
-    transition:0.25s;
-}
-
-.search-input:focus{
-
-    outline:none;
-
-    border-color:var(--pitch-green);
-
-    box-shadow:
-        0 0 0 4px rgba(46,125,50,0.10);
-}
-
-.search-dropdown{
-
-    position:absolute;
-
-    top:100%;
-
-    left:0;
-
-    right:0;
-
-    background:white;
-
-    border-radius:12px;
-
-    margin-top:6px;
-
-    max-height:220px;
-
-    overflow-y:auto;
-
-    z-index:999;
-
-    border:1px solid #ddd;
-
-    box-shadow:
-        0 10px 25px rgba(0,0,0,0.12);
-
-    display:none;
-}
-
-.search-option{
-
-    padding:12px 14px;
-
-    cursor:pointer;
-
-    font-weight:600;
-
-    transition:0.2s;
-}
-
-.search-option:hover{
-
-    background:#f1f8e9;
-
-    color:var(--pitch-green);
-}
-
-.search-option.selected{
-
-    background:#e8f5e9;
-
-    font-weight:800;
-}
-
     </style>
 </head>
 
@@ -1593,9 +1507,7 @@ async function initApp() {
 
   const equiposRows = parseCSV(eq);
 
-equiposDisponibles = equiposRows
-  .map(r => r.equipo)
-  .sort((a, b) => a.localeCompare(b, 'es'));
+equiposDisponibles = equiposRows.map(r => r.equipo);
 
 equiposPorGrupo = {};
 
@@ -1759,23 +1671,19 @@ function renderTop8() {
         <label class="preg-label">
           Equipo ${i}
         </label>
+	
+     <div class="select-wrapper">
+        <select
+          name="top${i}"
+          class="equipo-select-simple"
+       	  data-section="top8"
+          required
+        ></select>
 
-        <div id="top8Select${i}"></div>
-
+       </div>
       </div>
 
     `;
-
-    // CREAR SELECT BUSCADOR
-    const target =
-      document.getElementById(`top8Select${i}`);
-
-    createSearchableSelect({
-      container: target,
-      name: `top${i}`,
-      teams: equiposDisponibles,
-      section: "top8"
-    });
   }
 }
 
@@ -1809,7 +1717,7 @@ function renderGrupos(containerId, prefix) {
                 >
 
                     <option value="">
-                        Elegir...
+                        Elegir equipo...
                     </option>
 
                     ${equiposGrupo.map(eq => `
@@ -1844,7 +1752,7 @@ function renderEliminatorias(containerId, prefix, n) {
           data-section="${prefix}"
           required
         >
-          <option value="">Elegir...</option>
+          <option value="">Elegir equipo...</option>
         </select>
 
       </div>
@@ -1893,7 +1801,7 @@ function renderSimpleDropdowns() {
             }
 
             select.innerHTML =
-                `<option value="">Elegir...</option>`;
+                `<option value="">Elegir equipo...</option>`;
 
             equiposBase.forEach(team => {
 
@@ -1924,6 +1832,17 @@ function renderSimpleDropdowns() {
 }
 
 function enableVisualChecks() {
+
+	if (e.target.value !== "") {
+
+    		e.target.classList.add("select-completed");
+   	 	e.target.classList.add("has-value");
+
+	} else {
+
+    		e.target.classList.remove("select-completed");
+   	 	e.target.classList.remove("has-value");
+}
 
     document.addEventListener("change", (e) => {
 
@@ -1962,104 +1881,6 @@ function enableAutoFillOctavos() {
 }
 
 // ================= ENVÍO =================
-
-function createSearchableSelect({
-    container,
-    name,
-    teams,
-    section = "default",
-    required = true
-}) {
-
-    const wrapper = document.createElement("div");
-
-    wrapper.className = "search-select-container";
-
-    wrapper.innerHTML = `
-
-        <input
-            type="text"
-            class="search-input"
-            placeholder="Buscar equipo..."
-            autocomplete="off"
-        >
-
-        <div class="search-dropdown"></div>
-
-        <input
-            type="hidden"
-            name="${name}"
-            ${required ? "required" : ""}
-            data-section="${section}"
-        >
-    `;
-
-    container.appendChild(wrapper);
-
-    const input =
-        wrapper.querySelector(".search-input");
-
-    const dropdown =
-        wrapper.querySelector(".search-dropdown");
-
-    const hidden =
-        wrapper.querySelector("input[type='hidden']");
-
-    function renderOptions(filter = "") {
-
-        dropdown.innerHTML = "";
-
-        const filtered = teams.filter(team =>
-            team.toLowerCase().includes(
-                filter.toLowerCase()
-            )
-        );
-
-        filtered.forEach(team => {
-
-            const option =
-                document.createElement("div");
-
-            option.className = "search-option";
-
-            option.textContent = team;
-
-            option.onclick = () => {
-
-                input.value = team;
-
-                hidden.value = team;
-
-                dropdown.style.display = "none";
-
-                hidden.dispatchEvent(
-                    new Event("change")
-                );
-            };
-
-            dropdown.appendChild(option);
-        });
-
-        dropdown.style.display =
-            filtered.length ? "block" : "none";
-    }
-
-    input.addEventListener("focus", () => {
-        renderOptions(input.value);
-    });
-
-    input.addEventListener("input", () => {
-        renderOptions(input.value);
-    });
-
-    document.addEventListener("click", (e) => {
-
-        if (!wrapper.contains(e.target)) {
-
-            dropdown.style.display = "none";
-        }
-    });
-}
 
 function mostrarConfirmacion() {
   const modal = document.createElement("div");
