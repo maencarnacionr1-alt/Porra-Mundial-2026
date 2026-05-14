@@ -734,7 +734,7 @@ table {
     }
 
     .stats-row {
-        grid-template-columns: 1fr;
+       grid-template-columns: repeat(3, 1fr);
     }
 
     #playerNameBig {
@@ -1725,7 +1725,7 @@ function renderGrupos(containerId, prefix) {
                 >
 
                     <option value="">
-                        Elegir...
+                        Elegir equipo...
                     </option>
 
                     ${equiposGrupo.map(eq => `
@@ -1760,7 +1760,7 @@ function renderEliminatorias(containerId, prefix, n) {
           data-section="${prefix}"
           required
         >
-          <option value="">Elegir...</option>
+          <option value="">Elegir equipo...</option>
         </select>
 
       </div>
@@ -1809,7 +1809,7 @@ function renderSimpleDropdowns() {
             }
 
             select.innerHTML =
-                `<option value="">Elegir...</option>`;
+                `<option value="">Elegir equipo...</option>`;
 
             equiposBase.forEach(team => {
 
