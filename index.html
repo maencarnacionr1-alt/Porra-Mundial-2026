@@ -317,7 +317,7 @@ html,body{
     		display:flex;
     		flex-direction:column;
     		align-items:center;
-    		justify-content:center;
+    		justify-content: left;
 
     		gap:18px;
 
@@ -325,68 +325,72 @@ html,body{
 	}
 
         .btn-registro {
-            background-color: var(--gold);
-            color: var(--soccer-dark);
-            padding: 10px 22px;
-            font-weight: 900;
-            cursor: pointer;
-            text-transform: uppercase;
-            font-size: 0.78rem;
-            display: flex;
-            align-items: center;
-	    justify-content: center;
-            gap: 8px;
-            text-decoration: none;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.35);
-	    width:fit-content;
-	    margin: 0 auto;
-            white-space: nowrap;
 
+    		background-color: var(--gold);
+    		color: var(--soccer-dark);
+    		padding: 10px 22px;
+    		font-weight: 900;
+    		cursor: pointer;
+    		text-transform: uppercase;
+    		font-size: 0.78rem;
 
-   	    transition: 0.25s;
+    		display: flex;
+    		align-items: center;
+    		justify-content: left;
+
+    		gap: 8px;
+    		text-decoration: none;
+
+    		box-shadow: 0 10px 25px rgba(0,0,0,0.35);
+
+    		width: fit-content;
+    		margin: 0 auto;
+
+    		white-space: nowrap;
+    		transition: 0.25s;
+
+    		border-radius: 14px; /* 👈 IMPORTANTE: unificamos */
 	}
 
 /* =========================
    BOTONES SUPERIORES
 ========================= */
-
+.btn-registro-container,
 .top-action-bar{
 
-    width:100%;
+    display: flex;
+    justify-content: flex-start; /* antes center */
+    align-items: center;
 
-    display:flex;
-
-    align-items:center;
-
-    margin-bottom:25px;
-
-    min-height:48px;
+    width: 100%;
+    padding: 12px 12px 6px 12px; /* compacto */
+    gap: 10px;
 }
 
 /* reutiliza btn-registro */
 
 .btn-back{
+    all: unset;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-    margin:0 !important;
+    background-color: var(--gold);
+    color: var(--soccer-dark);
 
-    background:var(--gold);
+    padding: 10px 22px;
+    font-weight: 900;
+    font-size: 0.78rem;
+    text-transform: uppercase;
 
-    color:var(--soccer-dark);
+    gap: 8px;
+    cursor: pointer;
 
-    border:none;
+    border-radius: 14px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.35);
 
-    border-radius:14px;
-
-    padding:10px 22px;
-
-    font-size:0.78rem;
-
-    font-weight:900;
-
-    box-shadow:
-        0 10px 25px rgba(0,0,0,0.25);
-
-    transition:0.25s;
+    width: fit-content;
+    transition: 0.25s;
 }
 
 .btn-back:hover{
@@ -398,12 +402,13 @@ html,body{
 }
 
 	#btnRegistro{
-    	align-self: flex-start;
-    	margin-left: 20px;
+    	margin: 0;
 	}
 
 	.btn-registro:hover {
     	    transform: translateY(-2px);
+	    box-shadow: 0 14px 30px rgba(0,0,0,0.3);
+
 	}
 
         .dot-online {
@@ -477,7 +482,7 @@ html,body{
     		position: fixed;
     		top: 0;
     		left: 0;
-		right: 0;
+    		right:0;
     		width: 100%;
     		max-width: 1100px;
     		z-index: 9999;
@@ -491,7 +496,7 @@ html,body{
         right: auto;
 
         transform: translateX(-50%);
-    	}
+    	}.btn-registro-container
 
  	}
 	
@@ -954,7 +959,7 @@ table {
   .btn-registro {
     flex-direction: row !important;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     gap: 8px;
 
     white-space: nowrap;
@@ -1008,24 +1013,6 @@ header {
         width: 100%;
         box-sizing: border-box;
     }
-
-   .btn-registro-container{
-
-    width:100%;
-
-    display:flex;
-    flex-direction:column;
-
-    align-items:center;
-    justify-content:center;
-
-    gap:16px;
-
-    padding:20px 15px;
-
-    background:white;
-  }
-
 
 h1{
     order:1;
