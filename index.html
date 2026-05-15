@@ -1265,7 +1265,7 @@ h1{
     top:0;
     left:-320px;
 
-    width:100px;
+    width:99px;
     height:100vh;
 
     background:
@@ -1303,7 +1303,7 @@ h1{
 .side-menu:hover,
 .side-menu:hover{
 
-    width:300px;
+    width:280px; !important;
 }
 
 /* HEADER */
@@ -1428,16 +1428,18 @@ h1{
     transform:translateX(-10px);
 
     transition:
-        opacity 0.25s ease,
-        transform 0.25s ease;
+        opacity 0.2s ease 0.12s,
+        transform 0.2s ease 0.12s;
 
     pointer-events:none;
+
+    white-space:nowrap;
 }
 
 /* mostrar texto */
 
 .side-menu:hover .menu-text,
-.side-menu:hover .menu-text{
+.side-menu.active .menu-text{
 
     opacity:1;
 
