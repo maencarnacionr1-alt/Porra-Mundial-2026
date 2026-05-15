@@ -280,18 +280,6 @@ html,body{
             font-weight: 800;
         }
 
-        .btn-return {
-            background: #fff;
-            border: 2px solid var(--pitch-green);
-            padding: 12px 30px;
-            border-radius: 50px;
-            cursor: pointer;
-            font-weight: 800;
-            color: var(--pitch-green);
-            text-transform: uppercase;
-            font-size: 0.8rem;
-            margin-bottom: 10px;
-        }
 
         .teams-table {
             width: 100%;
@@ -357,6 +345,57 @@ html,body{
 
    	    transition: 0.25s;
 	}
+
+/* =========================
+   BOTONES SUPERIORES
+========================= */
+
+.top-action-bar{
+
+    width:100%;
+
+    display:flex;
+
+    align-items:center;
+
+    margin-bottom:25px;
+
+    min-height:48px;
+}
+
+/* reutiliza btn-registro */
+
+.btn-back{
+
+    margin:0 !important;
+
+    background:var(--gold);
+
+    color:var(--soccer-dark);
+
+    border:none;
+
+    border-radius:14px;
+
+    padding:10px 22px;
+
+    font-size:0.78rem;
+
+    font-weight:900;
+
+    box-shadow:
+        0 10px 25px rgba(0,0,0,0.25);
+
+    transition:0.25s;
+}
+
+.btn-back:hover{
+
+    transform:translateY(-2px);
+
+    box-shadow:
+        0 14px 30px rgba(0,0,0,0.3);
+}
 
 	#btnRegistro{
     	align-self: flex-start;
@@ -939,40 +978,6 @@ header {
         margin-left: 0;
     }
 
-    .btn-return {
-
-    width: auto;
-    display: inline-flex;
-    align-items: center;
-    justify-content: flex-start;
-    text-align: left;
-
-    font-size: 0.7rem;
-    padding: 6px 12px;
-    border-radius: 30px;
-
-    margin: 10px 0 15px 0;
-}
-
-.btn-return {
-    position: sticky;
-    left: 10px;
-}
-
-.btn-return {
-    margin-top: 6px;        /* lo sube */
-    margin-bottom: 10px;    /* reduce separación inferior */
-
-    padding: 6px 12px;
-    font-size: 0.7rem;
-
-    width: auto;
-    display: inline-flex;
-
-    position: relative;
-    z-index: 5;
-}
-
     #playerNameBig {
         font-size: 2rem;
         line-height: 1.2;
@@ -1476,9 +1481,16 @@ h1{
 
     <div id="registerSection" class="view-section hidden">
 
-    <button class="btn-return" onclick="showRanking()">
+    <div class="top-action-bar">
+
+    <button
+        class="btn-registro btn-back"
+        onclick="showRanking()"
+    >
         ← Volver
     </button>
+
+	</div>
 
     <form id="registrationForm" style="max-width:900px; margin:0 auto;">
 
@@ -1684,9 +1696,16 @@ h1{
 
     <div id="playerSection" class="view-section hidden">
 
-        <button class="btn-return" onclick="showRanking()">
-            ← Volver al Ranking
-        </button>
+        <div class="top-action-bar">
+
+    <button
+        class="btn-registro btn-back"
+        onclick="showRanking()"
+    >
+        ← Volver al Ranking
+    </button>
+
+    </div>
 
         <h2 id="playerNameBig">NOMBRE</h2>
 
