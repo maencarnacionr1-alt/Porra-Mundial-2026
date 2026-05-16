@@ -80,7 +80,7 @@ html,body{
             position: sticky;
             top: 0;
             z-index: 100;
-            border-radius: 30px 30px 0 0;
+            
         }
 
         h1 {
@@ -506,23 +506,25 @@ html,body{
 
 	/* ================= CONTADOR ================= */
 
-.countdown-box {
-    background: #e0e0e0;
-    color: #2b2b2b;
-    padding: 18px 22px;
-    border-radius: 22px;
-    width: 270px;
-    text-align: center;
-    position: relative;
+#countdownBox{
 
-    /* Neumorphism base */
-    box-shadow: 
-        8px 8px 16px rgba(0, 0, 0, 0.12),
-        -8px -8px 16px rgba(255, 255, 255, 0.8);
+    position:absolute;
 
-    border: none;
+    top:18px;
+    right:20px;
+
+    z-index:9999;
+
+    background:transparent;
+
+    border:none;
+
+    box-shadow:none;
+
+    padding:0;
+
+    width:auto;
 }
-
 .countdown-box::before {
     content: "";
 
@@ -554,7 +556,7 @@ html,body{
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
     flex-wrap: wrap;
     margin-top: 6px;
 }
@@ -565,23 +567,58 @@ html,body{
     align-items: center;
 }
 
-.flip-label {
-    font-size: 0.7rem;
-    margin-top: 4px;
-    opacity: 0.7;
+.flip-label{
+
+    margin-top:5px;
+
+    font-size:0.52rem;
+
+    font-weight:700;
+
+    letter-spacing:1px;
+
+    text-transform:uppercase;
+
+    color:#ffd700;
+
+    opacity:1;
 }
 
-.flip {
-    position: relative;
+.flip{
 
-    width: 32px;
-    height: 44px;
+    position:relative;
 
-    background: linear-gradient(
-    to bottom,
-    #2a2a2a,
-    #111
-);
+    width:34px;
+    height:42px;
+
+    background:
+        linear-gradient(
+            to bottom,
+            #1f1f1f,
+            #090909
+        );
+
+    border-radius:10px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    color:white;
+
+    font-size:1rem;
+    font-weight:800;
+
+    letter-spacing:1px;
+
+    box-shadow:
+        inset 0 1px 1px rgba(255,255,255,0.06),
+        0 5px 12px rgba(0,0,0,0.45);
+
+    overflow:hidden;
+
+    font-variant-numeric: tabular-nums;
+}
 
     color: white;
 
@@ -607,20 +644,20 @@ html,body{
     backface-visibility: hidden;
 }
 
-.flip::before {
-    content: "";
+.flip::before{
 
-    position: absolute;
+    content:"";
 
-    top: 50%;
-    left: 0;
+    position:absolute;
 
-    width: 100%;
-    height: 1px;
+    left:0;
+    top:50%;
 
-    background: rgba(255,255,255,0.12);
+    width:100%;
+    height:1px;
 
-    z-index: 2;
+    background:
+        rgba(255,255,255,0.08);
 }
 
 .flip-anim {
@@ -642,22 +679,12 @@ html,body{
     }
 }
 
-/* Texto superior */
-.countdown-box {
-    color: #1a1a1a;
-}
 
 /* Labels */
 .flip-label {
     color: #1a1a1a;
     opacity: 1;
     font-weight: 600;
-}
-
-/* Texto "Faltan para el Mundial" */
-.countdown-title {
-    color: #1a1a1a;
-    font-weight: 700;
 }
 
 /* ================= TOOLTIPS ================= */
@@ -1518,17 +1545,16 @@ h1{
             href="javascript:void(0)"
             onclick="showRegister()"
             class="btn-registro"
-            id="btnRegistro"
-        >
+            id="btnRegistro">
             <div class="dot-online"></div>
             ¡Regístrate!
         </a>
+      </div>
 
-        <!-- CONTADOR -->
+<!-- CONTADOR -->
         <div id="countdownBox" class="only-ranking">
             ⏳ Cargando contador...
-        </div>
-      </div>	
+        </div>	
     </div>
 
     <div id="rankingSection" class="view-section">
@@ -2362,10 +2388,7 @@ function iniciarContador() {
 
     // Estructura HTML inicial
     box.innerHTML = `
-        <div class="countdown-title" style="margin-bottom:10px;">
-     Faltan para el Mundial
-	</div>
-
+        
         <div class="flip-clock">
 
             <div class="flip-group">
