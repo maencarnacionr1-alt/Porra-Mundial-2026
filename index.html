@@ -132,16 +132,8 @@ html,body{
     position: relative;
 }
 
-.ranking-table tbody tr:nth-child(-n+3)::before{
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 4px;
-    background: var(--pitch-green);
-    
-    pointer-events: none;
+.ranking-table tbody tr:nth-child(-n+3) td:first-child{
+    border-left: 4px solid var(--pitch-green);
 }
 
 .ranking-table tbody tr:nth-child(3){
