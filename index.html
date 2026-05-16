@@ -128,6 +128,21 @@ html,body{
     border-bottom: 1px solid rgba(0,0,0,0.08);
 }
 
+.ranking-table tbody tr:nth-child(1){
+    background: linear-gradient(90deg, #ffd70022, #ffd70005);
+    font-weight: 900;
+}
+
+.ranking-table tbody tr:nth-child(2){
+    background: linear-gradient(90deg, #c0c0c022, #c0c0c005);
+    font-weight: 800;
+}
+
+.ranking-table tbody tr:nth-child(3){
+    background: linear-gradient(90deg, #cd7f3222, #cd7f3205);
+    font-weight: 800;
+}
+
 .ranking-table tbody tr:hover{
 
     background: linear-gradient(
@@ -1210,8 +1225,9 @@ h1{
 .ranking-table thead th{
     position: sticky;
     top: 0;
-    z-index: 10;
-    background: #fff;
+    z-index: 20;
+    background: white;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
 }
 
 /* ===============================
