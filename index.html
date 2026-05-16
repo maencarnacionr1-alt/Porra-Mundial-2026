@@ -140,7 +140,8 @@ html,body{
     bottom: 0;
     width: 4px;
     background: var(--pitch-green);
-    border-radius: 0 4px 4px 0;
+    
+    pointer-events: none;
 }
 
 .ranking-table tbody tr:nth-child(3){
@@ -935,7 +936,7 @@ table {
 
     border: 2px solid rgba(0,0,0,0.08);
     border-radius: 16px;
-
+    position: relative;
     overflow: hidden;
 
     box-shadow: 0 8px 20px rgba(0,0,0,0.06);
