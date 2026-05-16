@@ -2005,10 +2005,12 @@ function parseCSV(csv) {
 }
 
 // ================= RANKING =================
-
 function renderRanking() {
 
   const tbody = document.getElementById("rankingBody");
+
+  // cargar histórico real
+  let rankingPrevio = JSON.parse(localStorage.getItem("rankingPrevio") || "{}");
 
   const nuevoRanking = {};
 
@@ -2043,7 +2045,8 @@ function renderRanking() {
 
   }).join("");
 
-  rankingPrevio = nuevoRanking;
+  // guardar estado real para próxima recarga
+  localStorage.setItem("rankingPrevio", JSON.stringify(nuevoRanking));
 }
 
 // ================= VISTAS =================
