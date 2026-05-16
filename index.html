@@ -136,10 +136,6 @@ html,body{
     border-left: 4px solid var(--pitch-green);
 }
 
-.ranking-table tbody tr:nth-child(3){
-    border-bottom: 2px solid rgba(27, 94, 32, 0.25);
-}
-
 .ranking-table tbody tr:hover{
 
     background: linear-gradient(
@@ -1929,6 +1925,7 @@ const URL_TEAMS =
 const GOOGLE_SCRIPT_URL =
   "https://script.google.com/macros/s/AKfycbxpCT7cpzN3V79bun548yebPDgvmzoqZZgPzKw0hdbdoddc3M3kxWJRCvY7u6N-ZLT2tw/exec";
 
+let rankingPrevio = {};
 let selectsGlobalesGrupos = [];
 let equiposDisponibles = [];
 let equiposPorGrupo = {};
@@ -2008,17 +2005,45 @@ function parseCSV(csv) {
 }
 
 // ================= RANKING =================
+
 function renderRanking() {
 
   const tbody = document.getElementById("rankingBody");
 
-  tbody.innerHTML = data.map((p, i) => `
-    <tr onclick="showPlayer(${i})">
-      <td>${i + 1}º</td>
-      <td>${p.name}</td>
-      <td>${p.total}</td>
-    </tr>
-  `).join("");
+  const nuevoRanking = {};
+
+  tbody.innerHTML = data.map((p, i) => {
+
+    const nombre = p.name;
+    const nuevaPos = i + 1;
+
+    const posAnterior = rankingPrevio[nombre];
+
+    let flecha = "";
+
+    if (posAnterior !== undefined) {
+
+      if (nuevaPos < posAnterior) {
+        flecha = " <span style='color:#2e7d32;font-weight:900;font-size:0.9rem;'>⬆</span>";
+      } 
+      else if (nuevaPos > posAnterior) {
+        flecha = " <span style='color:#c62828;font-weight:900;font-size:0.9rem;'>⬇</span>";
+      }
+    }
+
+    nuevoRanking[nombre] = nuevaPos;
+
+    return `
+      <tr onclick="showPlayer(${i})">
+        <td>${nuevaPos}º ${flecha}</td>
+        <td>${p.name}</td>
+        <td>${p.total}</td>
+      </tr>
+    `;
+
+  }).join("");
+
+  rankingPrevio = nuevoRanking;
 }
 
 // ================= VISTAS =================
