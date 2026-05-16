@@ -128,19 +128,26 @@ html,body{
     border-bottom: 1px solid rgba(0,0,0,0.08);
 }
 
-.ranking-table tbody tr:nth-child(1){
-    background: linear-gradient(90deg, #ffd70022, #ffd70005);
+.ranking-table tbody tr:nth-child(1) td:first-child{
+    background: rgba(27, 94, 32, 0.10); /* verde premium */
     font-weight: 900;
+    border-radius: 10px;
 }
 
-.ranking-table tbody tr:nth-child(2){
-    background: linear-gradient(90deg, #c0c0c022, #c0c0c005);
-    font-weight: 800;
+.ranking-table tbody tr:nth-child(2) td:first-child{
+    background: rgba(0, 0, 0, 0.06); /* gris elegante */
+    font-weight: 900;
+    border-radius: 10px;
 }
 
-.ranking-table tbody tr:nth-child(3){
-    background: linear-gradient(90deg, #cd7f3222, #cd7f3205);
-    font-weight: 800;
+.ranking-table tbody tr:nth-child(3) td:first-child{
+    background: rgba(27, 94, 32, 0.06); /* verde suave */
+    font-weight: 900;
+    border-radius: 10px;
+}
+
+.ranking-table tbody tr:nth-child(-n+3) td:first-child{
+    box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08);
 }
 
 .ranking-table tbody tr:hover{
