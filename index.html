@@ -2010,21 +2010,14 @@ function renderRanking() {
 
   const tbody = document.getElementById("rankingBody");
 
-  // 🔥 ordenar correctamente por número real (robusto con Google Sheets)
   const rankingOrdenado = [...data].sort((a, b) => {
 
-    const aTotal = parseFloat(
-      String(a.total).replace(",", ".").trim()
-    ) || 0;
-
-    const bTotal = parseFloat(
-      String(b.total).replace(",", ".").trim()
-    ) || 0;
+    const aTotal = parseFloat(String(a.total).replace(",", ".").trim()) || 0;
+    const bTotal = parseFloat(String(b.total).replace(",", ".").trim()) || 0;
 
     return bTotal - aTotal;
   });
 
-  // historial de posiciones
   const rankingPrevio = JSON.parse(
     localStorage.getItem("rankingPrevio") || "{}"
   );
@@ -2042,32 +2035,59 @@ function renderRanking() {
     if (posAnterior !== undefined) {
 
       if (nuevaPos < posAnterior) {
-        flecha = " <span style='color:#2e7d32;font-weight:900;font-size:0.9rem;'>⬆</span>";
+        flecha = "up";
       } 
       else if (nuevaPos > posAnterior) {
-        flecha = " <span style='color:#c62828;font-weight:900;font-size:0.9rem;'>⬇</span>";
+        flecha = "down";
       }
     }
 
     nuevoRanking[nombre] = nuevaPos;
 
-    // índice real en data (para no romper showPlayer)
     const realIndex = data.findIndex(d => d.name === nombre);
 
     return `
       <tr onclick="showPlayer(${realIndex})">
-        <td>${nuevaPos}º ${flecha}</td>
+
+        <td>
+          <div style="
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            gap:8px;
+          ">
+            <span>${nuevaPos}º</span>
+
+            ${flecha === "up" ? `
+              <span style="
+                color:#2e7d32;
+                font-weight:900;
+                font-size:1rem;
+                line-height:1;
+              ">⬆</span>
+            ` : ""}
+
+            ${flecha === "down" ? `
+              <span style="
+                color:#c62828;
+                font-weight:900;
+                font-size:1rem;
+                line-height:1;
+              ">⬇</span>
+            ` : ""}
+
+          </div>
+        </td>
+
         <td>${nombre}</td>
-        <td>${parseFloat(String(p.total).replace(",", ".").trim()) || 0}</td>
+
+        <td>${Number(parseFloat(String(p.total).replace(",", ".").trim()) || 0)}</td>
+
       </tr>
     `;
   }).join("");
 
-  // guardar posiciones para siguiente actualización
-  localStorage.setItem(
-    "rankingPrevio",
-    JSON.stringify(nuevoRanking)
-  );
+  localStorage.setItem("rankingPrevio", JSON.stringify(nuevoRanking));
 }
 
 // ================= VISTAS =================
