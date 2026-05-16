@@ -2005,20 +2005,36 @@ function parseCSV(csv) {
 }
 
 // ================= RANKING =================
+
 function renderRanking() {
 
   const tbody = document.getElementById("rankingBody");
 
-  // cargar histórico real
-  let rankingPrevio = JSON.parse(localStorage.getItem("rankingPrevio") || "{}");
+  // 🔥 ordenar correctamente por número real (robusto con Google Sheets)
+  const rankingOrdenado = [...data].sort((a, b) => {
+
+    const aTotal = parseFloat(
+      String(a.total).replace(",", ".").trim()
+    ) || 0;
+
+    const bTotal = parseFloat(
+      String(b.total).replace(",", ".").trim()
+    ) || 0;
+
+    return bTotal - aTotal;
+  });
+
+  // historial de posiciones
+  const rankingPrevio = JSON.parse(
+    localStorage.getItem("rankingPrevio") || "{}"
+  );
 
   const nuevoRanking = {};
 
-  tbody.innerHTML = data.map((p, i) => {
+  tbody.innerHTML = rankingOrdenado.map((p, i) => {
 
     const nombre = p.name;
     const nuevaPos = i + 1;
-
     const posAnterior = rankingPrevio[nombre];
 
     let flecha = "";
@@ -2035,18 +2051,23 @@ function renderRanking() {
 
     nuevoRanking[nombre] = nuevaPos;
 
+    // índice real en data (para no romper showPlayer)
+    const realIndex = data.findIndex(d => d.name === nombre);
+
     return `
-      <tr onclick="showPlayer(${i})">
+      <tr onclick="showPlayer(${realIndex})">
         <td>${nuevaPos}º ${flecha}</td>
-        <td>${p.name}</td>
-        <td>${p.total}</td>
+        <td>${nombre}</td>
+        <td>${parseFloat(String(p.total).replace(",", ".").trim()) || 0}</td>
       </tr>
     `;
-
   }).join("");
 
-  // guardar estado real para próxima recarga
-  localStorage.setItem("rankingPrevio", JSON.stringify(nuevoRanking));
+  // guardar posiciones para siguiente actualización
+  localStorage.setItem(
+    "rankingPrevio",
+    JSON.stringify(nuevoRanking)
+  );
 }
 
 // ================= VISTAS =================
