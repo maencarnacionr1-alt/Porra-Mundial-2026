@@ -1997,6 +1997,8 @@ async function initApp() {
  const pronos = await fetch(URL_PRONOSTICOS).then(r => r.text());
  pronosticosData = parseCSV(pronos);
 
+ renderPlayerDropdown();
+
   const equiposRows = parseCSV(eq);
 
 equiposDisponibles = equiposRows
@@ -2289,6 +2291,8 @@ window.showPredictions = function () {
   document.getElementById("countdownBox").style.display = "none";
 
   document.querySelector(".btn-registro-container").style.display = "none";
+
+  renderPlayerDropdown();
 };
 
 // ================= DROPDOWNS =================
@@ -2558,7 +2562,9 @@ function renderPlayerDropdown() {
 
   const select = document.getElementById("playerSelect");
 
-  const nombres = [...new Set(pronosticosData.map(p => p.nombre))];
+  const nombres = [...new Set(
+  pronosticosData.map(p => p.nombre || p.Nombre || p.NOMBRE).filter(Boolean)
+)];
 
   select.innerHTML = `
     <option value="">Selecciona un jugador...</option>
