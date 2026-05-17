@@ -2044,19 +2044,31 @@ equiposRows.forEach(r => {
 
   renderRanking();
   enableAutoFillOctavos();
+  renderPlayerDropdown();
 }
 
 // ================= CSV =================
+
 function parseCSV(csv) {
 
   const lines = csv.trim().split("\n");
-  const sep = lines[0].includes(";") ? ";" : ",";
-  const headers = lines.shift().split(sep).map(h => h.trim().toLowerCase());
 
-  return lines.map(line => {
+  const sep = lines[0].includes(";") ? ";" : ",";
+
+  const headers = lines[0]
+    .split(sep)
+    .map(h => h.trim()); // 👈 IMPORTANTE: NO lowerCase
+
+  return lines.slice(1).map(line => {
+
     const values = line.split(sep);
+
     const obj = {};
-    headers.forEach((h, i) => obj[h] = values[i]?.replace(/"/g, ""));
+
+    headers.forEach((h, i) => {
+      obj[h] = values[i] ? values[i].replace(/"/g, "").trim() : "";
+    });
+
     return obj;
   });
 }
@@ -2191,47 +2203,98 @@ window.loadPlayerPredictions = function () {
 
   if (!name) return;
 
-  const rows = pronosticosData.filter(p => p.nombre === name);
+  const player = pronosticosData.find(p => p.nombre === name);
 
-  renderPredictionsByRows(rows);
+  if (!player) return;
+
+  renderPredictionsByPlayer(player);
 };
 
 // ================= PLAYER =================
 
-function renderPredictionsByRows(rows) {
+function renderPredictionsByPlayer(p) {
 
-  const container = document.getElementById("predictionsGlobalView");
+  const c = document.getElementById("predictionsGlobalView");
 
-  if (!rows.length) {
-    container.innerHTML = "<p>No hay datos para este jugador</p>";
-    return;
-  }
-
-  container.innerHTML = `
+  c.innerHTML = `
     <div class="fase-container">
 
-      <h3>TOP 8</h3>
+      <!-- ================= TOP 8 ================= -->
+      <h3>🏆 TOP 8</h3>
+      <ol>
+        ${Array.from({ length: 8 }, (_, i) => `
+          <li><strong>${p[`equipo ${i + 1}`] || "-"}</strong></li>
+        `).join("")}
+      </ol>
+
+      <!-- ================= GRUPOS ================= -->
+      <h3>⚽ FASE DE GRUPOS</h3>
+
+      <h4>Primeros</h4>
       <ul>
-        ${rows
-          .filter(r => r.fase === "top")
-          .map(r => `<li>${r.equipo}</li>`)
+        ${["A","B","C","D","E","F","G","H","I","J","K","L"]
+          .map(g => `<li>${p[`Primero Grupo ${g}`] || "-"}</li>`)
           .join("")}
       </ul>
 
-      <h3>FASE DE GRUPOS</h3>
+      <h4>Segundos</h4>
       <ul>
-        ${rows
-          .filter(r => r.fase.includes("grupo"))
-          .map(r => `<li>${r.equipo}</li>`)
+        ${["A","B","C","D","E","F","G","H","I","J","K","L"]
+          .map(g => `<li>${p[`Segundo Grupo ${g}`] || "-"}</li>`)
           .join("")}
       </ul>
 
-      <h3>ELIMINATORIAS</h3>
+      <h4>Terceros</h4>
       <ul>
-        ${rows
-          .filter(r => !r.fase.includes("grupo") && r.fase !== "top")
-          .map(r => `<li>${r.equipo}</li>`)
+        ${["A","B","C","D","E","F","G","H","I","J","K","L"]
+          .map(g => `<li>${p[`Tercero Grupo ${g}`] || "-"}</li>`)
           .join("")}
+      </ul>
+
+      <!-- ================= ESPECIALES ================= -->
+      <h3>🔥 ESPECIALES</h3>
+      <ul>
+        <li>⚽ Máximo goleador: <strong>${p["Maxímo Geador"] || "-"}</strong></li>
+        <li>🧤 Menos goleado: <strong>${p["Menos Goleado"] || "-"}</strong></li>
+      </ul>
+
+      <!-- ================= ELIMINATORIAS ================= -->
+      <h3>🏁 ELIMINATORIAS</h3>
+
+      <h4>Octavos</h4>
+      <ul>
+        ${Array.from({ length: 16 }, (_, i) => `
+          <li>${p[`Octavos ${i + 1}`] || "-"}</li>
+        `).join("")}
+      </ul>
+
+      <h4>Cuartos</h4>
+      <ul>
+        ${Array.from({ length: 8 }, (_, i) => `
+          <li>${p[`Cuartos ${i + 1}`] || "-"}</li>
+        `).join("")}
+      </ul>
+
+      <h4>Semifinales</h4>
+      <ul>
+        ${Array.from({ length: 4 }, (_, i) => `
+          <li>${p[`Seminal ${i + 1}`] || "-"}</li>
+        `).join("")}
+      </ul>
+
+      <h4>Final</h4>
+      <ul>
+        ${Array.from({ length: 2 }, (_, i) => `
+          <li>${p[`Final ${i + 1}`] || "-"}</li>
+        `).join("")}
+      </ul>
+
+      <!-- ================= PODIO ================= -->
+      <h3>🏆 PODIO</h3>
+      <ul>
+        <li>🥇 Campeón: <strong>${p["Campeón"] || "-"}</strong></li>
+        <li>🥈 Subcampeón: <strong>${p["Subcampeón"] || "-"}</strong></li>
+        <li>🥉 Tercero: <strong>${p["Tercero"] || "-"}</strong></li>
       </ul>
 
     </div>
@@ -2558,19 +2621,16 @@ function mostrarConfirmacion() {
   document.body.appendChild(modal);
 }
 
+
 function renderPlayerDropdown() {
 
   const select = document.getElementById("playerSelect");
 
-  const nombres = [...new Set(
-  pronosticosData.map(p => p.nombre || p.Nombre || p.NOMBRE).filter(Boolean)
-)];
+  const nombres = [...new Set(pronosticosData.map(p => p.nombre))];
 
   select.innerHTML = `
     <option value="">Selecciona un jugador...</option>
-    ${nombres.map(n => `
-      <option value="${n}">${n}</option>
-    `).join("")}
+    ${nombres.map(n => `<option value="${n}">${n}</option>`).join("")}
   `;
 }
 
