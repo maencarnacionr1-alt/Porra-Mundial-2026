@@ -2172,6 +2172,7 @@ window.showRanking = function () {
 
 // MOSTRAR BOTÓN + CONTADOR
   document.querySelector(".btn-registro-container").style.display = "flex";
+updateHistory("ranking");
 };
 
 window.showRegister = function () {
@@ -2195,6 +2196,7 @@ window.showRegister = function () {
   renderEliminatorias("finalistasContainer", "finalista", 2);
 
   renderSimpleDropdowns();
+  updateHistory("register");
 };
 
 window.loadPlayerPredictions = function () {
@@ -2340,7 +2342,7 @@ if (i === undefined || i === null) {
     </tr>
   `).join("");
 
-
+ updateHistory("player");
 };
 
 window.showPredictions = function () {
@@ -2356,6 +2358,7 @@ window.showPredictions = function () {
   document.querySelector(".btn-registro-container").style.display = "none";
 
   renderPlayerDropdown();
+  updateHistory("predictions");
 };
 
 // ================= DROPDOWNS =================
@@ -2854,6 +2857,15 @@ function closeMenu(){
         .classList.remove("active");
 }
 
+function updateHistory(section){
+
+    history.pushState(
+        { section },
+        "",
+        "#" + section
+    );
+}
+
 function goToSection(section){
 
     closeMenu();
@@ -2884,7 +2896,41 @@ function goToSection(section){
     }
 }
 
+
+// ================= BOTÓN ATRÁS =================
+
+window.addEventListener("popstate", (e) => {
+
+    const section =
+        e.state?.section || "ranking";
+
+    switch(section){
+
+        case "ranking":
+            showRanking();
+            break;
+
+        case "register":
+            showRegister();
+            break;
+
+        case "player":
+
+            if(currentPlayerIndex !== null){
+                showPlayer(currentPlayerIndex);
+            }else{
+                showRanking();
+            }
+
+            break;
+
+        case "predictions":
+            showPredictions();
+            break;
+    }
+});
 // ================= START =================
+
 document.addEventListener("DOMContentLoaded", () => {
 
     initApp();
