@@ -1895,6 +1895,10 @@ body{
 
         </div>
 
+	<!-- MIS PRONÓSTICOS VISUAL -->
+
+	<div id="predictionsView"></div>
+
 	<div class="teams-table-wrapper">
         <table class="teams-table">
 
@@ -1935,6 +1939,7 @@ const URL_TEAMS =
 const GOOGLE_SCRIPT_URL =
   "https://script.google.com/macros/s/AKfycbxpCT7cpzN3V79bun548yebPDgvmzoqZZgPzKw0hdbdoddc3M3kxWJRCvY7u6N-ZLT2tw/exec";
 
+let currentPlayerIndex = null;
 let rankingPrevio = {};
 let selectsGlobalesGrupos = [];
 let equiposDisponibles = [];
@@ -2101,6 +2106,8 @@ function renderRanking() {
 }
 
 // ================= VISTAS =================
+
+
 window.showRanking = function () {
 
   document.querySelectorAll(".view-section")
@@ -2137,10 +2144,73 @@ window.showRegister = function () {
 };
 
 // ================= PLAYER =================
+
+function renderPredictions(player) {
+
+  const container = document.getElementById("predictionsView");
+
+  const teams = player.teams || [];
+
+  // helper para filtrar por fase
+  const getByFase = (fase) =>
+    teams.filter(t => (t.fase || "").toLowerCase() === fase.toLowerCase());
+
+  container.innerHTML = `
+    
+    <div class="fase-container">
+
+      <div class="fase-title">MIS PRONÓSTICOS</div>
+
+      <!-- TOP 8 -->
+      <h3>TOP 8</h3>
+      <div class="grid-preguntas">
+        ${teams
+          .filter(t => (t.pos || "").includes("1") || (t.pos || "").includes("2") || (t.pos || "").includes("3") || (t.pos || "").includes("4"))
+          .slice(0, 8)
+          .map(t => `
+            <div class="top8-card">
+              <strong>${t.team || "-"}</strong>
+              <div>Puntos: ${t.puntos || 0}</div>
+            </div>
+          `).join("")}
+      </div>
+
+      <!-- FASE DE GRUPOS -->
+      <h3 style="margin-top:20px;">FASE DE GRUPOS</h3>
+      ${["grupo_primero", "grupo_segundo", "grupo_tercero"].map(f => `
+        <div>
+          <strong>${f.replace("_", " ").toUpperCase()}</strong>
+          <ul>
+            ${getByFase(f).map(t => `<li>${t.team}</li>`).join("")}
+          </ul>
+        </div>
+      `).join("")}
+
+      <!-- ELIMINATORIAS -->
+      <h3 style="margin-top:20px;">ELIMINATORIAS</h3>
+      ${["octavos", "cuartos", "semis", "finalista"].map(f => `
+        <div>
+          <strong>${f.toUpperCase()}</strong>
+          <ul>
+            ${getByFase(f).map(t => `<li>${t.team}</li>`).join("")}
+          </ul>
+        </div>
+      `).join("")}
+
+    </div>
+  `;
+}
+
 window.showPlayer = function (i) {
+
+if (i === undefined || i === null) {
+    return showRanking();
+}
 
 // ocultar botón + contador
   document.querySelector(".btn-registro-container").style.display = "none";
+
+  currentPlayerIndex = i; // 👈 guardar jugador actual
 
   const p = data[i];
 
@@ -2169,6 +2239,9 @@ window.showPlayer = function (i) {
       <td>${t.puntos}</td>
     </tr>
   `).join("");
+
+renderPredictions(p);
+
 };
 
 // ================= DROPDOWNS =================
@@ -2669,15 +2742,21 @@ function goToSection(section){
 
         case "player":
 
-            showPlayer();
-            break;
+   		 if (currentPlayerIndex !== null) {
+       		 showPlayer(currentPlayerIndex);
+    			} else {
+        	showRanking(); // fallback seguro
+    }
+
+    	    break;
 
         case "predictions":
-
-            // ejemplo:
-            alert("Próximamente mis pronósticos");
-
-            break;
+    		if (currentPlayerIndex !== null) {
+        	showPlayer(currentPlayerIndex);
+   		 } else {
+        	showRanking();
+    }
+   	   break;
     }
 }
 
