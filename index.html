@@ -1895,10 +1895,6 @@ body{
 
         </div>
 
-	<!-- MIS PRONÓSTICOS VISUAL -->
-
-	<div id="predictionsView"></div>
-
 	<div class="teams-table-wrapper">
         <table class="teams-table">
 
@@ -1924,6 +1920,12 @@ body{
 	</div>
     </div>
 </div>
+
+<!-- MIS PRONÓSTICOS (NUEVA SECCIÓN INDEPENDIENTE) -->
+
+	<div id="predictionsSection" class="view-section hidden">
+    		<div id="predictionsGlobalView"></div>
+	</div>
 
 <script>
 
@@ -2145,9 +2147,9 @@ window.showRegister = function () {
 
 // ================= PLAYER =================
 
-function renderPredictions(player) {
+function renderPredictionsGlobal(player) {
 
-  const container = document.getElementById("predictionsView");
+  const container = document.getElementById("predictionsGlobalView");
 
   const teams = player.teams || [];
 
@@ -2240,8 +2242,26 @@ if (i === undefined || i === null) {
     </tr>
   `).join("");
 
-renderPredictions(p);
 
+};
+
+window.showPredictions = function () {
+
+  if (currentPlayerIndex === null) {
+    return showRanking();
+  }
+
+  const p = data[currentPlayerIndex];
+
+  document.querySelectorAll(".view-section")
+    .forEach(s => s.classList.add("hidden"));
+
+  document.getElementById("playerSection").classList.add("hidden");
+  document.getElementById("predictionsSection").classList.remove("hidden");
+
+  document.getElementById("countdownBox").style.display = "none";
+
+  renderPredictionsGlobal(p);
 };
 
 // ================= DROPDOWNS =================
@@ -2751,12 +2771,8 @@ function goToSection(section){
     	    break;
 
         case "predictions":
-    		if (currentPlayerIndex !== null) {
-        	showPlayer(currentPlayerIndex);
-   		 } else {
-        	showRanking();
-    }
-   	   break;
+    		showPredictions();
+    	   break;
     }
 }
 
