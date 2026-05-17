@@ -453,7 +453,7 @@ html,body{
 
  	}
 	
-	
+	#predictionsSection,
 	#rankingSection,
 	#registerSection,
 	#playerSection{
@@ -1872,6 +1872,42 @@ body{
 
 </div>
 
+<!-- MIS PRONÓSTICOS (NUEVA SECCIÓN INDEPENDIENTE) -->
+
+<div id="predictionsSection" class="view-section hidden">
+
+    <div class="fase-container">
+
+        <div class="fase-title">
+            MIS PRONÓSTICOS
+        </div>
+
+        <!-- SELECTOR -->
+        <div style="margin-bottom:20px;">
+
+            <label class="preg-label">
+                Selecciona un jugador
+            </label>
+
+            <div class="select-wrapper">
+                <select
+                    id="playerSelect"
+                    class="equipo-select-simple"
+                    onchange="loadPlayerPredictions()"
+                >
+                    <option value="">Elegir jugador...</option>
+                </select>
+            </div>
+
+        </div>
+
+        <!-- CONTENIDO -->
+        <div id="predictionsGlobalView"></div>
+
+    </div>
+
+</div>
+
     <div id="playerSection" class="view-section hidden">
 
         <h2 id="playerNameBig">NOMBRE</h2>
@@ -1921,11 +1957,6 @@ body{
     </div>
 </div>
 
-<!-- MIS PRONÓSTICOS (NUEVA SECCIÓN INDEPENDIENTE) -->
-
-	<div id="predictionsSection" class="view-section hidden">
-    		<div id="predictionsGlobalView"></div>
-	</div>
 
 <script>
 
@@ -1938,9 +1969,13 @@ const URL_RANKING =
 const URL_TEAMS =
   "https://docs.google.com/spreadsheets/d/e/2PACX-1vRvbv4wKVLcF-dhiuLmYtU3aR8diCVDA8EgQ-yxaZXXqotI_L2VSWcoFo0NwiPEXB0XJwOxu9prujQk/pub?gid=176911669&single=true&output=csv";
 
+const URL_PRONOSTICOS =
+"https://docs.google.com/spreadsheets/d/e/2PACX-1vRvbv4wKVLcF-dhiuLmYtU3aR8diCVDA8EgQ-yxaZXXqotI_L2VSWcoFo0NwiPEXB0XJwOxu9prujQk/pub?gid=446548834&single=true&output=csv";
+
 const GOOGLE_SCRIPT_URL =
   "https://script.google.com/macros/s/AKfycbxpCT7cpzN3V79bun548yebPDgvmzoqZZgPzKw0hdbdoddc3M3kxWJRCvY7u6N-ZLT2tw/exec";
 
+let pronosticosData = [];
 let currentPlayerIndex = null;
 let rankingPrevio = {};
 let selectsGlobalesGrupos = [];
@@ -1958,6 +1993,9 @@ async function initApp() {
     fetch(URL_RANKING).then(r => r.text()),
     fetch(URL_TEAMS).then(r => r.text())
   ]);
+
+ const pronos = await fetch(URL_PRONOSTICOS).then(r => r.text());
+ pronosticosData = parseCSV(pronos);
 
   const equiposRows = parseCSV(eq);
 
@@ -2145,59 +2183,54 @@ window.showRegister = function () {
   renderSimpleDropdowns();
 };
 
+window.loadPlayerPredictions = function () {
+
+  const name = document.getElementById("playerSelect").value;
+
+  if (!name) return;
+
+  const rows = pronosticosData.filter(p => p.nombre === name);
+
+  renderPredictionsByRows(rows);
+};
+
 // ================= PLAYER =================
 
-function renderPredictionsGlobal(player) {
+function renderPredictionsByRows(rows) {
 
   const container = document.getElementById("predictionsGlobalView");
 
-  const teams = player.teams || [];
-
-  // helper para filtrar por fase
-  const getByFase = (fase) =>
-    teams.filter(t => (t.fase || "").toLowerCase() === fase.toLowerCase());
+  if (!rows.length) {
+    container.innerHTML = "<p>No hay datos para este jugador</p>";
+    return;
+  }
 
   container.innerHTML = `
-    
     <div class="fase-container">
 
-      <div class="fase-title">MIS PRONÓSTICOS</div>
-
-      <!-- TOP 8 -->
       <h3>TOP 8</h3>
-      <div class="grid-preguntas">
-        ${teams
-          .filter(t => (t.pos || "").includes("1") || (t.pos || "").includes("2") || (t.pos || "").includes("3") || (t.pos || "").includes("4"))
-          .slice(0, 8)
-          .map(t => `
-            <div class="top8-card">
-              <strong>${t.team || "-"}</strong>
-              <div>Puntos: ${t.puntos || 0}</div>
-            </div>
-          `).join("")}
-      </div>
+      <ul>
+        ${rows
+          .filter(r => r.fase === "top")
+          .map(r => `<li>${r.equipo}</li>`)
+          .join("")}
+      </ul>
 
-      <!-- FASE DE GRUPOS -->
-      <h3 style="margin-top:20px;">FASE DE GRUPOS</h3>
-      ${["grupo_primero", "grupo_segundo", "grupo_tercero"].map(f => `
-        <div>
-          <strong>${f.replace("_", " ").toUpperCase()}</strong>
-          <ul>
-            ${getByFase(f).map(t => `<li>${t.team}</li>`).join("")}
-          </ul>
-        </div>
-      `).join("")}
+      <h3>FASE DE GRUPOS</h3>
+      <ul>
+        ${rows
+          .filter(r => r.fase.includes("grupo"))
+          .map(r => `<li>${r.equipo}</li>`)
+          .join("")}
+      </ul>
 
-      <!-- ELIMINATORIAS -->
-      <h3 style="margin-top:20px;">ELIMINATORIAS</h3>
-      ${["octavos", "cuartos", "semis", "finalista"].map(f => `
-        <div>
-          <strong>${f.toUpperCase()}</strong>
-          <ul>
-            ${getByFase(f).map(t => `<li>${t.team}</li>`).join("")}
-          </ul>
-        </div>
-      `).join("")}
+      <h3>ELIMINATORIAS</h3>
+      <ul>
+        ${rows
+          .filter(r => !r.fase.includes("grupo") && r.fase !== "top")
+          .map(r => `<li>${r.equipo}</li>`)
+          .join("")}
+      </ul>
 
     </div>
   `;
@@ -2247,21 +2280,15 @@ if (i === undefined || i === null) {
 
 window.showPredictions = function () {
 
-  if (currentPlayerIndex === null) {
-    return showRanking();
-  }
-
-  const p = data[currentPlayerIndex];
-
   document.querySelectorAll(".view-section")
     .forEach(s => s.classList.add("hidden"));
 
-  document.getElementById("playerSection").classList.add("hidden");
-  document.getElementById("predictionsSection").classList.remove("hidden");
+  document.getElementById("predictionsSection")
+    .classList.remove("hidden");
 
   document.getElementById("countdownBox").style.display = "none";
 
-  renderPredictionsGlobal(p);
+  document.querySelector(".btn-registro-container").style.display = "none";
 };
 
 // ================= DROPDOWNS =================
@@ -2526,6 +2553,21 @@ function mostrarConfirmacion() {
 
   document.body.appendChild(modal);
 }
+
+function renderPlayerDropdown() {
+
+  const select = document.getElementById("playerSelect");
+
+  const nombres = [...new Set(pronosticosData.map(p => p.nombre))];
+
+  select.innerHTML = `
+    <option value="">Selecciona un jugador...</option>
+    ${nombres.map(n => `
+      <option value="${n}">${n}</option>
+    `).join("")}
+  `;
+}
+
 
 document.getElementById("registrationForm").onsubmit = async (e) => {
 
