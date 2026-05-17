@@ -2066,7 +2066,7 @@ function parseCSV(csv) {
     const obj = {};
 
     headers.forEach((h, i) => {
-      obj[h] = values[i] ? values[i].replace(/"/g, "").trim() : "";
+      obj[h.trim().replace(/\r/g, "")] = values[i] ? values[i].replace(/"/g, "").trim() : "";
     });
 
     return obj;
