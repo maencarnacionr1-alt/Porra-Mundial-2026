@@ -2676,9 +2676,11 @@ function renderEliminatorias(containerId, prefix, n) {
 
 function renderSimpleDropdowns() {
 
-    function refreshDropdowns() {
+    const allSelects = document.querySelectorAll(
+        "select:not(#playerSelect)"
+    );
 
-        const allSelects = document.querySelectorAll(".equipo-select-simple");
+    function refreshDropdowns() {
 
         allSelects.forEach(select => {
 
@@ -2723,15 +2725,6 @@ function renderSimpleDropdowns() {
             });
         });
     }
-
-    // 👇 SOLO UNA VEZ (NO dentro del loop)
-    document.addEventListener("change", (e) => {
-
-        if (e.target.matches(".equipo-select-simple")) {
-            refreshDropdowns();
-        }
-
-    });
 
     refreshDropdowns();
 }
