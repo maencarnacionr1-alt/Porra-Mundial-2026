@@ -2174,6 +2174,23 @@ function renderRanking() {
   localStorage.setItem("rankingPrevio", JSON.stringify(nuevoRanking));
 }
 
+function resetPredictionsView(){
+
+    const select =
+        document.getElementById("playerSelect");
+
+    const container =
+        document.getElementById("predictionsGlobalView");
+
+    if(select){
+        select.value = "";
+    }
+
+    if(container){
+        container.innerHTML = "";
+    }
+}
+
 // ================= VISTAS =================
 
 
@@ -2216,15 +2233,36 @@ window.showRegister = function () {
 
 window.loadPlayerPredictions = function () {
 
-  const name = document.getElementById("playerSelect").value;
+    const name =
+        document.getElementById("playerSelect").value;
 
-  if (!name) return;
+    if (!name) {
 
-  const player = pronosticosData.find(p => p.nombre === name);
+        document.getElementById(
+            "predictionsGlobalView"
+        ).innerHTML = "";
 
-  if (!player) return;
+        return;
+    }
 
-  renderPredictionsByPlayer(player);
+    const firstRow = pronosticosData[0] || {};
+
+    const nombreKey =
+        Object.keys(firstRow).find(
+            k =>
+                k.toLowerCase().includes("nombre") ||
+                k.toLowerCase().includes("jugador")
+        );
+
+    if (!nombreKey) return;
+
+    const player = pronosticosData.find(
+        p => p[nombreKey] === name
+    );
+
+    if (!player) return;
+
+    renderPredictionsByPlayer(player);
 };
 
 // ================= PLAYER =================
@@ -2372,6 +2410,7 @@ window.showPredictions = function () {
 
   document.querySelector(".btn-registro-container").style.display = "none";
 
+  resetPredictionsView();
   renderPlayerDropdown();
   updateHistory("predictions");
 };
@@ -2642,14 +2681,52 @@ function mostrarConfirmacion() {
 
 function renderPlayerDropdown() {
 
-  const select = document.getElementById("playerSelect");
+    const select =
+        document.getElementById("playerSelect");
 
-  const nombres = [...new Set(pronosticosData.map(p => p.nombre))];
+    // limpiar SIEMPRE
+    select.innerHTML = `
+        <option value="">
+            Selecciona un jugador...
+        </option>
+    `;
 
-  select.innerHTML = `
-    <option value="">Selecciona un jugador...</option>
-    ${nombres.map(n => `<option value="${n}">${n}</option>`).join("")}
-  `;
+    // detectar automáticamente la columna correcta
+    const firstRow = pronosticosData[0] || {};
+
+    const nombreKey =
+        Object.keys(firstRow).find(
+            k =>
+                k.toLowerCase().includes("nombre") ||
+                k.toLowerCase().includes("jugador")
+        );
+
+    if (!nombreKey) {
+        console.error("No se encontró columna nombre");
+        return;
+    }
+
+    // nombres únicos y válidos
+    const nombres = [
+        ...new Set(
+            pronosticosData
+                .map(p => p[nombreKey]?.trim())
+                .filter(Boolean)
+        )
+    ];
+
+    nombres.sort((a, b) =>
+        a.localeCompare(b, "es")
+    );
+
+    select.innerHTML += nombres.map(nombre => `
+        <option value="${nombre}">
+            ${nombre}
+        </option>
+    `).join("");
+
+    // reset visual
+    select.value = "";
 }
 
 
