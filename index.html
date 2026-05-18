@@ -2684,45 +2684,45 @@ function renderPlayerDropdown() {
     const select =
         document.getElementById("playerSelect");
 
-    // limpiar SIEMPRE
+    // reset
     select.innerHTML = `
         <option value="">
             Selecciona un jugador...
         </option>
     `;
 
-    // detectar automáticamente la columna correcta
-    const firstRow = pronosticosData[0] || {};
-
-    const nombreKey =
-        Object.keys(firstRow).find(
-            k =>
-                k.toLowerCase().includes("nombre") ||
-                k.toLowerCase().includes("jugador")
-        );
-
-    if (!nombreKey) {
-        console.error("No se encontró columna nombre");
-        return;
-    }
-
-    // nombres únicos y válidos
+    // obtener nombres únicos
     const nombres = [
         ...new Set(
             pronosticosData
-                .map(p => p[nombreKey]?.trim())
+                .map(p => p.nombre?.trim())
                 .filter(Boolean)
         )
-    ];
+    ]
 
-    nombres.sort((a, b) =>
+    // ordenar alfabéticamente
+    .sort((a, b) =>
         a.localeCompare(b, "es")
     );
 
+    // primera letra mayúscula
+    const capitalizar = (texto) => {
+
+        return texto
+            .toLowerCase()
+            .replace(
+                /\b\w/g,
+                letra => letra.toUpperCase()
+            );
+    };
+
+    // pintar opciones
     select.innerHTML += nombres.map(nombre => `
+
         <option value="${nombre}">
-            ${nombre}
+            ${capitalizar(nombre)}
         </option>
+
     `).join("");
 
     // reset visual
