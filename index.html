@@ -1348,9 +1348,9 @@ h1{
 /* expansión hover */
 
 .side-menu:hover,
-.side-menu:hover{
+.side-menu.active{
 
-    width:280px; !important;
+    width:280px !important;
 }
 
 /* HEADER */
@@ -2529,8 +2529,8 @@ function renderEliminatorias(containerId, prefix, n) {
 function renderSimpleDropdowns() {
 
     const allSelects = document.querySelectorAll(
-        "select"
-    );
+    "select:not(#playerSelect)"
+	);
 
     function refreshDropdowns() {
 
