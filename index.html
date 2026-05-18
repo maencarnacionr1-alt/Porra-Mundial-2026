@@ -7,6 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=Black+Ops+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
 
     <style>
 
@@ -1303,6 +1304,30 @@ h1{
     transform:scale(1.05);
 }
 
+/* ICONOS MENÚS*/
+
+.menu-icon i,
+.bottom-nav i{
+
+    font-size:1.15rem;
+
+    transition:
+        transform 0.25s ease,
+        color 0.25s ease;
+
+}
+
+/* hover */
+
+.side-menu a:hover i,
+.bottom-nav button:hover i{
+
+    color:var(--gold);
+
+    transform:scale(1.15);
+
+}
+
 /* PANEL */
 
 .side-menu{
@@ -1608,6 +1633,7 @@ body{
 </button>
 
 <!-- SIDEBAR MENU -->
+
 <nav id="sideMenu" class="side-menu">
 
     <div class="menu-header">
@@ -1615,23 +1641,31 @@ body{
     </div>
 
     <a href="javascript:void(0)" onclick="goToSection('ranking')">
-    	<span class="menu-icon">🏆</span>
-    	<span class="menu-text">Inicio</span>
+        <span class="menu-icon">
+            <i class="fa-solid fa-trophy"></i>
+        </span>
+        <span class="menu-text">Clasificación</span>
     </a>
 
     <a href="javascript:void(0)" onclick="goToSection('register')">
-	<span class="menu-icon">✍️</span>
-    	<span class="menu-text">Registro</span>
+        <span class="menu-icon">
+            <i class="fa-solid fa-pen-to-square"></i>
+        </span>
+        <span class="menu-text">Registro</span>
     </a>
 
     <a href="javascript:void(0)" onclick="goToSection('player')">
-	<span class="menu-icon">👥</span>
-    	<span class="menu-text">Jugadores</span> 
+        <span class="menu-icon">
+            <i class="fa-solid fa-users"></i>
+        </span>
+        <span class="menu-text">Mis Puntos</span>
     </a>
 
     <a href="javascript:void(0)" onclick="goToSection('predictions')">
-	<span class="menu-icon">📊</span>
-    	<span class="menu-text">Mis Pronósticos</span>
+        <span class="menu-icon">
+            <i class="fa-solid fa-chart-line"></i>
+        </span>
+        <span class="menu-text">Mis Pronósticos</span>
     </a>
 
 </nav>
@@ -3130,14 +3164,8 @@ function goToSection(section){
             break;
 
         case "player":
-
-   		 if (currentPlayerIndex !== null) {
-       		 showPlayer(currentPlayerIndex);
-    			} else {
-        	showRanking(); // fallback seguro
-    }
-
-    	    break;
+            showPlayer();
+   	    break;
 
         case "predictions":
     		showPredictions();
@@ -3164,14 +3192,8 @@ window.addEventListener("popstate", (e) => {
             break;
 
         case "player":
-
-            if(currentPlayerIndex !== null){
-                showPlayer(currentPlayerIndex);
-            }else{
-                showRanking();
-            }
-
-            break;
+            showPlayer();
+   	    break;
 
         case "predictions":
             showPredictions();
@@ -3193,22 +3215,23 @@ document.addEventListener("DOMContentLoaded", () => {
 </script>
 
 <!-- MENÚ INFERIOR (ICONOS) -->
+
 <nav class="bottom-nav">
 
-    <button onclick="goToSection('ranking')" title="Inicio">
-        🏆
+    <button onclick="goToSection('ranking')" title="Clasificación">
+        <i class="fa-solid fa-house"></i>
     </button>
 
     <button onclick="goToSection('register')" title="Registro">
-        ✍️
+        <i class="fa-solid fa-pen-to-square"></i>
     </button>
 
     <button onclick="goToSection('player')" title="Jugadores">
-        👥
+        <i class="fa-solid fa-users"></i>
     </button>
 
     <button onclick="goToSection('predictions')" title="Pronósticos">
-        📊
+        <i class="fa-solid fa-chart-line"></i>
     </button>
 
 </nav>
