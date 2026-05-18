@@ -2686,24 +2686,90 @@ function renderSimpleDropdowns() {
 
             const current = select.value;
 
-            const section =
-                select.dataset.section ||
-                select.name ||
-                "default";
+            // detectar bloque lógico
+            let section = "default";
 
+            if (select.name.startsWith("top")) {
+                section = "top8";
+            }
+
+            else if (select.name.startsWith("grupo_primero")) {
+                section = "primeros";
+            }
+
+            else if (select.name.startsWith("grupo_segundo")) {
+                section = "segundos";
+            }
+
+            else if (select.name.startsWith("grupo_tercero")) {
+                section = "terceros";
+            }
+
+            else if (select.name.startsWith("octavos")) {
+                section = "octavos";
+            }
+
+            else if (select.name.startsWith("cuartos")) {
+                section = "cuartos";
+            }
+
+            else if (select.name.startsWith("semis")) {
+                section = "semis";
+            }
+
+            else if (select.name.startsWith("finalista")) {
+                section = "finalistas";
+            }
+
+            else if (
+                ["campeon", "subcampeon", "tercero"].includes(select.name)
+            ) {
+                section = "podio";
+            }
+
+            // selects del mismo bloque
             const sectionSelects =
-                document.querySelectorAll(
-                    `.equipo-select-simple[data-section="${section}"]`
-                );
+                Array.from(allSelects).filter(s => {
+
+                    if (section === "top8")
+                        return s.name.startsWith("top");
+
+                    if (section === "primeros")
+                        return s.name.startsWith("grupo_primero");
+
+                    if (section === "segundos")
+                        return s.name.startsWith("grupo_segundo");
+
+                    if (section === "terceros")
+                        return s.name.startsWith("grupo_tercero");
+
+                    if (section === "octavos")
+                        return s.name.startsWith("octavos");
+
+                    if (section === "cuartos")
+                        return s.name.startsWith("cuartos");
+
+                    if (section === "semis")
+                        return s.name.startsWith("semis");
+
+                    if (section === "finalistas")
+                        return s.name.startsWith("finalista");
+
+                    if (section === "podio")
+                        return ["campeon","subcampeon","tercero"]
+                            .includes(s.name);
+
+                    return false;
+                });
 
             const selected =
-                Array.from(sectionSelects)
+                sectionSelects
                     .map(s => s.value)
                     .filter(Boolean);
 
             let equiposBase = equiposDisponibles;
 
-            // limitar equipos por grupo
+            // limitar por grupo
             if (select.classList.contains("grupo-select")) {
 
                 const grupo = select.dataset.grupo;
@@ -2712,11 +2778,11 @@ function renderSimpleDropdowns() {
                     equiposPorGrupo[grupo] || [];
             }
 
-            // limpiar opciones
+            // limpiar
             select.innerHTML =
                 `<option value="">Elegir equipo...</option>`;
 
-            // volver a pintar opciones válidas
+            // repintar opciones
             equiposBase.forEach(team => {
 
                 if (
@@ -2740,10 +2806,9 @@ function renderSimpleDropdowns() {
         });
     }
 
-    // render inicial
     refreshDropdowns();
 
-    // evitar listeners duplicados
+    // listener único global
     if (!dropdownListenerAttached) {
 
         document.addEventListener("change", (e) => {
