@@ -2762,26 +2762,11 @@ function renderSimpleDropdowns() {
                     return false;
                 });
 
-            const selected =
-                sectionSelects
-                    .map(s => s.value)
-                    .filter(Boolean);
-
-	if (
-    section === "primeros" ||
-    section === "segundos" ||
-    section === "terceros"
-) {
-
-    return (
-        s.dataset.grupo === select.dataset.grupo &&
-        (
-            s.name.startsWith("grupo_primero") ||
-            s.name.startsWith("grupo_segundo") ||
-            s.name.startsWith("grupo_tercero")
-        )
-    );
-}
+            const selected = new Set(
+   				 sectionSelects
+       				.map(s => s.value)
+       				.filter(Boolean)
+			);
 
             let equiposBase = equiposDisponibles;
 
@@ -2802,7 +2787,7 @@ function renderSimpleDropdowns() {
             equiposBase.forEach(team => {
 
                 if (
-                    !selected.includes(team) ||
+                    !selected.has(tem) ||
                     team === current
                 ) {
 
