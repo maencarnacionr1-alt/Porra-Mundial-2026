@@ -1941,7 +1941,7 @@ body{
             <div class="select-wrapper">
                 <select
                     id="playerSelect"
-                    class="equipo-select-simple"
+                     class="player-select"
                     onchange="loadPlayerPredictions()"
                 >
                     <option value="">Elegir jugador...</option>
@@ -2677,7 +2677,7 @@ function renderEliminatorias(containerId, prefix, n) {
 function renderSimpleDropdowns() {
 
     const allSelects = document.querySelectorAll(
-        "select:not(#playerSelect)"
+    ".equipo-select-simple:not(#playerSelect)"
     );
 
     function refreshDropdowns() {
