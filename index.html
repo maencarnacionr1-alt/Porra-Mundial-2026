@@ -1616,6 +1616,64 @@ body{
         padding-bottom:0 !important;
     }
 }
+
+/* ESTILOS DEL SWITCH DESLIZANTE */
+.automation-switch-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.08);
+    padding: 15px;
+    border-radius: 15px;
+    margin-bottom: 35px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.switch-label {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    color: var(--green)!important;
+    font-size: 0.95rem;
+}
+
+/* El cuerpo del switch (el óvalo) */
+.custom-switch {
+    width: 50px;
+    height: 26px;
+    background-color: #ccc;
+    border-radius: 50px;
+    position: relative;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* La bolita interna */
+.custom-switch-circle {
+    width: 20px;
+    height: 20px;
+    background-color: white;
+    border-radius: 50%;
+    position: absolute;
+    top: 3px;
+    left: 4px;
+    transition: transform 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+/* Estado encendido: cambia el fondo a verde vibrante */
+.custom-switch.active {
+    background-color: var(--grass-vibrant);
+}
+
+/* Estado encendido: desplaza la bolita a la derecha */
+.custom-switch.active .custom-switch-circle {
+    transform: translateX(22px);
+}
+
     </style>
 
 </head>
@@ -1723,6 +1781,12 @@ body{
 
         <!-- PARTICIPANTE -->
 
+	<div class="automation-switch-container">
+    <span class="switch-label">✨ Llenado rápido por cruces FIFA</span>
+    <div class="custom-switch" id="automationToggle" onclick="toggleCustomSwitch()">
+        <div class="custom-switch-circle"></div>
+    </div>
+</div>
         <div style="margin-bottom:30px; text-align:center;">
 
             <label class="preg-label" style="font-size:1.2rem;">
@@ -1964,7 +2028,7 @@ body{
     <div class="fase-container">
 
         <div class="fase-title">
-            DETALLE DE PUNTOS
+            JUGADORES
         </div>
 
         <div style="margin-bottom:20px;">
@@ -3328,6 +3392,167 @@ document.addEventListener("DOMContentLoaded", () => {
 
 });
 
+// FUNCIÓN PARA REACCIONAR AL CLICK Y DESPLAZAR EL SWITCH
+function toggleCustomSwitch() {
+    const switchElement = document.getElementById('automationToggle');
+    
+    // Alterna la clase 'active' para que el CSS mueva la bolita físicamente
+    switchElement.classList.toggle('active');
+    
+    // Si al hacer click se encendió, ejecuta el llenado automático
+    if (switchElement.classList.contains('active')) {
+        ejecutarLlenadoAutomatico();
+    }
+}
+
+// LÓGICA DE CRUCES ADAPTADA A TU APP
+function ejecutarLlenadoAutomatico() {
+    // 1. Capturar los valores actuales de la fase de grupos usando tus índices (0 a 11)
+    const primeros = [];
+    const segundos = [];
+    const terceros = [];
+
+    for (let i = 0; i < 12; i++) {
+        const selP = document.querySelector(`select[name="grupo_primero${i}"]`);
+        const selS = document.querySelector(`select[name="grupo_segundo${i}"]`);
+        const selT = document.querySelector(`select[name="grupo_tercero${i}"]`); // Ajusta si el prefijo de tus terceros varía
+
+        primeros.push(selP ? selP.value : "");
+        segundos.push(selS ? selS.value : "");
+        terceros.push(selT ? selT.value : "");
+    }
+
+    // Filtrar los mejores terceros que sí tengan un equipo seleccionado (máximo 8 válidos)
+    const mejoresTercerosValidos = terceros.filter(Boolean);
+
+    // 2. Cuadrante Oficial de Emparejamientos FIFA 2026 para Dieciseisavos de Final (32 equipos)
+    // Asignamos a cada uno de los 32 espacios (dieciseisavos1 hasta dieciseisavos32) su correspondiente clasificado por regla.
+    // Nota: Los emparejamientos de terceros en la FIFA dependen de qué grupos provengan, aquí usamos una distribución directa basada en tus selectores.
+    const asignacionCruces = {
+        "dieciseisavos1": primeros[0],                     // A1
+        "dieciseisavos2": mejoresTercerosValidos[0] || "", // Tercero 1
+        "dieciseisavos3": primeros[1],                     // B1
+        "dieciseisavos4": segundos[2],                     // C2
+        "dieciseisavos5": primeros[2],                     // C1
+        "dieciseisavos6": mejoresTercerosValidos[1] || "", // Tercero 2
+        "dieciseisavos7": primeros[3],                     // D1
+        "dieciseisavos8": segundos[4],                     // E2
+        "dieciseisavos9": primeros[4],                     // E1
+        "dieciseisavos10": mejoresTercerosValidos[2] || "",// Tercero 3
+        "dieciseisavos11": primeros[5],                    // F1
+        "dieciseisavos12": segundos[6],                    // G2
+        "dieciseisavos13": primeros[6],                    // G1
+        "dieciseisavos14": mejoresTercerosValidos[3] || "",// Tercero 4
+        "dieciseisavos15": primeros[7],                    // H1
+        "dieciseisavos16": segundos[8],                    // I2
+        "dieciseisavos17": primeros[8],                    // I1
+        "dieciseisavos18": mejoresTercerosValidos[4] || "",// Tercero 5
+        "dieciseisavos19": primeros[9],                    // J1
+        "dieciseisavos20": segundos[10],                   // K2
+        "dieciseisavos21": primeros[10],                   // K1
+        "dieciseisavos22": mejoresTercerosValidos[5] || "",// Tercero 6
+        "dieciseisavos23": primeros[11],                   // L1
+        "dieciseisavos24": segundos[0],                    // A2
+        "dieciseisavos25": segundos[1],                    // B2
+        "dieciseisavos26": mejoresTercerosValidos[6] || "",// Tercero 7
+        "dieciseisavos27": segundos[3],                    // D2
+        "dieciseisavos28": segundos[5],                    // F2
+        "dieciseisavos29": segundos[7],                    // H2
+        "dieciseisavos30": mejoresTercerosValidos[7] || "",// Tercero 8
+        "dieciseisavos31": segundos[9],                    // J2
+        "dieciseisavos32": segundos[11]                    // L2
+    };
+
+    // 3. Rellenar Dieciseisavos en la interfaz
+    for (const [nameKey, equipo] of Object.entries(asignacionCruces)) {
+        const selector = document.querySelector(`select[name="${nameKey}"]`);
+        if (selector && equipo) {
+            // Añadimos la opción dinámicamente si no existiera en el select de eliminatorias todavía
+            if (!selector.querySelector(`option[value="${equipo}"]`)) {
+                const opt = document.createElement("option");
+                opt.value = equipo;
+                opt.textContent = equipo;
+                selector.appendChild(opt);
+            }
+            selector.value = equipo;
+            // Forzar los estilos de completado que usa tu app
+            selector.classList.add("select-completed");
+        }
+    }
+
+    // 4. Llenar en Cascada el Árbol Siguiente (Octavos, Cuartos, Semis, Final)
+    // Para rellenar de forma predictiva el resto de fases sin bloquear al usuario, pasamos por defecto al primer equipo de cada cruce previo.
+    
+    // De Dieciseisavos (32 equipos) a Octavos (16 equipos)
+    for (let i = 1; i <= 16; i++) {
+        const selectorOctavos = document.querySelector(`select[name="octavos${i}"]`);
+        const procedencia1 = asignacionCruces[`dieciseisavos${(i * 2) - 1}`];
+        if (selectorOctavos && procedencia1) {
+            if (!selectorOctavos.querySelector(`option[value="${procedencia1}"]`)) {
+                const opt = document.createElement("option");
+                opt.value = procedencia1;
+                opt.textContent = procedencia1;
+                selectorOctavos.appendChild(opt);
+            }
+            selectorOctavos.value = procedencia1;
+            selectorOctavos.classList.add("select-completed");
+        }
+    }
+
+    // De Octavos (16 equipos) a Cuartos (8 equipos)
+    for (let i = 1; i <= 8; i++) {
+        const selectorCuartos = document.querySelector(`select[name="cuartos${i}"]`);
+        const procedencia2 = document.querySelector(`select[name="octavos${(i * 2) - 1}"]`)?.value;
+        if (selectorCuartos && procedencia2) {
+            if (!selectorCuartos.querySelector(`option[value="${procedencia2}"]`)) {
+                const opt = document.createElement("option");
+                opt.value = procedencia2;
+                opt.textContent = procedencia2;
+                selectorCuartos.appendChild(opt);
+            }
+            selectorCuartos.value = procedencia2;
+            selectorCuartos.classList.add("select-completed");
+        }
+    }
+
+    // De Cuartos (8 equipos) a Semifinales (4 equipos)
+    for (let i = 1; i <= 4; i++) {
+        const selectorSemis = document.querySelector(`select[name="semis${i}"]`);
+        const procedencia3 = document.querySelector(`select[name="cuartos${(i * 2) - 1}"]`)?.value;
+        if (selectorSemis && procedencia3) {
+            if (!selectorSemis.querySelector(`option[value="${procedencia3}"]`)) {
+                const opt = document.createElement("option");
+                opt.value = procedencia3;
+                opt.textContent = procedencia3;
+                selectorSemis.appendChild(opt);
+            }
+            selectorSemis.value = procedencia3;
+            selectorSemis.classList.add("select-completed");
+        }
+    }
+
+    // De Semifinales (4 equipos) a Finalistas (2 equipos)
+    for (let i = 1; i <= 2; i++) {
+        const selectorFinal = document.querySelector(`select[name="final${i}"]`);
+        const procedencia4 = document.querySelector(`select[name="semis${(i * 2) - 1}"]`)?.value;
+        if (selectorFinal && procedencia4) {
+            if (!selectorFinal.querySelector(`option[value="${procedencia4}"]`)) {
+                const opt = document.createElement("option");
+                opt.value = procedencia4;
+                opt.textContent = procedencia4;
+                selectorFinal.appendChild(opt);
+            }
+            selectorFinal.value = procedencia4;
+            selectorFinal.classList.add("select-completed");
+        }
+    }
+
+    // Refrescar los dropdowns generales para equilibrar los selectores mutuos de tu app
+    if (typeof refreshDropdowns === "function") {
+        refreshDropdowns();
+    }
+}
+
 </script>
 
 <!-- MENÚ INFERIOR (ICONOS) -->
@@ -3335,7 +3560,7 @@ document.addEventListener("DOMContentLoaded", () => {
 <nav class="bottom-nav">
 
     <button onclick="goToSection('ranking')" title="Clasificación">
-        <i class="fa-solid fa-trophy"></i>
+        <i class="fa-solid fa-house"></i>
     </button>
 
     <button onclick="goToSection('register')" title="Registro">
