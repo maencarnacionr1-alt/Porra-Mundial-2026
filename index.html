@@ -1673,7 +1673,7 @@ body{
 <!-- OVERLAY -->
 <div id="menuOverlay" class="menu-overlay" onclick="closeMenu()"></div>
 
-  <h1>PORRA MUNIAL 2026</h1>
+  <h1>PORRA MUNDIAL 2026</h1>
     </header>
 
      <div class="btn-registro-container">
@@ -2906,10 +2906,17 @@ function renderRankingPlayersDropdown(){
     `).join("");
 }
 
-
 document.getElementById("registrationForm").onsubmit = async (e) => {
 
   e.preventDefault();
+
+  // 1. Obtener el botón de envío y deshabilitarlo inmediatamente
+  // Esto evita de raíz que un segundo clic dispare otra petición en paralelo
+  const botonSubmit = e.target.querySelector("button[type='submit']");
+  if (botonSubmit) {
+    botonSubmit.disabled = true;
+    botonSubmit.innerText = "Enviando...";
+  }
 
   const obj = {};
 
@@ -2922,71 +2929,85 @@ document.getElementById("registrationForm").onsubmit = async (e) => {
 
   });
 
-  await fetch(GOOGLE_SCRIPT_URL, {
-    method: "POST",
-    headers: { "Content-Type": "text/plain;charset=utf-8" },
-    body: JSON.stringify(obj)
-  });
+  try {
+    // 2. Realizar el envío de forma segura
+    await fetch(GOOGLE_SCRIPT_URL, {
+      method: "POST",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify(obj)
+    });
 
-  document.getElementById("registrationForm").innerHTML = `
+    // 3. Pintar el diseño de éxito una vez que el servidor responde
+    document.getElementById("registrationForm").innerHTML = `
 
-    <div style="
-        background:white;
-        border-radius:25px;
-        padding:40px 25px;
-        text-align:center;
-        box-shadow:0 10px 30px rgba(0,0,0,0.12);
-    ">
+      <div style="
+          background:white;
+          border-radius:25px;
+          padding:40px 25px;
+          text-align:center;
+          box-shadow:0 10px 30px rgba(0,0,0,0.12);
+      ">
 
-        <div style="
-            width:80px;
-            height:80px;
-            border-radius:50%;
-            background:#2e7d32;
-            margin:0 auto 20px auto;
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            color:white;
-            font-size:2rem;
-            font-weight:900;
-        ">
-            ✓
-        </div>
+          <div style="
+              width:80px;
+              height:80px;
+              border-radius:50%;
+              background:#2e7d32;
+              margin:0 auto 20px auto;
+              display:flex;
+              align-items:center;
+              justify-content:center;
+              color:white;
+              font-size:2rem;
+              font-weight:900;
+          ">
+              ✓
+          </div>
 
-        <h2 style="
-            margin:0 0 10px 0;
-            color:#1b5e20;
-            font-size:2rem;
-        ">
-            Pronósticos enviados
-        </h2>
+          <h2 style="
+              margin:0 0 10px 0;
+              color:#1b5e20;
+              font-size:2rem;
+          ">
+              Pronósticos enviados
+          </h2>
 
-        <p style="
-            color:#555;
-            font-size:1rem;
-            line-height:1.6;
-            max-width:500px;
-            margin:0 auto 25px auto;
-        ">
-            Tus predicciones se han guardado correctamente.
-            Ya formas parte del Mundial Adquira 2026.
-        </p>
+          <p style="
+              color:#555;
+              font-size:1rem;
+              line-height:1.6;
+              max-width:500px;
+              margin:0 auto 25px auto;
+          ">
+              Tus predicciones se han guardado correctamente.
+              Ya formas parte de la "Porra Mundial 2026".
+          </p>
 
-        <button
-            onclick="showRanking()"
-            class="btn-registro"
-            style="
-                margin:0 auto;
-                justify-content:center;
-            "
-        >
-            Volver al Ranking
-        </button>
+          <button
+              onclick="showRanking()"
+              class="btn-registro"
+              style="
+                  margin:0 auto;
+                  justify-content:center;
+              "
+          >
+              Volver al Ranking
+          </button>
 
-    </div>
+      </div>
 
-`;
+  `;
+
+  } catch (error) {
+    console.error("Error al enviar el pronóstico:", error);
+    alert("Hubo un problema de conexión al enviar tus datos. Por favor, inténtalo de nuevo.");
+    
+    // Si la red falla de verdad, reactivamos el botón para que puedan reintentar
+    if (botonSubmit) {
+      botonSubmit.disabled = false;
+      botonSubmit.innerText = "Enviar Pronóstico";
+    }
+  }
 };
 
 
