@@ -1109,6 +1109,17 @@ h1{
 
 @media (max-height: 500px) and (orientation: landscape){
 
+/* ocultar en desktop (opcional pero recomendado en tu UI) */
+@media (min-width: 500px){
+    .bottom-nav{
+        display: none;
+    }
+
+    body{
+        padding-bottom: 0;
+    }
+
+
 	    body {
         padding: 0;
 		margin: 0;
@@ -1166,8 +1177,6 @@ h1{
 
 }
 
-}
-
 .ranking-table th,
 .ranking-table td{
     text-align:center;
@@ -1185,14 +1194,6 @@ h1{
     background: white;
     box-shadow: 0 2px 6px rgba(0,0,0,0.08);
 }
-
-.bottom-nav {
-        display: none !important;
-    }
-
-body {
-        padding-bottom: 0 !important;
-    }
 
 /* ===============================
    SELECT COMPLETADO
