@@ -2677,7 +2677,7 @@ function renderEliminatorias(containerId, prefix, n) {
 function renderSimpleDropdowns() {
 
     const allSelects = document.querySelectorAll(
-    ".equipo-select-simple:not(#playerSelect)"
+        ".equipo-select-simple:not(#playerSelect)"
     );
 
     function refreshDropdowns() {
@@ -2687,9 +2687,9 @@ function renderSimpleDropdowns() {
             const current = select.value;
 
             const section =
-    		select.dataset.section ||
-    		select.name ||
-    		"default";
+                select.dataset.section ||
+                select.name ||
+                "default";
 
             const sectionSelects =
                 document.querySelectorAll(
@@ -2703,24 +2703,36 @@ function renderSimpleDropdowns() {
 
             let equiposBase = equiposDisponibles;
 
+            // limitar equipos por grupo
             if (select.classList.contains("grupo-select")) {
 
                 const grupo = select.dataset.grupo;
-                equiposBase = equiposPorGrupo[grupo] || [];
+
+                equiposBase =
+                    equiposPorGrupo[grupo] || [];
             }
 
+            // limpiar opciones
             select.innerHTML =
                 `<option value="">Elegir equipo...</option>`;
 
+            // volver a pintar opciones válidas
             equiposBase.forEach(team => {
 
-                if (!selected.includes(team) || team === current) {
+                if (
+                    !selected.includes(team) ||
+                    team === current
+                ) {
 
-                    const option = document.createElement("option");
+                    const option =
+                        document.createElement("option");
+
                     option.value = team;
                     option.textContent = team;
 
-                    if (team === current) option.selected = true;
+                    if (team === current) {
+                        option.selected = true;
+                    }
 
                     select.appendChild(option);
                 }
@@ -2728,7 +2740,27 @@ function renderSimpleDropdowns() {
         });
     }
 
+    // render inicial
     refreshDropdowns();
+
+    // evitar listeners duplicados
+    if (!dropdownListenerAttached) {
+
+        document.addEventListener("change", (e) => {
+
+            if (
+                e.target.matches(
+                    ".equipo-select-simple:not(#playerSelect)"
+                )
+            ) {
+
+                refreshDropdowns();
+            }
+
+        });
+
+        dropdownListenerAttached = true;
+    }
 }
 
 function enableVisualChecks() {
