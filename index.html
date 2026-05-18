@@ -2106,8 +2106,8 @@ body{
                         <th>8VOS</th>
                         <th>4TOS</th>
                         <th>SEMIS</th>
+			<th>FINAL</th>
                         <th>3º</th>
-                        <th>FINAL</th>
                         <th>TOTAL</th>
                     </tr>
                 </thead>
@@ -3500,8 +3500,8 @@ function ejecutarLlenadoAutomatico() {
     // De Semifinales a Finalistas del Torneo (final1 y final2)
     const finalista1 = document.querySelector(`select[name="semis1"]`)?.value;
     const finalista2 = document.querySelector(`select[name="semis3"]`)?.value;
-    forzarSeleccion("final1", finalista1);
-    forzarSeleccion("final2", finalista2);
+    forzarSeleccion("finalista1", finalista1);
+    forzarSeleccion("finalista2", finalista2);
 
     // Identificar perdedores de Semis (Irán al partido por el 3º Puesto)
     const perdedorSemis1 = document.querySelector(`select[name="semis2"]`)?.value;
