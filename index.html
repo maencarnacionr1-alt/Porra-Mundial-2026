@@ -1941,7 +1941,7 @@ body{
             <div class="select-wrapper">
                 <select
                     id="playerSelect"
-                     class="player-select"
+                     class="equipo-select-simple"
                     onchange="loadPlayerPredictions()"
                 >
                     <option value="">Elegir jugador...</option>
@@ -2727,63 +2727,80 @@ function renderSimpleDropdowns() {
                 section = "podio";
             }
 
-            // selects del mismo bloque
-            const sectionSelects =
-                Array.from(allSelects).filter(s => {
+            // ===============================
+            // SELECCIÓN DE SELECTS POR BLOQUE
+            // ===============================
+            const sectionSelects = Array.from(allSelects).filter(s => {
 
-                    if (section === "top8")
-                        return s.name.startsWith("top");
+                // TOP 8
+                if (section === "top8")
+                    return s.name.startsWith("top");
 
-                    if (section === "primeros")
-                        return s.name.startsWith("grupo_primero");
+                // FASE DE GRUPOS (CORREGIDO)
+                if (
+                    section === "primeros" ||
+                    section === "segundos" ||
+                    section === "terceros"
+                ) {
+                    return (
+                        s.dataset.grupo === select.dataset.grupo &&
+                        (
+                            s.name.startsWith("grupo_primero") ||
+                            s.name.startsWith("grupo_segundo") ||
+                            s.name.startsWith("grupo_tercero")
+                        )
+                    );
+                }
 
-                    if (section === "segundos")
-                        return s.name.startsWith("grupo_segundo");
+                // ELIMINATORIAS
+                if (section === "octavos")
+                    return s.name.startsWith("octavos");
 
-                    if (section === "terceros")
-                        return s.name.startsWith("grupo_tercero");
+                if (section === "cuartos")
+                    return s.name.startsWith("cuartos");
 
-                    if (section === "octavos")
-                        return s.name.startsWith("octavos");
+                if (section === "semis")
+                    return s.name.startsWith("semis");
 
-                    if (section === "cuartos")
-                        return s.name.startsWith("cuartos");
+                if (section === "finalistas")
+                    return s.name.startsWith("finalista");
 
-                    if (section === "semis")
-                        return s.name.startsWith("semis");
+                // PODIO
+                if (section === "podio")
+                    return ["campeon", "subcampeon", "tercero"]
+                        .includes(s.name);
 
-                    if (section === "finalistas")
-                        return s.name.startsWith("finalista");
+                return false;
+            });
 
-                    if (section === "podio")
-                        return ["campeon","subcampeon","tercero"]
-                            .includes(s.name);
-
-                    return false;
-                });
-
+            // ===============================
+            // EQUIPOS YA SELECCIONADOS
+            // ===============================
             const selected = new Set(
-   				 sectionSelects
-       				.map(s => s.value)
-       				.filter(Boolean)
-			);
+                sectionSelects
+                    .map(s => s.value)
+                    .filter(Boolean)
+            );
 
+            // ===============================
+            // BASE DE EQUIPOS
+            // ===============================
             let equiposBase = equiposDisponibles;
 
-            // limitar por grupo
+            // limitar por grupo (solo fase de grupos)
             if (select.classList.contains("grupo-select")) {
 
                 const grupo = select.dataset.grupo;
 
-                equiposBase =
-                    equiposPorGrupo[grupo] || [];
+                equiposBase = equiposPorGrupo[grupo] || [];
             }
 
-            // limpiar
+            // ===============================
+            // RECONSTRUCCIÓN DEL SELECT
+            // ===============================
             select.innerHTML =
                 `<option value="">Elegir equipo...</option>`;
 
-            // repintar opciones
             equiposBase.forEach(team => {
 
                 if (
@@ -2791,8 +2808,7 @@ function renderSimpleDropdowns() {
                     team === current
                 ) {
 
-                    const option =
-                        document.createElement("option");
+                    const option = document.createElement("option");
 
                     option.value = team;
                     option.textContent = team;
@@ -2819,7 +2835,6 @@ function renderSimpleDropdowns() {
                     ".equipo-select-simple:not(#playerSelect)"
                 )
             ) {
-
                 refreshDropdowns();
             }
 
@@ -2928,7 +2943,7 @@ function renderPlayerDropdown() {
     const nombres = [
         ...new Set(
             pronosticosData
-                .map(p => p.nombre?.trim())
+                .map(p => (p.nombre || p.name || "").trim())
                 .filter(Boolean)
         )
     ]
