@@ -2676,9 +2676,7 @@ function renderEliminatorias(containerId, prefix, n) {
 
 function renderSimpleDropdowns() {
 
-    const allSelects = document.querySelectorAll(
-        ".equipo-select-simple:not(#playerSelect)"
-    );
+    const allSelects = document.querySelectorAll( ".equipo-select-simple:not(#playerSelect):not(#rankingPlayerSelect)" );
 
     function refreshDropdowns() {
 
@@ -2830,11 +2828,7 @@ function renderSimpleDropdowns() {
 
         document.addEventListener("change", (e) => {
 
-            if (
-                e.target.matches(
-                    ".equipo-select-simple:not(#playerSelect)"
-                )
-            ) {
+            if ( e.target.matches( ".equipo-select-simple:not(#playerSelect):not(#rankingPlayerSelect)" ) ) {
                 refreshDropdowns();
             }
 
