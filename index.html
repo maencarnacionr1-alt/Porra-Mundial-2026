@@ -2767,6 +2767,22 @@ function renderSimpleDropdowns() {
                     .map(s => s.value)
                     .filter(Boolean);
 
+	if (
+    section === "primeros" ||
+    section === "segundos" ||
+    section === "terceros"
+) {
+
+    return (
+        s.dataset.grupo === select.dataset.grupo &&
+        (
+            s.name.startsWith("grupo_primero") ||
+            s.name.startsWith("grupo_segundo") ||
+            s.name.startsWith("grupo_tercero")
+        )
+    );
+}
+
             let equiposBase = equiposDisponibles;
 
             // limitar por grupo
