@@ -2065,6 +2065,7 @@ const URL_PRONOSTICOS =
 const GOOGLE_SCRIPT_URL =
   "https://script.google.com/macros/s/AKfycbxpCT7cpzN3V79bun548yebPDgvmzoqZZgPzKw0hdbdoddc3M3kxWJRCvY7u6N-ZLT2tw/exec";
 
+let dropdownListenerAttached = false;
 let pronosticosData = [];
 let currentPlayerIndex = null;
 let rankingPrevio = {};
@@ -2675,11 +2676,11 @@ function renderEliminatorias(containerId, prefix, n) {
 
 function renderSimpleDropdowns() {
 
-    const allSelects = document.querySelectorAll(
-    "select:not(#playerSelect)"
-	);
-
     function refreshDropdowns() {
+
+        const allSelects = document.querySelectorAll(
+            "select:not(#playerSelect)"
+        );
 
         allSelects.forEach(select => {
 
@@ -2688,28 +2689,22 @@ function renderSimpleDropdowns() {
             const section =
                 select.dataset.section || "default";
 
-            // selects de la misma sección
             const sectionSelects =
                 document.querySelectorAll(
                     `.equipo-select-simple[data-section="${section}"]`
                 );
 
-            // valores elegidos en esa sección
             const selected =
                 Array.from(sectionSelects)
                     .map(s => s.value)
                     .filter(Boolean);
 
-            // grupos → solo equipos del grupo
             let equiposBase = equiposDisponibles;
 
             if (select.classList.contains("grupo-select")) {
 
-                const grupo =
-                    select.dataset.grupo;
-
-                equiposBase =
-                    equiposPorGrupo[grupo] || [];
+                const grupo = select.dataset.grupo;
+                equiposBase = equiposPorGrupo[grupo] || [];
             }
 
             select.innerHTML =
@@ -2717,28 +2712,28 @@ function renderSimpleDropdowns() {
 
             equiposBase.forEach(team => {
 
-                if (
-                    !selected.includes(team)
-                    || team === current
-                ) {
+                if (!selected.includes(team) || team === current) {
 
-                    const option =
-                        document.createElement("option");
-
+                    const option = document.createElement("option");
                     option.value = team;
                     option.textContent = team;
 
-                    if (team === current) {
-                        option.selected = true;
-                    }
+                    if (team === current) option.selected = true;
 
                     select.appendChild(option);
                 }
             });
-
-            select.onchange = refreshDropdowns;
         });
     }
+
+    // 👇 SOLO UNA VEZ (NO dentro del loop)
+    document.addEventListener("change", (e) => {
+
+        if (e.target.matches(".equipo-select-simple")) {
+            refreshDropdowns();
+        }
+
+    });
 
     refreshDropdowns();
 }
