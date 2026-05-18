@@ -2678,7 +2678,10 @@ function renderSimpleDropdowns() {
 
     function refreshDropdowns() {
 
-        const allSelects = document.querySelectorAll(".equipo-select-simple");
+        // SOLO selects visibles en la pantalla actual
+        const allSelects = document.querySelectorAll(
+            ".view-section:not(.hidden) .equipo-select-simple"
+        );
 
         allSelects.forEach(select => {
 
@@ -2689,7 +2692,7 @@ function renderSimpleDropdowns() {
 
             const sectionSelects =
                 document.querySelectorAll(
-                    `.equipo-select-simple[data-section="${section}"]`
+                    `.view-section:not(.hidden) .equipo-select-simple[data-section="${section}"]`
                 );
 
             const selected =
@@ -2724,41 +2727,28 @@ function renderSimpleDropdowns() {
         });
     }
 
-    // 👇 SOLO UNA VEZ (NO dentro del loop)
-    document.addEventListener("change", (e) => {
+    // 👇 SOLO UNA VEZ GLOBAL
+    if (!dropdownListenerAttached) {
 
-        if (e.target.matches(".equipo-select-simple")) {
-            refreshDropdowns();
-        }
+        document.addEventListener("change", (e) => {
 
-    });
+            if (e.target.matches(".equipo-select-simple")) {
+
+                // pequeño delay evita bugs en mobile (muy importante)
+                setTimeout(() => {
+                    refreshDropdowns();
+                }, 0);
+
+            }
+
+        });
+
+        dropdownListenerAttached = true;
+    }
 
     refreshDropdowns();
 }
 
-function enableVisualChecks() {
-
-    document.addEventListener("change", (e) => {
-
-        if (
-            e.target.matches(".equipo-select-simple")
-        ) {
-
-            if (e.target.value !== "") {
-
-                e.target.classList.add(
-                    "select-completed"
-                );
-
-            } else {
-
-                e.target.classList.remove(
-                    "select-completed"
-                );
-            }
-        }
-    });
-}
 
 // activa escucha global
 function enableAutoFillOctavos() {
