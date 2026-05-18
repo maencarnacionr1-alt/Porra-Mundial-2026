@@ -1923,17 +1923,55 @@ body{
 
 </div>
 
-    <div id="playerSection" class="view-section hidden">
+<div id="playerSection" class="view-section hidden">
+
+    <!-- SELECTOR JUGADOR -->
+
+    <div class="fase-container">
+
+        <div class="fase-title">
+            JUGADORES
+        </div>
+
+        <div style="margin-bottom:20px;">
+
+            <label class="preg-label">
+                Selecciona un jugador
+            </label>
+
+            <div class="select-wrapper">
+
+                <select
+                    id="rankingPlayerSelect"
+                    class="equipo-select-simple"
+                    onchange="loadRankingPlayer()"
+                >
+
+                    <option value="">
+                        Elegir jugador...
+                    </option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- CONTENIDO -->
+
+    <div id="playerCardContainer" style="display:none;">
 
         <h2 id="playerNameBig">NOMBRE</h2>
 
         <div class="stats-row">
-			
+
             <div class="stat-card">
                 <label>Ranking</label>
                 <span id="statPos">#0</span>
             </div>
-			
+
             <div class="stat-card">
                 <label>Puntos Finales</label>
                 <span id="statTotal">0</span>
@@ -1946,29 +1984,32 @@ body{
 
         </div>
 
-	<div class="teams-table-wrapper">
-        <table class="teams-table">
+        <div class="teams-table-wrapper">
 
-            <thead>
-                <tr>
-                    <th>POS</th>
-                    <th style="text-align:left">EQUIPO</th>
-                    <th>COEF</th>
-                    <th>1ª F</th>
-                    <th>16VOS</th>
-                    <th>8VOS</th>
-                    <th>4TOS</th>
-                    <th>SEMIS</th>
-                    <th>3º</th>
-                    <th>FINAL</th>
-                    <th>TOTAL</th>
-                </tr>
-            </thead>
+            <table class="teams-table">
 
-            <tbody id="teamsBody"></tbody>
+                <thead>
+                    <tr>
+                        <th>POS</th>
+                        <th style="text-align:left">EQUIPO</th>
+                        <th>COEF</th>
+                        <th>1ª F</th>
+                        <th>16VOS</th>
+                        <th>8VOS</th>
+                        <th>4TOS</th>
+                        <th>SEMIS</th>
+                        <th>3º</th>
+                        <th>FINAL</th>
+                        <th>TOTAL</th>
+                    </tr>
+                </thead>
 
-        </table>
-	</div>
+                <tbody id="teamsBody"></tbody>
+
+            </table>
+
+        </div>
+
     </div>
 </div>
 
@@ -2131,7 +2172,7 @@ function renderRanking() {
     const realIndex = data.findIndex(d => d.name === nombre);
 
     return `
-      <tr onclick="showPlayer(${realIndex})">
+      <tr onclick="openPlayerFromRanking(${realIndex})">
 
         <td>
           <div style="
@@ -2265,6 +2306,50 @@ window.loadPlayerPredictions = function () {
     renderPredictionsByPlayer(player);
 };
 
+window.loadRankingPlayer = function(){
+
+    const name =
+        document.getElementById(
+            "rankingPlayerSelect"
+        ).value;
+
+    const container =
+        document.getElementById(
+            "playerCardContainer"
+        );
+
+    if(!name){
+
+        container.style.display = "none";
+
+        return;
+    }
+
+    const index =
+        data.findIndex(
+            p => p.name === name
+        );
+
+    if(index === -1) return;
+
+    container.style.display = "block";
+
+    renderPlayerCard(index);
+};
+
+window.openPlayerFromRanking = function(i){
+
+    showPlayer();
+
+    const player = data[i];
+
+    document.getElementById(
+        "rankingPlayerSelect"
+    ).value = player.name;
+
+    loadRankingPlayer();
+}
+
 // ================= PLAYER =================
 
 function renderPredictionsByPlayer(p) {
@@ -2356,46 +2441,74 @@ function renderPredictionsByPlayer(p) {
   `;
 }
 
-window.showPlayer = function (i) {
+function renderPlayerCard(i){
 
-if (i === undefined || i === null) {
-    return showRanking();
+    const p = data[i];
+
+    document.getElementById(
+        "playerNameBig"
+    ).textContent = p.name;
+
+    document.getElementById(
+        "statTotal"
+    ).textContent = p.total;
+
+    document.getElementById(
+        "statPreguntas"
+    ).textContent = p.preguntas;
+
+    document.getElementById(
+        "statPos"
+    ).textContent = (i + 1) + "º";
+
+    document.getElementById(
+        "teamsBody"
+    ).innerHTML = p.teams.map(t => `
+
+        <tr>
+            <td>${t.pos}</td>
+            <td>${t.team}</td>
+            <td>${t.coef}</td>
+            <td>${t.fase}</td>
+            <td>${t.dieciseisavos}</td>
+            <td>${t.octavos}</td>
+            <td>${t.cuartos}</td>
+            <td>${t.semis}</td>
+            <td>${t.terceros}</td>
+            <td>${t.final}</td>
+            <td>${t.puntos}</td>
+        </tr>
+
+    `).join("");
 }
 
-// ocultar botón + contador
-  document.querySelector(".btn-registro-container").style.display = "none";
+window.showPlayer = function () {
 
-  currentPlayerIndex = i; // 👈 guardar jugador actual
+    document.querySelectorAll(".view-section")
+        .forEach(s => s.classList.add("hidden"));
 
-  const p = data[i];
+    document.getElementById("playerSection")
+        .classList.remove("hidden");
 
-  document.querySelectorAll(".view-section")
-    .forEach(s => s.classList.add("hidden"));
+    document.getElementById("countdownBox")
+        .style.display = "none";
 
-  document.getElementById("playerSection").classList.remove("hidden");
-  document.getElementById("countdownBox").style.display = "none";
-  document.getElementById("playerNameBig").textContent = p.name;
-  document.getElementById("statTotal").textContent = p.total;
-  document.getElementById("statPreguntas").textContent = p.preguntas;
-  document.getElementById("statPos").textContent = (i + 1) + "º";
+    document.querySelector(
+        ".btn-registro-container"
+    ).style.display = "none";
 
-  document.getElementById("teamsBody").innerHTML = p.teams.map(t => `
-    <tr>
-      <td>${t.pos}</td>
-      <td>${t.team}</td>
-      <td>${t.coef}</td>
-      <td>${t.fase}</td>
-      <td>${t.dieciseisavos}</td>
-      <td>${t.octavos}</td>
-      <td>${t.cuartos}</td>
-      <td>${t.semis}</td>
-      <td>${t.terceros}</td>
-      <td>${t.final}</td>
-      <td>${t.puntos}</td>
-    </tr>
-  `).join("");
+    // reset visual
+    document.getElementById(
+        "rankingPlayerSelect"
+    ).value = "";
 
- updateHistory("player");
+    document.getElementById(
+        "playerCardContainer"
+    ).style.display = "none";
+
+    renderRankingPlayersDropdown();
+
+    updateHistory("player");
 };
 
 window.showPredictions = function () {
@@ -2727,6 +2840,50 @@ function renderPlayerDropdown() {
 
     // reset visual
     select.value = "";
+}
+
+function renderRankingPlayersDropdown(){
+
+    const select =
+        document.getElementById(
+            "rankingPlayerSelect"
+        );
+
+    if(!select) return;
+
+    select.innerHTML = `
+        <option value="">
+            Elegir jugador...
+        </option>
+    `;
+
+    const nombres = [...new Set(
+
+        data.map(p => p.name?.trim())
+            .filter(Boolean)
+
+    )]
+
+    .sort((a,b)=>
+        a.localeCompare(b,"es")
+    );
+
+    const capitalizar = texto =>
+
+        texto
+            .toLowerCase()
+            .replace(
+                /\b\w/g,
+                l => l.toUpperCase()
+            );
+
+    select.innerHTML += nombres.map(nombre => `
+    
+        <option value="${nombre}">
+            ${capitalizar(nombre)}
+        </option>
+
+    `).join("");
 }
 
 
