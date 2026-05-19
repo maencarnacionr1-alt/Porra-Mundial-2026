@@ -1674,6 +1674,70 @@ body{
     transform: translateX(22px);
 }
 
+/* =====================================================
+   NUEVO ENCABEZADO INDEPENDIENTE PARA EL RANKING
+===================================================== */
+.ranking-header-custom {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 500px; /* Alineado exactamente al tamaño máximo de tu tabla */
+    margin: 0 auto 12px auto; /* Centrado y con un margen inferior adecuado */
+    background: #ffffff;
+    border: 2px solid rgba(0,0,0,0.08);
+    border-radius: 14px;
+    padding: 15px 0;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.04);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Elementos individuales del encabezado */
+.ranking-header-custom .col-head {
+    width: 33.33%;
+    text-align: center;
+    font-size: 0.85rem;
+    font-weight: 800;
+    color: #666666;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-family: 'Inter', sans-serif;
+}
+
+/* Línea decorativa animada inferior (Estilo Pro adaptado de tu código) */
+.ranking-header-custom::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 3px;
+    width: 100%; /* Visible o puedes reducirla si prefieres activarla con transiciones */
+    background: linear-gradient(90deg, var(--gold), var(--pitch-green));
+}
+
+/* =====================================================
+   REAJUSTES NECESARIOS EN LA TABLA EXISTENTE
+===================================================== */
+/* Como removimos el thead, quitamos propiedades heredadas innecesarias */
+.ranking-table {
+    border-top: 2px solid rgba(0,0,0,0.08); /* Asegura consistencia visual en el marco */
+}
+
+/* =====================================================
+   ADAPTACIÓN RESPONSIVE (MÓVIL)
+===================================================== */
+@media (max-width: 640px) {
+    .ranking-header-custom {
+        max-width: 100%; /* Ocupa el ancho completo disponible en smartphones */
+        margin-bottom: 8px;
+        padding: 12px 0;
+    }
+    
+    .ranking-header-custom .col-head {
+        font-size: 0.75rem; /* Letra ligeramente más pequeña en móviles */
+    }
+}
+
     </style>
 
 </head>
@@ -1754,25 +1818,23 @@ body{
 
     <div id="rankingSection" class="view-section">
 
-        <table class="ranking-table">
-            <thead>
-                <tr>
-                    <th width="33%">POSICIÓN</th>
-                    <th width="33%">JUGADOR</th>
-                    <th width="33%">PUNTOS</th>
-                </tr>
-            </thead>
-
-            <tbody id="rankingBody">
-                <tr>
-                    <td colspan="3" style="text-align:center;">
-                        Cargando datos del mundial...
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-
+    <div class="ranking-header-custom">
+        <div class="col-head">POSICIÓN</div>
+        <div class="col-head">JUGADOR</div>
+        <div class="col-head">PUNTOS</div>
     </div>
+
+    <table class="ranking-table">
+        <tbody id="rankingBody">
+            <tr>
+                <td colspan="3" style="text-align:center;">
+                    Cargando datos del mundial...
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    
+</div>
 
     <div id="registerSection" class="view-section hidden">
 
