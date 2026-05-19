@@ -1675,64 +1675,67 @@ body{
 }
 
 /* =====================================================
-   NUEVO ENCABEZADO INDIVIDUAL Y COMPORTAMIENTO SCROLL
+   NUEVO ENCABEZADO INDEPENDIENTE PARA EL RANKING
 ===================================================== */
-
-/* 1. El bloque de cabecera individual fijo */
-.ranking-header-sticky {
-    position: sticky;
-    top: 0;
-    z-index: 90; /* Se queda por encima de las celdas */
+.ranking-header-custom {
     display: flex;
     justify-content: space-between;
     width: 100%;
-    max-width: 500px;
-    margin: 0 auto; /* Centrado igual que la tabla */
-    background: #ffffff; /* Fondo opaco obligatorio para tapar la tabla */
-    padding: 16px 0;
-    font-size: 0.8rem;
-    font-weight: 800;
-    color: #666;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    border-top: 2px solid rgba(0,0,0,0.08);
-    border-left: 2px solid rgba(0,0,0,0.08);
-    border-right: 2px solid rgba(0,0,0,0.08);
-    border-radius: 16px 16px 0 0; /* Bordes superiores redondeados app-style */
+    max-width: 500px; /* Alineado exactamente al tamaño máximo de tu tabla */
+    margin: 0 auto 12px auto; /* Centrado y con un margen inferior adecuado */
+    background: #ffffff;
+    border: 2px solid rgba(0,0,0,0.08);
+    border-radius: 14px;
+    padding: 15px 0;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.04);
+    position: relative;
+    overflow: hidden;
 }
 
-/* Distribución idéntica en 3 columnas */
-.ranking-header-sticky div {
+/* Elementos individuales del encabezado */
+.ranking-header-custom .col-head {
     width: 33.33%;
     text-align: center;
+    font-size: 0.85rem;
+    font-weight: 800;
+    color: #666666;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-family: 'Inter', sans-serif;
 }
 
-/* Contenedor que limita la altura y provoca el scroll interno de la tabla */
-.ranking-table-scroll-wrapper {
-    max-height: 420px; /* Ajusta la altura visible de filas a tu gusto */
-    overflow-y: auto;  /* Activa el scroll vertical */
-    width: 100%;
-    max-width: 500px;
-    margin: 0 auto;
-    border-left: 2px solid rgba(0,0,0,0.08);
-    border-right: 2px solid rgba(0,0,0,0.08);
-    border-bottom: 2px solid rgba(0,0,0,0.08);
-    border-radius: 0 0 16px 16px; /* Redondeado inferior */
-    box-shadow: 0 8px 20px rgba(0,0,0,0.06);
-    background: white;
+/* Línea decorativa animada inferior (Estilo Pro adaptado de tu código) */
+.ranking-header-custom::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 3px;
+    width: 100%; /* Visible o puedes reducirla si prefieres activarla con transiciones */
+    background: linear-gradient(90deg, var(--gold), var(--pitch-green));
 }
 
-/* Modificación de tu clase original para acoplarse al scroll */
+/* =====================================================
+   REAJUSTES NECESARIOS EN LA TABLA EXISTENTE
+===================================================== */
+/* Como removimos el thead, quitamos propiedades heredadas innecesarias */
 .ranking-table {
-    border: none !important; /* Quitamos bordes nativos para que no choquen con el wrapper */
-    border-radius: 0 !important;
-    box-shadow: none !important;
+    border-top: 2px solid rgba(0,0,0,0.08); /* Asegura consistencia visual en el marco */
 }
 
-/* Asegurar prioridad visual en las celdas que suben */
-.ranking-table td {
-    position: relative;
-    z-index: 10;
+/* =====================================================
+   ADAPTACIÓN RESPONSIVE (MÓVIL)
+===================================================== */
+@media (max-width: 640px) {
+    .ranking-header-custom {
+        max-width: 100%; /* Ocupa el ancho completo disponible en smartphones */
+        margin-bottom: 8px;
+        padding: 12px 0;
+    }
+    
+    .ranking-header-custom .col-head {
+        font-size: 0.75rem; /* Letra ligeramente más pequeña en móviles */
+    }
 }
 
     </style>
@@ -1814,23 +1817,23 @@ body{
     </div>
 
     <div id="rankingSection" class="view-section">
-    <div class="ranking-header-sticky">
-        <div>POSICIÓN</div>
-        <div>JUGADOR</div>
-        <div>PUNTOS</div>
+
+    <div class="ranking-header-custom">
+        <div class="col-head">POSICIÓN</div>
+        <div class="col-head">JUGADOR</div>
+        <div class="col-head">PUNTOS</div>
     </div>
 
-    <div class="ranking-table-scroll-wrapper">
-        <table class="ranking-table">
-            <tbody id="rankingBody">
-                <tr>
-                    <td colspan="3" style="text-align:center;">
-                        Cargando datos del mundial...
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+    <table class="ranking-table">
+        <tbody id="rankingBody">
+            <tr>
+                <td colspan="3" style="text-align:center;">
+                    Cargando datos del mundial...
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    
 </div>
 
     <div id="registerSection" class="view-section hidden">
