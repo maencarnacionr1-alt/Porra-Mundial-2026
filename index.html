@@ -231,6 +231,8 @@ html,body{
 /* separador más limpio */
 .ranking-table td {
     border-bottom: 1px solid rgba(0,0,0,0.06);
+    position: relative;
+    z-index: 1;
 }
 
 /* ===============================
@@ -1067,6 +1069,8 @@ h1{
 }
 #rankingSection{
 	padding-top: 250px;
+	overflow-y: auto;
+	position: relative;
 
 }
 #registerSection,
@@ -1689,7 +1693,8 @@ body{
     padding: 15px 0;
     box-shadow: 0 6px 15px rgba(0,0,0,0.04);
     position: sticky;
-    overflow: hidden;
+    z-index: 100;
+   
 }
 
 /* Elementos individuales del encabezado */
