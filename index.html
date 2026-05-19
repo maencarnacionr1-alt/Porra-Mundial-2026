@@ -3021,14 +3021,13 @@ function renderPlayerDropdown() {
 
     // primera letra mayúscula
     const capitalizar = (texto) => {
-
-        return texto
-            .toLowerCase()
-            .replace(
-                /\b\w/g,
-                letra => letra.toUpperCase()
-            );
-    };
+    return texto
+        .toLowerCase()
+        .replace(
+            /(?<=^|\s)[\p{L}]/gu,
+            letra => letra.toUpperCase()
+        );
+};
 
     // pintar opciones
     select.innerHTML += nombres.map(nombre => `
