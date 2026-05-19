@@ -2605,37 +2605,72 @@ window.showRegister = function () {
 };
 
 window.loadPlayerPredictions = function () {
+    const select = document.getElementById('playerSelect');
+    const name = select.value;
+    const viewContainer = document.getElementById('predictionsGlobalView');
 
-    const name =
-        document.getElementById("playerSelect").value;
-
+    // Si no hay jugador seleccionado, ocultamos el árbol y salimos
     if (!name) {
-
-        document.getElementById(
-            "predictionsGlobalView"
-        ).innerHTML = "";
-
+        if (viewContainer) viewContainer.style.display = 'none';
         return;
     }
 
+    // Buscamos la columna/propiedad que contiene el nombre del jugador dinámicamente
     const firstRow = pronosticosData[0] || {};
-
-    const nombreKey =
-        Object.keys(firstRow).find(
-            k =>
-                k.toLowerCase().includes("nombre") ||
-                k.toLowerCase().includes("jugador")
-        );
-
+    const nombreKey = Object.keys(firstRow).find(
+        k => k.toLowerCase().includes("nombre") || k.toLowerCase().includes("jugador")
+    );
     if (!nombreKey) return;
 
-    const player = pronosticosData.find(
-        p => p[nombreKey] === name
-    );
+    // Encontramos el objeto de pronósticos del jugador seleccionado
+    const player = pronosticosData.find(p => p[nombreKey] === name);
+    if (!player) {
+        alert("No se encontraron pronósticos guardados para este usuario.");
+        if (viewContainer) viewContainer.style.display = 'none';
+        return;
+    }
 
-    if (!player) return;
+    // Listado exhaustivo de las propiedades que vienen del formulario (tus nombres de columna del CSV)
+    // NOTA: Si tus columnas del CSV usan tildes (ej: "Campeón"), JS es sensible a mayúsculas/minúsculas y tildes.
+    const campos = [
+        "octavos1","octavos2","octavos3","octavos4","octavos5","octavos6","octavos7","octavos8",
+        "octavos9","octavos10","octavos11","octavos12","octavos13","octavos14","octavos15","octavos16",
+        "cuartos1","cuartos2","cuartos3","cuartos4","cuartos5","cuartos6","cuartos7","cuartos8",
+        "semis1","semis2","semis3","semis4",
+        "finalista1","finalista2",
+        "campeon","subcampeon","tercero"
+    ];
 
-    renderPredictionsByPlayer(player);
+    // Iteramos por cada campo e inyectamos el valor en el árbol visual
+    campos.forEach(campo => {
+        // Buscamos el elemento HTML del árbol (ej: p-octavos1)
+        const el = document.getElementById("p-" + campo);
+        if (el) {
+            // Intentamos buscar el valor en minúscula o con su nombre exacto por si acaso
+            let valor = player[campo];
+            
+            // Caso especial por si tus columnas en el CSV/JSON están escritas con tildes:
+            if (campo === "campeon" && !valor) valor = player["Campeón"] || player["campeón"];
+            if (campo === "subcampeon" && !valor) valor = player["Subcampeón"] || player["subcampeón"];
+            if (campo === "tercero" && !valor) valor = player["Tercer Puesto"] || player["Tercero"] || player["tercer_puesto"];
+
+            // Si sigue sin existir, le ponemos un guion por defecto
+            valor = valor || "-";
+            el.innerText = valor;
+            
+            // Si la casilla tiene un equipo asignado real, la iluminamos añadiendo la clase
+            if (valor !== "-") {
+                el.parentElement.classList.add('has-value');
+            } else {
+                el.parentElement.classList.remove('has-value');
+            }
+        }
+    });
+
+    // ¡PASO CLAVE! Hacemos visible el contenedor del árbol cambiando el "none" por "block"
+    if (viewContainer) {
+        viewContainer.style.display = 'block';
+    }
 };
 
 window.loadRankingPlayer = function(){
