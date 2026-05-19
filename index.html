@@ -231,8 +231,6 @@ html,body{
 /* separador más limpio */
 .ranking-table td {
     border-bottom: 1px solid rgba(0,0,0,0.06);
-    position: relative;
-    z-index: 1;
 }
 
 /* ===============================
@@ -1069,8 +1067,6 @@ h1{
 }
 #rankingSection{
 	padding-top: 250px;
-	overflow-y: auto;
-	position: relative;
 
 }
 #registerSection,
@@ -1676,71 +1672,6 @@ body{
 /* Estado encendido: desplaza la bolita a la derecha */
 .custom-switch.active .custom-switch-circle {
     transform: translateX(22px);
-}
-
-/* =====================================================
-   NUEVO ENCABEZADO INDEPENDIENTE PARA EL RANKING
-===================================================== */
-.ranking-header-custom {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    max-width: 500px; /* Alineado exactamente al tamaño máximo de tu tabla */
-    margin: 0 auto 12px auto; /* Centrado y con un margen inferior adecuado */
-    background: #ffffff;
-    border: 2px solid rgba(0,0,0,0.08);
-    border-radius: 14px;
-    padding: 15px 0;
-    box-shadow: 0 6px 15px rgba(0,0,0,0.04);
-    position: sticky;
-    z-index: 100;
-   
-}
-
-/* Elementos individuales del encabezado */
-.ranking-header-custom .col-head {
-    width: 33.33%;
-    text-align: center;
-    font-size: 0.85rem;
-    font-weight: 800;
-    color: #666666;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    font-family: 'Inter', sans-serif;
-}
-
-/* Línea decorativa animada inferior (Estilo Pro adaptado de tu código) */
-.ranking-header-custom::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    height: 3px;
-    width: 100%; /* Visible o puedes reducirla si prefieres activarla con transiciones */
-    background: linear-gradient(90deg, var(--gold), var(--pitch-green));
-}
-
-/* =====================================================
-   REAJUSTES NECESARIOS EN LA TABLA EXISTENTE
-===================================================== */
-/* Como removimos el thead, quitamos propiedades heredadas innecesarias */
-.ranking-table {
-    border-top: 2px solid rgba(0,0,0,0.08); /* Asegura consistencia visual en el marco */
-}
-
-/* =====================================================
-   ADAPTACIÓN RESPONSIVE (MÓVIL)
-===================================================== */
-@media (max-width: 640px) {
-    .ranking-header-custom {
-        max-width: 100%; /* Ocupa el ancho completo disponible en smartphones */
-        margin-bottom: 8px;
-        padding: 12px 0;
-    }
-    
-    .ranking-header-custom .col-head {
-        font-size: 0.75rem; /* Letra ligeramente más pequeña en móviles */
-    }
 }
 
     </style>
