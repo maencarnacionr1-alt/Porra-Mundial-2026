@@ -2548,19 +2548,22 @@ function renderRanking() {
 }
 
 function resetPredictionsView(){
-
-    const select =
-        document.getElementById("playerSelect");
-
-    const container =
-        document.getElementById("predictionsGlobalView");
+    const select = document.getElementById("playerSelect");
+    const container = document.getElementById("predictionsGlobalView");
 
     if(select){
         select.value = "";
     }
 
     if(container){
-        container.innerHTML = "";
+        // ¡NO BORRAR EL HTML! Solo lo ocultamos y limpiamos las celdas
+        container.style.display = "none";
+        
+        const celdas = container.querySelectorAll('.team-name');
+        celdas.forEach(celda => {
+            celda.innerText = "-";
+            celda.parentElement.classList.remove('has-value');
+        });
     }
 }
 
@@ -2609,72 +2612,68 @@ window.loadPlayerPredictions = function () {
     const name = select.value;
     const viewContainer = document.getElementById('predictionsGlobalView');
 
-    // Si no se ha elegido ningún jugador, ocultamos el cuadro del árbol
     if (!name) {
         if (viewContainer) viewContainer.style.display = 'none';
         return;
     }
 
-    // Localizamos la fila completa de datos correspondiente al participante seleccionado en tu array 'data'
-    const player = data.find(p => p.name === name);
+    // 1. Buscamos en pronosticosData (los datos puros del formulario)
+    const player = pronosticosData.find(p => {
+        const nombreKey = Object.keys(p).find(k => k.toLowerCase().includes("nombre") || k.toLowerCase().includes("name") || k.toLowerCase().includes("jugador"));
+        return p && nombreKey ? p[nombreKey] === name : false;
+    });
+
     if (!player) {
         alert("No se encontraron pronósticos guardados para este usuario.");
         if (viewContainer) viewContainer.style.display = 'none';
         return;
     }
 
-    // Obtenemos el objeto plano de preguntas/respuestas del Sheets
-    const p = player.preguntas || {};
-
-    // 1. Mapeo para los 16 casilleros de OCTAVOS (en tu loop van de octavos0 a octavos15)
-    for (let i = 0; i < 16; i++) {
-        const el = document.getElementById(`p-octavos${i + 1}`);
+    // 2. Mapeo estructurado leyendo directamente de las columnas de tu Excel/CSV
+    for (let i = 1; i <= 16; i++) {
+        const el = document.getElementById(`p-octavos${i}`);
         if (el) {
-            const valor = p[`octavos${i}`] || "-";
+            const valor = player[`octavos${i}`] || player[`Octavos ${i}`] || "-";
             el.innerText = valor;
             if (valor !== "-") el.parentElement.classList.add('has-value');
             else el.parentElement.classList.remove('has-value');
         }
     }
 
-    // 2. Mapeo para los 8 casilleros de CUARTOS (en tu loop van de cuartos0 a cuartos7)
-    for (let i = 0; i < 8; i++) {
-        const el = document.getElementById(`p-cuartos${i + 1}`);
+    for (let i = 1; i <= 8; i++) {
+        const el = document.getElementById(`p-cuartos${i}`);
         if (el) {
-            const valor = p[`cuartos${i}`] || "-";
+            const valor = player[`cuartos${i}`] || player[`Cuartos ${i}`] || "-";
             el.innerText = valor;
             if (valor !== "-") el.parentElement.classList.add('has-value');
             else el.parentElement.classList.remove('has-value');
         }
     }
 
-    // 3. Mapeo para los 4 casilleros de SEMIFINALES (en tu loop van de semis0 a semis3)
-    for (let i = 0; i < 4; i++) {
-        const el = document.getElementById(`p-semis${i + 1}`);
+    for (let i = 1; i <= 4; i++) {
+        const el = document.getElementById(`p-semis${i}`);
         if (el) {
-            const valor = p[`semis${i}`] || "-";
+            const valor = player[`semis${i}`] || player[`Semifinal ${i}`] || "-";
             el.innerText = valor;
             if (valor !== "-") el.parentElement.classList.add('has-value');
             else el.parentElement.classList.remove('has-value');
         }
     }
 
-    // 4. Mapeo para los 2 FINALISTAS (en tu loop van de finalista0 a finalista1)
-    for (let i = 0; i < 2; i++) {
-        const el = document.getElementById(`p-finalista${i + 1}`);
+    for (let i = 1; i <= 2; i++) {
+        const el = document.getElementById(`p-finalista${i}`);
         if (el) {
-            const valor = p[`finalista${i}`] || "-";
+            const valor = player[`finalista${i}`] || player[`Final ${i}`] || "-";
             el.innerText = valor;
             if (valor !== "-") el.parentElement.classList.add('has-value');
             else el.parentElement.classList.remove('has-value');
         }
     }
 
-    // 5. Mapeo para el PODIO DIRECTO (Campeón, Subcampeón y Tercer Puesto)
     const podio = {
-        "p-campeon": p["campeon"] || "-",
-        "p-subcampeon": p["subcampeon"] || "-",
-        "p-tercero": p["tercero"] || "-"
+        "p-campeon": player["campeon"] || player["Campeón"] || player["Campeon"] || "-",
+        "p-subcampeon": player["subcampeon"] || player["Subcampeón"] || player["Subcampeon"] || "-",
+        "p-tercero": player["tercero"] || player["Tercero"] || player["Tercer Puesto"] || "-"
     };
 
     Object.keys(podio).forEach(idHtml => {
@@ -2687,7 +2686,6 @@ window.loadPlayerPredictions = function () {
         }
     });
 
-    // ¡Hacemos visible el contenedor del árbol de eliminatorias en la pantalla!
     if (viewContainer) {
         viewContainer.style.display = 'block';
     }
@@ -3792,57 +3790,6 @@ function ejecutarLlenadoAutomatico() {
     // 4. Refrescar los selectores de tu aplicación para actualizar las listas de descarte exclusivas
     if (typeof renderSimpleDropdowns === "function") {
         renderSimpleDropdowns(); 
-    }
-}
-
-function loadPlayerPredictions() {
-    const select = document.getElementById('playerSelect');
-    const userName = select.value;
-    const viewContainer = document.getElementById('predictionsGlobalView');
-
-    if (!userName) {
-        if (viewContainer) viewContainer.style.display = 'none';
-        return;
-    }
-
-    // Buscamos el pronóstico del usuario seleccionado en tu objeto global de datos
-    // Nota: Asegúrate de que tu objeto con los datos de los usuarios guardados se llama 'pronosticos'
-    const p = pronosticos[userName];
-    if (!p) {
-        alert("No se encontraron pronósticos guardados para este usuario.");
-        if (viewContainer) viewContainer.style.display = 'none';
-        return;
-    }
-
-    // Listado mapeado de todos los IDs que creamos en los cuadros del árbol visual
-    const campos = [
-        "octavos1","octavos2","octavos3","octavos4","octavos5","octavos6","octavos7","octavos8",
-        "octavos9","octavos10","octavos11","octavos12","octavos13","octavos14","octavos15","octavos16",
-        "cuartos1","cuartos2","cuartos3","cuartos4","cuartos5","cuartos6","cuartos7","cuartos8",
-        "semis1","semis2","semis3","semis4",
-        "finalista1","finalista2",
-        "campeon","subcampeon","tercero"
-    ];
-
-    // Iteramos e inyectamos los datos en cada casilla correspondiente del árbol
-    campos.forEach(campo => {
-        const el = document.getElementById("p-" + campo);
-        if (el) {
-            const valor = p[campo] || "-";
-            el.innerText = valor;
-            
-            // Si la casilla tiene un equipo asignado (diferente a "-"), se ilumina visualmente
-            if (valor !== "-") {
-                el.parentElement.classList.add('has-value');
-            } else {
-                el.parentElement.classList.remove('has-value');
-            }
-        }
-    });
-
-    // Hacemos visible el contenedor del árbol con un display block estructurado
-    if (viewContainer) {
-        viewContainer.style.display = 'block';
     }
 }
 
