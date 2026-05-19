@@ -2609,20 +2609,20 @@ window.loadPlayerPredictions = function () {
     const name = select.value;
     const viewContainer = document.getElementById('predictionsGlobalView');
 
-    // Si no hay jugador seleccionado, ocultamos el árbol y salimos
+    // Si no se ha elegido ningún jugador, ocultamos el cuadro del árbol
     if (!name) {
         if (viewContainer) viewContainer.style.display = 'none';
         return;
     }
 
-    // Buscamos la columna/propiedad que contiene el nombre del jugador dinámicamente
+    // Buscamos dinámicamente qué columna contiene el nombre del jugador en tu cabecera del CSV
     const firstRow = pronosticosData[0] || {};
     const nombreKey = Object.keys(firstRow).find(
         k => k.toLowerCase().includes("nombre") || k.toLowerCase().includes("jugador")
     );
     if (!nombreKey) return;
 
-    // Encontramos el objeto de pronósticos del jugador seleccionado
+    // Localizamos la fila completa de datos correspondiente al participante seleccionado
     const player = pronosticosData.find(p => p[nombreKey] === name);
     if (!player) {
         alert("No se encontraron pronósticos guardados para este usuario.");
@@ -2630,9 +2630,9 @@ window.loadPlayerPredictions = function () {
         return;
     }
 
-    // Listado exhaustivo de las propiedades que vienen del formulario (tus nombres de columna del CSV)
-    // NOTA: Si tus columnas del CSV usan tildes (ej: "Campeón"), JS es sensible a mayúsculas/minúsculas y tildes.
-    const campos = [
+    // LISTADO REAL DE TUS COLUMNAS RECOPILADAS DEL GOOGLE SHEET
+    // Buscaremos tanto en minúsculas como respetando el nombre exacto por si la cabecera del CSV se generó diferente
+    const camposLlave = [
         "octavos1","octavos2","octavos3","octavos4","octavos5","octavos6","octavos7","octavos8",
         "octavos9","octavos10","octavos11","octavos12","octavos13","octavos14","octavos15","octavos16",
         "cuartos1","cuartos2","cuartos3","cuartos4","cuartos5","cuartos6","cuartos7","cuartos8",
@@ -2641,33 +2641,33 @@ window.loadPlayerPredictions = function () {
         "campeon","subcampeon","tercero"
     ];
 
-    // Iteramos por cada campo e inyectamos el valor en el árbol visual
-    campos.forEach(campo => {
-        // Buscamos el elemento HTML del árbol (ej: p-octavos1)
+    // Iteramos por las 33 casillas del árbol visual que implementamos en el HTML
+    camposLlave.forEach(campo => {
         const el = document.getElementById("p-" + campo);
         if (el) {
-            // Intentamos buscar el valor en minúscula o con su nombre exacto por si acaso
-            let valor = player[campo];
+            // Buscador flexible de la propiedad por si en el CSV viene con variaciones de capitalización
+            // Busca 'octavos1', luego 'Octavos1', luego 'OCTAVOS1', etc.
+            const claveRealCsv = Object.keys(player).find(k => k.trim().toLowerCase() === campo.toLowerCase());
             
-            // Caso especial por si tus columnas en el CSV/JSON están escritas con tildes:
-            if (campo === "campeon" && !valor) valor = player["Campeón"] || player["campeón"];
-            if (campo === "subcampeon" && !valor) valor = player["Subcampeón"] || player["subcampeón"];
-            if (campo === "tercero" && !valor) valor = player["Tercer Puesto"] || player["Tercero"] || player["tercer_puesto"];
+            let valor = "-";
+            if (claveRealCsv && player[claveRealCsv]) {
+                valor = player[claveRealCsv].trim();
+            }
 
-            // Si sigue sin existir, le ponemos un guion por defecto
-            valor = valor || "-";
+            // Inyectamos el nombre del equipo clasificado en el nodo del árbol correspondiente
             el.innerText = valor;
             
-            // Si la casilla tiene un equipo asignado real, la iluminamos añadiendo la clase
-            if (valor !== "-") {
+            // Si la casilla tiene un equipo asignado real, la iluminamos añadiendo la clase CSS activa
+            if (valor !== "-" && valor !== "") {
                 el.parentElement.classList.add('has-value');
             } else {
+                el.innerText = "-"; // Forzamos el guion si viene un texto vacío
                 el.parentElement.classList.remove('has-value');
             }
         }
     });
 
-    // ¡PASO CLAVE! Hacemos visible el contenedor del árbol cambiando el "none" por "block"
+    // ¡Hacemos visible el contenedor del árbol de eliminatorias en la pantalla!
     if (viewContainer) {
         viewContainer.style.display = 'block';
     }
