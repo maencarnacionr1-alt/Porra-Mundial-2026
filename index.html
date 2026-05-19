@@ -1674,6 +1674,135 @@ body{
     transform: translateX(22px);
 }
 
+/* ==========================================================================
+   ESTILOS PREMIUM PARA LAS LLAVES DE PRONÓSTICOS (TOURNAMENT BRACKET)
+   ========================================================================== */
+.bracket-wrapper {
+    width: 100%;
+    overflow-x: auto; /* Permite scroll horizontal fluido en móviles */
+    padding: 20px 10px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.4);
+    -webkit-overflow-scrolling: touch;
+}
+
+.bracket-container {
+    display: flex;
+    gap: 40px; /* Espacio entre columnas/fases */
+    min-width: 1100px; /* Asegura que la llave mantenga su forma de árbol en PC y móvil */
+    justify-content: space-between;
+    padding: 10px;
+}
+
+.bracket-column {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around; /* Distribuye los partidos verticalmente de forma proporcional */
+    flex-content: 1;
+    flex-basis: 0;
+}
+
+.bracket-column-title {
+    font-family: 'Black Ops One', cursive;
+    color: var(--gold);
+    text-align: center;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    border-bottom: 1px solid rgba(255, 215, 0, 0.3);
+    padding-bottom: 5px;
+}
+
+/* Contenedor del partido (Matchup) */
+.bracket-matchup {
+    display: flex;
+    flex-direction: column;
+    background: #1e1e1e;
+    border: 1px solid #333;
+    border-radius: 6px;
+    margin: 15px 0;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    position: relative;
+}
+
+/* Equipos individuales dentro de la caja */
+.bracket-team {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 12px;
+    font-size: 0.9rem;
+    color: #fff;
+    font-weight: 600;
+    border-bottom: 1px solid #2a2a2a;
+}
+
+.bracket-team:last-child {
+    border-bottom: none;
+}
+
+/* Indicador visual de los labels fijos */
+.bracket-team span.team-label {
+    font-size: 0.7rem;
+    color: #888;
+    text-transform: uppercase;
+    margin-right: 8px;
+    background: #2a2a2a;
+    padding: 2px 5px;
+    border-radius: 3px;
+}
+
+/* Nombre del equipo real pintado */
+.bracket-team span.team-name {
+    flex-grow: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Resaltado especial cuando hay un equipo asignado */
+.bracket-team.has-value {
+    color: #fff;
+}
+
+/* Columna de Honor (Campeón y Podio) */
+.bracket-column.podium-column .bracket-matchup {
+    border: 2px solid var(--gold);
+    background: linear-gradient(135deg, #251f00 0%, #121212 100%);
+}
+
+.bracket-column.podium-column .bracket-team {
+    padding: 14px 12px;
+}
+
+.bracket-column.podium-column .team-label.gold-lbl {
+    background: var(--gold);
+    color: #000;
+    font-weight: 900;
+}
+
+.bracket-column.podium-column .team-name.champion-highlight {
+    font-family: 'Black Ops One', cursive;
+    color: var(--gold);
+    font-size: 1.1rem;
+    text-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
+}
+
+/* Estilo para la barra de scroll horizontal */
+.bracket-wrapper::-webkit-scrollbar {
+    height: 8px;
+}
+.bracket-wrapper::-webkit-scrollbar-track {
+    background: #121212;
+    border-radius: 10px;
+}
+.bracket-wrapper::-webkit-scrollbar-thumb {
+    background: var(--grass-vibrant);
+    border-radius: 10px;
+}
+
     </style>
 
 </head>
@@ -1998,37 +2127,131 @@ body{
 <!-- MIS PRONÓSTICOS (NUEVA SECCIÓN INDEPENDIENTE) -->
 
 <div id="predictionsSection" class="view-section hidden">
-
     <div class="fase-container">
-
         <div class="fase-title">
-            MIS PRONÓSTICOS
+            <i class="fa-solid fa-diagram-project"></i> Árbol de Clasificación
         </div>
 
-        <!-- SELECTOR -->
         <div style="margin-bottom:20px;">
-
-            <label class="preg-label">
-                Selecciona un jugador
-            </label>
-
+            <label class="preg-label"> Selecciona un jugador </label>
             <div class="select-wrapper">
-                <select
-                    id="playerSelect"
-                     class="equipo-select-simple"
-                    onchange="loadPlayerPredictions()"
-                >
+                <select id="playerSelect" class="equipo-select-simple" onchange="loadPlayerPredictions()">
                     <option value="">Elegir jugador...</option>
                 </select>
             </div>
-
         </div>
 
-        <!-- CONTENIDO -->
-        <div id="predictionsGlobalView"></div>
+        <div id="predictionsGlobalView" class="bracket-wrapper" style="display:none; margin-top:20px;">
+            <div class="bracket-container">
+                
+                <div class="bracket-column">
+                    <div class="bracket-column-title">Octavos de Final</div>
+                    
+                    <div class="bracket-matchup">
+                        <div class="bracket-team"><span class="team-label">Oct1</span> <span class="team-name" id="p-octavos1">-</span></div>
+                        <div class="bracket-team"><span class="team-label">Oct2</span> <span class="team-name" id="p-octavos2">-</span></div>
+                    </div>
+                    <div class="bracket-matchup">
+                        <div class="bracket-team"><span class="team-label">Oct3</span> <span class="team-name" id="p-octavos3">-</span></div>
+                        <div class="bracket-team"><span class="team-label">Oct4</span> <span class="team-name" id="p-octavos4">-</span></div>
+                    </div>
+                    <div class="bracket-matchup">
+                        <div class="bracket-team"><span class="team-label">Oct5</span> <span class="team-name" id="p-octavos5">-</span></div>
+                        <div class="bracket-team"><span class="team-label">Oct6</span> <span class="team-name" id="p-octavos6">-</span></div>
+                    </div>
+                    <div class="bracket-matchup">
+                        <div class="bracket-team"><span class="team-label">Oct7</span> <span class="team-name" id="p-octavos7">-</span></div>
+                        <div class="bracket-team"><span class="team-label">Oct8</span> <span class="team-name" id="p-octavos8">-</span></div>
+                    </div>
+                    <div class="bracket-matchup">
+                        <div class="bracket-team"><span class="team-label">Oct9</span> <span class="team-name" id="p-octavos9">-</span></div>
+                        <div class="bracket-team"><span class="team-label">Oct10</span> <span class="team-name" id="p-octavos10">-</span></div>
+                    </div>
+                    <div class="bracket-matchup">
+                        <div class="bracket-team"><span class="team-label">Oct11</span> <span class="team-name" id="p-octavos11">-</span></div>
+                        <div class="bracket-team"><span class="team-label">Oct12</span> <span class="team-name" id="p-octavos12">-</span></div>
+                    </div>
+                    <div class="bracket-matchup">
+                        <div class="bracket-team"><span class="team-label">Oct13</span> <span class="team-name" id="p-octavos13">-</span></div>
+                        <div class="bracket-team"><span class="team-label">Oct14</span> <span class="team-name" id="p-octavos14">-</span></div>
+                    </div>
+                    <div class="bracket-matchup">
+                        <div class="bracket-team"><span class="team-label">Oct15</span> <span class="team-name" id="p-octavos15">-</span></div>
+                        <div class="bracket-team"><span class="team-label">Oct16</span> <span class="team-name" id="p-octavos16">-</span></div>
+                    </div>
+                </div>
 
+                <div class="bracket-column">
+                    <div class="bracket-column-title">Cuartos de Final</div>
+                    
+                    <div class="bracket-matchup">
+                        <div class="bracket-team"><span class="team-label">Cuart1</span> <span class="team-name" id="p-cuartos1">-</span></div>
+                        <div class="bracket-team"><span class="team-label">Cuart2</span> <span class="team-name" id="p-cuartos2">-</span></div>
+                    </div>
+                    <div class="bracket-matchup">
+                        <div class="bracket-team"><span class="team-label">Cuart3</span> <span class="team-name" id="p-cuartos3">-</span></div>
+                        <div class="bracket-team"><span class="team-label">Cuart4</span> <span class="team-name" id="p-cuartos4">-</span></div>
+                    </div>
+                    <div class="bracket-matchup">
+                        <div class="bracket-team"><span class="team-label">Cuart5</span> <span class="team-name" id="p-cuartos5">-</span></div>
+                        <div class="bracket-team"><span class="team-label">Cuart6</span> <span class="team-name" id="p-cuartos6">-</span></div>
+                    </div>
+                    <div class="bracket-matchup">
+                        <div class="bracket-team"><span class="team-label">Cuart7</span> <span class="team-name" id="p-cuartos7">-</span></div>
+                        <div class="bracket-team"><span class="team-label">Cuart8</span> <span class="team-name" id="p-cuartos8">-</span></div>
+                    </div>
+                </div>
+
+                <div class="bracket-column">
+                    <div class="bracket-column-title">Semifinales</div>
+                    
+                    <div class="bracket-matchup">
+                        <div class="bracket-team"><span class="team-label">Semi1</span> <span class="team-name" id="p-semis1">-</span></div>
+                        <div class="bracket-team"><span class="team-label">Semi2</span> <span class="team-name" id="p-semis2">-</span></div>
+                    </div>
+                    <div class="bracket-matchup">
+                        <div class="bracket-team"><span class="team-label">Semi3</span> <span class="team-name" id="p-semis3">-</span></div>
+                        <div class="bracket-team"><span class="team-label">Semi4</span> <span class="team-name" id="p-semis4">-</span></div>
+                    </div>
+                </div>
+
+                <div class="bracket-column">
+                    <div class="bracket-column-title">Finalistas</div>
+                    
+                    <div class="bracket-matchup">
+                        <div class="bracket-team"><span class="team-label">Fin1</span> <span class="team-name" id="p-finalista1">-</span></div>
+                        <div class="bracket-team"><span class="team-label">Fin2</span> <span class="team-name" id="p-finalista2">-</span></div>
+                    </div>
+                </div>
+
+                <div class="bracket-column podium-column">
+                    <div class="bracket-column-title">Podio de Honor</div>
+                    
+                    <div class="bracket-matchup">
+                        <div class="bracket-team">
+                            <span class="team-label gold-lbl"><i class="fa-solid fa-trophy"></i> Campeón</span>
+                            <span class="team-name champion-highlight" id="p-campeon">-</span>
+                        </div>
+                    </div>
+                    
+                    <div class="bracket-matchup">
+                        <div class="bracket-team">
+                            <span class="team-label" style="background: silver; color: #000;"><i class="fa-solid fa-medal"></i> Subcampeón</span>
+                            <span class="team-name" id="p-subcampeon" style="color: #e0e0e0;">-</span>
+                        </div>
+                    </div>
+
+                    <div class="bracket-matchup">
+                        <div class="bracket-team">
+                            <span class="team-label" style="background: #cd7f32; color: #fff;"><i class="fa-solid fa-medal"></i> 3º Puesto</span>
+                            <span class="team-name" id="p-tercero" style="color: #cd7f32;">-</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
     </div>
-
 </div>
 
 <div id="playerSection" class="view-section hidden">
@@ -3516,6 +3739,58 @@ function ejecutarLlenadoAutomatico() {
         renderSimpleDropdowns(); 
     }
 }
+
+function loadPlayerPredictions() {
+    const select = document.getElementById('playerSelect');
+    const userName = select.value;
+    const viewContainer = document.getElementById('predictionsGlobalView');
+
+    if (!userName) {
+        if (viewContainer) viewContainer.style.display = 'none';
+        return;
+    }
+
+    // Buscamos el pronóstico del usuario seleccionado en tu objeto global de datos
+    // Nota: Asegúrate de que tu objeto con los datos de los usuarios guardados se llama 'pronosticos'
+    const p = pronosticos[userName];
+    if (!p) {
+        alert("No se encontraron pronósticos guardados para este usuario.");
+        if (viewContainer) viewContainer.style.display = 'none';
+        return;
+    }
+
+    // Listado mapeado de todos los IDs que creamos en los cuadros del árbol visual
+    const campos = [
+        "octavos1","octavos2","octavos3","octavos4","octavos5","octavos6","octavos7","octavos8",
+        "octavos9","octavos10","octavos11","octavos12","octavos13","octavos14","octavos15","octavos16",
+        "cuartos1","cuartos2","cuartos3","cuartos4","cuartos5","cuartos6","cuartos7","cuartos8",
+        "semis1","semis2","semis3","semis4",
+        "finalista1","finalista2",
+        "campeon","subcampeon","tercero"
+    ];
+
+    // Iteramos e inyectamos los datos en cada casilla correspondiente del árbol
+    campos.forEach(campo => {
+        const el = document.getElementById("p-" + campo);
+        if (el) {
+            const valor = p[campo] || "-";
+            el.innerText = valor;
+            
+            // Si la casilla tiene un equipo asignado (diferente a "-"), se ilumina visualmente
+            if (valor !== "-") {
+                el.parentElement.classList.add('has-value');
+            } else {
+                el.parentElement.classList.remove('has-value');
+            }
+        }
+    });
+
+    // Hacemos visible el contenedor del árbol con un display block estructurado
+    if (viewContainer) {
+        viewContainer.style.display = 'block';
+    }
+}
+
 </script>
 
 <!-- MENÚ INFERIOR (ICONOS) -->
