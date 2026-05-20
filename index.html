@@ -1,2350 +1,2250 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <title>Mundial Adquira 2026</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=Black+Ops+One&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&amp;family=Black+Ops+One&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 
     <style>
 
-html {
-    scroll-behavior: smooth;
-}
+      html {
+          scroll-behavior: smooth;
+      }
 
-*{
-    box-sizing:border-box;
-}
+      *{
+          box-sizing:border-box;
+      }
 
-html,body{
-    overflow-x:hidden;
-}
-        :root {
-            --pitch-green: #1b5e20;
-            --grass-light: #2e7d32;
-            --grass-vibrant: #388e3c;
-            --hover-row: #f1f8e9;
-            --gold: #ffd700;
-            --white: #ffffff;
-            --soccer-dark: #121212;
-            --text-main: #333333;
+      html,body{
+          overflow-x:hidden;
+      }
+              :root {
+                  --pitch-green: #1b5e20;
+                  --grass-light: #2e7d32;
+                  --grass-vibrant: #388e3c;
+                  --hover-row: #f1f8e9;
+                  --gold: #ffd700;
+                  --white: #ffffff;
+                  --soccer-dark: #121212;
+                  --text-main: #333333;
+              }
+
+              body {
+                   font-family: 'Inter', sans-serif;
+
+          background:
+              linear-gradient(
+                  rgba(0,0,0,0.55),
+                  rgba(0,0,0,0.65)
+              ),
+
+              url("https://images.unsplash.com/photo-1574629810360-7efbbe195018?q=80&w=1600&auto=format&fit=crop");
+
+          background-size: cover;
+          background-position: center;
+          background-attachment: fixed;
+
+          margin: 0;
+          padding: 20px;
+
+          min-height: 100vh;
+              }
+
+              .main-container {
+                  width: 100%;
+                  max-width: 1100px;
+      	    margin: 0 auto;
+                  background: rgba(255, 255, 255, 0.98);
+                  border-radius: 30px;
+                  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4);
+                  border: 1px solid rgba(255, 255, 255, 0.2);
+                  animation: slideUp 0.6s ease-out;
+      	    position: relative;
+      	    overflow: hidden;
+              }
+
+              @keyframes slideUp {
+                  from { opacity: 0; transform: translateY(30px); }
+                  to { opacity: 1; transform: translateY(0); }
+              }
+
+              header {
+                  background: linear-gradient(135deg, var(--soccer-dark) 0%, var(--pitch-green) 100%);
+                  color: white;
+                  padding: 22px 18px;
+                  text-align: center;
+                  border-bottom: 8px solid var(--gold);
+                  position: sticky;
+                  top: 0;
+                  z-index: 100;
+
+              }
+
+              h1 {
+                  font-family: 'Black Ops One', cursive;
+                  margin: 0;
+                  font-size: 2.8rem;
+                  text-transform: uppercase;
+                  letter-spacing: 3px;
+                  color: var(--white);
+                  text-shadow: 3px 3px 0px rgba(0,0,0,0.5);
+              }
+
+              .view-section { padding: 40px; }
+
+              .hidden {
+          		opacity: 0;
+          		transform: translateX(40px);
+          		pointer-events: none;
+          		position: absolute;
+      	}
+
+      	.only-ranking{
+          	 display:block;
+      	}
+
+      	.ranking-table {
+          width: 100%;
+          max-width: 500px;
+          margin: 0 auto;
+          border-collapse: collapse;
+      }
+
+      .ranking-table tbody tr{
+
+          position: relative;
+
+          cursor: pointer;
+
+          transition:
+              background 0.25s ease,
+              transform 0.25s ease,
+              box-shadow 0.25s ease,
+              border-bottom 0.25s ease;
+
+          border-bottom: 1px solid rgba(0,0,0,0.08);
+      }
+
+      .ranking-table tbody tr:nth-child(-n+3){
+          position: relative;
+      }
+
+      .ranking-table tbody tr:nth-child(-n+3) td:first-child{
+          border-left: 4px solid var(--pitch-green);
+      }
+
+      .ranking-table tbody tr:hover{
+
+          background: linear-gradient(
+              90deg,
+              rgba(46,125,50,0.08),
+              rgba(255,215,0,0.10)
+          );
+
+          transform: translateY(-2px);
+
+          box-shadow:
+              0 6px 18px rgba(0,0,0,0.08);
+
+          border-bottom: 1px solid rgba(255,215,0,0.45);
+      }
+
+
+      .ranking-table tbody tr:hover td{
+
+          color: var(--pitch-green);
+
+          transition: color 0.25s ease;
+      }
+
+              .ranking-table td{
+
+          padding: 18px 15px;
+
+          font-size: 1.1rem;
+
+          text-align: center;
+
+          border-bottom: 1px solid rgba(0,0,0,0.06);
+
+          transition: color 0.25s ease;
+      }
+
+      /* ===============================
+         MEJORA VISUAL TABLA RANKING
+         ESTILO APP DEPORTIVA PRO
+      ================================ */
+
+      /* borde general más premium */
+      .ranking-table {
+          border: 2px solid rgba(0,0,0,0.08);
+          border-radius: 16px;
+          overflow: hidden;
+          box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+      }
+
+      /* encabezado más “tarjeta app” */
+      .ranking-table thead th {
+          background: white;
+          border-bottom: 2px solid rgba(0,0,0,0.08);
+          position: relative;
+      }
+
+      /* línea animada debajo del header */
+      .ranking-table thead th::after {
+          content: "";
+          position: absolute;
+          left: 0;
+          bottom: 0;
+          height: 3px;
+          width: 0%;
+          background: linear-gradient(90deg, var(--gold), var(--pitch-green));
+          transition: width 0.35s ease;
+      }
+
+      /* activa la línea al hover de la tabla */
+      .ranking-table:hover thead th::after {
+          width: 100%;
+      }
+
+      /* filas más “app deportiva” */
+      .ranking-table tbody tr {
+          transition: all 0.25s ease;
+      }
+
+      /* hover más visible y moderno */
+      .ranking-table tbody tr:hover {
+          background: rgba(46,125,50,0.06);
+          transform: scale(1.01);
+      }
+
+      /* efecto en celdas (más pro) */
+      .ranking-table tbody tr:hover td {
+          color: var(--pitch-green);
+          font-weight: 700;
+      }
+
+      /* separador más limpio */
+      .ranking-table td {
+          border-bottom: 1px solid rgba(0,0,0,0.06);
+      }
+
+      /* ===============================
+         MARCO GLOBAL TABLA RANKING
+         (ESTILO APP DEPORTIVA)
+      ================================ */
+
+      .ranking-table-wrapper{
+          border: 1px solid rgba(0,0,0,0.08);
+          border-radius: 18px;
+          overflow: hidden;
+          background: white;
+          box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+      }
+
+              #playerNameBig {
+                  font-family: 'Black Ops One', cursive;
+                  font-size: 4.5rem;
+                  color: var(--pitch-green);
+                  text-align: center;
+                  margin: 10px 0 30px 0;
+                  text-transform: uppercase;
+                  letter-spacing: 2px;
+                  background: linear-gradient(to bottom, var(--pitch-green), var(--grass-vibrant));
+                  -webkit-background-clip: text;
+                  -webkit-text-fill-color: transparent;
+              }
+
+              .stats-row {
+                  display: grid;
+                  grid-template-columns: repeat(3, 1fr);
+                  gap: 25px;
+                  margin-bottom: 50px;
+              }
+
+              .stat-card {
+                  background: var(--soccer-dark);
+                  color: white;
+                  padding: 25px;
+                  border-radius: 20px;
+                  text-align: center;
+                  border-bottom: 6px solid var(--gold);
+              }
+
+              .stat-card label {
+                  display: block;
+                  font-size: 0.75rem;
+                  color: var(--gold);
+                  text-transform: uppercase;
+                  font-weight: 800;
+                  margin-bottom: 8px;
+              }
+
+              .stat-card span {
+                  font-size: 2.5rem;
+                  font-weight: 800;
+              }
+
+
+              .teams-table {
+                  width: 100%;
+                  border-collapse: collapse;
+                  background: #fff;
+                  border-radius: 15px;
+                  overflow: hidden;
+              }
+
+              .teams-table th {
+                  background: #f8f9fa;
+                  color: #444;
+                  padding: 15px;
+                  font-weight: 800;
+                  font-size: 0.75rem;
+                  border-bottom: 2px solid #eee;
+              }
+
+              .teams-table td {
+                  padding: 15px;
+                  text-align: center;
+                  border-bottom: 1px solid #f0f0f0;
+                  font-weight: 600;
+              }
+
+              .points-final {
+                  font-weight: 800;
+                  color: var(--pitch-green);
+                  font-size: 1.1rem;
+              }
+
+      	.btn-registro-container{
+          		width:100%;
+
+          		display:flex;
+          		flex-direction:column;
+          		align-items:center;
+          		justify-content:center;
+
+          		gap:18px;
+
+          		padding:18px;
+      	}
+
+              .btn-registro {
+                  background-color: var(--gold);
+                  color: var(--soccer-dark);
+                  padding: 10px 22px;
+                  font-weight: 900;
+                  cursor: pointer;
+                  text-transform: uppercase;
+                  font-size: 0.78rem;
+                  display: flex;
+                  align-items: center;
+      	    justify-content: center;
+                  gap: 8px;
+                  text-decoration: none;
+                  box-shadow: 0 10px 25px rgba(0,0,0,0.35);
+      	    width:fit-content;
+      	    margin: 0 auto;
+                  white-space: nowrap;
+
+
+         	    transition: 0.25s;
+      	}
+
+
+      	#btnRegistro{
+          	align-self: flex-start;
+          	margin-left: 20px;
+      	}
+
+      	.btn-registro:hover {
+          	    transform: translateY(-2px);
+      	}
+
+              .dot-online {
+                  width: 8px;
+                  height: 8px;
+                  background-color: var(--pitch-green);
+                  border-radius: 50%;
+                  animation: pulse-dot 1.5s infinite;
+              }
+
+              @keyframes pulse-dot {
+                  0% { transform: scale(1); }
+                  50% { transform: scale(1.4); }
+                  100% { transform: scale(1); }
+              }
+
+              .fase-container {
+                  background: #fff;
+                  padding: 25px;
+                  border-radius: 20px;
+                  margin-bottom: 25px;
+                  border: 1px solid #eee;
+              }
+
+              .fase-title {
+                  color: var(--pitch-green);
+                  font-family: 'Black Ops One';
+                  font-size: 1.4rem;
+                  border-bottom: 3px solid var(--gold);
+                  padding-bottom: 8px;
+                  margin-bottom: 20px;
+                  text-transform: uppercase;
+              }
+
+              .preg-label {
+                  font-weight: 800;
+                  display: block;
+                  margin-bottom: 5px;
+                  font-size: 0.85rem;
+                  color: #444;
+                  text-transform: uppercase;
+              }
+
+              .equipo-select,
+              .equipo-select-simple {
+                  width: 100%;
+                  padding: 12px;
+                  border-radius: 10px;
+                  border: 2px solid #ddd;
+                  margin-bottom: 12px;
+                  font-family: 'Inter', sans-serif;
+                  font-weight: 600;
+      	    color: #bdbdbd;
+              }
+
+              .equipo-select-simple.has-value {
+                  color: #1a1a1a;
+      	}
+
+      	.equipo-select-simple option {
+          	    color: #1a1a1a;
+      	    font-weight: 600;
+      	}
+              .grid-preguntas {
+                  display: grid;
+                  grid-template-columns: 1fr 1fr;
+                  gap: 15px;
+              }
+
+      	.top-fixed-zone{
+          		position: fixed;
+          		top: 0;
+          		left: 0;
+      		right: 0;
+          		width: 100%;
+          		max-width: 1100px;
+          		z-index: 9999;
+          		background: rgba(255,255,255,0.98);
+      	}
+
+      	@media (min-width:1101px){
+
+          .top-fixed-zone{
+              left: 50%;
+              right: auto;
+
+              transform: translateX(-50%);
+          	}
+
+       	}
+
+      	#predictionsSection,
+      	#rankingSection,
+      	#registerSection,
+      	#playerSection{
+         		 padding-top: 200px;
+      	}
+
+      	/* ================= CONTADOR ================= */
+
+      #countdownBox{
+
+          position:absolute;
+
+          top:18px;
+          right:20px;
+
+          z-index:9999;
+
+          background:transparent;
+
+          border:none;
+
+          box-shadow:none;
+
+          padding:0;
+
+          width:auto;
+      }
+      .countdown-box::before {
+          content: "";
+
+          position: absolute;
+
+          top: 0;
+          left: 0;
+          right: 0;
+
+          height: 40%;
+
+          background: linear-gradient(
+              to bottom,
+              rgba(255,255,255,0.10),
+              transparent
+          );
+
+          pointer-events: none;
+      }
+
+      .countdown-finished{
+          background:#b71c1c !important;
+          color:white !important;
+      }
+
+      /* ================= FLIP CLOCK ================= */
+
+      .flip-clock {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          gap: 4px;
+          flex-wrap: wrap;
+          margin-top: 6px;
+      }
+
+      .flip-group {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+      }
+
+      .flip-label{
+
+          margin-top:5px;
+
+          font-size:0.52rem;
+
+          font-weight:700;
+
+          letter-spacing:1px;
+
+          text-transform:uppercase;
+
+          color:#ffd700;
+
+          opacity:1;
+      }
+
+      .flip{
+
+          position:relative;
+
+          width:34px;
+          height:42px;
+
+          background:
+              linear-gradient(
+                  to bottom,
+                  #1f1f1f,
+                  #090909
+              );
+
+          border-radius:10px;
+
+          display:flex;
+          align-items:center;
+          justify-content:center;
+
+          color:white;
+
+          font-size:1rem;
+          font-weight:800;
+
+          letter-spacing:1px;
+
+          box-shadow:
+              inset 0 1px 1px rgba(255,255,255,0.06),
+              0 5px 12px rgba(0,0,0,0.45);
+
+          overflow:hidden;
+
+          font-variant-numeric: tabular-nums;
+      }
+
+          color: white;
+
+          border-radius: 12px;
+
+          display: flex;
+          justify-content: center;
+          align-items: center;
+
+          font-size: 1.4rem;
+          font-weight: 700;
+
+          overflow: hidden;
+
+          box-shadow:
+              inset 0 1px 1px rgba(255,255,255,0.08),
+              0 4px 10px rgba(0,0,0,0.25);
+
+          font-variant-numeric: tabular-nums;
+
+          transform-style: preserve-3d;
+
+          backface-visibility: hidden;
+      }
+
+      .flip::before{
+
+          content:"";
+
+          position:absolute;
+
+          left:0;
+          top:50%;
+
+          width:100%;
+          height:1px;
+
+          background:
+              rgba(255,255,255,0.08);
+      }
+
+      .flip-anim {
+          animation: flipAnim 0.55s ease;
+      }
+
+      @keyframes flipAnim {
+
+          0% {
+              transform: rotateX(0deg);
+          }
+
+          50% {
+              transform: rotateX(-90deg);
+          }
+
+          100% {
+              transform: rotateX(0deg);
+          }
+      }
+
+
+      /* Labels */
+      .flip-label {
+          color: #1a1a1a;
+          opacity: 1;
+          font-weight: 600;
+      }
+
+      /* ================= TOOLTIPS ================= */
+
+      .title-with-tooltip{
+          display:flex;
+          align-items:center;
+          gap:10px;
+      }
+
+      .tooltip-icon{
+          width:24px;
+          height:24px;
+          border-radius:50%;
+          background:var(--gold);
+          color:#111;
+          display:flex;
+          align-items:center;
+          justify-content:center;
+          font-weight:900;
+          cursor:pointer;
+          position:relative;
+          font-size:0.8rem;
+      }
+
+      .tooltip-box{
+          position:absolute;
+          top:35px;
+          left:0;
+          width:260px;
+          background:#111;
+          color:white;
+          padding:14px;
+          border-radius:14px;
+          font-size:0.75rem;
+          line-height:1.5;
+          text-transform:none;
+          font-family:'Inter', sans-serif;
+          font-weight:600;
+          opacity:0;
+          visibility:hidden;
+          transition:0.25s;
+          z-index:9999;
+          box-shadow:0 10px 25px rgba(0,0,0,0.35);
+      }
+
+      .tooltip-icon:hover .tooltip-box{
+          opacity:1;
+          visibility:visible;
+      }
+
+      /* ================= TOP 8 ORDEN ================= */
+
+      .top8-card{
+          background:#f8f9fa;
+          border:2px solid #e0e0e0;
+          border-radius:16px;
+          padding:12px;
+          position:relative;
+      }
+
+      .top8-rank{
+          position:absolute;
+          top:-10px;
+          left:12px;
+          background:var(--gold);
+          color:#111;
+          padding:4px 10px;
+          border-radius:30px;
+          font-size:0.75rem;
+          font-weight:900;
+          box-shadow:0 4px 10px rgba(0,0,0,0.15);
+      }
+
+      /* ===================================================== */
+      /* =================== RESPONSIVE ====================== */
+      /* ===================================================== */
+
+      img,
+      table {
+          max-width: 100%;
+      }
+
+      .view-section {
+          padding: 25px;
+          overflow-x:hidden;
+          transition: all 0.35s ease;
+      }
+
+      #registrationForm {
+          width: 100%;
+      }
+
+      /* GRID GENERAL */
+      .grid-preguntas,
+      #top8Container,
+      #primerosGrupoContainer,
+      #segundosGrupoContainer,
+      #mejoresTercerosContainer,
+      #octavosContainer,
+      #cuartosContainer,
+      #semisContainer,
+      #finalistasContainer {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 12px;
+      }
+
+      /* TABLE RESPONSIVE */
+      .teams-table-wrapper {
+          overflow-x: auto;
+          width: 100%;
+      }
+
+      /* ================= TABLET ================= */
+
+      @media (max-width: 900px) {
+
+          body {
+              padding: 10px;
+          }
+
+          .main-container {
+              border-radius: 20px;
+      	position: relative;
+          }
+
+          header {
+              padding: 18px 15px 90px;
+              border-radius: 20px 20px 0 0;
+          }
+
+          h1 {
+              font-size: 2rem;
+              letter-spacing: 1px;
+          }
+
+          .stats-row {
+             grid-template-columns: repeat(3, 1fr);
+          }
+
+          #playerNameBig {
+              font-size: 3rem;
+          }
+
+          .btn-registro-container {
+              position: static;
+              margin-top: 20px;
+              align-items: center;
+          }
+
+          .countdown-box {
+              width: 100%;
+              max-width: 320px;
+          }
+      }
+
+      /* ================= MÓVIL ================= */
+
+      @media (max-width: 640px) {
+
+
+          body {
+              padding: 0;
+          }
+
+          .main-container {
+              border-radius: 0;
+              min-height: 100vh;
+      	position: relative;
+          }
+
+          header {
+              top: auto;
+              padding: 20px 15px 30px;
+              border-radius: 0;
+          }
+
+          h1 {
+              font-size: 1.45rem;
+              justify-content: space-between;
+          	align-items: center;
+          	position: relative;;
+          }
+
+          .view-section {
+              padding: 18px;
+      	transition: all 0.35s ease;
+          }
+
+          .fase-container {
+              padding: 18px;
+              border-radius: 16px;
+          }
+
+          .fase-title {
+              font-size: 1.05rem;
+              line-height: 1.4;
+          }
+
+          .grid-preguntas,
+          #top8Container,
+          #primerosGrupoContainer,
+          #segundosGrupoContainer,
+          #mejoresTercerosContainer,
+          #octavosContainer,
+          #cuartosContainer,
+          #semisContainer,
+          #finalistasContainer {
+              grid-template-columns: 1fr;
+          }
+
+          .equipo-select-simple,
+          .equipo-select,
+          input[type="text"] {
+              font-size: 16px;
+          }
+
+
+      .ranking-table{
+
+          width: 100%;
+          max-width: 500px;
+          margin: 0 auto;
+      	border-collapse: collapse;
+          background: white;
+          border: 2px solid rgba(0,0,0,0.08);
+          border-radius: 16px;
+          position: relative;
+          overflow: hidden;
+
+          box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+
+          transition:
+              border-color 0.3s ease,
+              box-shadow 0.3s ease,
+              transform 0.3s ease;
+      }
+
+      .ranking-table:hover{
+
+          border-color: rgba(255,215,0,0.45);
+
+          box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+
+          transform: translateY(-2px);
+      }
+
+      .ranking-table thead th{
+
+          background: #fff;
+
+          border-bottom: 2px solid rgba(0,0,0,0.08);
+
+          font-weight: 800;
+          text-transform: uppercase;
+          font-size: 0.8rem;
+
+          padding: 15px;
+      }
+
+          .ranking-table th,
+          .ranking-table td,
+          .teams-table th,
+          .teams-table td {
+              padding: 10px 8px;
+              font-size: 0.8rem;
+      	 text-align:center;
+          }
+
+          .ranking-table th {
+          padding: 15px;
+          text-align: left;
+          color: #666;
+          font-weight: 800;
+          text-transform: uppercase;
+          font-size: 0.8rem;
+          border-bottom: 2px solid #eee;
+          letter-spacing: 1px;
+          background: white;
+         }
+
+          .ranking-table th:last-child,
+          .ranking-table td:last-child{
+          text-align:left;
         }
-
-        body {
-             font-family: 'Inter', sans-serif;
-
-    background:
-        linear-gradient(
-            rgba(0,0,0,0.55),
-            rgba(0,0,0,0.65)
-        ),
-
-        url("https://images.unsplash.com/photo-1574629810360-7efbbe195018?q=80&w=1600&auto=format&fit=crop");
-
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-
-    margin: 0;
-    padding: 20px;
-
-    min-height: 100vh;
-        }
-
-        .main-container {
-            width: 100%;
-            max-width: 1100px;
-	    margin: 0 auto;
-            background: rgba(255, 255, 255, 0.98);
-            border-radius: 30px;
-            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            animation: slideUp 0.6s ease-out;
-	    position: relative;
-	    overflow: hidden;
-        }
-
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        header {
-            background: linear-gradient(135deg, var(--soccer-dark) 0%, var(--pitch-green) 100%);
-            color: white;
-            padding: 22px 18px;
-            text-align: center;
-            border-bottom: 8px solid var(--gold);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            
-        }
-
-        h1 {
-            font-family: 'Black Ops One', cursive;
-            margin: 0;
-            font-size: 2.8rem;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            color: var(--white);
-            text-shadow: 3px 3px 0px rgba(0,0,0,0.5);
-        }
-
-        .view-section { padding: 40px; }
-
-        .hidden {
-    		opacity: 0;
-    		transform: translateX(40px);
-    		pointer-events: none;
-    		position: absolute;
-	}
-
-	.only-ranking{
-    	 display:block;
-	}
-        
-	.ranking-table {
-    width: 100%;
-    max-width: 500px;
-    margin: 0 auto;
-    border-collapse: collapse;
-}
-
-.ranking-table tbody tr{
-
-    position: relative;
-
-    cursor: pointer;
-
-    transition:
-        background 0.25s ease,
-        transform 0.25s ease,
-        box-shadow 0.25s ease,
-        border-bottom 0.25s ease;
-
-    border-bottom: 1px solid rgba(0,0,0,0.08);
-}
-
-.ranking-table tbody tr:nth-child(-n+3){
-    position: relative;
-}
-
-.ranking-table tbody tr:nth-child(-n+3) td:first-child{
-    border-left: 4px solid var(--pitch-green);
-}
-
-.ranking-table tbody tr:hover{
-
-    background: linear-gradient(
-        90deg,
-        rgba(46,125,50,0.08),
-        rgba(255,215,0,0.10)
-    );
-
-    transform: translateY(-2px);
-
-    box-shadow:
-        0 6px 18px rgba(0,0,0,0.08);
-
-    border-bottom: 1px solid rgba(255,215,0,0.45);
-}
-
-
-.ranking-table tbody tr:hover td{
-
-    color: var(--pitch-green);
-
-    transition: color 0.25s ease;
-}
-
-        .ranking-table td{
-
-    padding: 18px 15px;
-
-    font-size: 1.1rem;
-
-    text-align: center;
-
-    border-bottom: 1px solid rgba(0,0,0,0.06);
-
-    transition: color 0.25s ease;
-}
-
-/* ===============================
-   MEJORA VISUAL TABLA RANKING
-   ESTILO APP DEPORTIVA PRO
-================================ */
-
-/* borde general más premium */
-.ranking-table {
-    border: 2px solid rgba(0,0,0,0.08);
-    border-radius: 16px;
-    overflow: hidden;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.06);
-}
-
-/* encabezado más “tarjeta app” */
-.ranking-table thead th {
-    background: white;
-    border-bottom: 2px solid rgba(0,0,0,0.08);
-    position: relative;
-}
-
-/* línea animada debajo del header */
-.ranking-table thead th::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    height: 3px;
-    width: 0%;
-    background: linear-gradient(90deg, var(--gold), var(--pitch-green));
-    transition: width 0.35s ease;
-}
-
-/* activa la línea al hover de la tabla */
-.ranking-table:hover thead th::after {
-    width: 100%;
-}
-
-/* filas más “app deportiva” */
-.ranking-table tbody tr {
-    transition: all 0.25s ease;
-}
-
-/* hover más visible y moderno */
-.ranking-table tbody tr:hover {
-    background: rgba(46,125,50,0.06);
-    transform: scale(1.01);
-}
-
-/* efecto en celdas (más pro) */
-.ranking-table tbody tr:hover td {
-    color: var(--pitch-green);
-    font-weight: 700;
-}
-
-/* separador más limpio */
-.ranking-table td {
-    border-bottom: 1px solid rgba(0,0,0,0.06);
-}
-
-/* ===============================
-   MARCO GLOBAL TABLA RANKING
-   (ESTILO APP DEPORTIVA)
-================================ */
-
-.ranking-table-wrapper{
-    border: 1px solid rgba(0,0,0,0.08);
-    border-radius: 18px;
-    overflow: hidden;
-    background: white;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.06);
-}
-
-        #playerNameBig {
-            font-family: 'Black Ops One', cursive;
-            font-size: 4.5rem;
-            color: var(--pitch-green);
-            text-align: center;
-            margin: 10px 0 30px 0;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            background: linear-gradient(to bottom, var(--pitch-green), var(--grass-vibrant));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .stats-row {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 25px;
-            margin-bottom: 50px;
-        }
-
-        .stat-card {
-            background: var(--soccer-dark);
-            color: white;
-            padding: 25px;
-            border-radius: 20px;
-            text-align: center;
-            border-bottom: 6px solid var(--gold);
-        }
-
-        .stat-card label {
-            display: block;
-            font-size: 0.75rem;
-            color: var(--gold);
-            text-transform: uppercase;
-            font-weight: 800;
-            margin-bottom: 8px;
-        }
-
-        .stat-card span {
-            font-size: 2.5rem;
-            font-weight: 800;
-        }
-
-
-        .teams-table {
-            width: 100%;
-            border-collapse: collapse;
-            background: #fff;
-            border-radius: 15px;
-            overflow: hidden;
-        }
-
-        .teams-table th {
-            background: #f8f9fa;
-            color: #444;
-            padding: 15px;
-            font-weight: 800;
-            font-size: 0.75rem;
-            border-bottom: 2px solid #eee;
-        }
-
-        .teams-table td {
-            padding: 15px;
-            text-align: center;
-            border-bottom: 1px solid #f0f0f0;
-            font-weight: 600;
-        }
-
-        .points-final {
-            font-weight: 800;
-            color: var(--pitch-green);
-            font-size: 1.1rem;
-        }
-
-	.btn-registro-container{
-    		width:100%;
-
-    		display:flex;
-    		flex-direction:column;
-    		align-items:center;
-    		justify-content:center;
-
-    		gap:18px;
-
-    		padding:18px;
-	}
+         .ranking-table thead{
+          display: table-header-group;
+         }
 
         .btn-registro {
-            background-color: var(--gold);
-            color: var(--soccer-dark);
-            padding: 10px 22px;
-            font-weight: 900;
-            cursor: pointer;
-            text-transform: uppercase;
-            font-size: 0.78rem;
-            display: flex;
-            align-items: center;
-	    justify-content: center;
-            gap: 8px;
-            text-decoration: none;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.35);
-	    width:fit-content;
-	    margin: 0 auto;
-            white-space: nowrap;
+          flex-direction: row !important;
+          align-items: center;
+          justify-content: center;
+          gap: 8px;
+
+          white-space: nowrap;
+      }
+
+      .btn-registro-container {
+          padding: 6px 10px 4px 10px; /* MUY importante */
+          gap: 8px;
+          margin-top: -6px; /* lo sube hacia la línea amarilla */
+         }
+
+      .top-fixed-zone {
+          padding-bottom: 0;
+      }
+
+      #btnRegistro{
+              margin-left: 0;
+          }
+
+          #playerNameBig {
+              font-size: 2rem;
+              line-height: 1.2;
+          }
+
+         .stat-card label {
+          	font-size: 0.65rem;
+          	letter-spacing: 0.5px;
+          }
+
+      .stat-card span {
+          font-size: 1.4rem;
+      }
+
+          .tooltip-box {
+               left:50%;
+               transform:translateX(-50%);
+               max-width:220px;
+          }
+
+          .flip {
+              width: 30px;
+              height: 38px;
+      	overflow: visible;
+      	padding: 0;
+              font-size: 1.1rem;
+      	background: transparent !important;
+              box-shadow: none !important;
+              border: none !important;
+      	color: #1b5e20 !important; /* verde principal */
+              font-weight: 900;
+      	display: flex;
+          	align-items: center;
+          	justify-content: center;
+      	box-sizing: border-box;
+          	line-height: 38px;
+          	text-align: center;
+      	font-variant-numeric: tabular-nums;
+          }
+
+      .flip-label{
+          color: #1b5e20;
+          opacity: 0.8;
+          font-weight: 700;
+      }
+
+      .flip-clock{
+          gap: 10px !important;
+      }
+
+      .flip-group{
+          min-width: 52px;
+          align-items: center;
+      }
 
 
-   	    transition: 0.25s;
-	}
+      .menu-toggle{
+              top: 10px !important;
+              left: 10px !important;
+          }
+
+          header{
+              padding-top: 18px;
+          }
 
 
-	#btnRegistro{
-    	align-self: flex-start;
-    	margin-left: 20px;
-	}
+          .countdown-box {
+              width: 100%;
+              box-sizing: border-box;
+          }
 
-	.btn-registro:hover {
-    	    transform: translateY(-2px);
-	}
+      #countdownBox{
+          position: static !important;
+          display: flex;
+          justify-content: center;
+          margin: 8px auto 0 auto;  /* justo debajo del header */
+      }
 
-        .dot-online {
-            width: 8px;
-            height: 8px;
-            background-color: var(--pitch-green);
-            border-radius: 50%;
-            animation: pulse-dot 1.5s infinite;
+
+         .btn-registro-container{
+
+          width:100%;
+
+          display:flex;
+          flex-direction:column;
+
+          align-items:center;
+          justify-content:center;
+
+          gap:16px;
+
+          padding:20px 15px;
+
+          background:white;
         }
 
-        @keyframes pulse-dot {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.4); }
-            100% { transform: scale(1); }
-        }
-
-        .fase-container {
-            background: #fff;
-            padding: 25px;
-            border-radius: 20px;
-            margin-bottom: 25px;
-            border: 1px solid #eee;
-        }
-
-        .fase-title {
-            color: var(--pitch-green);
-            font-family: 'Black Ops One';
-            font-size: 1.4rem;
-            border-bottom: 3px solid var(--gold);
-            padding-bottom: 8px;
-            margin-bottom: 20px;
-            text-transform: uppercase;
-        }
-
-        .preg-label {
-            font-weight: 800;
-            display: block;
-            margin-bottom: 5px;
-            font-size: 0.85rem;
-            color: #444;
-            text-transform: uppercase;
-        }
-
-        .equipo-select,
-        .equipo-select-simple {
-            width: 100%;
-            padding: 12px;
-            border-radius: 10px;
-            border: 2px solid #ddd;
-            margin-bottom: 12px;
-            font-family: 'Inter', sans-serif;
-            font-weight: 600;
-	    color: #bdbdbd;
-        }
-
-        .equipo-select-simple.has-value {
-            color: #1a1a1a;
-	}
-
-	.equipo-select-simple option {
-    	    color: #1a1a1a;
-	    font-weight: 600;
-	}
-        .grid-preguntas {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-        }
-
-	.top-fixed-zone{
-    		position: fixed;
-    		top: 0;
-    		left: 0;
-		right: 0;
-    		width: 100%;
-    		max-width: 1100px;
-    		z-index: 9999;
-    		background: rgba(255,255,255,0.98);
-	}
-
-	@media (min-width:1101px){
-
-    .top-fixed-zone{
-        left: 50%;
-        right: auto;
-
-        transform: translateX(-50%);
-    	}
-
- 	}
-	#predictionsSection{
-		padding-top: 100px
-	}
-	
-	#rankingSection,
-	#registerSection,
-	#playerSection{
-   		 padding-top: 200px;
-	}	
-
-	/* ================= CONTADOR ================= */
-
-#countdownBox{
-
-    position:absolute;
-
-    top:18px;
-    right:20px;
-
-    z-index:9999;
-
-    background:transparent;
 
-    border:none;
+      h1{
+          order:1;
+          text-align:center;
+      }
+
+      .btn-registro-container{
+          order:2;
+      }
+
+      .countdown-box{
+          max-width:320px;
+          width:100%;
+      }
+      #rankingSection{
+      	padding-top: 250px;
+
+      }
+      #registerSection,
+      #playerSection{
+          padding-top:100px;
+      }
+
+
+      /* =========================
+         ESTADÍSTICAS MÁS COMPACTAS
+         ========================= */
+
+      .stats-row {
+          gap: 10px;
+          margin-bottom: 25px;
+      }
+
+      /* evita que estiren en columna completa */
+      .stat-card {
+          padding: 12px 10px;
+          border-radius: 14px;
+          border-bottom: 4px solid var(--gold);
+
+          /* clave: evitar que ocupen demasiado */
+          width: 100%;
+          max-width: 160px;
+          margin: 0 auto;
+      }
+
+      /* texto más compacto */
+      .stat-card label {
+          font-size: 0.6rem;
+          margin-bottom: 4px;
+      }
+
+      .stat-card span {
+          font-size: 1.2rem;
+      }
+
+      }
+
+      @media (max-height: 500px) and (orientation: landscape){
+
+      	    body {
+              padding: 0;
+      		margin: 0;
+      		width: 100vw;
+          }
+
+           header {
+              top: 0;
+              padding: 20px 15px 30px;
+              border-radius: 0;
+      		position: sticky;
+
+          }
+
+      	.main-container {
+              border-radius: 0;
+              min-height: 100vh;
+      		position: relative;
+          }
+
+          .ranking-table th{
+              top:0;
+          }
 
-    box-shadow:none;
+          h1{
+              font-size:1.2rem;
+      		justify-content: space-between;
+      		align-item: center;
+          }
 
-    padding:0;
+          /* el botón queda normal pero compacto */
+          .btn-registro-container{
+          padding: 10px; /* MUY importante */
+          gap: 8px;
+          margin-top: 6px; /* lo sube hacia la línea amarilla */
+         }
 
-    width:auto;
-}
-.countdown-box::before {
-    content: "";
+          /* contador flotante */
+          #countdownBox{
+          position: fixed;
+          top: 10px;
+          right: 10px;
+          width: 180px;
+          transform: scale(0.7);
+          z-index: 99999;
+      }
 
-    position: absolute;
+      #registerSection,
+      #playerSection{
+          padding-top:100px;
+      }
 
-    top: 0;
-    left: 0;
-    right: 0;
+      #rankingSection{
+      	padding-top: 200px;
 
-    height: 40%;
+      }
 
-    background: linear-gradient(
-        to bottom,
-        rgba(255,255,255,0.10),
-        transparent
-    );
+      }
 
-    pointer-events: none;
-}
+      .ranking-table th,
+      .ranking-table td{
+          text-align:center;
+      }
 
-.countdown-finished{
-    background:#b71c1c !important;
-    color:white !important;
-}
+      .ranking-table th,
+      .ranking-table td{
+          text-align:center !important;
+      }
 
-/* ================= FLIP CLOCK ================= */
+      .ranking-table thead th{
+          position: sticky;
+          top: 0;
+          z-index: 20;
+          background: white;
+          box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+      }
 
-.flip-clock {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 4px;
-    flex-wrap: wrap;
-    margin-top: 6px;
-}
+      /* ===============================
+         SELECT COMPLETADO
+      ================================ */
 
-.flip-group {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
+      .equipo-select-simple{
 
-.flip-label{
+          appearance:none;
+          -webkit-appearance:none;
+          -moz-appearance:none;
 
-    margin-top:5px;
+          width:100%;
 
-    font-size:0.52rem;
+          padding:12px 60px 12px 14px;
 
-    font-weight:700;
+          border-radius:12px;
 
-    letter-spacing:1px;
+          border:2px solid #d6d6d6;
 
-    text-transform:uppercase;
+          background-color:white;
 
-    color:#ffd700;
+          font-weight:700;
 
-    opacity:1;
-}
+          transition:
+              border 0.25s ease,
+              box-shadow 0.25s ease,
+              background-color 0.25s ease;
+      }
 
-.flip{
+      /* estado seleccionado */
+      .select-completed{
 
-    position:relative;
+          color:#1a1a1a !important;
 
-    width:34px;
-    height:42px;
+          border:2px solid #2e7d32 !important;
 
-    background:
-        linear-gradient(
-            to bottom,
-            #1f1f1f,
-            #090909
-        );
+          background-color:#f4fbf4 !important;
 
-    border-radius:10px;
+          box-shadow:
+              0 0 0 3px rgba(46,125,50,0.10);
 
-    display:flex;
-    align-items:center;
-    justify-content:center;
+          /* CHECK */
+          background-image:
+              url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%232e7d32' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E");
 
-    color:white;
+          background-repeat:no-repeat;
 
-    font-size:1rem;
-    font-weight:800;
+          background-position:right 34px center;
 
-    letter-spacing:1px;
+          background-size:16px;
+      }
 
-    box-shadow:
-        inset 0 1px 1px rgba(255,255,255,0.06),
-        0 5px 12px rgba(0,0,0,0.45);
+      /* flecha */
+      .select-wrapper{
 
-    overflow:hidden;
+          position:relative;
+      }
 
-    font-variant-numeric: tabular-nums;
-}
+      .select-wrapper::after{
 
-    color: white;
+          content:"⌄";
 
-    border-radius: 12px;
+          position:absolute;
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
+          right:14px;
+          top:50%;
 
-    font-size: 1.4rem;
-    font-weight: 700;
+          transform:translateY(-50%);
 
-    overflow: hidden;
+          font-size:0.8rem;
 
-    box-shadow:
-        inset 0 1px 1px rgba(255,255,255,0.08),
-        0 4px 10px rgba(0,0,0,0.25);
+          color:#666;
 
-    font-variant-numeric: tabular-nums;
+          pointer-events:none;
+      }
 
-    transform-style: preserve-3d;
+      /* =========================
+         MENÚ LATERAL
+      ========================= */
 
-    backface-visibility: hidden;
-}
+      .menu-toggle{
 
-.flip::before{
+          position:absolute;
 
-    content:"";
+          left:20px;
+          top:20px;
 
-    position:absolute;
+          width:48px;
+          height:48px;
 
-    left:0;
-    top:50%;
+          border:none;
+          border-radius:14px;
 
-    width:100%;
-    height:1px;
+          background:rgba(255,255,255,0.12);
 
-    background:
-        rgba(255,255,255,0.08);
-}
+          color:white;
 
-.flip-anim {
-    animation: flipAnim 0.55s ease;
-}
+          font-size:1.4rem;
+          cursor:pointer;
 
-@keyframes flipAnim {
+          display:flex;
+          align-items:center;
+          justify-content:center;
 
-    0% {
-        transform: rotateX(0deg);
-    }
+          transition:0.25s;
 
-    50% {
-        transform: rotateX(-90deg);
-    }
+          backdrop-filter: blur(8px);
 
-    100% {
-        transform: rotateX(0deg);
-    }
-}
+          z-index:10001;
+      }
 
+      .menu-toggle:hover{
 
-/* Labels */
-.flip-label {
-    color: #1a1a1a;
-    opacity: 1;
-    font-weight: 600;
-}
+          background:rgba(255,255,255,0.2);
 
-/* ================= TOOLTIPS ================= */
+          transform:scale(1.05);
+      }
 
-.title-with-tooltip{
-    display:flex;
-    align-items:center;
-    gap:10px;
-}
+      /* ICONOS MENÚS*/
 
-.tooltip-icon{
-    width:24px;
-    height:24px;
-    border-radius:50%;
-    background:var(--gold);
-    color:#111;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-weight:900;
-    cursor:pointer;
-    position:relative;
-    font-size:0.8rem;
-}
+      .menu-icon i,
+      .bottom-nav i{
 
-.tooltip-box{
-    position:absolute;
-    top:35px;
-    left:0;
-    width:260px;
-    background:#111;
-    color:white;
-    padding:14px;
-    border-radius:14px;
-    font-size:0.75rem;
-    line-height:1.5;
-    text-transform:none;
-    font-family:'Inter', sans-serif;
-    font-weight:600;
-    opacity:0;
-    visibility:hidden;
-    transition:0.25s;
-    z-index:9999;
-    box-shadow:0 10px 25px rgba(0,0,0,0.35);
-}
+          font-size:1.15rem;
 
-.tooltip-icon:hover .tooltip-box{
-    opacity:1;
-    visibility:visible;
-}
-
-/* ================= TOP 8 ORDEN ================= */
-
-.top8-card{
-    background:#f8f9fa;
-    border:2px solid #e0e0e0;
-    border-radius:16px;
-    padding:12px;
-    position:relative;
-}
-
-.top8-rank{
-    position:absolute;
-    top:-10px;
-    left:12px;
-    background:var(--gold);
-    color:#111;
-    padding:4px 10px;
-    border-radius:30px;
-    font-size:0.75rem;
-    font-weight:900;
-    box-shadow:0 4px 10px rgba(0,0,0,0.15);
-}
+          transition:
+              transform 0.25s ease,
+              color 0.25s ease;
 
-/* ===================================================== */
-/* =================== RESPONSIVE ====================== */
-/* ===================================================== */
-
-img,
-table {
-    max-width: 100%;
-}
-
-.view-section {
-    padding: 25px;
-    overflow-x:hidden;
-    transition: all 0.35s ease;
-}
-
-#registrationForm {
-    width: 100%;
-}
-
-/* GRID GENERAL */
-.grid-preguntas,
-#top8Container,
-#primerosGrupoContainer,
-#segundosGrupoContainer,
-#mejoresTercerosContainer,
-#octavosContainer,
-#cuartosContainer,
-#semisContainer,
-#finalistasContainer {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
-}
-
-/* TABLE RESPONSIVE */
-.teams-table-wrapper {
-    overflow-x: auto;
-    width: 100%;
-}
-
-/* ================= TABLET ================= */
-
-@media (max-width: 900px) {
-
-    body {
-        padding: 10px;
-    }
-
-    .main-container {
-        border-radius: 20px;
-	position: relative;
-    }
-
-    header {
-        padding: 18px 15px 90px;
-        border-radius: 20px 20px 0 0;
-    }
-
-    h1 {
-        font-size: 2rem;
-        letter-spacing: 1px;
-    }
-
-    .stats-row {
-       grid-template-columns: repeat(3, 1fr);
-    }
-
-    #playerNameBig {
-        font-size: 3rem;
-    }
-
-    .btn-registro-container {
-        position: static;
-        margin-top: 20px;
-        align-items: center;
-    }
-
-    .countdown-box {
-        width: 100%;
-        max-width: 320px;
-    }
-}
-
-/* ================= MÓVIL ================= */
-
-@media (max-width: 640px) {
-
-
-    body {
-        padding: 0;
-    }
-
-    .main-container {
-        border-radius: 0;
-        min-height: 100vh;
-	position: relative;
-    }
-
-    header {
-        top: auto;
-        padding: 20px 15px 30px;
-        border-radius: 0;
-    }
-
-    h1 {
-        font-size: 1.45rem;
-        justify-content: space-between;
-    	align-items: center;
-    	position: relative;;
-    }
-
-    .view-section {
-        padding: 18px;
-	transition: all 0.35s ease;
-    }
-
-    .fase-container {
-        padding: 18px;
-        border-radius: 16px;
-    }
-
-    .fase-title {
-        font-size: 1.05rem;
-        line-height: 1.4;
-    }
-
-    .grid-preguntas,
-    #top8Container,
-    #primerosGrupoContainer,
-    #segundosGrupoContainer,
-    #mejoresTercerosContainer,
-    #octavosContainer,
-    #cuartosContainer,
-    #semisContainer,
-    #finalistasContainer {
-        grid-template-columns: 1fr;
-    }
-
-    .equipo-select-simple,
-    .equipo-select,
-    input[type="text"] {
-        font-size: 16px;
-    }
-
-
-.ranking-table{
-
-    width: 100%;
-    max-width: 500px;
-    margin: 0 auto;
-	border-collapse: collapse;
-    background: white;
-    border: 2px solid rgba(0,0,0,0.08);
-    border-radius: 16px;
-    position: relative;
-    overflow: hidden;
-
-    box-shadow: 0 8px 20px rgba(0,0,0,0.06);
-
-    transition:
-        border-color 0.3s ease,
-        box-shadow 0.3s ease,
-        transform 0.3s ease;
-}
-
-.ranking-table:hover{
-
-    border-color: rgba(255,215,0,0.45);
-
-    box-shadow: 0 12px 30px rgba(0,0,0,0.12);
-
-    transform: translateY(-2px);
-}
-
-.ranking-table thead th{
-
-    background: #fff;
-
-    border-bottom: 2px solid rgba(0,0,0,0.08);
-
-    font-weight: 800;
-    text-transform: uppercase;
-    font-size: 0.8rem;
-
-    padding: 15px;
-}
-
-    .ranking-table th,
-    .ranking-table td,
-    .teams-table th,
-    .teams-table td {
-        padding: 10px 8px;
-        font-size: 0.8rem;
-	 text-align:center;
-    }
-
-    .ranking-table th {
-    padding: 15px;
-    text-align: left;
-    color: #666;
-    font-weight: 800;
-    text-transform: uppercase;
-    font-size: 0.8rem;
-    border-bottom: 2px solid #eee;
-    letter-spacing: 1px;
-    background: white;
-   }
-
-    .ranking-table th:last-child,
-    .ranking-table td:last-child{
-    text-align:left;
-  }
-   .ranking-table thead{
-    display: table-header-group;
-   }
-
-  .btn-registro {
-    flex-direction: row !important;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-
-    white-space: nowrap;
-}
-
-.btn-registro-container {
-    padding: 6px 10px 4px 10px; /* MUY importante */
-    gap: 8px;
-    margin-top: -6px; /* lo sube hacia la línea amarilla */
-   }
-
-.top-fixed-zone {
-    padding-bottom: 0;
-}
-
-#btnRegistro{
-        margin-left: 0;
-    }
-
-    #playerNameBig {
-        font-size: 2rem;
-        line-height: 1.2;
-    }
-
-   .stat-card label {
-    	font-size: 0.65rem;
-    	letter-spacing: 0.5px;
-    }
-
-.stat-card span {
-    font-size: 1.4rem; 
-}
-
-    .tooltip-box {
-         left:50%;
-         transform:translateX(-50%);
-         max-width:220px;
-    }
-
-    .flip {
-        width: 30px;
-        height: 38px;
-	overflow: visible;
-	padding: 0;
-        font-size: 1.1rem;
-	background: transparent !important;
-        box-shadow: none !important;
-        border: none !important;
-	color: #1b5e20 !important; /* verde principal */
-        font-weight: 900;
-	display: flex;
-    	align-items: center;
-    	justify-content: center;
-	box-sizing: border-box;
-    	line-height: 38px;
-    	text-align: center; 
-	font-variant-numeric: tabular-nums;
-    }
-
-.flip-label{
-    color: #1b5e20;
-    opacity: 0.8;
-    font-weight: 700;
-}
-
-.flip-clock{
-    gap: 10px !important;
-}
-
-.flip-group{
-    min-width: 52px;
-    align-items: center;
-}
-	
-
-.menu-toggle{
-        top: 10px !important;
-        left: 10px !important;
-    }
-
-    header{
-        padding-top: 18px;
-    }
-
-
-    .countdown-box {
-        width: 100%;
-        box-sizing: border-box;
-    }
-
-#countdownBox{
-    position: static !important;
-    display: flex;
-    justify-content: center;
-    margin: 8px auto 0 auto;  /* justo debajo del header */
-}
-
-
-   .btn-registro-container{
-
-    width:100%;
-
-    display:flex;
-    flex-direction:column;
-
-    align-items:center;
-    justify-content:center;
-
-    gap:16px;
-
-    padding:20px 15px;
-
-    background:white;
-  }
-
-
-h1{
-    order:1;
-    text-align:center;
-}
-
-.btn-registro-container{
-    order:2;
-}
-
-.countdown-box{
-    max-width:320px;
-    width:100%;
-}
-#rankingSection{
-	padding-top: 250px;
-
-}
-#registerSection,
-#playerSection{
-    padding-top:100px;
-}
-	
-
-/* =========================
-   ESTADÍSTICAS MÁS COMPACTAS
-   ========================= */
-
-.stats-row {
-    gap: 10px;
-    margin-bottom: 25px;
-}
-
-/* evita que estiren en columna completa */
-.stat-card {
-    padding: 12px 10px;
-    border-radius: 14px;
-    border-bottom: 4px solid var(--gold);
-
-    /* clave: evitar que ocupen demasiado */
-    width: 100%;
-    max-width: 160px;
-    margin: 0 auto;
-}
-
-/* texto más compacto */
-.stat-card label {
-    font-size: 0.6rem;
-    margin-bottom: 4px;
-}
-
-.stat-card span {
-    font-size: 1.2rem;
-}
-
-}
-
-@media (max-height: 500px) and (orientation: landscape){
-
-	    body {
-        padding: 0;
-		margin: 0;
-		width: 100vw;
-    }
-
-     header {
-        top: 0;
-        padding: 20px 15px 30px;
-        border-radius: 0;
-		position: sticky;
-		
-    }
-
-	.main-container {
-        border-radius: 0;
-        min-height: 100vh;
-		position: relative;
-    }
-
-    .ranking-table th{
-        top:0;
-    }
-
-    h1{
-        font-size:1.2rem;
-		justify-content: space-between;
-		align-item: center;
-    }
-
-    /* el botón queda normal pero compacto */
-    .btn-registro-container{
-    padding: 10px; /* MUY importante */
-    gap: 8px;
-    margin-top: 6px; /* lo sube hacia la línea amarilla */
-   }
-
-    /* contador flotante */
-    #countdownBox{
-    position: fixed;
-    top: 10px;
-    right: 10px;
-    width: 180px;
-    transform: scale(0.7);
-    z-index: 99999;
-}
-
-#registerSection,
-#playerSection{
-    padding-top:100px;
-}
-
-#rankingSection{
-	padding-top: 200px;
-
-}
-
-}
-
-.ranking-table th,
-.ranking-table td{
-    text-align:center;
-}
-
-.ranking-table th,
-.ranking-table td{
-    text-align:center !important;
-}
-
-.ranking-table thead th{
-    position: sticky;
-    top: 0;
-    z-index: 20;
-    background: white;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-}
-
-/* ===============================
-   SELECT COMPLETADO
-================================ */
-
-.equipo-select-simple{
-
-    appearance:none;
-    -webkit-appearance:none;
-    -moz-appearance:none;
-
-    width:100%;
-
-    padding:12px 60px 12px 14px;
-
-    border-radius:12px;
-
-    border:2px solid #d6d6d6;
-
-    background-color:white;
+      }
 
-    font-weight:700;
-
-    transition:
-        border 0.25s ease,
-        box-shadow 0.25s ease,
-        background-color 0.25s ease;
-}
+      /* hover */
 
-/* estado seleccionado */
-.select-completed{
+      .side-menu a:hover i,
+      .bottom-nav button:hover i{
 
-    color:#1a1a1a !important;
+          color:var(--gold);
 
-    border:2px solid #2e7d32 !important;
+          transform:scale(1.15);
 
-    background-color:#f4fbf4 !important;
+      }
 
-    box-shadow:
-        0 0 0 3px rgba(46,125,50,0.10);
+      /* PANEL */
 
-    /* CHECK */
-    background-image:
-        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%232e7d32' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E");
+      .side-menu{
 
-    background-repeat:no-repeat;
+          position:fixed;
 
-    background-position:right 34px center;
+          top:0;
+          left:-320px;
 
-    background-size:16px;
-}
+          width:99px;
+          height:100vh;
 
-/* flecha */
-.select-wrapper{
+          background:
+              linear-gradient(
+                  180deg,
+                  var(--soccer-dark),
+                  var(--pitch-green)
+              );
 
-    position:relative;
-}
+          z-index:10002;
 
-.select-wrapper::after{
+          padding:25px 20px;
 
-    content:"⌄";
+          display:flex;
+          flex-direction:column;
 
-    position:absolute;
+          gap:10px;
 
-    right:14px;
-    top:50%;
+          transition:0.35s ease;
 
-    transform:translateY(-50%);
+          box-shadow:
+              10px 0 30px rgba(0,0,0,0.35);
 
-    font-size:0.8rem;
+          border-right:3px solid var(--gold);
+      }
 
-    color:#666;
+      /* ACTIVO */
 
-    pointer-events:none;
-}
+      .side-menu.active{
+          left:0;
+      }
 
-/* =========================
-   MENÚ LATERAL
-========================= */
+      /* expansión hover */
 
-.menu-toggle{
+      .side-menu:hover,
+      .side-menu.active{
 
-    position:absolute;
+          width:280px !important;
+      }
 
-    left:20px;
-    top:20px;
+      /* HEADER */
 
-    width:48px;
-    height:48px;
+      .menu-header{
 
-    border:none;
-    border-radius:14px;
+          color:var(--gold);
 
-    background:rgba(255,255,255,0.12);
+          font-family:'Black Ops One', cursive;
 
-    color:white;
+          font-size:1.5rem;
 
-    font-size:1.4rem;
-    cursor:pointer;
+          margin-bottom:20px;
 
-    display:flex;
-    align-items:center;
-    justify-content:center;
+          letter-spacing:2px;
+      }
 
-    transition:0.25s;
+      /* LINKS */
 
-    backdrop-filter: blur(8px);
+      .side-menu a{
 
-    z-index:10001;
-}
+          text-decoration:none;
 
-.menu-toggle:hover{
+          color:white;
 
-    background:rgba(255,255,255,0.2);
+          font-weight:700;
 
-    transform:scale(1.05);
-}
+          padding:14px 16px;
 
-/* ICONOS MENÚS*/
+          border-radius:14px;
 
-.menu-icon i,
-.bottom-nav i{
+          transition:0.25s;
 
-    font-size:1.15rem;
+          display:flex;
+          align-items:center;
 
-    transition:
-        transform 0.25s ease,
-        color 0.25s ease;
+          gap:12px;
 
-}
+          background:rgba(255,255,255,0.05);
+          white-space:nowrap;
+          overflow:hidden;
+      }
 
-/* hover */
+      .side-menu a:hover{
 
-.side-menu a:hover i,
-.bottom-nav button:hover i{
+          background:rgba(255,215,0,0.12);
 
-    color:var(--gold);
+          transform:translateX(5px);
 
-    transform:scale(1.15);
+          color:var(--gold);
+      }
 
-}
+      /* OVERLAY */
 
-/* PANEL */
+      .menu-overlay{
 
-.side-menu{
+          position:fixed;
 
-    position:fixed;
+          inset:0;
 
-    top:0;
-    left:-320px;
+          background:rgba(0,0,0,0.45);
 
-    width:99px;
-    height:100vh;
+          opacity:0;
+          visibility:hidden;
 
-    background:
-        linear-gradient(
-            180deg,
-            var(--soccer-dark),
-            var(--pitch-green)
-        );
+          transition:0.3s;
 
-    z-index:10002;
+          z-index:10000;
+      }
 
-    padding:25px 20px;
+      .menu-overlay.active{
 
-    display:flex;
-    flex-direction:column;
+          opacity:1;
+          visibility:visible;
+      }
 
-    gap:10px;
+      /* MOBILE */
 
-    transition:0.35s ease;
+      @media (max-width:640px){
 
-    box-shadow:
-        10px 0 30px rgba(0,0,0,0.35);
+          .menu-toggle{
 
-    border-right:3px solid var(--gold);
-}
+              top:10px;
+              left:10px;
 
-/* ACTIVO */
+              width:42px;
+              height:42px;
 
-.side-menu.active{
-    left:0;
-}
+              font-size:1.2rem;
+          }
 
-/* expansión hover */
+          .side-menu{
 
-.side-menu:hover,
-.side-menu.active{
+              width:250px;
+       	overflow:hidden;
 
-    width:280px !important;
-}
+          transition:
+              width 0.35s ease,
+              left 0.35s ease;
 
-/* HEADER */
+          }
+      }
 
-.menu-header{
+      /* ICONOS */
 
-    color:var(--gold);
+      .menu-icon{
 
-    font-family:'Black Ops One', cursive;
+          min-width:28px;
 
-    font-size:1.5rem;
+          display:flex;
+          justify-content:center;
 
-    margin-bottom:20px;
+          font-size:1.1rem;
+      }
 
-    letter-spacing:2px;
-}
+      /* TEXTO */
 
-/* LINKS */
+      .menu-text{
 
-.side-menu a{
+          opacity:0;
 
-    text-decoration:none;
+          transform:translateX(-10px);
 
-    color:white;
+          transition:
+              opacity 0.2s ease 0.12s,
+              transform 0.2s ease 0.12s;
 
-    font-weight:700;
+          pointer-events:none;
 
-    padding:14px 16px;
+          white-space:nowrap;
+      }
 
-    border-radius:14px;
+      /* mostrar texto */
 
-    transition:0.25s;
+      .side-menu:hover .menu-text,
+      .side-menu.active .menu-text{
 
-    display:flex;
-    align-items:center;
+          opacity:1;
 
-    gap:12px;
+          transform:translateX(0);
+      }
 
-    background:rgba(255,255,255,0.05);
-    white-space:nowrap;
-    overflow:hidden;
-}
+      /* HEADER */
 
-.side-menu a:hover{
+      .menu-header{
 
-    background:rgba(255,215,0,0.12);
+          opacity:0;
 
-    transform:translateX(5px);
+          transition:0.25s;
+      }
 
-    color:var(--gold);
-}
+      .side-menu:hover .menu-header,
+      .side-menu:hover .menu-header{
 
-/* OVERLAY */
+          opacity:1;
+      }
 
-.menu-overlay{
+      /* =========================
+         MENÚ INFERIOR (APP STYLE)
+      ========================= */
 
-    position:fixed;
+      .bottom-nav{
+          position: fixed;
+          bottom: 0;
+          left: 0;
+          right: 0;
 
-    inset:0;
+          display: flex;
+          justify-content: space-around;
+          align-items: center;
 
-    background:rgba(0,0,0,0.45);
+          height: 60px;
 
-    opacity:0;
-    visibility:hidden;
+          background: rgba(18,18,18,0.92);
+          backdrop-filter: blur(12px);
 
-    transition:0.3s;
+          border-top: 2px solid var(--gold);
 
-    z-index:10000;
-}
+          z-index: 99999;
+      }
 
-.menu-overlay.active{
+      .bottom-nav button{
+          background: transparent;
+          border: none;
 
-    opacity:1;
-    visibility:visible;
-}
+          font-size: 1.4rem;
 
-/* MOBILE */
+          color: white;
 
-@media (max-width:640px){
+          width: 100%;
 
-    .menu-toggle{
+          display: flex;
+          justify-content: center;
+          align-items: center;
 
-        top:10px;
-        left:10px;
+          cursor: pointer;
 
-        width:42px;
-        height:42px;
+          transition: 0.2s ease;
+      }
 
-        font-size:1.2rem;
-    }
+      .bottom-nav button:hover{
+          transform: translateY(-2px);
+          color: var(--gold);
+      }
 
-    .side-menu{
+      .bottom-nav button:active{
+          transform: scale(0.95);
+      }
 
-        width:250px;
- 	overflow:hidden;
+      /* evita que el menú tape contenido */
+      body{
+          padding-bottom: 70px;
+      }
 
-    transition:
-        width 0.35s ease,
-        left 0.35s ease;
+      /* ocultar en desktop (opcional pero recomendado en tu UI) */
+      @media (min-width: 900px){
+          .bottom-nav{
+              display: none;
+          }
 
-    }
-}
+          body{
+              padding-bottom: 0;
+          }
+      }
 
-/* ICONOS */
 
-.menu-icon{
+      /* =========================
+         OCULTAR MENÚ INFERIOR EN LANDSCAPE
+      ========================= */
 
-    min-width:28px;
+      @media (orientation: landscape) and (max-width: 900px){
 
-    display:flex;
-    justify-content:center;
+          .bottom-nav{
+              display:none !important;
+          }
 
-    font-size:1.1rem;
-}
+          body{
+              padding-bottom:0 !important;
+          }
+      }
 
-/* TEXTO */
+      /* ESTILOS DEL SWITCH DESLIZANTE */
+      .automation-switch-container {
+          display: flex;
+          justify-content: center;
+          gap: 20px;
+          align-items: center;
+          background: rgba(255, 255, 255, 0.08);
+          padding: 15px;
+          border-radius: 15px;
+          margin-bottom: 35px;
+          border: 1px solid rgba(255, 255, 255, 0.15);
+          max-width: 900px;
+          margin-left: auto;
+          margin-right: auto;
+      }
 
-.menu-text{
+      .switch-label {
+          font-family: 'Inter', sans-serif;
+          font-weight: 600;
+          color: var(--green)!important;
+          font-size: 0.95rem;
+      }
 
-    opacity:0;
+      /* El cuerpo del switch (el óvalo) */
+      .custom-switch {
+          width: 50px;
+          height: 26px;
+          background-color: #ccc;
+          border-radius: 50px;
+          position: relative;
+          cursor: pointer;
+          transition: background-color 0.3s ease;
+      }
 
-    transform:translateX(-10px);
+      /* La bolita interna */
+      .custom-switch-circle {
+          width: 20px;
+          height: 20px;
+          background-color: white;
+          border-radius: 50%;
+          position: absolute;
+          top: 3px;
+          left: 4px;
+          transition: transform 0.3s ease;
+          box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      }
 
-    transition:
-        opacity 0.2s ease 0.12s,
-        transform 0.2s ease 0.12s;
+      /* Estado encendido: cambia el fondo a verde vibrante */
+      .custom-switch.active {
+          background-color: var(--grass-vibrant);
+      }
 
-    pointer-events:none;
+      /* Estado encendido: desplaza la bolita a la derecha */
+      .custom-switch.active .custom-switch-circle {
+          transform: translateX(22px);
+      }
 
-    white-space:nowrap;
-}
+      /* =====================================================
+         NUEVO ENCABEZADO INDEPENDIENTE PARA EL RANKING
+      ===================================================== */
+      .ranking-header-custom {
+          display: flex;
+          justify-content: space-between;
+          width: 100%;
+          max-width: 500px; /* Alineado exactamente al tamaño máximo de tu tabla */
+          margin: 0 auto 12px auto; /* Centrado y con un margen inferior adecuado */
+          background: #ffffff;
+          border: 2px solid rgba(0,0,0,0.08);
+          border-radius: 14px;
+          padding: 15px 0;
+          box-shadow: 0 6px 15px rgba(0,0,0,0.04);
+          position: relative;
+          overflow: hidden;
+      }
 
-/* mostrar texto */
+      /* Elementos individuales del encabezado */
+      .ranking-header-custom .col-head {
+          width: 33.33%;
+          text-align: center;
+          font-size: 0.85rem;
+          font-weight: 800;
+          color: #666666;
+          text-transform: uppercase;
+          letter-spacing: 1px;
+          font-family: 'Inter', sans-serif;
+      }
 
-.side-menu:hover .menu-text,
-.side-menu.active .menu-text{
+      /* Línea decorativa animada inferior (Estilo Pro adaptado de tu código) */
+      .ranking-header-custom::after {
+          content: "";
+          position: absolute;
+          left: 0;
+          bottom: 0;
+          height: 3px;
+          width: 100%; /* Visible o puedes reducirla si prefieres activarla con transiciones */
+          background: linear-gradient(90deg, var(--gold), var(--pitch-green));
+      }
 
-    opacity:1;
+      /* =====================================================
+         REAJUSTES NECESARIOS EN LA TABLA EXISTENTE
+      ===================================================== */
+      /* Como removimos el thead, quitamos propiedades heredadas innecesarias */
+      .ranking-table {
+          border-top: 2px solid rgba(0,0,0,0.08); /* Asegura consistencia visual en el marco */
+      }
 
-    transform:translateX(0);
-}
+      /* =====================================================
+         ADAPTACIÓN RESPONSIVE (MÓVIL)
+      ===================================================== */
+      @media (max-width: 640px) {
+          .ranking-header-custom {
+              max-width: 100%; /* Ocupa el ancho completo disponible en smartphones */
+              margin-bottom: 8px;
+              padding: 12px 0;
+          }
 
-/* HEADER */
-
-.menu-header{
-
-    opacity:0;
-
-    transition:0.25s;
-}
-
-.side-menu:hover .menu-header,
-.side-menu:hover .menu-header{
-
-    opacity:1;
-}
-
-/* =========================
-   MENÚ INFERIOR (APP STYLE)
-========================= */
-
-.bottom-nav{
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-
-    height: 60px;
-
-    background: rgba(18,18,18,0.92);
-    backdrop-filter: blur(12px);
-
-    border-top: 2px solid var(--gold);
-
-    z-index: 99999;
-}
-
-.bottom-nav button{
-    background: transparent;
-    border: none;
-
-    font-size: 1.4rem;
-
-    color: white;
-
-    width: 100%;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    cursor: pointer;
-
-    transition: 0.2s ease;
-}
-
-.bottom-nav button:hover{
-    transform: translateY(-2px);
-    color: var(--gold);
-}
-
-.bottom-nav button:active{
-    transform: scale(0.95);
-}
-
-/* evita que el menú tape contenido */
-body{
-    padding-bottom: 70px;
-}
-
-/* ocultar en desktop (opcional pero recomendado en tu UI) */
-@media (min-width: 900px){
-    .bottom-nav{
-        display: none;
-    }
-
-    body{
-        padding-bottom: 0;
-    }
-}
-
-
-/* =========================
-   OCULTAR MENÚ INFERIOR EN LANDSCAPE
-========================= */
-
-@media (orientation: landscape) and (max-width: 900px){
-
-    .bottom-nav{
-        display:none !important;
-    }
-
-    body{
-        padding-bottom:0 !important;
-    }
-}
-
-/* ESTILOS DEL SWITCH DESLIZANTE */
-.automation-switch-container {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    align-items: center;
-    background: rgba(255, 255, 255, 0.08);
-    padding: 15px;
-    border-radius: 15px;
-    margin-bottom: 35px;
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    max-width: 900px;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.switch-label {
-    font-family: 'Inter', sans-serif;
-    font-weight: 600;
-    color: var(--green)!important;
-    font-size: 0.95rem;
-}
-
-/* El cuerpo del switch (el óvalo) */
-.custom-switch {
-    width: 50px;
-    height: 26px;
-    background-color: #ccc;
-    border-radius: 50px;
-    position: relative;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-/* La bolita interna */
-.custom-switch-circle {
-    width: 20px;
-    height: 20px;
-    background-color: white;
-    border-radius: 50%;
-    position: absolute;
-    top: 3px;
-    left: 4px;
-    transition: transform 0.3s ease;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-}
-
-/* Estado encendido: cambia el fondo a verde vibrante */
-.custom-switch.active {
-    background-color: var(--grass-vibrant);
-}
-
-/* Estado encendido: desplaza la bolita a la derecha */
-.custom-switch.active .custom-switch-circle {
-    transform: translateX(22px);
-}
-
-/* =====================================================
-   NUEVO ENCABEZADO INDEPENDIENTE PARA EL RANKING
-===================================================== */
-.ranking-header-custom {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    max-width: 500px; /* Alineado exactamente al tamaño máximo de tu tabla */
-    margin: 0 auto 12px auto; /* Centrado y con un margen inferior adecuado */
-    background: #ffffff;
-    border: 2px solid rgba(0,0,0,0.08);
-    border-radius: 14px;
-    padding: 15px 0;
-    box-shadow: 0 6px 15px rgba(0,0,0,0.04);
-    position: relative;
-    overflow: hidden;
-}
-
-/* Elementos individuales del encabezado */
-.ranking-header-custom .col-head {
-    width: 33.33%;
-    text-align: center;
-    font-size: 0.85rem;
-    font-weight: 800;
-    color: #666666;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    font-family: 'Inter', sans-serif;
-}
-
-/* Línea decorativa animada inferior (Estilo Pro adaptado de tu código) */
-.ranking-header-custom::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    height: 3px;
-    width: 100%; /* Visible o puedes reducirla si prefieres activarla con transiciones */
-    background: linear-gradient(90deg, var(--gold), var(--pitch-green));
-}
-
-/* =====================================================
-   REAJUSTES NECESARIOS EN LA TABLA EXISTENTE
-===================================================== */
-/* Como removimos el thead, quitamos propiedades heredadas innecesarias */
-.ranking-table {
-    border-top: 2px solid rgba(0,0,0,0.08); /* Asegura consistencia visual en el marco */
-}
-
-/* =====================================================
-   ADAPTACIÓN RESPONSIVE (MÓVIL)
-===================================================== */
-@media (max-width: 640px) {
-    .ranking-header-custom {
-        max-width: 100%; /* Ocupa el ancho completo disponible en smartphones */
-        margin-bottom: 8px;
-        padding: 12px 0;
-    }
-    
-    .ranking-header-custom .col-head {
-        font-size: 0.75rem; /* Letra ligeramente más pequeña en móviles */
-    }
-}
-
+          .ranking-header-custom .col-head {
+              font-size: 0.75rem; /* Letra ligeramente más pequeña en móviles */
+          }
+      }
     </style>
+  </head>
 
-</head>
+  <body>
+    <div class="main-container">
+      <div class="top-fixed-zone">
+        <header>
+          <!-- BOTÓN MENÚ -->
+          <button class="menu-toggle" onclick="toggleMenu()">☰</button>
 
-<body>
+          <!-- SIDEBAR MENU -->
 
-<div class="main-container">
-<div class="top-fixed-zone">
+          <nav id="sideMenu" class="side-menu">
+            <div class="menu-header">MENÚ</div>
 
-    <header>
+            <a href="javascript:void(0)" onclick="goToSection('ranking')">
+              <span class="menu-icon">
+                <i class="fa-solid fa-trophy"></i>
+              </span>
+              <span class="menu-text">Clasificación</span>
+            </a>
 
-<!-- BOTÓN MENÚ -->
-<button class="menu-toggle" onclick="toggleMenu()">
-    ☰
-</button>
+            <a href="javascript:void(0)" onclick="goToSection('register')">
+              <span class="menu-icon">
+                <i class="fa-solid fa-pen-to-square"></i>
+              </span>
+              <span class="menu-text">Registro</span>
+            </a>
 
-<!-- SIDEBAR MENU -->
+            <a href="javascript:void(0)" onclick="goToSection('player')">
+              <span class="menu-icon">
+                <i class="fa-solid fa-users"></i>
+              </span>
+              <span class="menu-text">Mis Puntos</span>
+            </a>
 
-<nav id="sideMenu" class="side-menu">
+            <a href="javascript:void(0)" onclick="goToSection('predictions')">
+              <span class="menu-icon">
+                <i class="fa-solid fa-chart-line"></i>
+              </span>
+              <span class="menu-text">Mis Pronósticos</span>
+            </a>
+          </nav>
 
-    <div class="menu-header">
-        MENÚ
-    </div>
+          <!-- OVERLAY -->
+          <div id="menuOverlay" class="menu-overlay" onclick="closeMenu()"></div>
 
-    <a href="javascript:void(0)" onclick="goToSection('ranking')">
-        <span class="menu-icon">
-            <i class="fa-solid fa-trophy"></i>
-        </span>
-        <span class="menu-text">Clasificación</span>
-    </a>
+          <h1>PORRA MUNDIAL 2026</h1>
+        </header>
 
-    <a href="javascript:void(0)" onclick="goToSection('register')">
-        <span class="menu-icon">
-            <i class="fa-solid fa-pen-to-square"></i>
-        </span>
-        <span class="menu-text">Registro</span>
-    </a>
-
-    <a href="javascript:void(0)" onclick="goToSection('player')">
-        <span class="menu-icon">
-            <i class="fa-solid fa-users"></i>
-        </span>
-        <span class="menu-text">Mis Puntos</span>
-    </a>
-
-    <a href="javascript:void(0)" onclick="goToSection('predictions')">
-        <span class="menu-icon">
-            <i class="fa-solid fa-chart-line"></i>
-        </span>
-        <span class="menu-text">Mis Pronósticos</span>
-    </a>
-
-</nav>
-
-<!-- OVERLAY -->
-<div id="menuOverlay" class="menu-overlay" onclick="closeMenu()"></div>
-
-  <h1>PORRA MUNDIAL 2026</h1>
-    </header>
-
-     <div class="btn-registro-container">
-
-        <a
-            href="javascript:void(0)"
-            onclick="showRegister()"
-            class="btn-registro"
-            id="btnRegistro">
+        <div class="btn-registro-container">
+          <a href="javascript:void(0)" onclick="showRegister()" class="btn-registro" id="btnRegistro">
             <div class="dot-online"></div>
             ¡Regístrate!
-        </a>
+          </a>
+        </div>
+
+        <!-- CONTADOR -->
+        <div id="countdownBox" class="only-ranking">⏳ Cargando contador...</div>
       </div>
 
-<!-- CONTADOR -->
-        <div id="countdownBox" class="only-ranking">
-            ⏳ Cargando contador...
-        </div>	
-    </div>
-
-   <div id="rankingSection" class="view-section">
-
-    <div class="ranking-header-custom">
-        <div class="col-head">POSICIÓN</div>
-        <div class="col-head">JUGADOR</div>
-        <div class="col-head">PUNTOS</div>
-    </div>
-
-    <table class="ranking-table">
-        <tbody id="rankingBody">
-            <tr>
-                <td colspan="3" style="text-align:center;">
-                    Cargando datos del mundial...
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    
-</div>
-
-    <div id="registerSection" class="view-section hidden">
-
-    
-    <form id="registrationForm" style="max-width:900px; margin:0 auto;">
-
-        <!-- PARTICIPANTE -->
-
-	<div class="automation-switch-container">
-    <div style="display: flex; align-items: center; gap: 8px;">
-        <span class="switch-label">✨ Llenado rápido por cruces FIFA</span>
-        <div class="tooltip-icon"> ?
-            <div class="tooltip-box">
-                <strong>¿Cómo funciona?</strong><br><br>
-                Analiza tus selecciones de Fase de Grupos y rellena de forma matemática todos los cruces directos (Dieciseisavos) basándose en el criterio oficial de la FIFA.<br><br>
-                Para ahorrarte tiempo, también proyecta de forma automática una simulación en cascada hasta el Campeón. ¡Luego puedes cambiar el que quieras!
-            </div>
+      <div id="rankingSection" class="view-section">
+        <div class="ranking-header-custom">
+          <div class="col-head">POSICIÓN</div>
+          <div class="col-head">JUGADOR</div>
+          <div class="col-head">PUNTOS</div>
         </div>
-    </div>
-    <div class="custom-switch" id="automationToggle" onclick="toggleCustomSwitch()">
-        <div class="custom-switch-circle"></div>
-    </div>
-</div>
-	
-        <div style="margin-bottom:30px; text-align:center;">
 
-            <label class="preg-label" style="font-size:1.2rem;">
-                Nombre de Participante:
-            </label>
+        <table class="ranking-table">
+          <tbody id="rankingBody">
+            <tr>
+              <td colspan="3" style="text-align: center">Cargando datos del mundial...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div id="registerSection" class="view-section hidden">
+        <form id="registrationForm" style="max-width: 900px; margin: 0 auto">
+          <!-- PARTICIPANTE -->
+
+          <div class="automation-switch-container">
+            <div style="display: flex; align-items: center; gap: 8px">
+              <span class="switch-label">✨ Llenado rápido por cruces FIFA</span>
+              <div class="tooltip-icon">
+                ?
+                <div class="tooltip-box">
+                  <strong>¿Cómo funciona?</strong>
+                  <br />
+                  <br />
+                  Analiza tus selecciones de Fase de Grupos y rellena de forma matemática todos los cruces directos
+                  (Dieciseisavos) basándose en el criterio oficial de la FIFA.
+                  <br />
+                  <br />
+                  Para ahorrarte tiempo, también proyecta de forma automática una simulación en cascada hasta el
+                  Campeón. ¡Luego puedes cambiar el que quieras!
+                </div>
+              </div>
+            </div>
+            <div class="custom-switch" id="automationToggle" onclick="toggleCustomSwitch()">
+              <div class="custom-switch-circle"></div>
+            </div>
+          </div>
+
+          <div style="margin-bottom: 30px; text-align: center">
+            <label class="preg-label" style="font-size: 1.2rem">Nombre de Participante:</label>
 
             <input
-                type="text"
-                name="nombre"
-                required
-                placeholder="Escribe tu nombre..."
-                style="width:80%; padding:15px; border-radius:15px; border:3px solid var(--pitch-green); font-size:1.2rem; text-align:center; font-weight:700;"
-            >
-        </div>
+              type="text"
+              name="nombre"
+              required=""
+              placeholder="Escribe tu nombre..."
+              style="
+                width: 80%;
+                padding: 15px;
+                border-radius: 15px;
+                border: 3px solid var(--pitch-green);
+                font-size: 1.2rem;
+                text-align: center;
+                font-weight: 700;
+              "
+            />
+          </div>
 
-        <!-- TOP 8 -->
+          <!-- TOP 8 -->
 
-        <div class="fase-container">
-
-           <div class="fase-title title-with-tooltip">
-
-    <span>TOP 8 EQUIPOS</span>
-
-    <div class="tooltip-icon">
-
-        ?
-
-        <div class="tooltip-box">
-            Selecciona los 8 equipos que crees que llegarán más lejos
-            en el torneo.
-
-            <br><br>
-
-            El ORDEN es muy importante:
-
-            <br><br>
-
-            🥇 El 1º tendrá el coeficiente más alto.<br>
-            🥈 El 2º un coeficiente menor.<br>
-            🥉 Y así sucesivamente hasta el 8º.
-
-            <br><br>
-
-            Cuanto mejor rinda el equipo en el torneo,
-            más puntos generará.
-        </div>
-
-    </div>
-
-</div>
-
-            <div id="top8Container"
-                style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-            </div>
-
-        </div>
-
-        <!-- FASE DE GRUPOS -->
-
-        <div class="fase-container">
-
+          <div class="fase-container">
             <div class="fase-title title-with-tooltip">
+              <span>TOP 8 EQUIPOS</span>
 
-    <span>FASE DE GRUPOS</span>
+              <div class="tooltip-icon">
+                ?
 
-    <div class="tooltip-icon">
+                <div class="tooltip-box">
+                  Selecciona los 8 equipos que crees que llegarán más lejos en el torneo.
 
-        ?
+                  <br />
+                  <br />
 
-        <div class="tooltip-box">
+                  El ORDEN es muy importante:
 
-            A partir de octavos deberás predecir
-            qué equipos avanzarán ronda a ronda
-            hasta llegar a la final.
+                  <br />
+                  <br />
 
-            <br><br>
+                  🥇 El 1º tendrá el coeficiente más alto.
+                  <br />
+                  🥈 El 2º un coeficiente menor.
+                  <br />
+                  🥉 Y así sucesivamente hasta el 8º.
 
-            Cada acierto otorgará puntos.
+                  <br />
+                  <br />
 
-        </div>
-
-    </div>
-
-</div>
-
-            <h3 style="color:var(--pitch-green)">
-                Primeros de Grupo
-            </h3>
-
-            <div id="primerosGrupoContainer"
-                style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:30px;">
+                  Cuanto mejor rinda el equipo en el torneo, más puntos generará.
+                </div>
+              </div>
             </div>
 
-            <h3 style="color:var(--pitch-green)">
-                Segundos de Grupo
-            </h3>
+            <div id="top8Container" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px"></div>
+          </div>
 
-            <div id="segundosGrupoContainer"
-                style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:30px;">
+          <!-- FASE DE GRUPOS -->
+
+          <div class="fase-container">
+            <div class="fase-title title-with-tooltip">
+              <span>FASE DE GRUPOS</span>
+
+              <div class="tooltip-icon">
+                ?
+
+                <div class="tooltip-box">
+                  A partir de octavos deberás predecir qué equipos avanzarán ronda a ronda hasta llegar a la final.
+
+                  <br />
+                  <br />
+
+                  Cada acierto otorgará puntos.
+                </div>
+              </div>
             </div>
 
-            <h3 style="color:var(--pitch-green)">
-                Mejores Terceros
-            </h3>
+            <h3 style="color: var(--pitch-green)">Primeros de Grupo</h3>
 
-            <div id="mejoresTercerosContainer"
-                style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:30px;">
-            </div>
+            <div
+              id="primerosGrupoContainer"
+              style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 30px"
+            ></div>
+
+            <h3 style="color: var(--pitch-green)">Segundos de Grupo</h3>
+
+            <div
+              id="segundosGrupoContainer"
+              style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 30px"
+            ></div>
+
+            <h3 style="color: var(--pitch-green)">Mejores Terceros</h3>
+
+            <div
+              id="mejoresTercerosContainer"
+              style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 30px"
+            ></div>
 
             <div class="grid-preguntas">
+              <div>
+                <label class="preg-label">Equipo más goleador</label>
+                <select name="mas_goles" class="equipo-select-simple" required=""></select>
+              </div>
 
-                <div>
-                    <label class="preg-label">Equipo más goleador</label>
-                    <select name="mas_goles" class="equipo-select-simple" required></select>
-                </div>
-
-                <div>
-                    <label class="preg-label">Equipo menos goleado</label>
-                    <select name="menos_goles" class="equipo-select-simple" required></select>
-                </div>
-
+              <div>
+                <label class="preg-label">Equipo menos goleado</label>
+                <select name="menos_goles" class="equipo-select-simple" required=""></select>
+              </div>
             </div>
+          </div>
 
-        </div>
+          <!-- ELIMINATORIAS -->
 
-        <!-- ELIMINATORIAS -->
+          <div class="fase-container">
+            <div class="fase-title">ELIMINATORIAS</div>
 
-        <div class="fase-container">
+            <h3 style="color: var(--pitch-green)">Clasificados a Octavos</h3>
 
-            <div class="fase-title">
-                ELIMINATORIAS
-            </div>
+            <div
+              id="octavosContainer"
+              style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 30px"
+            ></div>
 
-            <h3 style="color:var(--pitch-green)">
-                Clasificados a Octavos
-            </h3>
+            <h3 style="color: var(--pitch-green)">Clasificados a Cuartos</h3>
 
-            <div id="octavosContainer"
-                style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:30px;">
-            </div>
+            <div
+              id="cuartosContainer"
+              style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 30px"
+            ></div>
 
-            <h3 style="color:var(--pitch-green)">
-                Clasificados a Cuartos
-            </h3>
+            <h3 style="color: var(--pitch-green)">Semifinalistas</h3>
 
-            <div id="cuartosContainer"
-                style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:30px;">
-            </div>
+            <div
+              id="semisContainer"
+              style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 30px"
+            ></div>
 
-            <h3 style="color:var(--pitch-green)">
-                Semifinalistas
-            </h3>
+            <h3 style="color: var(--pitch-green)">Finalistas</h3>
 
-            <div id="semisContainer"
-                style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:30px;">
-            </div>
-
-            <h3 style="color:var(--pitch-green)">
-                Finalistas
-            </h3>
-
-            <div id="finalistasContainer"
-                style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:30px;">
-            </div>
+            <div
+              id="finalistasContainer"
+              style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 30px"
+            ></div>
 
             <div class="grid-preguntas">
+              <div>
+                <label class="preg-label">Campeón</label>
+                <select name="campeon" class="equipo-select-simple" required=""></select>
+              </div>
 
-                <div>
-                    <label class="preg-label">Campeón</label>
-                    <select name="campeon" class="equipo-select-simple" required></select>
-                </div>
+              <div>
+                <label class="preg-label">Subcampeón</label>
+                <select name="subcampeon" class="equipo-select-simple" required=""></select>
+              </div>
 
-                <div>
-                    <label class="preg-label">Subcampeón</label>
-                    <select name="subcampeon" class="equipo-select-simple" required></select>
-                </div>
-
-                <div>
-                    <label class="preg-label">Tercer Puesto</label>
-                    <select name="tercero" class="equipo-select-simple" required></select>
-                </div>
-
+              <div>
+                <label class="preg-label">Tercer Puesto</label>
+                <select name="tercero" class="equipo-select-simple" required=""></select>
+              </div>
             </div>
+          </div>
 
-        </div>
-
-        <button
+          <button
             type="submit"
             class="btn-registro"
-            style="width:100%; justify-content:center; padding:20px; font-size:1.2rem; border-radius:20px;"
-        >
+            style="width: 100%; justify-content: center; padding: 20px; font-size: 1.2rem; border-radius: 20px"
+          >
             ENVIAR MIS PRONÓSTICOS 🏆
-        </button>
+          </button>
+        </form>
+      </div>
 
-    </form>
+      <!-- MIS PRONÓSTICOS (NUEVA SECCIÓN INDEPENDIENTE) -->
 
-</div>
+      <div id="predictionsSection" class="view-section hidden">
+        <div class="fase-container">
+          <div class="fase-title">MIS PRONÓSTICOS</div>
 
-<!-- MIS PRONÓSTICOS (NUEVA SECCIÓN INDEPENDIENTE) -->
-
-<div id="predictionsSection" class="view-section hidden">
-
-    <div class="fase-container">
-
-        <div class="fase-title">
-            MIS PRONÓSTICOS
-        </div>
-
-        <!-- SELECTOR -->
-        <div style="margin-bottom:20px;">
-
-            <label class="preg-label">
-                Selecciona un jugador
-            </label>
+          <!-- SELECTOR -->
+          <div style="margin-bottom: 20px">
+            <label class="preg-label">Selecciona un jugador</label>
 
             <div class="select-wrapper">
-                <select
-                    id="playerSelect"
-                     class="equipo-select-simple"
-                    onchange="loadPlayerPredictions()"
-                >
-                    <option value="">Elegir jugador...</option>
-                </select>
+              <select id="playerSelect" class="equipo-select-simple" onchange="loadPlayerPredictions()">
+                <option value="">Elegir jugador...</option>
+              </select>
             </div>
+          </div>
 
+          <!-- CONTENIDO -->
+          <div id="predictionsGlobalView"></div>
+        </div>
+      </div>
+
+      <div id="playerSection" class="view-section hidden">
+        <!-- SELECTOR JUGADOR -->
+
+        <div class="fase-container">
+          <div class="fase-title">JUGADORES</div>
+
+          <div style="margin-bottom: 20px">
+            <label class="preg-label">Selecciona un jugador</label>
+
+            <div class="select-wrapper">
+              <select id="rankingPlayerSelect" class="equipo-select-simple" onchange="loadRankingPlayer()">
+                <option value="">Elegir jugador...</option>
+              </select>
+            </div>
+          </div>
         </div>
 
         <!-- CONTENIDO -->
-        <div id="predictionsGlobalView"></div>
 
-    </div>
+        <div id="playerCardContainer" style="display: none">
+          <h2 id="playerNameBig">NOMBRE</h2>
 
-</div>
-
-<div id="playerSection" class="view-section hidden">
-
-    <!-- SELECTOR JUGADOR -->
-
-    <div class="fase-container">
-
-        <div class="fase-title">
-            JUGADORES
-        </div>
-
-        <div style="margin-bottom:20px;">
-
-            <label class="preg-label">
-                Selecciona un jugador
-            </label>
-
-            <div class="select-wrapper">
-
-                <select
-                    id="rankingPlayerSelect"
-                    class="equipo-select-simple"
-                    onchange="loadRankingPlayer()"
-                >
-
-                    <option value="">
-                        Elegir jugador...
-                    </option>
-
-                </select>
-
-            </div>
-
-        </div>
-
-    </div>
-
-    <!-- CONTENIDO -->
-
-    <div id="playerCardContainer" style="display:none;">
-
-        <h2 id="playerNameBig">NOMBRE</h2>
-
-        <div class="stats-row">
-
+          <div class="stats-row">
             <div class="stat-card">
-                <label>Ranking</label>
-                <span id="statPos">#0</span>
+              <label>Ranking</label>
+              <span id="statPos">#0</span>
             </div>
 
             <div class="stat-card">
-                <label>Puntos Finales</label>
-                <span id="statTotal">0</span>
+              <label>Puntos Finales</label>
+              <span id="statTotal">0</span>
             </div>
 
             <div class="stat-card">
-                <label>Preguntas</label>
-                <span id="statPreguntas">0</span>
+              <label>Preguntas</label>
+              <span id="statPreguntas">0</span>
             </div>
+          </div>
 
-        </div>
-
-        <div class="teams-table-wrapper">
-
+          <div class="teams-table-wrapper">
             <table class="teams-table">
+              <thead>
+                <tr>
+                  <th>POS</th>
+                  <th style="text-align: left">EQUIPO</th>
+                  <th>COEF</th>
+                  <th>1ª F</th>
+                  <th>16VOS</th>
+                  <th>8VOS</th>
+                  <th>4TOS</th>
+                  <th>SEMIS</th>
+                  <th>FINAL</th>
+                  <th>3º</th>
+                  <th>TOTAL</th>
+                </tr>
+              </thead>
 
-                <thead>
-                    <tr>
-                        <th>POS</th>
-                        <th style="text-align:left">EQUIPO</th>
-                        <th>COEF</th>
-                        <th>1ª F</th>
-                        <th>16VOS</th>
-                        <th>8VOS</th>
-                        <th>4TOS</th>
-                        <th>SEMIS</th>
-			<th>FINAL</th>
-                        <th>3º</th>
-                        <th>TOTAL</th>
-                    </tr>
-                </thead>
-
-                <tbody id="teamsBody"></tbody>
-
+              <tbody id="teamsBody"></tbody>
             </table>
-
+          </div>
         </div>
+      </div>
 
-    </div>
-</div>
+      <script>
+        const URL_MAESTRA =
+          "https://docs.google.com/spreadsheets/d/e/2PACX-1vRvbv4wKVLcF-dhiuLmYtU3aR8diCVDA8EgQ-yxaZXXqotI_L2VSWcoFo0NwiPEXB0XJwOxu9prujQk/pub?gid=2071537923&single=true&output=csv";
 
+        const URL_RANKING =
+          "https://docs.google.com/spreadsheets/d/e/2PACX-1vRvbv4wKVLcF-dhiuLmYtU3aR8diCVDA8EgQ-yxaZXXqotI_L2VSWcoFo0NwiPEXB0XJwOxu9prujQk/pub?gid=0&single=true&output=csv";
 
-<script>
+        const URL_TEAMS =
+          "https://docs.google.com/spreadsheets/d/e/2PACX-1vRvbv4wKVLcF-dhiuLmYtU3aR8diCVDA8EgQ-yxaZXXqotI_L2VSWcoFo0NwiPEXB0XJwOxu9prujQk/pub?gid=176911669&single=true&output=csv";
 
-const URL_MAESTRA =
-  "https://docs.google.com/spreadsheets/d/e/2PACX-1vRvbv4wKVLcF-dhiuLmYtU3aR8diCVDA8EgQ-yxaZXXqotI_L2VSWcoFo0NwiPEXB0XJwOxu9prujQk/pub?gid=2071537923&single=true&output=csv";
+        const URL_PRONOSTICOS =
+          "https://docs.google.com/spreadsheets/d/e/2PACX-1vRvbv4wKVLcF-dhiuLmYtU3aR8diCVDA8EgQ-yxaZXXqotI_L2VSWcoFo0NwiPEXB0XJwOxu9prujQk/pub?gid=446548834&single=true&output=csv";
 
-const URL_RANKING =
-  "https://docs.google.com/spreadsheets/d/e/2PACX-1vRvbv4wKVLcF-dhiuLmYtU3aR8diCVDA8EgQ-yxaZXXqotI_L2VSWcoFo0NwiPEXB0XJwOxu9prujQk/pub?gid=0&single=true&output=csv";
+        const GOOGLE_SCRIPT_URL =
+          "https://script.google.com/macros/s/AKfycbxaXG0AO-XyKGyqlN02NnOcWHANrJIAqqppd2lfGf1H4NgmlK8qomZdrQdH3OhC_6kqdA/exec";
 
-const URL_TEAMS =
-  "https://docs.google.com/spreadsheets/d/e/2PACX-1vRvbv4wKVLcF-dhiuLmYtU3aR8diCVDA8EgQ-yxaZXXqotI_L2VSWcoFo0NwiPEXB0XJwOxu9prujQk/pub?gid=176911669&single=true&output=csv";
+        let dropdownListenerAttached = false;
+        let pronosticosData = [];
+        let currentPlayerIndex = null;
+        let rankingPrevio = {};
+        let selectsGlobalesGrupos = [];
+        let equiposDisponibles = [];
+        let equiposPorGrupo = {};
+        let data = [];
 
-const URL_PRONOSTICOS =
-"https://docs.google.com/spreadsheets/d/e/2PACX-1vRvbv4wKVLcF-dhiuLmYtU3aR8diCVDA8EgQ-yxaZXXqotI_L2VSWcoFo0NwiPEXB0XJwOxu9prujQk/pub?gid=446548834&single=true&output=csv";
+        const GRUPOS = 12;
 
-const GOOGLE_SCRIPT_URL =
-  "https://script.google.com/macros/s/AKfycbxaXG0AO-XyKGyqlN02NnOcWHANrJIAqqppd2lfGf1H4NgmlK8qomZdrQdH3OhC_6kqdA/exec";
+        // ================= INIT =================
+        async function initApp() {
+          const [eq, rank, teams] = await Promise.all([
+            fetch(URL_MAESTRA).then((r) => r.text()),
+            fetch(URL_RANKING).then((r) => r.text()),
+            fetch(URL_TEAMS).then((r) => r.text()),
+          ]);
 
-let dropdownListenerAttached = false;
-let pronosticosData = [];
-let currentPlayerIndex = null;
-let rankingPrevio = {};
-let selectsGlobalesGrupos = [];
-let equiposDisponibles = [];
-let equiposPorGrupo = {};
-let data = [];
+          const pronos = await fetch(URL_PRONOSTICOS).then((r) => r.text());
+          pronosticosData = parseCSV(pronos);
 
-const GRUPOS = 12;
+          renderPlayerDropdown();
 
-// ================= INIT =================
-async function initApp() {
+          const equiposRows = parseCSV(eq);
 
-  const [eq, rank, teams] = await Promise.all([
-    fetch(URL_MAESTRA).then(r => r.text()),
-    fetch(URL_RANKING).then(r => r.text()),
-    fetch(URL_TEAMS).then(r => r.text())
-  ]);
+          equiposDisponibles = equiposRows.map((r) => r.equipo).sort((a, b) => a.localeCompare(b, "es"));
 
- const pronos = await fetch(URL_PRONOSTICOS).then(r => r.text());
- pronosticosData = parseCSV(pronos);
+          equiposPorGrupo = {};
 
- renderPlayerDropdown();
+          equiposRows.forEach((r) => {
+            const grupo = r.grupo?.trim();
 
-  const equiposRows = parseCSV(eq);
+            if (!equiposPorGrupo[grupo]) {
+              equiposPorGrupo[grupo] = [];
+            }
 
-equiposDisponibles = equiposRows
-  .map(r => r.equipo)
-  .sort((a, b) => a.localeCompare(b, 'es'));
+            equiposPorGrupo[grupo].push(r.equipo);
+          });
 
-equiposPorGrupo = {};
+          const rankingRows = parseCSV(rank);
+          const teamRows = parseCSV(teams);
 
-equiposRows.forEach(r => {
+          data = rankingRows.map((p) => ({
+            name: p.name,
+            preguntas: p.preguntas,
+            total: p.total,
+            teams: teamRows
+              .filter((t) => t.name === p.name)
+              .map((t) => ({
+                pos: t.pos || "",
+                team: t.team || "",
+                coef: t.coef || "",
+                fase: t.fase || "",
+                dieciseisavos: t.dieciseisavos || "",
+                octavos: t.octavos || "",
+                cuartos: t.cuartos || "",
+                semis: t.semis || "",
+                terceros: t.terceros || "",
+                final: t.final || "",
+                puntos: t.puntos || "",
+              })),
+          }));
 
-    const grupo = r.grupo?.trim();
+          renderRanking();
+          enableAutoFillOctavos();
+          renderPlayerDropdown();
+        }
 
-    if (!equiposPorGrupo[grupo]) {
-        equiposPorGrupo[grupo] = [];
-    }
+        // ================= CSV =================
 
-    equiposPorGrupo[grupo].push(r.equipo);
-});
+        function parseCSV(csv) {
+          const lines = csv.trim().split("\n");
 
-  const rankingRows = parseCSV(rank);
-  const teamRows = parseCSV(teams);
+          const sep = lines[0].includes(";") ? ";" : ",";
 
-  data = rankingRows.map(p => ({
-    name: p.name,
-    preguntas: p.preguntas,
-    total: p.total,
-    teams: teamRows
-      .filter(t => t.name === p.name)
-      .map(t => ({
-        pos: t.pos || "",
-        team: t.team || "",
-        coef: t.coef || "",
-        fase: t.fase || "",
-        dieciseisavos: t.dieciseisavos || "",
-        octavos: t.octavos || "",
-        cuartos: t.cuartos || "",
-        semis: t.semis || "",
-        terceros: t.terceros || "",
-        final: t.final || "",
-        puntos: t.puntos || ""
-      }))
-  }));
+          const headers = lines[0].split(sep).map((h) => h.trim()); // 👈 IMPORTANTE: NO lowerCase
 
-  renderRanking();
-  enableAutoFillOctavos();
-  renderPlayerDropdown();
-}
+          return lines.slice(1).map((line) => {
+            const values = line.split(sep);
 
-// ================= CSV =================
+            const obj = {};
 
-function parseCSV(csv) {
+            headers.forEach((h, i) => {
+              obj[h.trim().replace(/\r/g, "")] = values[i] ? values[i].replace(/"/g, "").trim() : "";
+            });
 
-  const lines = csv.trim().split("\n");
+            return obj;
+          });
+        }
 
-  const sep = lines[0].includes(";") ? ";" : ",";
+        // ================= RANKING =================
 
-  const headers = lines[0]
-    .split(sep)
-    .map(h => h.trim()); // 👈 IMPORTANTE: NO lowerCase
+        function renderRanking() {
+          const tbody = document.getElementById("rankingBody");
 
-  return lines.slice(1).map(line => {
+          const rankingOrdenado = [...data].sort((a, b) => {
+            const aTotal = parseFloat(String(a.total).replace(",", ".").trim()) || 0;
+            const bTotal = parseFloat(String(b.total).replace(",", ".").trim()) || 0;
 
-    const values = line.split(sep);
+            return bTotal - aTotal;
+          });
 
-    const obj = {};
+          const rankingPrevio = JSON.parse(localStorage.getItem("rankingPrevio") || "{}");
 
-    headers.forEach((h, i) => {
-      obj[h.trim().replace(/\r/g, "")] = values[i] ? values[i].replace(/"/g, "").trim() : "";
-    });
+          const nuevoRanking = {};
 
-    return obj;
-  });
-}
+          tbody.innerHTML = rankingOrdenado
+            .map((p, i) => {
+              const nombre = p.name;
+              const nuevaPos = i + 1;
+              const posAnterior = rankingPrevio[nombre];
 
-// ================= RANKING =================
+              let flecha = "";
 
-function renderRanking() {
+              if (posAnterior !== undefined) {
+                if (nuevaPos < posAnterior) {
+                  flecha = "up";
+                } else if (nuevaPos > posAnterior) {
+                  flecha = "down";
+                }
+              }
 
-  const tbody = document.getElementById("rankingBody");
+              nuevoRanking[nombre] = nuevaPos;
 
-  const rankingOrdenado = [...data].sort((a, b) => {
+              const realIndex = data.findIndex((d) => d.name === nombre);
 
-    const aTotal = parseFloat(String(a.total).replace(",", ".").trim()) || 0;
-    const bTotal = parseFloat(String(b.total).replace(",", ".").trim()) || 0;
-
-    return bTotal - aTotal;
-  });
-
-  const rankingPrevio = JSON.parse(
-    localStorage.getItem("rankingPrevio") || "{}"
-  );
-
-  const nuevoRanking = {};
-
-  tbody.innerHTML = rankingOrdenado.map((p, i) => {
-
-    const nombre = p.name;
-    const nuevaPos = i + 1;
-    const posAnterior = rankingPrevio[nombre];
-
-    let flecha = "";
-
-    if (posAnterior !== undefined) {
-
-      if (nuevaPos < posAnterior) {
-        flecha = "up";
-      } 
-      else if (nuevaPos > posAnterior) {
-        flecha = "down";
-      }
-    }
-
-    nuevoRanking[nombre] = nuevaPos;
-
-    const realIndex = data.findIndex(d => d.name === nombre);
-
-    return `
+              return `
       <tr onclick="openPlayerFromRanking(${realIndex})">
 
         <td>
@@ -2356,23 +2256,31 @@ function renderRanking() {
           ">
             <span>${nuevaPos}º</span>
 
-            ${flecha === "up" ? `
+            ${
+              flecha === "up"
+                ? `
               <span style="
                 color:#2e7d32;
                 font-weight:900;
                 font-size:1rem;
                 line-height:1;
               ">⬆</span>
-            ` : ""}
+            `
+                : ""
+            }
 
-            ${flecha === "down" ? `
+            ${
+              flecha === "down"
+                ? `
               <span style="
                 color:#c62828;
                 font-weight:900;
                 font-size:1rem;
                 line-height:1;
               ">⬇</span>
-            ` : ""}
+            `
+                : ""
+            }
 
           </div>
         </td>
@@ -2383,161 +2291,132 @@ function renderRanking() {
 
       </tr>
     `;
-  }).join("");
+            })
+            .join("");
 
-  localStorage.setItem("rankingPrevio", JSON.stringify(nuevoRanking));
-}
+          localStorage.setItem("rankingPrevio", JSON.stringify(nuevoRanking));
+        }
 
-function resetPredictionsView(){
+        function resetPredictionsView() {
+          const select = document.getElementById("playerSelect");
 
-    const select =
-        document.getElementById("playerSelect");
+          const container = document.getElementById("predictionsGlobalView");
 
-    const container =
-        document.getElementById("predictionsGlobalView");
+          if (select) {
+            select.value = "";
+          }
 
-    if(select){
-        select.value = "";
-    }
+          if (container) {
+            container.innerHTML = "";
+          }
+        }
 
-    if(container){
-        container.innerHTML = "";
-    }
-}
+        // ================= VISTAS =================
 
-// ================= VISTAS =================
+        window.showRanking = function () {
+          document.querySelectorAll(".view-section").forEach((s) => s.classList.add("hidden"));
 
+          document.getElementById("rankingSection").classList.remove("hidden");
+          document.getElementById("countdownBox").style.display = "block";
 
-window.showRanking = function () {
+          // MOSTRAR BOTÓN + CONTADOR
+          document.querySelector(".btn-registro-container").style.display = "flex";
+          updateHistory("ranking");
+        };
 
-  document.querySelectorAll(".view-section")
-    .forEach(s => s.classList.add("hidden"));
+        window.showRegister = function () {
+          document.querySelectorAll(".view-section").forEach((s) => s.classList.add("hidden"));
 
-  document.getElementById("rankingSection").classList.remove("hidden");
-  document.getElementById("countdownBox").style.display = "block";
+          // OCULTAR BOTÓN + CONTADOR
+          document.querySelector(".btn-registro-container").style.display = "none";
+          document.getElementById("registerSection").classList.remove("hidden");
+          document.getElementById("countdownBox").style.display = "none";
 
-// MOSTRAR BOTÓN + CONTADOR
-  document.querySelector(".btn-registro-container").style.display = "flex";
-updateHistory("ranking");
-};
+          renderTop8();
+          renderGrupos("primerosGrupoContainer", "grupo_primero", 12);
+          renderGrupos("segundosGrupoContainer", "grupo_segundo", 12);
+          renderGrupos("mejoresTercerosContainer", "grupo_tercero", 12);
 
-window.showRegister = function () {
+          renderEliminatorias("octavosContainer", "octavos", 16);
+          renderEliminatorias("cuartosContainer", "cuartos", 8);
+          renderEliminatorias("semisContainer", "semis", 4);
+          renderEliminatorias("finalistasContainer", "finalista", 2);
 
-  document.querySelectorAll(".view-section")
-    .forEach(s => s.classList.add("hidden"));
+          renderSimpleDropdowns();
+          updateHistory("register");
+        };
 
-// OCULTAR BOTÓN + CONTADOR
-  document.querySelector(".btn-registro-container").style.display = "none";
-  document.getElementById("registerSection").classList.remove("hidden");
-  document.getElementById("countdownBox").style.display = "none";
+        window.loadPlayerPredictions = function () {
+          const name = document.getElementById("playerSelect").value;
 
-  renderTop8();
-  renderGrupos("primerosGrupoContainer", "grupo_primero", 12);
-  renderGrupos("segundosGrupoContainer", "grupo_segundo", 12);
-  renderGrupos("mejoresTercerosContainer", "grupo_tercero", 12);
+          if (!name) {
+            document.getElementById("predictionsGlobalView").innerHTML = "";
 
-  renderEliminatorias("octavosContainer", "octavos", 16);
-  renderEliminatorias("cuartosContainer", "cuartos", 8);
-  renderEliminatorias("semisContainer", "semis", 4);
-  renderEliminatorias("finalistasContainer", "finalista", 2);
+            return;
+          }
 
-  renderSimpleDropdowns();
-  updateHistory("register");
-};
+          const firstRow = pronosticosData[0] || {};
 
-window.loadPlayerPredictions = function () {
+          const nombreKey = Object.keys(firstRow).find(
+            (k) => k.toLowerCase().includes("nombre") || k.toLowerCase().includes("jugador"),
+          );
 
-    const name =
-        document.getElementById("playerSelect").value;
+          if (!nombreKey) return;
 
-    if (!name) {
+          const player = pronosticosData.find((p) => p[nombreKey] === name);
 
-        document.getElementById(
-            "predictionsGlobalView"
-        ).innerHTML = "";
+          if (!player) return;
 
-        return;
-    }
+          renderPredictionsByPlayer(player);
+        };
 
-    const firstRow = pronosticosData[0] || {};
+        window.loadRankingPlayer = function () {
+          const name = document.getElementById("rankingPlayerSelect").value;
 
-    const nombreKey =
-        Object.keys(firstRow).find(
-            k =>
-                k.toLowerCase().includes("nombre") ||
-                k.toLowerCase().includes("jugador")
-        );
+          const container = document.getElementById("playerCardContainer");
 
-    if (!nombreKey) return;
+          if (!name) {
+            container.style.display = "none";
 
-    const player = pronosticosData.find(
-        p => p[nombreKey] === name
-    );
+            return;
+          }
 
-    if (!player) return;
+          const index = data.findIndex((p) => p.name === name);
 
-    renderPredictionsByPlayer(player);
-};
+          if (index === -1) return;
 
-window.loadRankingPlayer = function(){
+          container.style.display = "block";
 
-    const name =
-        document.getElementById(
-            "rankingPlayerSelect"
-        ).value;
+          renderPlayerCard(index);
+        };
 
-    const container =
-        document.getElementById(
-            "playerCardContainer"
-        );
+        window.openPlayerFromRanking = function (i) {
+          showPlayer();
 
-    if(!name){
+          const player = data[i];
 
-        container.style.display = "none";
+          document.getElementById("rankingPlayerSelect").value = player.name;
 
-        return;
-    }
+          loadRankingPlayer();
+        };
 
-    const index =
-        data.findIndex(
-            p => p.name === name
-        );
+        // ================= PLAYER =================
 
-    if(index === -1) return;
+        function renderPredictionsByPlayer(p) {
+          const c = document.getElementById("predictionsGlobalView");
 
-    container.style.display = "block";
-
-    renderPlayerCard(index);
-};
-
-window.openPlayerFromRanking = function(i){
-
-    showPlayer();
-
-    const player = data[i];
-
-    document.getElementById(
-        "rankingPlayerSelect"
-    ).value = player.name;
-
-    loadRankingPlayer();
-}
-
-// ================= PLAYER =================
-
-function renderPredictionsByPlayer(p) {
-
-  const c = document.getElementById("predictionsGlobalView");
-
-  c.innerHTML = `
+          c.innerHTML = `
     <div class="fase-container">
 
       <!-- ================= TOP 8 ================= -->
       <h3>🏆 TOP 8</h3>
       <ol>
-        ${Array.from({ length: 8 }, (_, i) => `
+        ${Array.from(
+          { length: 8 },
+          (_, i) => `
           <li><strong>${p[`equipo ${i + 1}`] || "-"}</strong></li>
-        `).join("")}
+        `,
+        ).join("")}
       </ol>
 
       <!-- ================= GRUPOS ================= -->
@@ -2545,22 +2424,22 @@ function renderPredictionsByPlayer(p) {
 
       <h4>Primeros</h4>
       <ul>
-        ${["A","B","C","D","E","F","G","H","I","J","K","L"]
-          .map(g => `<li>${p[`Primero Grupo ${g}`] || "-"}</li>`)
+        ${["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"]
+          .map((g) => `<li>${p[`Primero Grupo ${g}`] || "-"}</li>`)
           .join("")}
       </ul>
 
       <h4>Segundos</h4>
       <ul>
-        ${["A","B","C","D","E","F","G","H","I","J","K","L"]
-          .map(g => `<li>${p[`Segundo Grupo ${g}`] || "-"}</li>`)
+        ${["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"]
+          .map((g) => `<li>${p[`Segundo Grupo ${g}`] || "-"}</li>`)
           .join("")}
       </ul>
 
       <h4>Terceros</h4>
       <ul>
-        ${["A","B","C","D","E","F","G","H","I","J","K","L"]
-          .map(g => `<li>${p[`Tercero Grupo ${g}`] || "-"}</li>`)
+        ${["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"]
+          .map((g) => `<li>${p[`Tercero Grupo ${g}`] || "-"}</li>`)
           .join("")}
       </ul>
 
@@ -2576,30 +2455,42 @@ function renderPredictionsByPlayer(p) {
 
       <h4>Octavos</h4>
       <ul>
-        ${Array.from({ length: 16 }, (_, i) => `
+        ${Array.from(
+          { length: 16 },
+          (_, i) => `
           <li>${p[`Octavos ${i + 1}`] || "-"}</li>
-        `).join("")}
+        `,
+        ).join("")}
       </ul>
 
       <h4>Cuartos</h4>
       <ul>
-        ${Array.from({ length: 8 }, (_, i) => `
+        ${Array.from(
+          { length: 8 },
+          (_, i) => `
           <li>${p[`Cuartos ${i + 1}`] || "-"}</li>
-        `).join("")}
+        `,
+        ).join("")}
       </ul>
 
       <h4>Semifinales</h4>
       <ul>
-        ${Array.from({ length: 4 }, (_, i) => `
+        ${Array.from(
+          { length: 4 },
+          (_, i) => `
           <li>${p[`Semifinal ${i + 1}`] || "-"}</li>
-        `).join("")}
+        `,
+        ).join("")}
       </ul>
 
       <h4>Final</h4>
       <ul>
-        ${Array.from({ length: 2 }, (_, i) => `
+        ${Array.from(
+          { length: 2 },
+          (_, i) => `
           <li>${p[`Final ${i + 1}`] || "-"}</li>
-        `).join("")}
+        `,
+        ).join("")}
       </ul>
 
       <!-- ================= PODIO ================= -->
@@ -2612,31 +2503,22 @@ function renderPredictionsByPlayer(p) {
 
     </div>
   `;
-}
+        }
 
-function renderPlayerCard(i){
+        function renderPlayerCard(i) {
+          const p = data[i];
 
-    const p = data[i];
+          document.getElementById("playerNameBig").textContent = p.name;
 
-    document.getElementById(
-        "playerNameBig"
-    ).textContent = p.name;
+          document.getElementById("statTotal").textContent = p.total;
 
-    document.getElementById(
-        "statTotal"
-    ).textContent = p.total;
+          document.getElementById("statPreguntas").textContent = p.preguntas;
 
-    document.getElementById(
-        "statPreguntas"
-    ).textContent = p.preguntas;
+          document.getElementById("statPos").textContent = i + 1 + "º";
 
-    document.getElementById(
-        "statPos"
-    ).textContent = (i + 1) + "º";
-
-    document.getElementById(
-        "teamsBody"
-    ).innerHTML = p.teams.map(t => `
+          document.getElementById("teamsBody").innerHTML = p.teams
+            .map(
+              (t) => `
 
         <tr>
             <td>${t.pos}</td>
@@ -2652,66 +2534,53 @@ function renderPlayerCard(i){
             <td>${t.puntos}</td>
         </tr>
 
-    `).join("");
-}
+    `,
+            )
+            .join("");
+        }
 
-window.showPlayer = function () {
+        window.showPlayer = function () {
+          document.querySelectorAll(".view-section").forEach((s) => s.classList.add("hidden"));
 
-    document.querySelectorAll(".view-section")
-        .forEach(s => s.classList.add("hidden"));
+          document.getElementById("playerSection").classList.remove("hidden");
 
-    document.getElementById("playerSection")
-        .classList.remove("hidden");
+          document.getElementById("countdownBox").style.display = "none";
 
-    document.getElementById("countdownBox")
-        .style.display = "none";
+          document.querySelector(".btn-registro-container").style.display = "none";
 
-    document.querySelector(
-        ".btn-registro-container"
-    ).style.display = "none";
+          // reset visual
+          document.getElementById("rankingPlayerSelect").value = "";
 
-    // reset visual
-    document.getElementById(
-        "rankingPlayerSelect"
-    ).value = "";
+          document.getElementById("playerCardContainer").style.display = "none";
 
-    document.getElementById(
-        "playerCardContainer"
-    ).style.display = "none";
+          renderRankingPlayersDropdown();
 
-    renderRankingPlayersDropdown();
+          updateHistory("player");
+        };
 
-    updateHistory("player");
-};
+        window.showPredictions = function () {
+          document.querySelectorAll(".view-section").forEach((s) => s.classList.add("hidden"));
 
-window.showPredictions = function () {
+          document.getElementById("predictionsSection").classList.remove("hidden");
 
-  document.querySelectorAll(".view-section")
-    .forEach(s => s.classList.add("hidden"));
+          document.getElementById("countdownBox").style.display = "none";
 
-  document.getElementById("predictionsSection")
-    .classList.remove("hidden");
+          document.querySelector(".btn-registro-container").style.display = "none";
 
-  document.getElementById("countdownBox").style.display = "none";
+          resetPredictionsView();
+          renderPlayerDropdown();
+          updateHistory("predictions");
+        };
 
-  document.querySelector(".btn-registro-container").style.display = "none";
+        // ================= DROPDOWNS =================
 
-  resetPredictionsView();
-  renderPlayerDropdown();
-  updateHistory("predictions");
-};
+        function renderTop8() {
+          const c = document.getElementById("top8Container");
 
-// ================= DROPDOWNS =================
+          c.innerHTML = "";
 
-function renderTop8() {
-
-  const c = document.getElementById("top8Container");
-
-  c.innerHTML = "";
-
-  for (let i = 1; i <= 8; i++) {
-
-    c.innerHTML += `
+          for (let i = 1; i <= 8; i++) {
+            c.innerHTML += `
 
       <div class="top8-card">
 
@@ -2735,23 +2604,20 @@ function renderTop8() {
       </div>
 
     `;
-  }
-}
+          }
+        }
 
-function renderGrupos(containerId, prefix) {
+        function renderGrupos(containerId, prefix) {
+          const c = document.getElementById(containerId);
 
-    const c = document.getElementById(containerId);
+          c.innerHTML = "";
 
-    c.innerHTML = "";
+          for (let i = 0; i < GRUPOS; i++) {
+            const letra = String.fromCharCode(65 + i);
 
-    for (let i = 0; i < GRUPOS; i++) {
+            const equiposGrupo = equiposPorGrupo[letra] || [];
 
-        const letra = String.fromCharCode(65 + i);
-
-        const equiposGrupo =
-            equiposPorGrupo[letra] || [];
-
-        c.innerHTML += `
+            c.innerHTML += `
 
             <div>
 
@@ -2771,11 +2637,15 @@ function renderGrupos(containerId, prefix) {
                         Elegir equipo...
                     </option>
 
-                    ${equiposGrupo.map(eq => `
+                    ${equiposGrupo
+                      .map(
+                        (eq) => `
                         <option value="${eq}">
                             ${eq}
                         </option>
-                    `).join("")}
+                    `,
+                      )
+                      .join("")}
 
                 </select>
 
@@ -2783,17 +2653,15 @@ function renderGrupos(containerId, prefix) {
             </div>
 
         `;
-    }
-}
+          }
+        }
 
-function renderEliminatorias(containerId, prefix, n) {
+        function renderEliminatorias(containerId, prefix, n) {
+          const c = document.getElementById(containerId);
+          c.innerHTML = "";
 
-  const c = document.getElementById(containerId);
-  c.innerHTML = "";
-
-  for (let i = 1; i <= n; i++) {
-
-    c.innerHTML += `
+          for (let i = 1; i <= n; i++) {
+            c.innerHTML += `
 
       <div class="select-wrapper">
 
@@ -2809,217 +2677,153 @@ function renderEliminatorias(containerId, prefix, n) {
       </div>
 
     `;
-  }
-}
+          }
+        }
 
-function renderSimpleDropdowns() {
+        function renderSimpleDropdowns() {
+          const allSelects = document.querySelectorAll(
+            ".equipo-select-simple:not(#playerSelect):not(#rankingPlayerSelect)",
+          );
 
-    const allSelects = document.querySelectorAll( ".equipo-select-simple:not(#playerSelect):not(#rankingPlayerSelect)" );
+          function refreshDropdowns() {
+            allSelects.forEach((select) => {
+              const current = select.value;
 
-    function refreshDropdowns() {
+              // detectar bloque lógico
+              let section = "default";
 
-        allSelects.forEach(select => {
-
-            const current = select.value;
-
-            // detectar bloque lógico
-            let section = "default";
-
-            if (select.name.startsWith("top")) {
+              if (select.name.startsWith("top")) {
                 section = "top8";
-            }
-
-            else if (select.name.startsWith("grupo_primero")) {
+              } else if (select.name.startsWith("grupo_primero")) {
                 section = "primeros";
-            }
-
-            else if (select.name.startsWith("grupo_segundo")) {
+              } else if (select.name.startsWith("grupo_segundo")) {
                 section = "segundos";
-            }
-
-            else if (select.name.startsWith("grupo_tercero")) {
+              } else if (select.name.startsWith("grupo_tercero")) {
                 section = "terceros";
-            }
-
-            else if (select.name.startsWith("octavos")) {
+              } else if (select.name.startsWith("octavos")) {
                 section = "octavos";
-            }
-
-            else if (select.name.startsWith("cuartos")) {
+              } else if (select.name.startsWith("cuartos")) {
                 section = "cuartos";
-            }
-
-            else if (select.name.startsWith("semis")) {
+              } else if (select.name.startsWith("semis")) {
                 section = "semis";
-            }
-
-            else if (select.name.startsWith("finalista")) {
+              } else if (select.name.startsWith("finalista")) {
                 section = "finalistas";
-            }
-
-            else if (
-                ["campeon", "subcampeon", "tercero"].includes(select.name)
-            ) {
+              } else if (["campeon", "subcampeon", "tercero"].includes(select.name)) {
                 section = "podio";
-            }
+              }
 
-            // ===============================
-            // SELECCIÓN DE SELECTS POR BLOQUE
-            // ===============================
-            const sectionSelects = Array.from(allSelects).filter(s => {
-
+              // ===============================
+              // SELECCIÓN DE SELECTS POR BLOQUE
+              // ===============================
+              const sectionSelects = Array.from(allSelects).filter((s) => {
                 // TOP 8
-                if (section === "top8")
-                    return s.name.startsWith("top");
+                if (section === "top8") return s.name.startsWith("top");
 
                 // FASE DE GRUPOS (CORREGIDO)
-                if (
-                    section === "primeros" ||
-                    section === "segundos" ||
-                    section === "terceros"
-                ) {
-                    return (
-                        s.dataset.grupo === select.dataset.grupo &&
-                        (
-                            s.name.startsWith("grupo_primero") ||
-                            s.name.startsWith("grupo_segundo") ||
-                            s.name.startsWith("grupo_tercero")
-                        )
-                    );
+                if (section === "primeros" || section === "segundos" || section === "terceros") {
+                  return (
+                    s.dataset.grupo === select.dataset.grupo &&
+                    (s.name.startsWith("grupo_primero") ||
+                      s.name.startsWith("grupo_segundo") ||
+                      s.name.startsWith("grupo_tercero"))
+                  );
                 }
 
                 // ELIMINATORIAS
-                if (section === "octavos")
-                    return s.name.startsWith("octavos");
+                if (section === "octavos") return s.name.startsWith("octavos");
 
-                if (section === "cuartos")
-                    return s.name.startsWith("cuartos");
+                if (section === "cuartos") return s.name.startsWith("cuartos");
 
-                if (section === "semis")
-                    return s.name.startsWith("semis");
+                if (section === "semis") return s.name.startsWith("semis");
 
-                if (section === "finalistas")
-                    return s.name.startsWith("finalista");
+                if (section === "finalistas") return s.name.startsWith("finalista");
 
                 // PODIO
-                if (section === "podio")
-                    return ["campeon", "subcampeon", "tercero"]
-                        .includes(s.name);
+                if (section === "podio") return ["campeon", "subcampeon", "tercero"].includes(s.name);
 
                 return false;
-            });
+              });
 
-            // ===============================
-            // EQUIPOS YA SELECCIONADOS
-            // ===============================
-            const selected = new Set(
-                sectionSelects
-                    .map(s => s.value)
-                    .filter(Boolean)
-            );
+              // ===============================
+              // EQUIPOS YA SELECCIONADOS
+              // ===============================
+              const selected = new Set(sectionSelects.map((s) => s.value).filter(Boolean));
 
-            // ===============================
-            // BASE DE EQUIPOS
-            // ===============================
-            let equiposBase = equiposDisponibles;
+              // ===============================
+              // BASE DE EQUIPOS
+              // ===============================
+              let equiposBase = equiposDisponibles;
 
-            // limitar por grupo (solo fase de grupos)
-            if (select.classList.contains("grupo-select")) {
-
+              // limitar por grupo (solo fase de grupos)
+              if (select.classList.contains("grupo-select")) {
                 const grupo = select.dataset.grupo;
 
                 equiposBase = equiposPorGrupo[grupo] || [];
-            }
+              }
 
-            // ===============================
-            // RECONSTRUCCIÓN DEL SELECT
-            // ===============================
-            select.innerHTML =
-                `<option value="">Elegir equipo...</option>`;
+              // ===============================
+              // RECONSTRUCCIÓN DEL SELECT
+              // ===============================
+              select.innerHTML = `<option value="">Elegir equipo...</option>`;
 
-            equiposBase.forEach(team => {
+              equiposBase.forEach((team) => {
+                if (!selected.has(team) || team === current) {
+                  const option = document.createElement("option");
 
-                if (
-                    !selected.has(team) ||
-                    team === current
-                ) {
+                  option.value = team;
+                  option.textContent = team;
 
-                    const option = document.createElement("option");
+                  if (team === current) {
+                    option.selected = true;
+                  }
 
-                    option.value = team;
-                    option.textContent = team;
-
-                    if (team === current) {
-                        option.selected = true;
-                    }
-
-                    select.appendChild(option);
+                  select.appendChild(option);
                 }
+              });
             });
-        });
-    }
+          }
 
-    refreshDropdowns();
+          refreshDropdowns();
 
-    // listener único global
-    if (!dropdownListenerAttached) {
-
-        document.addEventListener("change", (e) => {
-
-            if ( e.target.matches( ".equipo-select-simple:not(#playerSelect):not(#rankingPlayerSelect)" ) ) {
+          // listener único global
+          if (!dropdownListenerAttached) {
+            document.addEventListener("change", (e) => {
+              if (e.target.matches(".equipo-select-simple:not(#playerSelect):not(#rankingPlayerSelect)")) {
                 refreshDropdowns();
-            }
+              }
+            });
 
-        });
-
-        dropdownListenerAttached = true;
-    }
-}
-
-function enableVisualChecks() {
-
-    document.addEventListener("change", (e) => {
-
-        if (
-            e.target.matches(".equipo-select-simple")
-        ) {
-
-            if (e.target.value !== "") {
-
-                e.target.classList.add(
-                    "select-completed"
-                );
-
-            } else {
-
-                e.target.classList.remove(
-                    "select-completed"
-                );
-            }
+            dropdownListenerAttached = true;
+          }
         }
-    });
-}
 
-// activa escucha global
-function enableAutoFillOctavos() {
+        function enableVisualChecks() {
+          document.addEventListener("change", (e) => {
+            if (e.target.matches(".equipo-select-simple")) {
+              if (e.target.value !== "") {
+                e.target.classList.add("select-completed");
+              } else {
+                e.target.classList.remove("select-completed");
+              }
+            }
+          });
+        }
 
-  document.addEventListener("change", (e) => {
+        // activa escucha global
+        function enableAutoFillOctavos() {
+          document.addEventListener("change", (e) => {
+            if (e.target.name?.startsWith("grupo") || e.target.name?.startsWith("terceros")) {
+              autoFillOctavos();
+            }
+          });
+        }
 
-    if (
-      e.target.name?.startsWith("grupo") ||
-      e.target.name?.startsWith("terceros")
-    ) {
-      autoFillOctavos();
-    }
-  });
-}
+        // ================= ENVÍO =================
 
-// ================= ENVÍO =================
+        function mostrarConfirmacion() {
+          const modal = document.createElement("div");
 
-function mostrarConfirmacion() {
-  const modal = document.createElement("div");
-
-  modal.innerHTML = `
+          modal.innerHTML = `
     <div style="
       position:fixed;
       top:0;left:0;right:0;bottom:0;
@@ -3055,137 +2859,107 @@ function mostrarConfirmacion() {
     </div>
   `;
 
-  document.body.appendChild(modal);
-}
+          document.body.appendChild(modal);
+        }
 
+        function renderPlayerDropdown() {
+          const select = document.getElementById("playerSelect");
 
-function renderPlayerDropdown() {
-
-    const select =
-        document.getElementById("playerSelect");
-
-    // reset
-    select.innerHTML = `
+          // reset
+          select.innerHTML = `
         <option value="">
             Selecciona un jugador...
         </option>
     `;
 
-    // obtener nombres únicos
-    const nombres = [
-        ...new Set(
-            pronosticosData
-                .map(p => (p.nombre || p.name || "").trim())
-                .filter(Boolean)
-        )
-    ]
+          // obtener nombres únicos
+          const nombres = [...new Set(pronosticosData.map((p) => (p.nombre || p.name || "").trim()).filter(Boolean))]
 
-    // ordenar alfabéticamente
-    .sort((a, b) =>
-        a.localeCompare(b, "es")
-    );
+            // ordenar alfabéticamente
+            .sort((a, b) => a.localeCompare(b, "es"));
 
-    // primera letra mayúscula
-   const capitalizar = (texto) => {
-    return texto
-        .toLowerCase()
-        .replace(
-            /(?<=^|\s)[\p{L}]/gu,
-            letra => letra.toUpperCase()
-        );
-};
+          // primera letra mayúscula
+          const capitalizar = (texto) => {
+            return texto.toLowerCase().replace(/(?<=^|\s)[\p{L}]/gu, (letra) => letra.toUpperCase());
+          };
 
-
-    // pintar opciones
-    select.innerHTML += nombres.map(nombre => `
+          // pintar opciones
+          select.innerHTML += nombres
+            .map(
+              (nombre) => `
 
         <option value="${nombre}">
             ${capitalizar(nombre)}
         </option>
 
-    `).join("");
+    `,
+            )
+            .join("");
 
-    // reset visual
-    select.value = "";
-}
+          // reset visual
+          select.value = "";
+        }
 
-function renderRankingPlayersDropdown(){
+        function renderRankingPlayersDropdown() {
+          const select = document.getElementById("rankingPlayerSelect");
 
-    const select =
-        document.getElementById(
-            "rankingPlayerSelect"
-        );
+          if (!select) return;
 
-    if(!select) return;
-
-    select.innerHTML = `
+          select.innerHTML = `
         <option value="">
             Elegir jugador...
         </option>
     `;
 
-    const nombres = [...new Set(
+          const nombres = [...new Set(data.map((p) => p.name?.trim()).filter(Boolean))].sort((a, b) =>
+            a.localeCompare(b, "es"),
+          );
 
-        data.map(p => p.name?.trim())
-            .filter(Boolean)
+          const capitalizar = (texto) => texto.toLowerCase().replace(/\b\w/g, (l) => l.toUpperCase());
 
-    )]
-
-    .sort((a,b)=>
-        a.localeCompare(b,"es")
-    );
-
-    const capitalizar = texto =>
-
-        texto
-            .toLowerCase()
-            .replace(
-                /\b\w/g,
-                l => l.toUpperCase()
-            );
-
-    select.innerHTML += nombres.map(nombre => `
+          select.innerHTML += nombres
+            .map(
+              (nombre) => `
     
         <option value="${nombre}">
             ${capitalizar(nombre)}
         </option>
 
-    `).join("");
-}
+    `,
+            )
+            .join("");
+        }
 
-document.getElementById("registrationForm").onsubmit = async (e) => {
+        document.getElementById("registrationForm").onsubmit = async (e) => {
+          e.preventDefault();
 
-  e.preventDefault();
+          // 1. Obtener el botón de envío y deshabilitarlo inmediatamente
+          // Esto evita de raíz que un segundo clic dispare otra petición en paralelo
+          const botonSubmit = e.target.querySelector("button[type='submit']");
+          if (botonSubmit) {
+            botonSubmit.disabled = true;
+            botonSubmit.innerText = "Enviando...";
+          }
 
-  // 1. Obtener el botón de envío y deshabilitarlo inmediatamente
-  // Esto evita de raíz que un segundo clic dispare otra petición en paralelo
-  const botonSubmit = e.target.querySelector("button[type='submit']");
-  if (botonSubmit) {
-    botonSubmit.disabled = true;
-    botonSubmit.innerText = "Enviando...";
-  }
+          const obj = {};
 
-  const obj = {};
+          new FormData(e.target).forEach((v, k) => {
+            // evita arrays rotos o undefined
+            if (v !== "" && v !== null && v !== undefined) {
+              obj[k] = v;
+            }
+          });
 
-  new FormData(e.target).forEach((v, k) => {
+          try {
+            // 2. Realizar el envío de forma segura
+            await fetch(GOOGLE_SCRIPT_URL, {
+              method: "POST",
+              headers: { "Content-Type": "text/plain;charset=utf-8" },
+              body: JSON.stringify(obj),
+            });
 
-    // evita arrays rotos o undefined
-    if (v !== "" && v !== null && v !== undefined) {
-      obj[k] = v;
-    }
-
-  });
-
-  try {
-    // 2. Realizar el envío de forma segura
-    await fetch(GOOGLE_SCRIPT_URL, {
-      method: "POST",
-      headers: { "Content-Type": "text/plain;charset=utf-8" },
-      body: JSON.stringify(obj)
-    });
-
-    // 3. Pintar el diseño de éxito una vez que el servidor responde
-    document.getElementById("registrationForm").innerHTML = `
+            // 3. Pintar el diseño de éxito una vez que el servidor responde
+            document.getElementById("registrationForm").innerHTML = `
 
       <div style="
           background:white;
@@ -3244,31 +3018,28 @@ document.getElementById("registrationForm").onsubmit = async (e) => {
       </div>
 
   `;
+          } catch (error) {
+            console.error("Error al enviar el pronóstico:", error);
+            alert("Hubo un problema de conexión al enviar tus datos. Por favor, inténtalo de nuevo.");
 
-  } catch (error) {
-    console.error("Error al enviar el pronóstico:", error);
-    alert("Hubo un problema de conexión al enviar tus datos. Por favor, inténtalo de nuevo.");
-    
-    // Si la red falla de verdad, reactivamos el botón para que puedan reintentar
-    if (botonSubmit) {
-      botonSubmit.disabled = false;
-      botonSubmit.innerText = "Enviar Pronóstico";
-    }
-  }
-};
+            // Si la red falla de verdad, reactivamos el botón para que puedan reintentar
+            if (botonSubmit) {
+              botonSubmit.disabled = false;
+              botonSubmit.innerText = "Enviar Pronóstico";
+            }
+          }
+        };
 
+        // ================= CONTADOR MUNDIAL =================
 
-// ================= CONTADOR MUNDIAL =================
+        const FECHA_MUNDIAL = new Date("2026-06-11T00:00:00");
 
-const FECHA_MUNDIAL = new Date("2026-06-11T00:00:00");
+        function iniciarContador() {
+          const box = document.getElementById("countdownBox");
+          const boton = document.getElementById("btnRegistro");
 
-function iniciarContador() {
-
-    const box = document.getElementById("countdownBox");
-    const boton = document.getElementById("btnRegistro");
-
-    // Estructura HTML inicial
-    box.innerHTML = `
+          // Estructura HTML inicial
+          box.innerHTML = `
         
         <div class="flip-clock">
 
@@ -3295,314 +3066,284 @@ function iniciarContador() {
         </div>
     `;
 
-    function animarFlip(id, valor) {
+          function animarFlip(id, valor) {
+            const el = document.getElementById(id);
 
-        const el = document.getElementById(id);
+            if (el.textContent !== valor) {
+              el.textContent = valor;
 
-        if (el.textContent !== valor) {
+              el.classList.remove("flip-anim");
 
-            el.textContent = valor;
+              void el.offsetWidth;
 
-            el.classList.remove("flip-anim");
+              el.classList.add("flip-anim");
+            }
+          }
 
-            void el.offsetWidth;
+          function actualizar() {
+            const ahora = new Date();
 
-            el.classList.add("flip-anim");
-        }
-    }
+            const diferencia = FECHA_MUNDIAL - ahora;
 
-    function actualizar() {
+            if (diferencia <= 0) {
+              box.innerHTML = "🔒 Pronósticos cerrados";
 
-        const ahora = new Date();
+              box.classList.add("countdown-finished");
 
-        const diferencia = FECHA_MUNDIAL - ahora;
-
-        if (diferencia <= 0) {
-
-            box.innerHTML = "🔒 Pronósticos cerrados";
-
-            box.classList.add("countdown-finished");
-
-            if (boton) {
+              if (boton) {
                 boton.style.pointerEvents = "none";
                 boton.style.opacity = "0.5";
+              }
+
+              return;
             }
 
-            return;
+            const dias = Math.floor(diferencia / (1000 * 60 * 60 * 24));
+
+            const horas = Math.floor((diferencia / (1000 * 60 * 60)) % 24);
+
+            const minutos = Math.floor((diferencia / (1000 * 60)) % 60);
+
+            const segundos = Math.floor((diferencia / 1000) % 60);
+
+            animarFlip("flipDias", String(dias).padStart(2, "0"));
+
+            animarFlip("flipHoras", String(horas).padStart(2, "0"));
+
+            animarFlip("flipMin", String(minutos).padStart(2, "0"));
+
+            animarFlip("flipSeg", String(segundos).padStart(2, "0"));
+          }
+
+          actualizar();
+
+          setInterval(actualizar, 1000);
         }
 
-        const dias =
-            Math.floor(diferencia / (1000 * 60 * 60 * 24));
+        // ================= MENU =================
 
-        const horas =
-            Math.floor((diferencia / (1000 * 60 * 60)) % 24);
+        function toggleMenu() {
+          document.getElementById("sideMenu").classList.toggle("active");
 
-        const minutos =
-            Math.floor((diferencia / (1000 * 60)) % 60);
+          document.getElementById("menuOverlay").classList.toggle("active");
+        }
 
-        const segundos =
-            Math.floor((diferencia / 1000) % 60);
+        function closeMenu() {
+          document.getElementById("sideMenu").classList.remove("active");
 
-        animarFlip(
-            "flipDias",
-            String(dias).padStart(2, "0")
-        );
+          document.getElementById("menuOverlay").classList.remove("active");
+        }
 
-        animarFlip(
-            "flipHoras",
-            String(horas).padStart(2, "0")
-        );
+        function updateHistory(section) {
+          history.pushState({ section }, "", "#" + section);
+        }
 
-        animarFlip(
-            "flipMin",
-            String(minutos).padStart(2, "0")
-        );
+        function goToSection(section) {
+          closeMenu();
 
-        animarFlip(
-            "flipSeg",
-            String(segundos).padStart(2, "0")
-        );
-    }
+          switch (section) {
+            case "ranking":
+              showRanking();
+              break;
 
-    actualizar();
+            case "register":
+              showRegister();
+              break;
 
-    setInterval(actualizar, 1000);
-}
+            case "player":
+              showPlayer();
+              break;
 
+            case "predictions":
+              showPredictions();
+              break;
+          }
+        }
 
-// ================= MENU =================
+        // ================= BOTÓN ATRÁS =================
 
-function toggleMenu(){
+        window.addEventListener("popstate", (e) => {
+          const section = e.state?.section || "ranking";
 
-    document
-        .getElementById("sideMenu")
-        .classList.toggle("active");
+          switch (section) {
+            case "ranking":
+              showRanking();
+              break;
 
-    document
-        .getElementById("menuOverlay")
-        .classList.toggle("active");
-}
+            case "register":
+              showRegister();
+              break;
 
-function closeMenu(){
+            case "player":
+              showPlayer();
+              break;
 
-    document
-        .getElementById("sideMenu")
-        .classList.remove("active");
+            case "predictions":
+              showPredictions();
+              break;
+          }
+        });
+        // ================= START =================
 
-    document
-        .getElementById("menuOverlay")
-        .classList.remove("active");
-}
+        document.addEventListener("DOMContentLoaded", () => {
+          initApp();
 
-function updateHistory(section){
+          iniciarContador();
 
-    history.pushState(
-        { section },
-        "",
-        "#" + section
-    );
-}
+          enableVisualChecks();
+        });
 
-function goToSection(section){
+        // FUNCIÓN PARA REACCIONAR AL CLICK Y DESPLAZAR EL SWITCH
+        function toggleCustomSwitch() {
+          const switchElement = document.getElementById("automationToggle");
 
-    closeMenu();
+          // Alterna la clase 'active' para que el CSS mueva la bolita físicamente
+          switchElement.classList.toggle("active");
 
-    switch(section){
+          // Si al hacer click se encendió, ejecuta el llenado automático
+          if (switchElement.classList.contains("active")) {
+            ejecutarLlenadoAutomatico();
+          }
+        }
 
-        case "ranking":
-            showRanking();
-            break;
+        // LÓGICA DE CRUCES ADAPTADA A TU APP
 
-        case "register":
-            showRegister();
-            break;
+        function ejecutarLlenadoAutomatico() {
+          // 1. Capturar los valores actuales de la fase de grupos usando tus índices de contenedores (0 a 11)
+          const primeros = [];
+          const segundos = [];
+          const terceros = [];
 
-        case "player":
-            showPlayer();
-   	    break;
+          for (let i = 0; i < 12; i++) {
+            const selP = document.querySelector(`select[name="grupo_primero${i}"]`);
+            const selS = document.querySelector(`select[name="grupo_segundo${i}"]`);
+            const selT = document.querySelector(`select[name="grupo_tercero${i}"]`);
 
-        case "predictions":
-    		showPredictions();
-    	   break;
-    }
-}
+            primeros.push(selP ? selP.value : "");
+            segundos.push(selS ? selS.value : "");
+            terceros.push(selT ? selT.value : "");
+          }
 
+          const mejoresTercerosValidos = terceros.filter(Boolean);
 
-// ================= BOTÓN ATRÁS =================
+          // 2. Cuadrante Oficial de Emparejamientos FIFA para Dieciseisavos (32 equipos)
+          const asignacionCruces = {
+            dieciseisavos1: primeros[0],
+            dieciseisavos2: mejoresTercerosValidos[0] || "",
+            dieciseisavos3: primeros[1],
+            dieciseisavos4: segundos[2],
+            dieciseisavos5: primeros[2],
+            dieciseisavos6: mejoresTercerosValidos[1] || "",
+            dieciseisavos7: primeros[3],
+            dieciseisavos8: segundos[4],
+            dieciseisavos9: primeros[4],
+            dieciseisavos10: mejoresTercerosValidos[2] || "",
+            dieciseisavos11: primeros[5],
+            dieciseisavos12: segundos[6],
+            dieciseisavos13: primeros[6],
+            dieciseisavos14: mejoresTercerosValidos[3] || "",
+            dieciseisavos15: primeros[7],
+            dieciseisavos16: segundos[8],
+            dieciseisavos17: primeros[8],
+            dieciseisavos18: mejoresTercerosValidos[4] || "",
+            dieciseisavos19: primeros[9],
+            dieciseisavos20: segundos[10],
+            dieciseisavos21: primeros[10],
+            dieciseisavos22: mejoresTercerosValidos[5] || "",
+            dieciseisavos23: primeros[11],
+            dieciseisavos24: segundos[0],
+            dieciseisavos25: segundos[1],
+            dieciseisavos26: mejoresTercerosValidos[6] || "",
+            dieciseisavos27: segundos[3],
+            dieciseisavos28: segundos[5],
+            dieciseisavos29: segundos[7],
+            dieciseisavos30: mejoresTercerosValidos[7] || "",
+            dieciseisavos31: segundos[9],
+            dieciseisavos32: segundos[11],
+          };
 
-window.addEventListener("popstate", (e) => {
-
-    const section =
-        e.state?.section || "ranking";
-
-    switch(section){
-
-        case "ranking":
-            showRanking();
-            break;
-
-        case "register":
-            showRegister();
-            break;
-
-        case "player":
-            showPlayer();
-   	    break;
-
-        case "predictions":
-            showPredictions();
-            break;
-    }
-});
-// ================= START =================
-
-document.addEventListener("DOMContentLoaded", () => {
-
-    initApp();
-
-    iniciarContador();
-
-    enableVisualChecks();
-
-});
-
-// FUNCIÓN PARA REACCIONAR AL CLICK Y DESPLAZAR EL SWITCH
-function toggleCustomSwitch() {
-    const switchElement = document.getElementById('automationToggle');
-    
-    // Alterna la clase 'active' para que el CSS mueva la bolita físicamente
-    switchElement.classList.toggle('active');
-    
-    // Si al hacer click se encendió, ejecuta el llenado automático
-    if (switchElement.classList.contains('active')) {
-        ejecutarLlenadoAutomatico();
-    }
-}
-
-// LÓGICA DE CRUCES ADAPTADA A TU APP
-
-function ejecutarLlenadoAutomatico() {
-    // 1. Capturar los valores actuales de la fase de grupos usando tus índices de contenedores (0 a 11)
-    const primeros = [];
-    const segundos = [];
-    const terceros = [];
-
-    for (let i = 0; i < 12; i++) {
-        const selP = document.querySelector(`select[name="grupo_primero${i}"]`);
-        const selS = document.querySelector(`select[name="grupo_segundo${i}"]`);
-        const selT = document.querySelector(`select[name="grupo_tercero${i}"]`);
-
-        primeros.push(selP ? selP.value : "");
-        segundos.push(selS ? selS.value : "");
-        terceros.push(selT ? selT.value : "");
-    }
-
-    const mejoresTercerosValidos = terceros.filter(Boolean);
-
-    // 2. Cuadrante Oficial de Emparejamientos FIFA para Dieciseisavos (32 equipos)
-    const asignacionCruces = {
-        "dieciseisavos1": primeros[0], "dieciseisavos2": mejoresTercerosValidos[0] || "",
-        "dieciseisavos3": primeros[1], "dieciseisavos4": segundos[2],
-        "dieciseisavos5": primeros[2], "dieciseisavos6": mejoresTercerosValidos[1] || "",
-        "dieciseisavos7": primeros[3], "dieciseisavos8": segundos[4],
-        "dieciseisavos9": primeros[4], "dieciseisavos10": mejoresTercerosValidos[2] || "",
-        "dieciseisavos11": primeros[5], "dieciseisavos12": segundos[6],
-        "dieciseisavos13": primeros[6], "dieciseisavos14": mejoresTercerosValidos[3] || "",
-        "dieciseisavos15": primeros[7], "dieciseisavos16": segundos[8],
-        "dieciseisavos17": primeros[8], "dieciseisavos18": mejoresTercerosValidos[4] || "",
-        "dieciseisavos19": primeros[9], "dieciseisavos20": segundos[10],
-        "dieciseisavos21": primeros[10], "dieciseisavos22": mejoresTercerosValidos[5] || "",
-        "dieciseisavos23": primeros[11], "dieciseisavos24": segundos[0],
-        "dieciseisavos25": segundos[1], "dieciseisavos26": mejoresTercerosValidos[6] || "",
-        "dieciseisavos27": segundos[3], "dieciseisavos28": segundos[5],
-        "dieciseisavos29": segundos[7], "dieciseisavos30": mejoresTercerosValidos[7] || "",
-        "dieciseisavos31": segundos[9], "dieciseisavos32": segundos[11]
-    };
-
-    // Función auxiliar interna para forzar de forma segura la inserción en tu lógica de selects
-    function forzarSeleccion(nameElemento, equipo) {
-        const selector = document.querySelector(`select[name="${nameElemento}"]`);
-        if (selector && equipo) {
-            // Si el equipo extraído no existe en las opciones dinámicas actuales, se genera
-            if (!selector.querySelector(`option[value="${equipo}"]`)) {
+          // Función auxiliar interna para forzar de forma segura la inserción en tu lógica de selects
+          function forzarSeleccion(nameElemento, equipo) {
+            const selector = document.querySelector(`select[name="${nameElemento}"]`);
+            if (selector && equipo) {
+              // Si el equipo extraído no existe en las opciones dinámicas actuales, se genera
+              if (!selector.querySelector(`option[value="${equipo}"]`)) {
                 const opt = document.createElement("option");
                 opt.value = equipo;
                 opt.textContent = equipo;
                 selector.appendChild(opt);
+              }
+              selector.value = equipo;
+              // Se le inyecta tu estilo nativo de campo completado (borde verde + icono check)
+              selector.classList.add("select-completed");
             }
-            selector.value = equipo;
-            // Se le inyecta tu estilo nativo de campo completado (borde verde + icono check)
-            selector.classList.add("select-completed");
+          }
+
+          // Rellenar la primera ronda (Dieciseisavos)
+          for (const [nameKey, equipo] of Object.entries(asignacionCruces)) {
+            forzarSeleccion(nameKey, equipo);
+          }
+
+          // 3. Proyección matemática automatizada en cascada (Ronda por ronda)
+
+          // De Dieciseisavos a Octavos (16 campos: octavos1 a octavos16)
+          for (let i = 1; i <= 16; i++) {
+            const procedencia = asignacionCruces[`dieciseisavos${i * 2 - 1}`];
+            forzarSeleccion(`octavos${i}`, procedencia);
+          }
+
+          // De Octavos a Cuartos (8 campos: cuartos1 a cuartos8)
+          for (let i = 1; i <= 8; i++) {
+            const procedencia = document.querySelector(`select[name="octavos${i * 2 - 1}"]`)?.value;
+            forzarSeleccion(`cuartos${i}`, procedencia);
+          }
+
+          // De Cuartos a Semifinales (4 campos: semis1 a semis4)
+          for (let i = 1; i <= 4; i++) {
+            const procedencia = document.querySelector(`select[name="cuartos${i * 2 - 1}"]`)?.value;
+            forzarSeleccion(`semis${i}`, procedencia);
+          }
+
+          // De Semifinales a Finalistas del Torneo (final1 y final2)
+          const finalista1 = document.querySelector(`select[name="semis1"]`)?.value;
+          const finalista2 = document.querySelector(`select[name="semis3"]`)?.value;
+          forzarSeleccion("finalista1", finalista1);
+          forzarSeleccion("finalista2", finalista2);
+
+          // Identificar perdedores de Semis (Irán al partido por el 3º Puesto)
+          const perdedorSemis1 = document.querySelector(`select[name="semis2"]`)?.value;
+
+          // Asignación de Campeón, Subcampeón y Tercer Puesto directamente en tus selectores dedicados
+          forzarSeleccion("campeon", finalista1);
+          forzarSeleccion("subcampeon", finalista2);
+          forzarSeleccion("tercero", perdedorSemis1);
+
+          // 4. Refrescar los selectores de tu aplicación para actualizar las listas de descarte exclusivas
+          if (typeof renderSimpleDropdowns === "function") {
+            renderSimpleDropdowns();
+          }
         }
-    }
+      </script>
 
-    // Rellenar la primera ronda (Dieciseisavos)
-    for (const [nameKey, equipo] of Object.entries(asignacionCruces)) {
-        forzarSeleccion(nameKey, equipo);
-    }
+      <!-- MENÚ INFERIOR (ICONOS) -->
 
-    // 3. Proyección matemática automatizada en cascada (Ronda por ronda)
+      <nav class="bottom-nav">
+        <button onclick="goToSection('ranking')" title="Clasificación">
+          <i class="fa-solid fa-house"></i>
+        </button>
 
-    // De Dieciseisavos a Octavos (16 campos: octavos1 a octavos16)
-    for (let i = 1; i <= 16; i++) {
-        const procedencia = asignacionCruces[`dieciseisavos${(i * 2) - 1}`];
-        forzarSeleccion(`octavos${i}`, procedencia);
-    }
+        <button onclick="goToSection('register')" title="Registro">
+          <i class="fa-solid fa-pen-to-square"></i>
+        </button>
 
-    // De Octavos a Cuartos (8 campos: cuartos1 a cuartos8)
-    for (let i = 1; i <= 8; i++) {
-        const procedencia = document.querySelector(`select[name="octavos${(i * 2) - 1}"]`)?.value;
-        forzarSeleccion(`cuartos${i}`, procedencia);
-    }
+        <button onclick="goToSection('player')" title="Jugadores">
+          <i class="fa-solid fa-users"></i>
+        </button>
 
-    // De Cuartos a Semifinales (4 campos: semis1 a semis4)
-    for (let i = 1; i <= 4; i++) {
-        const procedencia = document.querySelector(`select[name="cuartos${(i * 2) - 1}"]`)?.value;
-        forzarSeleccion(`semis${i}`, procedencia);
-    }
-
-    // De Semifinales a Finalistas del Torneo (final1 y final2)
-    const finalista1 = document.querySelector(`select[name="semis1"]`)?.value;
-    const finalista2 = document.querySelector(`select[name="semis3"]`)?.value;
-    forzarSeleccion("finalista1", finalista1);
-    forzarSeleccion("finalista2", finalista2);
-
-    // Identificar perdedores de Semis (Irán al partido por el 3º Puesto)
-    const perdedorSemis1 = document.querySelector(`select[name="semis2"]`)?.value;
-
-    // Asignación de Campeón, Subcampeón y Tercer Puesto directamente en tus selectores dedicados
-    forzarSeleccion("campeon", finalista1);
-    forzarSeleccion("subcampeon", finalista2);
-    forzarSeleccion("tercero", perdedorSemis1);
-
-    // 4. Refrescar los selectores de tu aplicación para actualizar las listas de descarte exclusivas
-    if (typeof renderSimpleDropdowns === "function") {
-        renderSimpleDropdowns(); 
-    }
-}
-</script>
-
-<!-- MENÚ INFERIOR (ICONOS) -->
-
-<nav class="bottom-nav">
-
-    <button onclick="goToSection('ranking')" title="Clasificación">
-        <i class="fa-solid fa-house"></i>
-    </button>
-
-    <button onclick="goToSection('register')" title="Registro">
-        <i class="fa-solid fa-pen-to-square"></i>
-    </button>
-
-    <button onclick="goToSection('player')" title="Jugadores">
-        <i class="fa-solid fa-users"></i>
-    </button>
-
-    <button onclick="goToSection('predictions')" title="Pronósticos">
-        <i class="fa-solid fa-chart-line"></i>
-    </button>
-
-</nav>
-
-</body>
+        <button onclick="goToSection('predictions')" title="Pronósticos">
+          <i class="fa-solid fa-chart-line"></i>
+        </button>
+      </nav>
+    </div>
+  </body>
 </html>
