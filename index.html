@@ -3167,6 +3167,14 @@ document.getElementById("registrationForm").onsubmit = async (e) => {
         }
     });
 
+    try {
+        // 2. Realizar el envío de forma segura
+        await fetch(GOOGLE_SCRIPT_URL, {
+            method: "POST",
+            headers: { "Content-Type": "text/plain;charset=utf-8" },
+            body: JSON.stringify(obj)
+        });
+
     // 3. Pintar el diseño de éxito una vez que el servidor responde
     document.getElementById("registrationForm").innerHTML = `
 
