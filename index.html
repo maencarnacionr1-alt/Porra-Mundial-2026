@@ -3129,34 +3129,42 @@ function renderRankingPlayersDropdown(){
 }
 
 document.getElementById("registrationForm").onsubmit = async (e) => {
+    e.preventDefault();
 
-  e.preventDefault();
+    // ========================================================
+    // VALIDACIÓN NUEVA: Contar exactamente 8 mejores terceros
+    // ========================================================
+    const selectTerceros = document.querySelectorAll('select[name^="grupo_tercero"]');
+    let conteoTerceros = 0;
 
-  // 1. Obtener el botón de envío y deshabilitarlo inmediatamente
-  // Esto evita de raíz que un segundo clic dispare otra petición en paralelo
-  const botonSubmit = e.target.querySelector("button[type='submit']");
-  if (botonSubmit) {
-    botonSubmit.disabled = true;
-    botonSubmit.innerText = "Enviando...";
-  }
+    selectTerceros.forEach(select => {
+        if (select.value !== "") {
+            conteoTerceros++;
+        }
+    });
 
-  const obj = {};
+    if (conteoTerceros !== 8) {
+        alert(`¡Atención! Debes elegir exactamente a los 8 mejores terceros que clasificarán. Actualmente has seleccionado ${conteoTerceros}.`);
+        return; // Detiene el envío por completo aquí
+    }
+    // ========================================================
 
-  new FormData(e.target).forEach((v, k) => {
-
-    // evita arrays rotos o undefined
-    if (v !== "" && v !== null && v !== undefined) {
-      obj[k] = v;
+    // 1. Obtener el botón de envío y deshabilitarlo inmediatamente
+    const botonSubmit = e.target.querySelector("button[type='submit']");
+    if (botonSubmit) {
+        botonSubmit.disabled = true;
+        botonSubmit.innerText = "Enviando...";
     }
 
-  });
-
-  try {
-    // 2. Realizar el envío de forma segura
-    await fetch(GOOGLE_SCRIPT_URL, {
-      method: "POST",
-      headers: { "Content-Type": "text/plain;charset=utf-8" },
-      body: JSON.stringify(obj)
+    const obj = {};
+    new FormData(e.target).forEach((v, k) => {
+        // PERMITIR VACÍOS EN TERCEROS: Si es un campo de tercero, se guarda aunque esté vacío ("")
+        // Para el resto de campos, se mantiene tu validación de ignorar valores nulos o vacíos.
+        if (k.startsWith("grupo_tercero")) {
+            obj[k] = v; 
+        } else if (v !== "" && v !== null && v !== undefined) {
+            obj[k] = v;
+        }
     });
 
     // 3. Pintar el diseño de éxito una vez que el servidor responde
