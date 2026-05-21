@@ -3611,7 +3611,46 @@ function ejecutarLlenadoAutomatico() {
     </button>
 
 </nav>
-    
+    <script>
+    // --- Lógica del Menú Lateral ---
+    function toggleMenu() {
+        document.getElementById("sideMenu").classList.toggle("active");
+        document.getElementById("menuOverlay").classList.toggle("active");
+    }
+
+    function closeMenu() {
+        document.getElementById("sideMenu").classList.remove("active");
+        document.getElementById("menuOverlay").classList.remove("active");
+    }
+
+    // --- Lógica de Navegación entre Secciones ---
+    function goToSection(sectionId) {
+        // Ocultar todas las vistas
+        document.querySelectorAll('.view-section').forEach(section => {
+            section.classList.add('hidden');
+        });
+        
+        // Mostrar la vista objetivo
+        const target = document.getElementById(sectionId + 'Section');
+        if (target) {
+            target.classList.remove('hidden');
+        }
+        
+        // Cerrar menú si está abierto
+        closeMenu();
+    }
+
+    // --- Lógica del Botón Registro ---
+    function showRegister() {
+        goToSection('register');
+    }
+
+    // --- Lógica del Switch de Automatización ---
+    function toggleCustomSwitch() {
+        const toggle = document.getElementById("automationToggle");
+        toggle.classList.toggle("active");
+    }
+	</script>
  
 </body> 
 </html>
