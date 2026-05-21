@@ -3588,30 +3588,8 @@ function ejecutarLlenadoAutomatico() {
         renderSimpleDropdowns(); 
     }
 }
-</script>
 
-<!-- MENÚ INFERIOR (ICONOS) -->
-
-<nav class="bottom-nav">
-
-    <button onclick="goToSection('ranking')" title="Clasificación">
-        <i class="fa-solid fa-house"></i>
-    </button>
-
-    <button onclick="goToSection('register')" title="Registro">
-        <i class="fa-solid fa-pen-to-square"></i>
-    </button>
-
-    <button onclick="goToSection('player')" title="Jugadores">
-        <i class="fa-solid fa-users"></i>
-    </button>
-
-    <button onclick="goToSection('predictions')" title="Pronósticos">
-        <i class="fa-solid fa-chart-line"></i>
-    </button>
-
-</nav>
-    <script>
+	
     // --- Lógica del Menú Lateral ---
     function toggleMenu() {
         document.getElementById("sideMenu").classList.toggle("active");
@@ -3650,7 +3628,31 @@ function ejecutarLlenadoAutomatico() {
         const toggle = document.getElementById("automationToggle");
         toggle.classList.toggle("active");
     }
-	</script>
+	
+</script>
+
+<!-- MENÚ INFERIOR (ICONOS) -->
+
+<nav class="bottom-nav">
+
+    <button onclick="goToSection('ranking')" title="Clasificación">
+        <i class="fa-solid fa-house"></i>
+    </button>
+
+    <button onclick="goToSection('register')" title="Registro">
+        <i class="fa-solid fa-pen-to-square"></i>
+    </button>
+
+    <button onclick="goToSection('player')" title="Jugadores">
+        <i class="fa-solid fa-users"></i>
+    </button>
+
+    <button onclick="goToSection('predictions')" title="Pronósticos">
+        <i class="fa-solid fa-chart-line"></i>
+    </button>
+
+</nav>
+    
  
 </body> 
 </html>
