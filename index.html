@@ -2201,7 +2201,7 @@ const URL_MAESTRA =
           "https://docs.google.com/spreadsheets/d/e/2PACX-1vSYe1nqTFOllYViQLj9x7NZ0buss9J-pqmIqeSziINNRDL5-a0m-sWcCg_48_zY5iAEhpHvzNYKuqbQ/pub?gid=1434944956&single=true&output=csv";
 
         const GOOGLE_SCRIPT_URL =
-          "https://script.google.com/macros/s/AKfycbyosD59YzsRYgG_maVqxcSI6AuM3Yv16pHQC2VI8njqe-3g2U4U-JXnzlqgqgi9unWmew/exec";
+          "https://script.google.com/macros/s/AKfycbyHja8af8YynvIVbahczAbnG9E9A5d9Me_yt_sbCmbxokWE6nRtgDwDYuY45EHW0EfBeg/exec";
 
 let dropdownListenerAttached = false;
 let pronosticosData = [];
@@ -3130,9 +3130,14 @@ function renderRankingPlayersDropdown(){
 
 document.getElementById("registrationForm").onsubmit = async (e) => {
     e.preventDefault();
+    const form = e.target;
+
+    // Eliminar cualquier mensaje de error de terceros previo si existiera
+    const errorPrevio = document.getElementById("error-terceros");
+    if (errorPrevio) errorPrevio.remove();
 
     // ========================================================
-    // VALIDACIÓN NUEVA: Contar exactamente 8 mejores terceros
+    // VALIDACIÓN: Contar exactamente 8 mejores terceros
     // ========================================================
     const selectTerceros = document.querySelectorAll('select[name^="grupo_tercero"]');
     let conteoTerceros = 0;
@@ -3144,22 +3149,36 @@ document.getElementById("registrationForm").onsubmit = async (e) => {
     });
 
     if (conteoTerceros !== 8) {
-        alert(`¡Atención! Debes elegir exactamente a los 8 mejores terceros que clasificarán. Actualmente has seleccionado ${conteoTerceros}.`);
-        return; // Detiene el envío por completo aquí
+        const contenedorError = document.createElement("div");
+        contenedorError.id = "error-terceros";
+        contenedorError.style.cssText = `
+            background: #ffebee; color: #c62828; border: 1px solid #ffcdd2;
+            padding: 15px; border-radius: 12px; margin: 20px 0;
+            font-weight: 600; font-size: 0.95rem; text-align: center;
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+            box-shadow: 0 4px 12px rgba(198, 40, 40, 0.05);
+        `;
+        contenedorError.innerHTML = `
+            <i class="fa-solid fa-triangle-exclamation" style="font-size: 1.2rem;"></i>
+            <span>¡Atención! Debes elegir exactamente a los 8 mejores terceros. Actualmente tienes <strong>${conteoTerceros}</strong> seleccionados.</span>
+        `;
+        
+        const botonSubmit = form.querySelector("button[type='submit']");
+        botonSubmit.parentNode.insertBefore(contenedorError, botonSubmit);
+        contenedorError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return; 
     }
     // ========================================================
 
-    // 1. Obtener el botón de envío y deshabilitarlo inmediatamente
-    const botonSubmit = e.target.querySelector("button[type='submit']");
+    // Obtener el botón de envío y deshabilitarlo
+    const botonSubmit = form.querySelector("button[type='submit']");
     if (botonSubmit) {
         botonSubmit.disabled = true;
         botonSubmit.innerText = "Enviando...";
     }
 
     const obj = {};
-    new FormData(e.target).forEach((v, k) => {
-        // PERMITIR VACÍOS EN TERCEROS: Si es un campo de tercero, se guarda aunque esté vacío ("")
-        // Para el resto de campos, se mantiene tu validación de ignorar valores nulos o vacíos.
+    new FormData(form).forEach((v, k) => {
         if (k.startsWith("grupo_tercero")) {
             obj[k] = v; 
         } else if (v !== "" && v !== null && v !== undefined) {
@@ -3168,86 +3187,64 @@ document.getElementById("registrationForm").onsubmit = async (e) => {
     });
 
     try {
-        // 2. Realizar el envío de forma segura
         await fetch(GOOGLE_SCRIPT_URL, {
             method: "POST",
             headers: { "Content-Type": "text/plain;charset=utf-8" },
             body: JSON.stringify(obj)
         });
 
-    // 3. Pintar el diseño de éxito una vez que el servidor responde
-    document.getElementById("registrationForm").innerHTML = `
+        // Desactivamos el aviso de "cambios sin guardar" del navegador de forma segura
+        window.onbeforeunload = null;
 
-      <div style="
-          background:white;
-          border-radius:25px;
-          padding:40px 25px;
-          text-align:center;
-          box-shadow:0 10px 30px rgba(0,0,0,0.12);
-      ">
+        // Ocultamos todos los elementos visibles actuales del formulario (campos, títulos, botones)
+        Array.from(form.children).forEach(child => {
+            child.style.display = "none";
+        });
 
-          <div style="
-              width:80px;
-              height:80px;
-              border-radius:50%;
-              background:#2e7d32;
-              margin:0 auto 20px auto;
-              display:flex;
-              align-items:center;
-              justify-content:center;
-              color:white;
-              font-size:2rem;
-              font-weight:900;
-          ">
-              ✓
-          </div>
+        // Verificamos si el contenedor de éxito ya existe para no duplicarlo, si no, lo creamos
+        let exitoBlock = document.getElementById("mensaje-exito-envio");
+        if (!exitoBlock) {
+            exitoBlock = document.createElement("div");
+            exitoBlock.id = "mensaje-exito-envio";
+            form.appendChild(exitoBlock);
+        }
 
-          <h2 style="
-              margin:0 0 10px 0;
-              color:#1b5e20;
-              font-size:2rem;
-          ">
-              Pronósticos enviados
-          </h2>
+        // Estilizamos y mostramos el cuadro de éxito integrado acorde a tu diseño
+        exitoBlock.style.cssText = `
+            display: block; background: white; border-radius: 25px; 
+            padding: 40px 25px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        `;
+        exitoBlock.innerHTML = `
+            <div style="width:80px; height:80px; background:#e8f5e9; color:#2e7d32; border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 20px auto; font-size:2.5rem;">
+                <i class="fa-solid fa-circle-check"></i>
+            </div>
+            <h2 style="color:var(--pitch-green); margin-bottom:10px; font-family:'Black Ops One'; font-size:1.8rem;">¡PRONÓSTICO ENVIADO!</h2>
+            <p style="color:#666; font-weight:600; font-size:1.1rem; margin-bottom:25px; line-height:1.5;">Tu quiniela ha sido registrada exitosamente en nuestra base de datos. ¡Buena suerte en el torneo! 🏆</p>
+            <button type="button" onclick="goToSection('ranking')" class="btn-registro" style="margin:0 auto; padding:12px 25px; font-size:0.9rem; border-radius:12px; cursor:pointer;">Ver Clasificación</button>
+        `;
 
-          <p style="
-              color:#555;
-              font-size:1rem;
-              line-height:1.6;
-              max-width:500px;
-              margin:0 auto 25px auto;
-          ">
-              Tus predicciones se han guardado correctamente.
-              Ya formas parte de la "Porra Mundial 2026".
-          </p>
+        // Devolvemos el estado del botón original por si acaso se vuelve a abrir después
+        if (botonSubmit) {
+            botonSubmit.disabled = false;
+            botonSubmit.innerText = "ENVIAR MIS PRONÓSTICOS 🏆";
+        }
 
-          <button
-              onclick="showRanking()"
-              class="btn-registro"
-              style="
-                  margin:0 auto;
-                  justify-content:center;
-              "
-          >
-              Volver al Ranking
-          </button>
+    } catch (error) {
+        console.error("Error en el envío:", error);
+        const contenedorErrorRed = document.createElement("div");
+        contenedorErrorRed.style.cssText = `
+            background: #ffebee; color: #c62828; border: 1px solid #ffcdd2;
+            padding: 15px; border-radius: 12px; margin: 20px 0; font-weight: 600; text-align: center;
+        `;
+        contenedorErrorRed.innerHTML = `🏆 Hubo un error de conexión al enviar. Por favor, inténtalo de nuevo.`;
+        botonSubmit.parentNode.insertBefore(contenedorErrorRed, botonSubmit);
 
-      </div>
-
-  `;
-
-  } catch (error) {
-    console.error("Error al enviar el pronóstico:", error);
-    alert("Hubo un problema de conexión al enviar tus datos. Por favor, inténtalo de nuevo.");
-    
-    // Si la red falla de verdad, reactivamos el botón para que puedan reintentar
-    if (botonSubmit) {
-      botonSubmit.disabled = false;
-      botonSubmit.innerText = "Enviar Pronóstico";
+        if (botonSubmit) {
+            botonSubmit.disabled = false;
+            botonSubmit.innerText = "ENVIAR MIS PRONÓSTICOS 🏆";
+        }
     }
-  }
 };
-
 
 // ================= CONTADOR MUNDIAL =================
 
@@ -3394,28 +3391,48 @@ function updateHistory(section){
     );
 }
 
-function goToSection(section){
+function goToSection(sectionId) {
+    // 1. Ocultar todas las secciones
+    document.querySelectorAll('.section-content').forEach(sec => {
+        sec.classList.remove('active');
+    });
 
-    closeMenu();
-
-    switch(section){
-
-        case "ranking":
-            showRanking();
-            break;
-
-        case "register":
-            showRegister();
-            break;
-
-        case "player":
-            showPlayer();
-   	    break;
-
-        case "predictions":
-    		showPredictions();
-    	   break;
+    // 2. Mostrar la sección seleccionada
+    const targetSection = document.getElementById(sectionId);
+    if (targetSection) {
+        targetSection.classList.add('active');
     }
+
+    // 3. Modificar comportamiento de los botones de navegación
+    document.querySelectorAll('.bottom-nav button').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    const activeBtn = document.querySelector(`.bottom-nav button[onclick*="${sectionId}"]`);
+    if (activeBtn) activeBtn.classList.add('active');
+
+    // ====================================================================
+    // NUEVO: Si volvemos a la sección 'register', restauramos el formulario
+    // ====================================================================
+    if (sectionId === 'register') {
+        const form = document.getElementById("registrationForm");
+        const exitoBlock = document.getElementById("mensaje-exito-envio");
+        
+        // Si el mensaje de éxito estaba visible, lo ocultamos y reseteamos el formulario
+        if (exitoBlock && exitoBlock.style.display === "block") {
+            exitoBlock.style.display = "none";
+            form.reset(); // Limpia todos los campos seleccionados anteriormente
+            
+            // Volvemos a mostrar los elementos internos del formulario que ocultamos al enviar
+            Array.from(form.children).forEach(child => {
+                if (child.id !== "mensaje-exito-envio") {
+                    child.style.display = "";
+                }
+            });
+        }
+    }
+
+    // Hacer scroll al inicio de la página al cambiar de sección
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 
