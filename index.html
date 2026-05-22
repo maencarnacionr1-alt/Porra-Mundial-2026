@@ -2552,65 +2552,67 @@ window.loadRankingPlayer = function(){
         return;
     }
     
-    // Búsqueda robusta ignorando mayúsculas, minúsculas y espacios sobrantes
-    const index = data.findIndex(p => p.name && p.name.trim().toLowerCase() === nameSelected.trim().toLowerCase());
+    // 1. Buscamos al jugador por nombre dentro de 'teamsData' (la hoja "teams" de tu Google Sheet)
+    // Usamos trim() y toLowerCase() para evitar fallos por espacios o mayúsculas
+    const playerTeamsData = teamsData.find(p => p.name && p.name.trim().toLowerCase() === nameSelected.trim().toLowerCase());
     
-    if(index === -1) {
-        console.warn("No se encontró el jugador en los datos actuales:", nameSelected);
+    // También buscamos su índice en 'data' (ranking general) para mostrar su posición actual en la tarjeta superior
+    const rankingIndex = data.findIndex(p => p.name && p.name.trim().toLowerCase() === nameSelected.trim().toLowerCase());
+    
+    if(!playerTeamsData) {
+        console.warn("No se encontraron datos para este jugador en la hoja 'teams':", nameSelected);
         return;
     }
     
     container.style.display = "block";
-    const player = data[index];
     
-    // 1. Rellenar las tarjetas estadísticas superiores
-    document.getElementById("playerNameBig").innerText = player.name.toUpperCase();
-    document.getElementById("statPos").innerText = `#${index + 1}`;
-    document.getElementById("statTotal").innerText = player.total || "0";
-    
-    // Mapeamos 'preguntas' u otra métrica complementaria si existiera en la fila
-    document.getElementById("statPreguntas").innerText = player.preguntas || player.aciertos || "-"; 
+    // 2. Rellenar las tarjetas estadísticas superiores
+    document.getElementById("playerNameBig").innerText = playerTeamsData.name.toUpperCase();
+    document.getElementById("statPos").innerText = rankingIndex !== -1 ? `#${rankingIndex + 1}` : "-";
+    document.getElementById("statTotal").innerText = playerTeamsData.total || "0";
+    document.getElementById("statPreguntas").innerText = playerTeamsData.preguntas || playerTeamsData.aciertos || "-"; 
 
-    // 2. Pintar las filas correspondientes de los TOP 8 en estricto orden (1º al 8º)
+    // 3. Pintar las filas de los equipos exactamente como vienen de la hoja "teams"
     const tbody = document.getElementById("teamsBody");
     
-    let htmlFilas = "";
-    
-    for (let i = 1; i <= 8; i++) {
-        const nombreEquipo = player[`equipo ${i}`] || player[`Equipo ${i}`] || "-";
-        
-        // Coeficiente calculado: 1º=8 puntos, 2º=7 puntos, etc... (O cámbialo por tu regla de negocio exacta)
-        const coefCalculado = (9 - i); 
-        
-        // Si tu base de datos consolida desgloses por fases por equipo dentro de claves dinámicas úsalos,
-        // de lo contrario dejamos las celdas limpias con '-' y los puntos que correspondan.
-        const f1 = player[`f1_${i}`] || "0";
-        const d16 = player[`d16_${i}`] || "0";
-        const o8 = player[`o8_${i}`] || "0";
-        const c4 = player[`c4_${i}`] || "0";
-        const semi = player[`semi_${i}`] || "0";
-        const fin = player[`fin_${i}`] || "0";
-        const terc = player[`terc_${i}`] || "0";
-        const ptsEquipo = player[`puntos_${i}`] || "0";
-
-        htmlFilas += `
+    // Si tu estructura en 'teamsData' guarda los equipos en un array interno 'equipos'
+    if (playerTeamsData.equipos && Array.isArray(playerTeamsData.equipos)) {
+        tbody.innerHTML = playerTeamsData.equipos.map((t, idx) => `
             <tr>
-                <td style="color: #666; font-weight:700;">${i}º</td>
-                <td style="text-align:left; font-weight:700; color: var(--soccer-dark);">⚽ ${nombreEquipo}</td>
-                <td style="color: #444;">x${coefCalculado}</td>
-                <td>${f1}</td>
-                <td>${d16}</td>
-                <td>${o8}</td>
-                <td>${c4}</td>
-                <td>${semi}</td>
-                <td>${fin}</td>
-                <td>${terc}</td>
-                <td class="points-final">${ptsEquipo}</td>
+                <td style="color: #666; font-weight:700;">${idx + 1}º</td>
+                <td style="text-align:left; font-weight:700; color: var(--soccer-dark);">⚽ ${t.equipo || t.name || "-"}</td>
+                <td style="color: #444;">${t.coef || t.coeficiente || "-"}</td>
+                <td>${t.f1 || t.fase1 || "0"}</td>
+                <td>${t.dieciseisavos || t["16vos"] || "0"}</td>
+                <td>${t.octavos || t["8vos"] || "0"}</td>
+                <td>${t.cuartos || t["4tos"] || "0"}</td>
+                <td>${t.semis || "0"}</td>
+                <td>${t.final || "0"}</td>
+                <td>${t.tercero || t["3o"] || "0"}</td>
+                <td class="points-final">${t.puntos || t.total || "0"}</td>
             </tr>
-        `;
+        `).join("");
+    } else {
+        // Si la estructura de la fila de la hoja 'teams' es plana (un objeto por equipo), 
+        // filtramos todos los registros de 'teamsData' que pertenezcan a este jugador
+        const filasJugador = teamsData.filter(p => p.name && p.name.trim().toLowerCase() === nameSelected.trim().toLowerCase());
+        
+        tbody.innerHTML = filasJugador.map((t, idx) => `
+            <tr>
+                <td style="color: #666; font-weight:700;">${idx + 1}º</td>
+                <td style="text-align:left; font-weight:700; color: var(--soccer-dark);">⚽ ${t.equipo || t.team || "-"}</td>
+                <td style="color: #444;">${t.coef || t.coeficiente || "-"}</td>
+                <td>${t.f1 || t.fase1 || "0"}</td>
+                <td>${t.dieciseisavos || t["16vos"] || t.d16 || "0"}</td>
+                <td>${t.octavos || t["8vos"] || t.o8 || "0"}</td>
+                <td>${t.cuartos || t["4tos"] || t.c4 || "0"}</td>
+                <td>${t.semis || t.semi || "0"}</td>
+                <td>${t.final || t.fin || "0"}</td>
+                <td>${t.tercero || t["3o"] || t.terc || "0"}</td>
+                <td class="points-final">${t.puntos || t.total || "0"}</td>
+            </tr>
+        `).join("");
     }
-    
-    tbody.innerHTML = htmlFilas;
 };
 
 window.openPlayerFromRanking = function(i){
@@ -2620,7 +2622,6 @@ window.openPlayerFromRanking = function(i){
     
     const select = document.getElementById("rankingPlayerSelect");
     
-    // Asegurar compatibilidad en la sincronización del buscador dinámico
     for(let option of select.options) {
         if(option.value.trim().toLowerCase() === player.name.trim().toLowerCase()) {
             select.value = option.value;
