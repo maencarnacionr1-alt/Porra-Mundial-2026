@@ -2563,51 +2563,46 @@ window.loadRankingPlayer = function(){
     container.style.display = "block";
     const p = data[index];
     
-    // 2. Rellenar las tarjetas estadísticas superiores
+    // 2. Tarjetas estadísticas superiores
     document.getElementById("playerNameBig").textContent = p.name;
     document.getElementById("statTotal").textContent = p.total || "0";
     document.getElementById("statPreguntas").textContent = p.preguntas || "-";
     document.getElementById("statPos").textContent = (index + 1) + "º";
     
-    // 3. Procesar de forma limpia la fila de equipos separada por comas
-    const tbody = document.getElementById("teamsBody");
+    // 3. Pintar la tabla manteniendo tu estructura .map pero con las propiedades exactas del CSV
+    document.getElementById("teamsBody").innerHTML = p.teams.map((t, idx) => `
+        <tr>
+            <td style="color: #666; font-weight:700;">${idx + 1}º</td>
+            <td style="text-align:left; font-weight:700; color: var(--soccer-dark);">⚽ ${t.team || "-"}</td>
+            <td style="color: #444;">${t.coef || "-"}</td>
+            <td>${t.fase || "0"}</td>
+            <td>${t.dieciseisavos || "0"}</td>
+            <td>${t.octavos || "0"}</td>
+            <td>${t.cuartos || "0"}</td>
+            <td>${t.semis || "0"}</td>
+            <td>${t.final || "0"}</td>
+            <td>${t.terceros || "0"}</td>
+            <td class="points-final">${t.puntos || "0"}</td>
+        </tr>
+    `).join("");
+};
+
+window.openPlayerFromRanking = function(i){
+    showPlayer();
+    const player = data[i];
+    if(!player) return;
     
-    if (p.teams && p.teams.length > 0) {
-        const t = p.teams[0]; // Obtenemos el registro base del jugador
-        
-        // Separamos la cadena de texto "Colombia,Alemania,Catar..." en un array independiente
-        const listaEquipos = t.team ? t.team.split(',').map(item => item.trim()) : [];
-        
-        // Definimos la escala exacta de coeficientes que tienes en tu Google Sheet
-        const coeficientesEstablecidos = ["2", "1,9", "1,8", "1,7", "1,6", "1,5", "1,4", "1,3"];
-        
-        // Renderizamos las 8 filas correspondientes
-        let htmlFilas = "";
-        for (let i = 0; i < 8; i++) {
-            const nombreEquipo = listaEquipos[i] || "-";
-            const coef = coeficientesEstablecidos[i] || "-";
-            
-            htmlFilas += `
-                <tr>
-                    <td style="color: #666; font-weight:700;">${i + 1}º</td>
-                    <td style="text-align:left; font-weight:700; color: var(--soccer-dark);">⚽ ${nombreEquipo}</td>
-                    <td style="color: #444;">${coef}</td>
-                    <td>${t.fase || "0"}</td>
-                    <td>${t.dieciseisavos || "0"}</td>
-                    <td>${t.octavos || "0"}</td>
-                    <td>${t.cuartos || "0"}</td>
-                    <td>${t.semis || "0"}</td>
-                    <td>${t.final || "0"}</td>
-                    <td>${t.terceros || "0"}</td>
-                    <td class="points-final">${t.puntos || "0"}</td>
-                </tr>
-            `;
+    const select = document.getElementById("rankingPlayerSelect");
+    if(select) {
+        for(let option of select.options) {
+            if(option.value.trim().toLowerCase() === player.name.trim().toLowerCase()) {
+                select.value = option.value;
+                break;
+            }
         }
-        tbody.innerHTML = htmlFilas;
-        
-    } else {
-        tbody.innerHTML = `<tr><td colspan="11" style="text-align:center; color:#999;">No hay equipos registrados para este participante</td></tr>`;
     }
+    
+    loadRankingPlayer();
 };
 
 // ================= PLAYER =================
