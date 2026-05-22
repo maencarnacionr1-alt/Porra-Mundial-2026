@@ -2703,11 +2703,12 @@ function renderPlayerCard(i){
     document.getElementById("statPreguntas").textContent = p.preguntas;
     document.getElementById("statPos").textContent = (i + 1) + "º";
     
+    // Mapeo exacto con las propiedades reales de la hoja "teams" agrupada
     document.getElementById("teamsBody").innerHTML = p.teams.map(t => `
         <tr>
-            <td style="color: #666; font-weight:700;">${t.pos}º</td>
-            <td style="text-align:left; font-weight:700; color: var(--soccer-dark);">⚽ ${t.team}</td>
-            <td style="color: #444;">${t.coef}</td>
+            <td style="color: #666; font-weight:700;">${t.pos || "-"}º</td>
+            <td style="text-align:left; font-weight:700; color: var(--soccer-dark);">⚽ ${t.team || "-"}</td>
+            <td style="color: #444;">${t.coef || "-"}</td>
             <td>${t.fase || "0"}</td>
             <td>${t.dieciseisavos || "0"}</td>
             <td>${t.octavos || "0"}</td>
