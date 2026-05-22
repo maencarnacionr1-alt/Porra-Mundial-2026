@@ -2311,26 +2311,22 @@ equiposRows.forEach(r => {
   const teamRows = parseCSV(teams);
 
   data = rankingRows.map(p => ({
-    name: p.name || p.Name || p.Nombre,
-    preguntas: p.preguntas || p.Preguntas,
-    total: p.total || p.Total,
-    teams: teamRows
-      .filter(t => (t.name || t.Name || t.Nombre) === (p.name || p.Name || p.Nombre))
-      .map(t => ({
-        pos: t.pos || t.Pos || "",
-        team: t.team || t.Team || t.Equipo || "",
-        // Añadimos las variables con Mayúscula inicial o formato de tu tabla visual
-        coef: t.coef || t.Coef || t.COEF || "",
-        fase: t.fase || t.Fase || t["1ª F"] || t["1ªF"] || "",
-        dieciseisavos: t.dieciseisavos || t.Dieciseisavos || t["16VOS"] || t["16vos"] || "",
-        octavos: t.octavos || t.Octavos || t["8VOS"] || t["8vos"] || "",
-        cuartos: t.cuartos || t.Cuartos || t["4TOS"] || t["4tos"] || "",
-        semis: t.semis || t.Semis || t["SEMIS"] || "",
-        terceros: t.terceros || t.Terceros || t["3º"] || "",
-        final: t.final || t.Final || t["FINAL"] || "",
-        puntos: t.puntos || t.Puntos || t.TOTAL || t.Total || ""
-      }))
-  }));
+    name: p.name,
+    preguntas: p.preguntas,
+    total: p.total,
+  
+        pos: t.pos,
+        team: t.team,
+        coef: t.coef,
+        fase: t.fase,
+        dieciseisavos: t.dieciseisavos,
+        octavos: t.octavos,
+        cuartos: t.cuartos,
+        semis: t.semis",
+        terceros: t.terceros,
+        final: t.final, 
+        puntos: t.puntos, 
+    
 
   renderRanking();
   enableAutoFillOctavos();
