@@ -1938,12 +1938,14 @@ body{
             </label>
 
             <input
-                type="text"
-                name="nombre"
-                required
-                placeholder="Escribe tu nombre..."
-                style="width:80%; padding:15px; border-radius:15px; border:3px solid var(--pitch-green); font-size:1.2rem; text-align:center; font-weight:700;"
-            >
+    type="text"
+    id="playerNameInput"
+    name="nombre"
+    required
+    placeholder="Escribe tu nombre..."
+    style="width:80%; padding:15px; border-radius:15px; border:3px solid var(--pitch-green); font-size:1.2rem; text-align:center; font-weight:700;"
+>
+<div id="errorMensaje" style="display:none; color: #d32f2f; background: #ffebee; padding: 10px; border-radius: 8px; margin-top: 5px; font-weight: bold;"></div>
         </div>
 
         <!-- TOP 8 -->
@@ -3674,6 +3676,36 @@ function ejecutarLlenadoAutomatico() {
         renderSimpleDropdowns(); 
     }
 }
+
+// --- LÓGICA DE REGISTRO (Validación y Formato) ---
+    document.addEventListener("DOMContentLoaded", function() {
+        const nameInput = document.getElementById("playerNameInput");
+        
+        if (nameInput) {
+            // Formateo mientras escribe (Capitalización)
+            nameInput.addEventListener("input", function() {
+                this.value = this.value
+                    .toLowerCase()
+                    .replace(/(^|\s)\S/g, (l) => l.toUpperCase());
+            });
+
+            // Validación al salir del campo (evitar duplicados)
+            nameInput.addEventListener("blur", function() {
+                const nombreEscrito = this.value.trim().toLowerCase();
+                // Comprobamos si el nombre ya está en el array 'data'
+                const existe = data.some(p => p.name && p.name.trim().toLowerCase() === nombreEscrito);
+                
+                if (existe) {
+                    const errorDiv = document.getElementById("errorMensaje");
+                    errorDiv.textContent = "Este nombre ya existe, por favor, escribe otro.";
+                    errorDiv.style.display = "block";
+                    this.value = ""; // Limpiamos el campo
+                    setTimeout(() => { errorDiv.style.display = "none"; }, 3000);
+                }
+            });
+        }
+    });
+
 </script>
 
 <!-- MENÚ INFERIOR (ICONOS) -->
