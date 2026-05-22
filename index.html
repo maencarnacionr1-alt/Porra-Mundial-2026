@@ -1741,13 +1741,13 @@ body{
 }
 
 /* =======================================
-   ESTILO PREMIUM PARA LA TABLA JUGADORES
+   NUEVO LOOK PREMIUM PARA LA TABLA JUGADORES
 ======================================= */
 .teams-table-wrapper {
     background: #ffffff;
     border: 1px solid rgba(0, 0, 0, 0.08);
     border-radius: 16px;
-    overflow-hidden: hidden;
+    overflow: hidden;
     box-shadow: 0 12px 30px rgba(0, 0, 0, 0.05);
     margin-top: 20px;
 }
@@ -1782,14 +1782,13 @@ body{
 }
 
 .teams-table td {
-    padding: 12px 10px;
+    padding: 14px 10px;
     font-size: 0.9rem;
     color: #333;
     font-weight: 600;
     border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
 
-/* Resaltado de columnas críticas */
 .teams-table td.points-final {
     color: var(--pitch-green);
     font-weight: 800;
@@ -2553,65 +2552,65 @@ window.loadRankingPlayer = function(){
         return;
     }
     
-    // Búsqueda robusta limpiando espacios y sin importar mayúsculas/minúsculas
+    // Búsqueda robusta ignorando mayúsculas, minúsculas y espacios sobrantes
     const index = data.findIndex(p => p.name && p.name.trim().toLowerCase() === nameSelected.trim().toLowerCase());
     
     if(index === -1) {
-        console.warn("No se encontró el jugador correlativo en 'data':", nameSelected);
+        console.warn("No se encontró el jugador en los datos actuales:", nameSelected);
         return;
     }
     
     container.style.display = "block";
-    
-    // Obtener el objeto del jugador encontrado
     const player = data[index];
     
-    // 1. Rellenar la cabecera e indicadores clave superiores
+    // 1. Rellenar las tarjetas estadísticas superiores
     document.getElementById("playerNameBig").innerText = player.name.toUpperCase();
-    document.getElementById("statPos").innerText = `#${index + 1}`; // Posición estimada por índice
+    document.getElementById("statPos").innerText = `#${index + 1}`;
     document.getElementById("statTotal").innerText = player.total || "0";
     
-    // Nota: Si manejas una clave para preguntas acertadas en el objeto, mapeala aquí (Ej: player.preguntas)
-    document.getElementById("statPreguntas").innerText = player.preguntas || "-"; 
+    // Mapeamos 'preguntas' u otra métrica complementaria si existiera en la fila
+    document.getElementById("statPreguntas").innerText = player.preguntas || player.aciertos || "-"; 
 
-    // 2. Pintar las filas correspondientes dentro de la tabla de Equipos
+    // 2. Pintar las filas correspondientes de los TOP 8 en estricto orden (1º al 8º)
     const tbody = document.getElementById("teamsBody");
     
-    // Si tu estructura trae subtablas de equipos mapeados (ej: player.equipos como array)
-    if (player.equipos && Array.isArray(player.equipos)) {
-        tbody.innerHTML = player.equipos.map((t, idx) => `
+    let htmlFilas = "";
+    
+    for (let i = 1; i <= 8; i++) {
+        const nombreEquipo = player[`equipo ${i}`] || player[`Equipo ${i}`] || "-";
+        
+        // Coeficiente calculado: 1º=8 puntos, 2º=7 puntos, etc... (O cámbialo por tu regla de negocio exacta)
+        const coefCalculado = (9 - i); 
+        
+        // Si tu base de datos consolida desgloses por fases por equipo dentro de claves dinámicas úsalos,
+        // de lo contrario dejamos las celdas limpias con '-' y los puntos que correspondan.
+        const f1 = player[`f1_${i}`] || "0";
+        const d16 = player[`d16_${i}`] || "0";
+        const o8 = player[`o8_${i}`] || "0";
+        const c4 = player[`c4_${i}`] || "0";
+        const semi = player[`semi_${i}`] || "0";
+        const fin = player[`fin_${i}`] || "0";
+        const terc = player[`terc_${i}`] || "0";
+        const ptsEquipo = player[`puntos_${i}`] || "0";
+
+        htmlFilas += `
             <tr>
-                <td>${idx + 1}</td>
-                <td style="text-align:left; font-weight:700;">⚽ ${t.equipo || t.name || "-"}</td>
-                <td>${t.coef || t.coeficiente || "-"}</td>
-                <td>${t.f1 || t.fase1 || "0"}</td>
-                <td>${t.dieciseisavos || t["16vos"] || "0"}</td>
-                <td>${t.octavos || t["8vos"] || "0"}</td>
-                <td>${t.cuartos || t["4tos"] || "0"}</td>
-                <td>${t.semis || "0"}</td>
-                <td>${t.final || "0"}</td>
-                <td>${t.tercero || t["3o"] || "0"}</td>
-                <td class="points-final">${t.puntos || t.total || "0"}</td>
-            </tr>
-        `).join("");
-    } else {
-        // Renderizado alternativo en caso de que las columnas vengan en la raíz del objeto jugador
-        tbody.innerHTML = `
-            <tr>
-                <td>1</td>
-                <td style="text-align:left; font-weight:700;">🏆 Predicciones Globales</td>
-                <td>-</td>
-                <td>${player.fase1 || player.f1 || "0"}</td>
-                <td>${player["16vos"] || "0"}</td>
-                <td>${player.octavos || "0"}</td>
-                <td>${player.cuartos || "0"}</td>
-                <td>${player.semis || "0"}</td>
-                <td>${player.final || "0"}</td>
-                <td>${player.tercero || "0"}</td>
-                <td class="points-final">${player.total || "0"}</td>
+                <td style="color: #666; font-weight:700;">${i}º</td>
+                <td style="text-align:left; font-weight:700; color: var(--soccer-dark);">⚽ ${nombreEquipo}</td>
+                <td style="color: #444;">x${coefCalculado}</td>
+                <td>${f1}</td>
+                <td>${d16}</td>
+                <td>${o8}</td>
+                <td>${c4}</td>
+                <td>${semi}</td>
+                <td>${fin}</td>
+                <td>${terc}</td>
+                <td class="points-final">${ptsEquipo}</td>
             </tr>
         `;
     }
+    
+    tbody.innerHTML = htmlFilas;
 };
 
 window.openPlayerFromRanking = function(i){
@@ -2621,7 +2620,7 @@ window.openPlayerFromRanking = function(i){
     
     const select = document.getElementById("rankingPlayerSelect");
     
-    // Buscamos la opción del select cuyo valor coincida exactamente con el nombre mapeado
+    // Asegurar compatibilidad en la sincronización del buscador dinámico
     for(let option of select.options) {
         if(option.value.trim().toLowerCase() === player.name.trim().toLowerCase()) {
             select.value = option.value;
