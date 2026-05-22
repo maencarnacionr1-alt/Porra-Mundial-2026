@@ -2314,19 +2314,22 @@ equiposRows.forEach(r => {
     name: p.name,
     preguntas: p.preguntas,
     total: p.total,
-  
-        pos: t.pos,
-        team: t.team,
-        coef: t.coef,
-        fase: t.fase,
-        dieciseisavos: t.dieciseisavos,
-        octavos: t.octavos,
-        cuartos: t.cuartos,
-        semis: t.semis",
-        terceros: t.terceros,
-        final: t.final, 
-        puntos: t.puntos, 
-    
+    teams: teamRows
+      .filter(t => t.name === p.name)
+      .map(t => ({
+        pos: t.pos || "",
+        team: t.team || "",
+        coef: t.coef || "",
+        fase: t.fase || "",
+        dieciseisavos: t.dieciseisavos || "",
+        octavos: t.octavos || "",
+        cuartos: t.cuartos || "",
+        semis: t.semis || "",
+        terceros: t.terceros || "",
+        final: t.final || "",
+        puntos: t.puntos || ""
+      }))
+  }));
 
   renderRanking();
   enableAutoFillOctavos();
