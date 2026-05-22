@@ -2631,22 +2631,25 @@ window.loadRankingPlayer = function(){
     document.getElementById("statPos").textContent = posicionReal + "º";
     
     // 4. Pintar la tabla
-    document.getElementById("teamsBody").innerHTML = player.teams.map((t, idx) => `
-        <tr>
-            <td style="color: #666; font-weight:700;">${idx + 1}º</td>
-            <td style="text-align:left; font-weight:700; color: var(--soccer-dark);">⚽ ${t.team || "-"}</td>
-            <td style="color: #444;">${t.coef || "-"}</td>
-            <td>${t.fase || "0"}</td>
-            <td>${t.dieciseisavos || "0"}</td>
-            <td>${t.octavos || "0"}</td>
-            <td>${t.cuartos || "0"}</td>
-            <td>${t.semis || "0"}</td>
-            <td>${t.final || "0"}</td>
-            <td>${t.terceros || "0"}</td>
-            <td class="points-final">${t.puntos || "0"}</td>
-        </tr>
-    `).join("");
-};
+	
+// Tu función de pintado queda así:
+document.getElementById("teamsBody").innerHTML = player.teams.map((t, idx) => `
+    <tr>
+        <td style="color: #666; font-weight:700;">${idx + 1}º</td>
+        <td style="text-align:left; font-weight:700; color: var(--soccer-dark);">
+            ${getBandera(t.team)} ${t.team || "-"}
+        </td>
+        <td style="color: #444;">${t.coef || "-"}</td>
+        <td>${t.fase || "0"}</td>
+        <td>${t.dieciseisavos || "0"}</td>
+        <td>${t.octavos || "0"}</td>
+        <td>${t.cuartos || "0"}</td>
+        <td>${t.semis || "0"}</td>
+        <td>${t.final || "0"}</td>
+        <td>${t.terceros || "0"}</td>
+        <td class="points-final">${t.puntos || "0"}</td>
+    </tr>
+`).join("");
 
 window.openPlayerFromRanking = function(i){
     showPlayer();
