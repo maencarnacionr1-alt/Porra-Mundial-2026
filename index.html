@@ -2552,45 +2552,19 @@ window.loadRankingPlayer = function(){
         return;
     }
     
-    // 1. Filtrar en 'teamsData' todas las filas de equipos que pertenecen a este jugador
-    // Usamos trim() y toLowerCase() para evitar que falle por diferencias de mayúsculas/minúsculas o espacios
-    const filasJugador = teamsData.filter(p => p.name && p.name.trim().toLowerCase() === nameSelected.trim().toLowerCase());
+    // 1. Encontrar el índice del jugador en tu array global de datos
+    const index = data.findIndex(p => p.name && p.name.trim().toLowerCase() === nameSelected.trim().toLowerCase());
     
-    // También buscamos su índice en 'data' (ranking general) para la tarjeta superior
-    const rankingIndex = data.findIndex(p => p.name && p.name.trim().toLowerCase() === nameSelected.trim().toLowerCase());
-    
-    if(filasJugador.length === 0) {
-        console.warn("No se encontraron datos para este jugador en la hoja 'teams':", nameSelected);
+    if(index === -1) {
+        console.warn("No se encontraron datos para este jugador:", nameSelected);
         return;
     }
     
+    // 2. Mostrar la sección contenedora
     container.style.display = "block";
     
-    // El total de puntos acumulados del jugador
-    const primerRegistro = filasJugador[0];
-    document.getElementById("playerNameBig").innerText = nameSelected.toUpperCase();
-    document.getElementById("statPos").innerText = rankingIndex !== -1 ? `#${rankingIndex + 1}` : "-";
-    document.getElementById("statTotal").innerText = primerRegistro.total || "0";
-    document.getElementById("statPreguntas").innerText = primerRegistro.preguntas || primerRegistro.aciertos || "-"; 
-
-    // 2. Pintar las filas correspondientes de la hoja 'teams' en el tbody
-    const tbody = document.getElementById("teamsBody");
-    
-    tbody.innerHTML = filasJugador.map((t, idx) => `
-        <tr>
-            <td style="color: #666; font-weight:700;">${idx + 1}º</td>
-            <td style="text-align:left; font-weight:700; color: var(--soccer-dark);">⚽ ${t.equipo || t.team || "-"}</td>
-            <td style="color: #444;">${t.coef || t.coeficiente || "-"}</td>
-            <td>${t.f1 || t.fase1 || "0"}</td>
-            <td>${t.dieciseisavos || t["16vos"] || t.d16 || "0"}</td>
-            <td>${t.octavos || t["8vos"] || t.o8 || "0"}</td>
-            <td>${t.cuartos || t["4tos"] || t.c4 || "0"}</td>
-            <td>${t.semis || t.semi || "0"}</td>
-            <td>${t.final || t.fin || "0"}</td>
-            <td>${t.tercero || t["3o"] || t.terc || "0"}</td>
-            <td class="points-final">${t.puntos || "0"}</td>
-        </tr>
-    `).join("");
+    // 3. Reutilizar de forma limpia la función nativa de tu código para pintar las tarjetas y la tabla "teams"
+    renderPlayerCard(index);
 };
 
 window.openPlayerFromRanking = function(i){
@@ -2599,11 +2573,12 @@ window.openPlayerFromRanking = function(i){
     if(!player) return;
     
     const select = document.getElementById("rankingPlayerSelect");
-    
-    for(let option of select.options) {
-        if(option.value.trim().toLowerCase() === player.name.trim().toLowerCase()) {
-            select.value = option.value;
-            break;
+    if(select) {
+        for(let option of select.options) {
+            if(option.value.trim().toLowerCase() === player.name.trim().toLowerCase()) {
+                select.value = option.value;
+                break;
+            }
         }
     }
     
