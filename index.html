@@ -2311,23 +2311,24 @@ equiposRows.forEach(r => {
   const teamRows = parseCSV(teams);
 
   data = rankingRows.map(p => ({
-    name: p.name,
-    preguntas: p.preguntas,
-    total: p.total,
+    name: p.name || p.Name || p.Nombre,
+    preguntas: p.preguntas || p.Preguntas,
+    total: p.total || p.Total,
     teams: teamRows
-      .filter(t => t.name === p.name)
+      .filter(t => (t.name || t.Name || t.Nombre) === (p.name || p.Name || p.Nombre))
       .map(t => ({
-        pos: t.pos || "",
-        team: t.team || "",
-        coef: t.coef || "",
-        fase: t.fase || "",
-        dieciseisavos: t.dieciseisavos || "",
-        octavos: t.octavos || "",
-        cuartos: t.cuartos || "",
-        semis: t.semis || "",
-        terceros: t.terceros || "",
-        final: t.final || "",
-        puntos: t.puntos || ""
+        pos: t.pos || t.Pos || "",
+        team: t.team || t.Team || t.Equipo || "",
+        // Añadimos las variables con Mayúscula inicial o formato de tu tabla visual
+        coef: t.coef || t.Coef || t.COEF || "",
+        fase: t.fase || t.Fase || t["1ª F"] || t["1ªF"] || "",
+        dieciseisavos: t.dieciseisavos || t.Dieciseisavos || t["16VOS"] || t["16vos"] || "",
+        octavos: t.octavos || t.Octavos || t["8VOS"] || t["8vos"] || "",
+        cuartos: t.cuartos || t.Cuartos || t["4TOS"] || t["4tos"] || "",
+        semis: t.semis || t.Semis || t["SEMIS"] || "",
+        terceros: t.terceros || t.Terceros || t["3º"] || "",
+        final: t.final || t.Final || t["FINAL"] || "",
+        puntos: t.puntos || t.Puntos || t.TOTAL || t.Total || ""
       }))
   }));
 
@@ -2696,30 +2697,7 @@ function renderPredictionsByPlayer(p) {
   `;
 }
 
-function renderPlayerCard(i){
-    const p = data[i];
-    document.getElementById("playerNameBig").textContent = p.name;
-    document.getElementById("statTotal").textContent = p.total;
-    document.getElementById("statPreguntas").textContent = p.preguntas;
-    document.getElementById("statPos").textContent = (i + 1) + "º";
-    
-    // Mapeo exacto con las propiedades reales de la hoja "teams" agrupada
-    document.getElementById("teamsBody").innerHTML = p.teams.map(t => `
-        <tr>
-            <td style="color: #666; font-weight:700;">${t.pos || "-"}º</td>
-            <td style="text-align:left; font-weight:700; color: var(--soccer-dark);">⚽ ${t.team || "-"}</td>
-            <td style="color: #444;">${t.coef || "-"}</td>
-            <td>${t.fase || "0"}</td>
-            <td>${t.dieciseisavos || "0"}</td>
-            <td>${t.octavos || "0"}</td>
-            <td>${t.cuartos || "0"}</td>
-            <td>${t.semis || "0"}</td>
-            <td>${t.final || "0"}</td>
-            <td>${t.terceros || "0"}</td>
-            <td class="points-final">${t.puntos || "0"}</td>
-        </tr>
-    `).join("");
-}
+
 
 window.showPlayer = function () {
 
