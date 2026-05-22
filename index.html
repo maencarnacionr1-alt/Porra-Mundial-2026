@@ -1741,13 +1741,18 @@ body{
 }
 
 /* =======================================
-   NUEVO LOOK PREMIUM PARA LA TABLA JUGADORES
+   NUEVO LOOK PREMIUM PARA LA TABLA DETALLE PUNTOS
 ======================================= */
 .teams-table-wrapper {
     background: #ffffff;
     border: 1px solid rgba(0, 0, 0, 0.08);
     border-radius: 16px;
-    overflow: hidden;
+    
+    /* CAMBIO CLAVE: Permite deslizar horizontalmente ocultando el desbordamiento vertical */
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch; /* Scroll muy suave en iPhone/Android */
+    
     box-shadow: 0 12px 30px rgba(0, 0, 0, 0.05);
     margin-top: 20px;
 }
@@ -1767,6 +1772,11 @@ body{
     letter-spacing: 0.5px;
     padding: 14px 10px;
     border-bottom: 3px solid var(--gold);
+}
+
+.teams-table th, 
+.teams-table td {
+    white-space: nowrap; /* Impide que el texto se divida en varias líneas */
 }
 
 .teams-table tbody tr {
@@ -2571,24 +2581,34 @@ window.loadRankingPlayer = function(){
     }
     
     // 1. Encontrar al jugador en el array global
-    const index = data.findIndex(p => p.name && p.name.trim().toLowerCase() === nameSelected.trim().toLowerCase());
+    const player = data.find(p => p.name && p.name.trim().toLowerCase() === nameSelected.trim().toLowerCase());
     
-    if(index === -1) {
+    if(!player) {
         console.warn("No se encontró el jugador en los datos:", nameSelected);
         return;
     }
     
     container.style.display = "block";
-    const p = data[index];
     
-    // 2. Tarjetas estadísticas superiores
-    document.getElementById("playerNameBig").textContent = p.name;
-    document.getElementById("statTotal").textContent = p.total || "0";
-    document.getElementById("statPreguntas").textContent = p.preguntas || "-";
-    document.getElementById("statPos").textContent = (index + 1) + "º";
+    // 2. CALCULAR EL RANKING REAL (Ordenando por puntos como en la tabla principal)
+    const rankingOrdenado = [...data].sort((a, b) => {
+        const aTotal = parseFloat(String(a.total).replace(",", ".").trim()) || 0;
+        const bTotal = parseFloat(String(b.total).replace(",", ".").trim()) || 0;
+        return bTotal - aTotal;
+    });
     
-    // 3. Pintar la tabla manteniendo tu estructura .map pero con las propiedades exactas del CSV
-    document.getElementById("teamsBody").innerHTML = p.teams.map((t, idx) => `
+    const posicionReal = rankingOrdenado.findIndex(p => p.name === player.name) + 1;
+    
+    // 3. Tarjetas estadísticas superiores
+    document.getElementById("playerNameBig").textContent = player.name;
+    document.getElementById("statTotal").textContent = player.total || "0";
+    document.getElementById("statPreguntas").textContent = player.preguntas || "-";
+    
+    // AQUÍ APLICAMOS LA POSICIÓN REAL
+    document.getElementById("statPos").textContent = posicionReal + "º";
+    
+    // 4. Pintar la tabla
+    document.getElementById("teamsBody").innerHTML = player.teams.map((t, idx) => `
         <tr>
             <td style="color: #666; font-weight:700;">${idx + 1}º</td>
             <td style="text-align:left; font-weight:700; color: var(--soccer-dark);">⚽ ${t.team || "-"}</td>
