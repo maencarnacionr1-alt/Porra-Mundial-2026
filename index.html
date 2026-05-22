@@ -2552,67 +2552,45 @@ window.loadRankingPlayer = function(){
         return;
     }
     
-    // 1. Buscamos al jugador por nombre dentro de 'teamsData' (la hoja "teams" de tu Google Sheet)
-    // Usamos trim() y toLowerCase() para evitar fallos por espacios o mayúsculas
-    const playerTeamsData = teamsData.find(p => p.name && p.name.trim().toLowerCase() === nameSelected.trim().toLowerCase());
+    // 1. Filtrar en 'teamsData' todas las filas de equipos que pertenecen a este jugador
+    // Usamos trim() y toLowerCase() para evitar que falle por diferencias de mayúsculas/minúsculas o espacios
+    const filasJugador = teamsData.filter(p => p.name && p.name.trim().toLowerCase() === nameSelected.trim().toLowerCase());
     
-    // También buscamos su índice en 'data' (ranking general) para mostrar su posición actual en la tarjeta superior
+    // También buscamos su índice en 'data' (ranking general) para la tarjeta superior
     const rankingIndex = data.findIndex(p => p.name && p.name.trim().toLowerCase() === nameSelected.trim().toLowerCase());
     
-    if(!playerTeamsData) {
+    if(filasJugador.length === 0) {
         console.warn("No se encontraron datos para este jugador en la hoja 'teams':", nameSelected);
         return;
     }
     
     container.style.display = "block";
     
-    // 2. Rellenar las tarjetas estadísticas superiores
-    document.getElementById("playerNameBig").innerText = playerTeamsData.name.toUpperCase();
+    // El total de puntos acumulados del jugador
+    const primerRegistro = filasJugador[0];
+    document.getElementById("playerNameBig").innerText = nameSelected.toUpperCase();
     document.getElementById("statPos").innerText = rankingIndex !== -1 ? `#${rankingIndex + 1}` : "-";
-    document.getElementById("statTotal").innerText = playerTeamsData.total || "0";
-    document.getElementById("statPreguntas").innerText = playerTeamsData.preguntas || playerTeamsData.aciertos || "-"; 
+    document.getElementById("statTotal").innerText = primerRegistro.total || "0";
+    document.getElementById("statPreguntas").innerText = primerRegistro.preguntas || primerRegistro.aciertos || "-"; 
 
-    // 3. Pintar las filas de los equipos exactamente como vienen de la hoja "teams"
+    // 2. Pintar las filas correspondientes de la hoja 'teams' en el tbody
     const tbody = document.getElementById("teamsBody");
     
-    // Si tu estructura en 'teamsData' guarda los equipos en un array interno 'equipos'
-    if (playerTeamsData.equipos && Array.isArray(playerTeamsData.equipos)) {
-        tbody.innerHTML = playerTeamsData.equipos.map((t, idx) => `
-            <tr>
-                <td style="color: #666; font-weight:700;">${idx + 1}º</td>
-                <td style="text-align:left; font-weight:700; color: var(--soccer-dark);">⚽ ${t.equipo || t.name || "-"}</td>
-                <td style="color: #444;">${t.coef || t.coeficiente || "-"}</td>
-                <td>${t.f1 || t.fase1 || "0"}</td>
-                <td>${t.dieciseisavos || t["16vos"] || "0"}</td>
-                <td>${t.octavos || t["8vos"] || "0"}</td>
-                <td>${t.cuartos || t["4tos"] || "0"}</td>
-                <td>${t.semis || "0"}</td>
-                <td>${t.final || "0"}</td>
-                <td>${t.tercero || t["3o"] || "0"}</td>
-                <td class="points-final">${t.puntos || t.total || "0"}</td>
-            </tr>
-        `).join("");
-    } else {
-        // Si la estructura de la fila de la hoja 'teams' es plana (un objeto por equipo), 
-        // filtramos todos los registros de 'teamsData' que pertenezcan a este jugador
-        const filasJugador = teamsData.filter(p => p.name && p.name.trim().toLowerCase() === nameSelected.trim().toLowerCase());
-        
-        tbody.innerHTML = filasJugador.map((t, idx) => `
-            <tr>
-                <td style="color: #666; font-weight:700;">${idx + 1}º</td>
-                <td style="text-align:left; font-weight:700; color: var(--soccer-dark);">⚽ ${t.equipo || t.team || "-"}</td>
-                <td style="color: #444;">${t.coef || t.coeficiente || "-"}</td>
-                <td>${t.f1 || t.fase1 || "0"}</td>
-                <td>${t.dieciseisavos || t["16vos"] || t.d16 || "0"}</td>
-                <td>${t.octavos || t["8vos"] || t.o8 || "0"}</td>
-                <td>${t.cuartos || t["4tos"] || t.c4 || "0"}</td>
-                <td>${t.semis || t.semi || "0"}</td>
-                <td>${t.final || t.fin || "0"}</td>
-                <td>${t.tercero || t["3o"] || t.terc || "0"}</td>
-                <td class="points-final">${t.puntos || t.total || "0"}</td>
-            </tr>
-        `).join("");
-    }
+    tbody.innerHTML = filasJugador.map((t, idx) => `
+        <tr>
+            <td style="color: #666; font-weight:700;">${idx + 1}º</td>
+            <td style="text-align:left; font-weight:700; color: var(--soccer-dark);">⚽ ${t.equipo || t.team || "-"}</td>
+            <td style="color: #444;">${t.coef || t.coeficiente || "-"}</td>
+            <td>${t.f1 || t.fase1 || "0"}</td>
+            <td>${t.dieciseisavos || t["16vos"] || t.d16 || "0"}</td>
+            <td>${t.octavos || t["8vos"] || t.o8 || "0"}</td>
+            <td>${t.cuartos || t["4tos"] || t.c4 || "0"}</td>
+            <td>${t.semis || t.semi || "0"}</td>
+            <td>${t.final || t.fin || "0"}</td>
+            <td>${t.tercero || t["3o"] || t.terc || "0"}</td>
+            <td class="points-final">${t.puntos || "0"}</td>
+        </tr>
+    `).join("");
 };
 
 window.openPlayerFromRanking = function(i){
