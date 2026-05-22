@@ -1740,6 +1740,67 @@ body{
     }
 }
 
+/* =======================================
+   ESTILO PREMIUM PARA LA TABLA JUGADORES
+======================================= */
+.teams-table-wrapper {
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 16px;
+    overflow-hidden: hidden;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.05);
+    margin-top: 20px;
+}
+
+.teams-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.teams-table th {
+    background: linear-gradient(135deg, var(--soccer-dark) 0%, #242424 100%);
+    color: var(--white) !important;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.78rem;
+    letter-spacing: 0.5px;
+    padding: 14px 10px;
+    border-bottom: 3px solid var(--gold);
+}
+
+.teams-table tbody tr {
+    transition: all 0.2s ease;
+}
+
+.teams-table tbody tr:nth-child(even) {
+    background-color: #f9fbf9;
+}
+
+.teams-table tbody tr:hover {
+    background-color: rgba(46, 125, 50, 0.07) !important;
+}
+
+.teams-table td {
+    padding: 12px 10px;
+    font-size: 0.9rem;
+    color: #333;
+    font-weight: 600;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+/* Resaltado de columnas críticas */
+.teams-table td.points-final {
+    color: var(--pitch-green);
+    font-weight: 800;
+    background-color: rgba(46, 125, 50, 0.03);
+}
+
+.teams-table tbody tr:hover td.points-final {
+    color: var(--grass-vibrant);
+    font-weight: 900;
+}
+
     </style>
 
 </head>
@@ -2102,7 +2163,7 @@ body{
     <div class="fase-container">
 
         <div class="fase-title">
-            JUGADORES
+            DETALLE DE PUNTOS
         </div>
 
         <div style="margin-bottom:20px;">
@@ -2479,49 +2540,97 @@ window.loadPlayerPredictions = function () {
     renderPredictionsByPlayer(player);
 };
 
+// ========================================================
+// REEMPLAZO LOGICA DE JUGADORES (CORREGIDO Y OPTIMIZADO)
+// ========================================================
+
 window.loadRankingPlayer = function(){
-
-    const name =
-        document.getElementById(
-            "rankingPlayerSelect"
-        ).value;
-
-    const container =
-        document.getElementById(
-            "playerCardContainer"
-        );
-
-    if(!name){
-
+    const nameSelected = document.getElementById("rankingPlayerSelect").value;
+    const container = document.getElementById("playerCardContainer");
+    
+    if(!nameSelected){
         container.style.display = "none";
-
         return;
     }
-
-    const index =
-        data.findIndex(
-            p => p.name === name
-        );
-
-    if(index === -1) return;
-
+    
+    // Búsqueda robusta limpiando espacios y sin importar mayúsculas/minúsculas
+    const index = data.findIndex(p => p.name && p.name.trim().toLowerCase() === nameSelected.trim().toLowerCase());
+    
+    if(index === -1) {
+        console.warn("No se encontró el jugador correlativo en 'data':", nameSelected);
+        return;
+    }
+    
     container.style.display = "block";
+    
+    // Obtener el objeto del jugador encontrado
+    const player = data[index];
+    
+    // 1. Rellenar la cabecera e indicadores clave superiores
+    document.getElementById("playerNameBig").innerText = player.name.toUpperCase();
+    document.getElementById("statPos").innerText = `#${index + 1}`; // Posición estimada por índice
+    document.getElementById("statTotal").innerText = player.total || "0";
+    
+    // Nota: Si manejas una clave para preguntas acertadas en el objeto, mapeala aquí (Ej: player.preguntas)
+    document.getElementById("statPreguntas").innerText = player.preguntas || "-"; 
 
-    renderPlayerCard(index);
+    // 2. Pintar las filas correspondientes dentro de la tabla de Equipos
+    const tbody = document.getElementById("teamsBody");
+    
+    // Si tu estructura trae subtablas de equipos mapeados (ej: player.equipos como array)
+    if (player.equipos && Array.isArray(player.equipos)) {
+        tbody.innerHTML = player.equipos.map((t, idx) => `
+            <tr>
+                <td>${idx + 1}</td>
+                <td style="text-align:left; font-weight:700;">⚽ ${t.equipo || t.name || "-"}</td>
+                <td>${t.coef || t.coeficiente || "-"}</td>
+                <td>${t.f1 || t.fase1 || "0"}</td>
+                <td>${t.dieciseisavos || t["16vos"] || "0"}</td>
+                <td>${t.octavos || t["8vos"] || "0"}</td>
+                <td>${t.cuartos || t["4tos"] || "0"}</td>
+                <td>${t.semis || "0"}</td>
+                <td>${t.final || "0"}</td>
+                <td>${t.tercero || t["3o"] || "0"}</td>
+                <td class="points-final">${t.puntos || t.total || "0"}</td>
+            </tr>
+        `).join("");
+    } else {
+        // Renderizado alternativo en caso de que las columnas vengan en la raíz del objeto jugador
+        tbody.innerHTML = `
+            <tr>
+                <td>1</td>
+                <td style="text-align:left; font-weight:700;">🏆 Predicciones Globales</td>
+                <td>-</td>
+                <td>${player.fase1 || player.f1 || "0"}</td>
+                <td>${player["16vos"] || "0"}</td>
+                <td>${player.octavos || "0"}</td>
+                <td>${player.cuartos || "0"}</td>
+                <td>${player.semis || "0"}</td>
+                <td>${player.final || "0"}</td>
+                <td>${player.tercero || "0"}</td>
+                <td class="points-final">${player.total || "0"}</td>
+            </tr>
+        `;
+    }
 };
 
 window.openPlayerFromRanking = function(i){
-
     showPlayer();
-
     const player = data[i];
-
-    document.getElementById(
-        "rankingPlayerSelect"
-    ).value = player.name;
-
+    if(!player) return;
+    
+    const select = document.getElementById("rankingPlayerSelect");
+    
+    // Buscamos la opción del select cuyo valor coincida exactamente con el nombre mapeado
+    for(let option of select.options) {
+        if(option.value.trim().toLowerCase() === player.name.trim().toLowerCase()) {
+            select.value = option.value;
+            break;
+        }
+    }
+    
     loadRankingPlayer();
-}
+};
 
 // ================= PLAYER =================
 
