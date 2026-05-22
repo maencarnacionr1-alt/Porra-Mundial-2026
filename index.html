@@ -1810,6 +1810,22 @@ body{
     font-weight: 900;
 }
 
+	/* Contenedor de cada grupo */
+.grupo-card {
+    background: white;
+    padding: 15px;
+    border-radius: 20px;
+    border: 1px solid #eee;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.grupo-card h3 {
+    margin: 0 0 10px 0;
+    color: var(--pitch-green);
+    font-family: 'Black Ops One', cursive;
+    font-size: 1rem;
+}
+
     </style>
 
 </head>
@@ -2160,6 +2176,13 @@ body{
 
         </div>
 
+		<!--CLASIFICACIÓN DE GRUPOS--> 
+
+<div id="worldCupGroupsSection" class="view-section hidden">
+    <h2 class="fase-title">Tablas de Clasificación</h2>
+    <div id="groupsContainer" class="grid-preguntas">
+        </div>
+</div>
         <!-- CONTENIDO -->
         <div id="predictionsGlobalView"></div>
 
