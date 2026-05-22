@@ -2552,19 +2552,39 @@ window.loadRankingPlayer = function(){
         return;
     }
     
-    // 1. Encontrar el índice del jugador en tu array global de datos
+    // 1. Buscar el jugador en el array global respetando mayúsculas y espacios
     const index = data.findIndex(p => p.name && p.name.trim().toLowerCase() === nameSelected.trim().toLowerCase());
     
     if(index === -1) {
-        console.warn("No se encontraron datos para este jugador:", nameSelected);
+        console.warn("No se encontró el jugador en los datos:", nameSelected);
         return;
     }
     
-    // 2. Mostrar la sección contenedora
     container.style.display = "block";
+    const p = data[index];
     
-    // 3. Reutilizar de forma limpia la función nativa de tu código para pintar las tarjetas y la tabla "teams"
-    renderPlayerCard(index);
+    // 2. Rellenar las tarjetas estadísticas superiores
+    document.getElementById("playerNameBig").textContent = p.name;
+    document.getElementById("statTotal").textContent = p.total || "0";
+    document.getElementById("statPreguntas").textContent = p.preguntas || "-";
+    document.getElementById("statPos").textContent = (index + 1) + "º";
+    
+    // 3. Pintar la tabla de equipos exactamente con los campos mapeados desde la pestaña "teams"
+    document.getElementById("teamsBody").innerHTML = p.teams.map((t, idx) => `
+        <tr>
+            <td style="color: #666; font-weight:700;">${idx + 1}º</td>
+            <td style="text-align:left; font-weight:700; color: var(--soccer-dark);">⚽ ${t.team || "-"}</td>
+            <td style="color: #444;">${t.coef || "-"}</td>
+            <td>${t.fase || "0"}</td>
+            <td>${t.dieciseisavos || "0"}</td>
+            <td>${t.octavos || "0"}</td>
+            <td>${t.cuartos || "0"}</td>
+            <td>${t.semis || "0"}</td>
+            <td>${t.final || "0"}</td>
+            <td>${t.terceros || "0"}</td>
+            <td class="points-final">${t.puntos || "0"}</td>
+        </tr>
+    `).join("");
 };
 
 window.openPlayerFromRanking = function(i){
