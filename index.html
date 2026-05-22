@@ -2260,27 +2260,6 @@ body{
 
 <script>
 
-	const codigosBanderas = {
-    "Alemania": "de", "Arabia Saudita": "sa", "Argelia": "dz", "Argentina": "ar", 
-    "Australia": "au", "Austria": "at", "Bélgica": "be", "Bosnia y Herzegovina": "ba", 
-    "Brasil": "br", "Cabo Verde": "cv", "Canadá": "ca", "Catar": "qa", 
-    "Colombia": "co", "Corea del Sur": "kr", "Costa de Marfil": "ci", "Croacia": "hr", 
-    "Curazao": "cw", "Ecuador": "ec", "Egipto": "eg", "Escocia": "gb-sct", 
-    "España": "es", "Estados Unidos": "us", "Francia": "fr", "Ghana": "gh", 
-    "Haití": "ht", "Inglaterra": "gb-eng", "Irak": "iq", "Irán": "ir", 
-    "Japón": "jp", "Jordania": "jo", "Marruecos": "ma", "México": "mx", 
-    "Noruega": "no", "Nueva Zelanda": "nz", "Países Bajos": "nl", "Panamá": "pa", 
-    "Paraguay": "py", "Portugal": "pt", "RD Congo": "cd", "República Checa": "cz", 
-    "Senegal": "sn", "Sudáfrica": "za", "Suecia": "se", "Suiza": "ch", 
-    "Túnez": "tn", "Turquía": "tr", "Uruguay": "uy", "Uzbekistán": "uz"
-};
-
-// Función para obtener el elemento visual de la bandera
-function obtenerBanderaHTML(nombreEquipo) {
-    const code = codigosBanderas[nombreEquipo] || "un";
-    return `<img src="https://flagcdn.com/w20/${code}.png" alt="${nombreEquipo}" style="width:20px; height:15px; border-radius:2px; vertical-align:middle; margin-right:8px;">`;
-}
-
 const URL_MAESTRA =
           "https://docs.google.com/spreadsheets/d/e/2PACX-1vSYe1nqTFOllYViQLj9x7NZ0buss9J-pqmIqeSziINNRDL5-a0m-sWcCg_48_zY5iAEhpHvzNYKuqbQ/pub?gid=1968191103&single=true&output=csv";
 
@@ -2631,25 +2610,22 @@ window.loadRankingPlayer = function(){
     document.getElementById("statPos").textContent = posicionReal + "º";
     
     // 4. Pintar la tabla
-	
-// Tu función de pintado queda así:
-document.getElementById("teamsBody").innerHTML = player.teams.map((t, idx) => `
-    <tr>
-        <td style="color: #666; font-weight:700;">${idx + 1}º</td>
-        <td style="text-align:left; font-weight:700; color: var(--soccer-dark);">
-            ${getBandera(t.team)} ${t.team || "-"}
-        </td>
-        <td style="color: #444;">${t.coef || "-"}</td>
-        <td>${t.fase || "0"}</td>
-        <td>${t.dieciseisavos || "0"}</td>
-        <td>${t.octavos || "0"}</td>
-        <td>${t.cuartos || "0"}</td>
-        <td>${t.semis || "0"}</td>
-        <td>${t.final || "0"}</td>
-        <td>${t.terceros || "0"}</td>
-        <td class="points-final">${t.puntos || "0"}</td>
-    </tr>
-`).join("");
+    document.getElementById("teamsBody").innerHTML = player.teams.map((t, idx) => `
+        <tr>
+            <td style="color: #666; font-weight:700;">${idx + 1}º</td>
+            <td style="text-align:left; font-weight:700; color: var(--soccer-dark);">⚽ ${t.team || "-"}</td>
+            <td style="color: #444;">${t.coef || "-"}</td>
+            <td>${t.fase || "0"}</td>
+            <td>${t.dieciseisavos || "0"}</td>
+            <td>${t.octavos || "0"}</td>
+            <td>${t.cuartos || "0"}</td>
+            <td>${t.semis || "0"}</td>
+            <td>${t.final || "0"}</td>
+            <td>${t.terceros || "0"}</td>
+            <td class="points-final">${t.puntos || "0"}</td>
+        </tr>
+    `).join("");
+};
 
 window.openPlayerFromRanking = function(i){
     showPlayer();
