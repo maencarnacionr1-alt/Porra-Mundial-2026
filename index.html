@@ -2339,29 +2339,47 @@ equiposRows.forEach(r => {
 // ================= CSV =================
 
 function parseCSV(csv) {
+    const lines = csv.trim().split("\n");
+    const sep = lines[0].includes(";") ? ";" : ",";
 
-  const lines = csv.trim().split("\n");
+    // Función auxiliar para leer cada línea respetando las comillas
+    function splitLine(line) {
+        let result = [];
+        let current = '';
+        let inQuotes = false;
+        
+        for (let i = 0; i < line.length; i++) {
+            let char = line[i];
+            
+            if (char === '"') {
+                // Si encontramos comillas, cambiamos el estado pero no las guardamos en el texto
+                inQuotes = !inQuotes;
+            } else if (char === sep && !inQuotes) {
+                // Si encontramos el separador y NO estamos dentro de comillas, cortamos
+                result.push(current);
+                current = '';
+            } else {
+                current += char;
+            }
+        }
+        result.push(current);
+        return result;
+    }
 
-  const sep = lines[0].includes(";") ? ";" : ",";
+    const headers = splitLine(lines[0]).map(h => h.trim().replace(/\r/g, ""));
 
-  const headers = lines[0]
-    .split(sep)
-    .map(h => h.trim()); // 👈 IMPORTANTE: NO lowerCase
-
-  return lines.slice(1).map(line => {
-
-    const values = line.split(sep);
-
-    const obj = {};
-
-    headers.forEach((h, i) => {
-      obj[h.trim().replace(/\r/g, "")] = values[i] ? values[i].replace(/"/g, "").trim() : "";
+    return lines.slice(1).map(line => {
+        const values = splitLine(line);
+        const obj = {};
+        
+        headers.forEach((h, i) => {
+            // Asignamos el valor limpio a la clave correspondiente
+            obj[h] = values[i] ? values[i].trim().replace(/\r/g, "") : "";
+        });
+        
+        return obj;
     });
-
-    return obj;
-  });
 }
-
 // ================= RANKING =================
 
 function renderRanking() {
