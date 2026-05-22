@@ -2301,7 +2301,7 @@ const codigosBanderas = {
     function getBandera(nombre) {
         const code = codigosBanderas[nombre];
         return code 
-            ? `<img src="https://flagcdn.com/w20/${code}.png" alt="${nombre}" style="width:20px; height:15px; vertical-align:middle; margin-right:8px; border-radius:2px;">` 
+            ? `<img src="https://flagcdn.com/w20/${code}.png" alt="${nombre}" style="width:24px; height:24px; border-radius:50%; object-fit:cover; vertical-align:middle; margin-right:8px; border: 1px solid #ddd;">`
             : "⚽";
 	}
 	
