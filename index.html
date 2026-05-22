@@ -2260,6 +2260,27 @@ body{
 
 <script>
 
+	const codigosBanderas = {
+    "Alemania": "de", "Arabia Saudita": "sa", "Argelia": "dz", "Argentina": "ar", 
+    "Australia": "au", "Austria": "at", "Bélgica": "be", "Bosnia y Herzegovina": "ba", 
+    "Brasil": "br", "Cabo Verde": "cv", "Canadá": "ca", "Catar": "qa", 
+    "Colombia": "co", "Corea del Sur": "kr", "Costa de Marfil": "ci", "Croacia": "hr", 
+    "Curazao": "cw", "Ecuador": "ec", "Egipto": "eg", "Escocia": "gb-sct", 
+    "España": "es", "Estados Unidos": "us", "Francia": "fr", "Ghana": "gh", 
+    "Haití": "ht", "Inglaterra": "gb-eng", "Irak": "iq", "Irán": "ir", 
+    "Japón": "jp", "Jordania": "jo", "Marruecos": "ma", "México": "mx", 
+    "Noruega": "no", "Nueva Zelanda": "nz", "Países Bajos": "nl", "Panamá": "pa", 
+    "Paraguay": "py", "Portugal": "pt", "RD Congo": "cd", "República Checa": "cz", 
+    "Senegal": "sn", "Sudáfrica": "za", "Suecia": "se", "Suiza": "ch", 
+    "Túnez": "tn", "Turquía": "tr", "Uruguay": "uy", "Uzbekistán": "uz"
+};
+
+// Función para obtener el elemento visual de la bandera
+function obtenerBanderaHTML(nombreEquipo) {
+    const code = codigosBanderas[nombreEquipo] || "un";
+    return `<img src="https://flagcdn.com/w20/${code}.png" alt="${nombreEquipo}" style="width:20px; height:15px; border-radius:2px; vertical-align:middle; margin-right:8px;">`;
+}
+
 const URL_MAESTRA =
           "https://docs.google.com/spreadsheets/d/e/2PACX-1vSYe1nqTFOllYViQLj9x7NZ0buss9J-pqmIqeSziINNRDL5-a0m-sWcCg_48_zY5iAEhpHvzNYKuqbQ/pub?gid=1968191103&single=true&output=csv";
 
