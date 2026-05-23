@@ -1176,9 +1176,49 @@ h1{
     text-align:center;
 }
 
-.ranking-table th,
-.ranking-table td{
-    text-align:center !important;
+/* ==================================
+   ALINEACIÓN PROFESIONAL RANKING
+================================== */
+
+.ranking-table td:nth-child(1),
+.ranking-table th:nth-child(1){
+
+    width: 90px;
+
+    text-align: center !important;
+
+    font-weight: 800;
+}
+
+.ranking-table td:nth-child(2),
+.ranking-table th:nth-child(2){
+
+    text-align: left !important;
+
+    padding-left: 22px;
+
+    font-weight: 700;
+}
+
+.ranking-table td:nth-child(3),
+.ranking-table th:nth-child(3){
+
+    width: 120px;
+
+    text-align: right !important;
+
+    padding-right: 22px;
+
+    font-weight: 800;
+}
+
+.player-name{
+
+    white-space: nowrap;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
 }
 
 .ranking-table thead th{
@@ -1810,6 +1850,22 @@ body{
     font-weight: 900;
 }
 
+	/* Contenedor de cada grupo */
+.grupo-card {
+    background: white;
+    padding: 15px;
+    border-radius: 20px;
+    border: 1px solid #eee;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.grupo-card h3 {
+    margin: 0 0 10px 0;
+    color: var(--pitch-green);
+    font-family: 'Black Ops One', cursive;
+    font-size: 1rem;
+}
+
     </style>
 
 </head>
@@ -1838,7 +1894,7 @@ body{
         <span class="menu-icon">
             <i class="fa-solid fa-trophy"></i>
         </span>
-        <span class="menu-text">Clasificación</span>
+        <span class="menu-text">Ranking</span>
     </a>
 
     <a href="javascript:void(0)" onclick="goToSection('register')">
@@ -2160,6 +2216,13 @@ body{
 
         </div>
 
+		<!--CLASIFICACIÓN DE GRUPOS--> 
+
+<div id="worldCupGroupsSection" class="view-section hidden">
+    <h2 class="fase-title">Tablas de Clasificación</h2>
+    <div id="groupsContainer" class="grid-preguntas">
+        </div>
+</div>
         <!-- CONTENIDO -->
         <div id="predictionsGlobalView"></div>
 
@@ -2260,27 +2323,28 @@ body{
 
 <script>
 
-	const codigosBanderas = {
-    "Alemania": "de", "Arabia Saudita": "sa", "Argelia": "dz", "Argentina": "ar", 
-    "Australia": "au", "Austria": "at", "Bélgica": "be", "Bosnia y Herzegovina": "ba", 
-    "Brasil": "br", "Cabo Verde": "cv", "Canadá": "ca", "Catar": "qa", 
-    "Colombia": "co", "Corea del Sur": "kr", "Costa de Marfil": "ci", "Croacia": "hr", 
-    "Curazao": "cw", "Ecuador": "ec", "Egipto": "eg", "Escocia": "gb-sct", 
-    "España": "es", "Estados Unidos": "us", "Francia": "fr", "Ghana": "gh", 
-    "Haití": "ht", "Inglaterra": "gb-eng", "Irak": "iq", "Irán": "ir", 
-    "Japón": "jp", "Jordania": "jo", "Marruecos": "ma", "México": "mx", 
-    "Noruega": "no", "Nueva Zelanda": "nz", "Países Bajos": "nl", "Panamá": "pa", 
-    "Paraguay": "py", "Portugal": "pt", "RD Congo": "cd", "República Checa": "cz", 
-    "Senegal": "sn", "Sudáfrica": "za", "Suecia": "se", "Suiza": "ch", 
-    "Túnez": "tn", "Turquía": "tr", "Uruguay": "uy", "Uzbekistán": "uz"
-};
+const codigosBanderas = {
+        "Alemania": "de", "Arabia Saudita": "sa", "Argelia": "dz", "Argentina": "ar", 
+        "Australia": "au", "Austria": "at", "Bélgica": "be", "Bosnia y Herzegovina": "ba", 
+        "Brasil": "br", "Cabo Verde": "cv", "Canadá": "ca", "Catar": "qa", 
+        "Colombia": "co", "Corea del Sur": "kr", "Costa de Marfil": "ci", "Croacia": "hr", 
+        "Curazao": "cw", "Ecuador": "ec", "Egipto": "eg", "Escocia": "gb-sct", 
+        "España": "es", "Estados Unidos": "us", "Francia": "fr", "Ghana": "gh", 
+        "Haití": "ht", "Inglanding": "gb-eng", "Irak": "iq", "Irán": "ir", 
+        "Japón": "jp", "Jordania": "jo", "Marruecos": "ma", "México": "mx", 
+        "Noruega": "no", "Nueva Zelanda": "nz", "Países Bajos": "nl", "Panamá": "pa", 
+        "Paraguay": "py", "Portugal": "pt", "RD Congo": "cd", "República Checa": "cz", 
+        "Senegal": "sn", "Sudáfrica": "za", "Suecia": "se", "Suiza": "ch", 
+        "Túnez": "tn", "Turquía": "tr", "Uruguay": "uy", "Uzbekistán": "uz"
+    };
 
-// Función para obtener el elemento visual de la bandera
-function obtenerBanderaHTML(nombreEquipo) {
-    const code = codigosBanderas[nombreEquipo] || "un";
-    return `<img src="https://flagcdn.com/w20/${code}.png" alt="${nombreEquipo}" style="width:20px; height:15px; border-radius:2px; vertical-align:middle; margin-right:8px;">`;
-}
-
+    function getBandera(nombre) {
+        const code = codigosBanderas[nombre];
+        return code 
+            ? `<img src="https://flagcdn.com/w20/${code}.png" alt="${nombre}" style="width:24px; height:24px; border-radius:50%; object-fit:cover; vertical-align:middle; margin-right:8px; border: 1px solid #ddd;">`
+            : "⚽";
+	}
+	
 const URL_MAESTRA =
           "https://docs.google.com/spreadsheets/d/e/2PACX-1vSYe1nqTFOllYViQLj9x7NZ0buss9J-pqmIqeSziINNRDL5-a0m-sWcCg_48_zY5iAEhpHvzNYKuqbQ/pub?gid=1968191103&single=true&output=csv";
 
@@ -2458,35 +2522,34 @@ function renderRanking() {
     return `
       <tr onclick="openPlayerFromRanking(${realIndex})">
 
-        <td>
-          <div style="
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            gap:8px;
-          ">
-            <span>${nuevaPos}º</span>
+<td>
+  <div style="
+    display:inline-flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    line-height:1;
+    gap:2px;
+  ">
 
-            ${flecha === "up" ? `
-              <span style="
-                color:#2e7d32;
-                font-weight:900;
-                font-size:1rem;
-                line-height:1;
-              ">⬆</span>
-            ` : ""}
+    <span>${nuevaPos}º</span>
 
-            ${flecha === "down" ? `
-              <span style="
-                color:#c62828;
-                font-weight:900;
-                font-size:1rem;
-                line-height:1;
-              ">⬇</span>
-            ` : ""}
+    ${flecha === "up" ? `
+      <span style="
+        color:#2e7d32;
+        font-size:0.95rem;
+      ">⬆</span>
+    ` : ""}
 
-          </div>
-        </td>
+    ${flecha === "down" ? `
+      <span style="
+        color:#c62828;
+        font-size:0.95rem;
+      ">⬇</span>
+    ` : ""}
+
+  </div>
+</td>
 
         <td>${nombre}</td>
 
@@ -2631,25 +2694,24 @@ window.loadRankingPlayer = function(){
     document.getElementById("statPos").textContent = posicionReal + "º";
     
     // 4. Pintar la tabla
-	
-// Tu función de pintado queda así:
-document.getElementById("teamsBody").innerHTML = player.teams.map((t, idx) => `
-    <tr>
-        <td style="color: #666; font-weight:700;">${idx + 1}º</td>
-        <td style="text-align:left; font-weight:700; color: var(--soccer-dark);">
-            ${getBandera(t.team)} ${t.team || "-"}
-        </td>
-        <td style="color: #444;">${t.coef || "-"}</td>
-        <td>${t.fase || "0"}</td>
-        <td>${t.dieciseisavos || "0"}</td>
-        <td>${t.octavos || "0"}</td>
-        <td>${t.cuartos || "0"}</td>
-        <td>${t.semis || "0"}</td>
-        <td>${t.final || "0"}</td>
-        <td>${t.terceros || "0"}</td>
-        <td class="points-final">${t.puntos || "0"}</td>
-    </tr>
-`).join("");
+    document.getElementById("teamsBody").innerHTML = player.teams.map((t, idx) => `
+        <tr>
+            <td style="color: #666; font-weight:700;">${idx + 1}º</td>
+            <td style="text-align:left; font-weight:700; color: var(--soccer-dark);">
+                ${getBandera(t.team)} ${t.team || "-"}
+            </td>
+            <td style="color: #444;">${t.coef || "-"}</td>
+            <td>${t.fase || "0"}</td>
+            <td>${t.dieciseisavos || "0"}</td>
+            <td>${t.octavos || "0"}</td>
+            <td>${t.cuartos || "0"}</td>
+            <td>${t.semis || "0"}</td>
+            <td>${t.final || "0"}</td>
+            <td>${t.terceros || "0"}</td>
+            <td class="points-final">${t.puntos || "0"}</td>
+        </tr>
+    `).join("");
+};
 
 window.openPlayerFromRanking = function(i){
     showPlayer();
@@ -3736,7 +3798,7 @@ function ejecutarLlenadoAutomatico() {
 
 <nav class="bottom-nav">
 
-    <button onclick="goToSection('ranking')" title="Clasificación">
+    <button onclick="goToSection('ranking')" title="Ranking">
         <i class="fa-solid fa-trophy"></i>
     </button>
 
