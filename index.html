@@ -1736,7 +1736,6 @@ body{
 
 /* Elementos individuales del encabezado */
 .ranking-header-custom .col-head {
-    width: 33.33%;
     text-align: center;
     font-size: 0.85rem;
     font-weight: 800;
@@ -1744,6 +1743,23 @@ body{
     text-transform: uppercase;
     letter-spacing: 1px;
     font-family: 'Inter', sans-serif;
+}
+
+.ranking-header-custom .col-head:nth-child(1){
+    width: 90px;
+    text-align:center;
+}
+
+.ranking-header-custom .col-head:nth-child(2){
+    flex:1;
+    text-align:left;
+    padding-left:22px;
+}
+
+.ranking-header-custom .col-head:nth-child(3){
+    width:120px;
+    text-align:right;
+    padding-right:22px;
 }
 
 /* Línea decorativa animada inferior (Estilo Pro adaptado de tu código) */
