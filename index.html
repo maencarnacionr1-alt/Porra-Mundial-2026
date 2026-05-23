@@ -1176,9 +1176,49 @@ h1{
     text-align:center;
 }
 
-.ranking-table th,
-.ranking-table td{
-    text-align:center !important;
+/* ==================================
+   ALINEACIÓN PROFESIONAL RANKING
+================================== */
+
+.ranking-table td:nth-child(1),
+.ranking-table th:nth-child(1){
+
+    width: 90px;
+
+    text-align: center !important;
+
+    font-weight: 800;
+}
+
+.ranking-table td:nth-child(2),
+.ranking-table th:nth-child(2){
+
+    text-align: left !important;
+
+    padding-left: 22px;
+
+    font-weight: 700;
+}
+
+.ranking-table td:nth-child(3),
+.ranking-table th:nth-child(3){
+
+    width: 120px;
+
+    text-align: right !important;
+
+    padding-right: 22px;
+
+    font-weight: 800;
+}
+
+.player-name{
+
+    white-space: nowrap;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
 }
 
 .ranking-table thead th{
