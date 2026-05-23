@@ -1740,76 +1740,6 @@ body{
     }
 }
 
-/* =======================================
-   NUEVO LOOK PREMIUM PARA LA TABLA DETALLE PUNTOS
-======================================= */
-.teams-table-wrapper {
-    background: #ffffff;
-    border: 1px solid rgba(0, 0, 0, 0.08);
-    border-radius: 16px;
-    
-    /* CAMBIO CLAVE: Permite deslizar horizontalmente ocultando el desbordamiento vertical */
-    overflow-x: auto;
-    overflow-y: hidden;
-    -webkit-overflow-scrolling: touch; /* Scroll muy suave en iPhone/Android */
-    
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.05);
-    margin-top: 20px;
-}
-
-.teams-table {
-    width: 100%;
-    border-collapse: separate;
-    border-spacing: 0;
-}
-
-.teams-table th {
-    background: linear-gradient(135deg, var(--soccer-dark) 0%, #242424 100%);
-    color: var(--white) !important;
-    font-weight: 700;
-    text-transform: uppercase;
-    font-size: 0.78rem;
-    letter-spacing: 0.5px;
-    padding: 14px 10px;
-    border-bottom: 3px solid var(--gold);
-}
-
-.teams-table th, 
-.teams-table td {
-    white-space: nowrap; /* Impide que el texto se divida en varias líneas */
-}
-
-.teams-table tbody tr {
-    transition: all 0.2s ease;
-}
-
-.teams-table tbody tr:nth-child(even) {
-    background-color: #f9fbf9;
-}
-
-.teams-table tbody tr:hover {
-    background-color: rgba(46, 125, 50, 0.07) !important;
-}
-
-.teams-table td {
-    padding: 14px 10px;
-    font-size: 0.9rem;
-    color: #333;
-    font-weight: 600;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-}
-
-.teams-table td.points-final {
-    color: var(--pitch-green);
-    font-weight: 800;
-    background-color: rgba(46, 125, 50, 0.03);
-}
-
-.teams-table tbody tr:hover td.points-final {
-    color: var(--grass-vibrant);
-    font-weight: 900;
-}
-
     </style>
 
 </head>
@@ -1938,14 +1868,12 @@ body{
             </label>
 
             <input
-    type="text"
-    id="playerNameInput"
-    name="nombre"
-    required
-    placeholder="Escribe tu nombre..."
-    style="width:80%; padding:15px; border-radius:15px; border:3px solid var(--pitch-green); font-size:1.2rem; text-align:center; font-weight:700;"
->
-<div id="errorMensaje" style="display:none; color: #d32f2f; background: #ffebee; padding: 10px; border-radius: 8px; margin-top: 5px; font-weight: bold;"></div>
+                type="text"
+                name="nombre"
+                required
+                placeholder="Escribe tu nombre..."
+                style="width:80%; padding:15px; border-radius:15px; border:3px solid var(--pitch-green); font-size:1.2rem; text-align:center; font-weight:700;"
+            >
         </div>
 
         <!-- TOP 8 -->
@@ -2035,7 +1963,7 @@ body{
             </div>
 
             <h3 style="color:var(--pitch-green)">
-                8 Mejores Terceros
+                Mejores Terceros
             </h3>
 
             <div id="mejoresTercerosContainer"
@@ -2174,7 +2102,7 @@ body{
     <div class="fase-container">
 
         <div class="fase-title">
-            DETALLE DE PUNTOS
+            JUGADORES
         </div>
 
         <div style="margin-bottom:20px;">
@@ -2260,27 +2188,6 @@ body{
 
 <script>
 
-	const codigosBanderas = {
-    "Alemania": "de", "Arabia Saudita": "sa", "Argelia": "dz", "Argentina": "ar", 
-    "Australia": "au", "Austria": "at", "Bélgica": "be", "Bosnia y Herzegovina": "ba", 
-    "Brasil": "br", "Cabo Verde": "cv", "Canadá": "ca", "Catar": "qa", 
-    "Colombia": "co", "Corea del Sur": "kr", "Costa de Marfil": "ci", "Croacia": "hr", 
-    "Curazao": "cw", "Ecuador": "ec", "Egipto": "eg", "Escocia": "gb-sct", 
-    "España": "es", "Estados Unidos": "us", "Francia": "fr", "Ghana": "gh", 
-    "Haití": "ht", "Inglaterra": "gb-eng", "Irak": "iq", "Irán": "ir", 
-    "Japón": "jp", "Jordania": "jo", "Marruecos": "ma", "México": "mx", 
-    "Noruega": "no", "Nueva Zelanda": "nz", "Países Bajos": "nl", "Panamá": "pa", 
-    "Paraguay": "py", "Portugal": "pt", "RD Congo": "cd", "República Checa": "cz", 
-    "Senegal": "sn", "Sudáfrica": "za", "Suecia": "se", "Suiza": "ch", 
-    "Túnez": "tn", "Turquía": "tr", "Uruguay": "uy", "Uzbekistán": "uz"
-};
-
-// Función para obtener el elemento visual de la bandera
-function obtenerBanderaHTML(nombreEquipo) {
-    const code = codigosBanderas[nombreEquipo] || "un";
-    return `<img src="https://flagcdn.com/w20/${code}.png" alt="${nombreEquipo}" style="width:20px; height:15px; border-radius:2px; vertical-align:middle; margin-right:8px;">`;
-}
-
 const URL_MAESTRA =
           "https://docs.google.com/spreadsheets/d/e/2PACX-1vSYe1nqTFOllYViQLj9x7NZ0buss9J-pqmIqeSziINNRDL5-a0m-sWcCg_48_zY5iAEhpHvzNYKuqbQ/pub?gid=1968191103&single=true&output=csv";
 
@@ -2288,7 +2195,7 @@ const URL_MAESTRA =
           "https://docs.google.com/spreadsheets/d/e/2PACX-1vSYe1nqTFOllYViQLj9x7NZ0buss9J-pqmIqeSziINNRDL5-a0m-sWcCg_48_zY5iAEhpHvzNYKuqbQ/pub?gid=768452749&single=true&output=csv";
 
         const URL_TEAMS =
-          "https://docs.google.com/spreadsheets/d/e/2PACX-1vSYe1nqTFOllYViQLj9x7NZ0buss9J-pqmIqeSziINNRDL5-a0m-sWcCg_48_zY5iAEhpHvzNYKuqbQ/pub?gid=1191151777&single=true&output=csv";
+          "https://docs.google.com/spreadsheets/d/e/2PACX-1vSYe1nqTFOllYViQLj9x7NZ0buss9J-pqmIqeSziINNRDL5-a0m-sWcCg_48_zY5iAEhpHvzNYKuqbQ/pub?gid=33084584&single=true&output=csv";
 
         const URL_PRONOSTICOS =
           "https://docs.google.com/spreadsheets/d/e/2PACX-1vSYe1nqTFOllYViQLj9x7NZ0buss9J-pqmIqeSziINNRDL5-a0m-sWcCg_48_zY5iAEhpHvzNYKuqbQ/pub?gid=1434944956&single=true&output=csv";
@@ -2372,47 +2279,29 @@ equiposRows.forEach(r => {
 // ================= CSV =================
 
 function parseCSV(csv) {
-    const lines = csv.trim().split("\n");
-    const sep = lines[0].includes(";") ? ";" : ",";
 
-    // Función auxiliar para leer cada línea respetando las comillas
-    function splitLine(line) {
-        let result = [];
-        let current = '';
-        let inQuotes = false;
-        
-        for (let i = 0; i < line.length; i++) {
-            let char = line[i];
-            
-            if (char === '"') {
-                // Si encontramos comillas, cambiamos el estado pero no las guardamos en el texto
-                inQuotes = !inQuotes;
-            } else if (char === sep && !inQuotes) {
-                // Si encontramos el separador y NO estamos dentro de comillas, cortamos
-                result.push(current);
-                current = '';
-            } else {
-                current += char;
-            }
-        }
-        result.push(current);
-        return result;
-    }
+  const lines = csv.trim().split("\n");
 
-    const headers = splitLine(lines[0]).map(h => h.trim().replace(/\r/g, ""));
+  const sep = lines[0].includes(";") ? ";" : ",";
 
-    return lines.slice(1).map(line => {
-        const values = splitLine(line);
-        const obj = {};
-        
-        headers.forEach((h, i) => {
-            // Asignamos el valor limpio a la clave correspondiente
-            obj[h] = values[i] ? values[i].trim().replace(/\r/g, "") : "";
-        });
-        
-        return obj;
+  const headers = lines[0]
+    .split(sep)
+    .map(h => h.trim()); // 👈 IMPORTANTE: NO lowerCase
+
+  return lines.slice(1).map(line => {
+
+    const values = line.split(sep);
+
+    const obj = {};
+
+    headers.forEach((h, i) => {
+      obj[h.trim().replace(/\r/g, "")] = values[i] ? values[i].replace(/"/g, "").trim() : "";
     });
+
+    return obj;
+  });
 }
+
 // ================= RANKING =================
 
 function renderRanking() {
@@ -2590,84 +2479,49 @@ window.loadPlayerPredictions = function () {
     renderPredictionsByPlayer(player);
 };
 
-// ========================================================
-// REEMPLAZO LOGICA DE JUGADORES (CORREGIDO Y OPTIMIZADO)
-// ========================================================
-
 window.loadRankingPlayer = function(){
-    const nameSelected = document.getElementById("rankingPlayerSelect").value;
-    const container = document.getElementById("playerCardContainer");
-    
-    if(!nameSelected){
+
+    const name =
+        document.getElementById(
+            "rankingPlayerSelect"
+        ).value;
+
+    const container =
+        document.getElementById(
+            "playerCardContainer"
+        );
+
+    if(!name){
+
         container.style.display = "none";
+
         return;
     }
-    
-    // 1. Encontrar al jugador en el array global
-    const player = data.find(p => p.name && p.name.trim().toLowerCase() === nameSelected.trim().toLowerCase());
-    
-    if(!player) {
-        console.warn("No se encontró el jugador en los datos:", nameSelected);
-        return;
-    }
-    
+
+    const index =
+        data.findIndex(
+            p => p.name === name
+        );
+
+    if(index === -1) return;
+
     container.style.display = "block";
-    
-    // 2. CALCULAR EL RANKING REAL (Ordenando por puntos como en la tabla principal)
-    const rankingOrdenado = [...data].sort((a, b) => {
-        const aTotal = parseFloat(String(a.total).replace(",", ".").trim()) || 0;
-        const bTotal = parseFloat(String(b.total).replace(",", ".").trim()) || 0;
-        return bTotal - aTotal;
-    });
-    
-    const posicionReal = rankingOrdenado.findIndex(p => p.name === player.name) + 1;
-    
-    // 3. Tarjetas estadísticas superiores
-    document.getElementById("playerNameBig").textContent = player.name;
-    document.getElementById("statTotal").textContent = player.total || "0";
-    document.getElementById("statPreguntas").textContent = player.preguntas || "-";
-    
-    // AQUÍ APLICAMOS LA POSICIÓN REAL
-    document.getElementById("statPos").textContent = posicionReal + "º";
-    
-    // 4. Pintar la tabla
-	
-// Tu función de pintado queda así:
-document.getElementById("teamsBody").innerHTML = player.teams.map((t, idx) => `
-    <tr>
-        <td style="color: #666; font-weight:700;">${idx + 1}º</td>
-        <td style="text-align:left; font-weight:700; color: var(--soccer-dark);">
-            ${getBandera(t.team)} ${t.team || "-"}
-        </td>
-        <td style="color: #444;">${t.coef || "-"}</td>
-        <td>${t.fase || "0"}</td>
-        <td>${t.dieciseisavos || "0"}</td>
-        <td>${t.octavos || "0"}</td>
-        <td>${t.cuartos || "0"}</td>
-        <td>${t.semis || "0"}</td>
-        <td>${t.final || "0"}</td>
-        <td>${t.terceros || "0"}</td>
-        <td class="points-final">${t.puntos || "0"}</td>
-    </tr>
-`).join("");
+
+    renderPlayerCard(index);
+};
 
 window.openPlayerFromRanking = function(i){
+
     showPlayer();
+
     const player = data[i];
-    if(!player) return;
-    
-    const select = document.getElementById("rankingPlayerSelect");
-    if(select) {
-        for(let option of select.options) {
-            if(option.value.trim().toLowerCase() === player.name.trim().toLowerCase()) {
-                select.value = option.value;
-                break;
-            }
-        }
-    }
-    
+
+    document.getElementById(
+        "rankingPlayerSelect"
+    ).value = player.name;
+
     loadRankingPlayer();
-};
+}
 
 // ================= PLAYER =================
 
@@ -2760,7 +2614,46 @@ function renderPredictionsByPlayer(p) {
   `;
 }
 
+function renderPlayerCard(i){
 
+    const p = data[i];
+
+    document.getElementById(
+        "playerNameBig"
+    ).textContent = p.name;
+
+    document.getElementById(
+        "statTotal"
+    ).textContent = p.total;
+
+    document.getElementById(
+        "statPreguntas"
+    ).textContent = p.preguntas;
+
+    document.getElementById(
+        "statPos"
+    ).textContent = (i + 1) + "º";
+
+    document.getElementById(
+        "teamsBody"
+    ).innerHTML = p.teams.map(t => `
+
+        <tr>
+            <td>${t.pos}</td>
+            <td>${t.team}</td>
+            <td>${t.coef}</td>
+            <td>${t.fase}</td>
+            <td>${t.dieciseisavos}</td>
+            <td>${t.octavos}</td>
+            <td>${t.cuartos}</td>
+            <td>${t.semis}</td>
+            <td>${t.terceros}</td>
+            <td>${t.final}</td>
+            <td>${t.puntos}</td>
+        </tr>
+
+    `).join("");
+}
 
 window.showPlayer = function () {
 
@@ -3237,8 +3130,9 @@ function renderRankingPlayersDropdown(){
 
 document.getElementById("registrationForm").onsubmit = async (e) => {
     e.preventDefault();
+    const form = e.target;
 
-    // Eliminar cualquier mensaje de error previo si existiera
+    // Eliminar cualquier mensaje de error de terceros previo si existiera
     const errorPrevio = document.getElementById("error-terceros");
     if (errorPrevio) errorPrevio.remove();
 
@@ -3255,23 +3149,13 @@ document.getElementById("registrationForm").onsubmit = async (e) => {
     });
 
     if (conteoTerceros !== 8) {
-        // En lugar de un alert(), creamos un contenedor elegante con diseño integrado
         const contenedorError = document.createElement("div");
         contenedorError.id = "error-terceros";
         contenedorError.style.cssText = `
-            background: #ffebee;
-            color: #c62828;
-            border: 1px solid #ffcdd2;
-            padding: 15px;
-            border-radius: 12px;
-            margin: 20px 0;
-            font-weight: 600;
-            font-size: 0.95rem;
-            text-align: center;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
+            background: #ffebee; color: #c62828; border: 1px solid #ffcdd2;
+            padding: 15px; border-radius: 12px; margin: 20px 0;
+            font-weight: 600; font-size: 0.95rem; text-align: center;
+            display: flex; align-items: center; justify-content: center; gap: 10px;
             box-shadow: 0 4px 12px rgba(198, 40, 40, 0.05);
         `;
         contenedorError.innerHTML = `
@@ -3279,25 +3163,22 @@ document.getElementById("registrationForm").onsubmit = async (e) => {
             <span>¡Atención! Debes elegir exactamente a los 8 mejores terceros. Actualmente tienes <strong>${conteoTerceros}</strong> seleccionados.</span>
         `;
         
-        // Lo colocamos justo antes del botón de enviar para que el usuario lo vea claro
-        const botonSubmit = e.target.querySelector("button[type='submit']");
+        const botonSubmit = form.querySelector("button[type='submit']");
         botonSubmit.parentNode.insertBefore(contenedorError, botonSubmit);
-        
-        // Hacemos un scroll suave hacia el mensaje de error para dar feedback visual mas cómodo
         contenedorError.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        return; // Detiene el envío
+        return; 
     }
     // ========================================================
 
     // Obtener el botón de envío y deshabilitarlo
-    const botonSubmit = e.target.querySelector("button[type='submit']");
+    const botonSubmit = form.querySelector("button[type='submit']");
     if (botonSubmit) {
         botonSubmit.disabled = true;
         botonSubmit.innerText = "Enviando...";
     }
 
     const obj = {};
-    new FormData(e.target).forEach((v, k) => {
+    new FormData(form).forEach((v, k) => {
         if (k.startsWith("grupo_tercero")) {
             obj[k] = v; 
         } else if (v !== "" && v !== null && v !== undefined) {
@@ -3312,71 +3193,58 @@ document.getElementById("registrationForm").onsubmit = async (e) => {
             body: JSON.stringify(obj)
         });
 
-	window.onbeforeunload = null;
+        // Desactivamos el aviso de "cambios sin guardar" del navegador de forma segura
+        window.onbeforeunload = null;
 
-    // 3. Pintar el diseño de éxito una vez que el servidor responde
-    document.getElementById("registrationForm").innerHTML = `
+        // Ocultamos todos los elementos visibles actuales del formulario (campos, títulos, botones)
+        Array.from(form.children).forEach(child => {
+            child.style.display = "none";
+        });
 
-      <div style="
-          background:white;
-          border-radius:25px;
-          padding:40px 25px;
-          text-align:center;
-          box-shadow:0 10px 30px rgba(0,0,0,0.12);
-      ">
+        // Verificamos si el contenedor de éxito ya existe para no duplicarlo, si no, lo creamos
+        let exitoBlock = document.getElementById("mensaje-exito-envio");
+        if (!exitoBlock) {
+            exitoBlock = document.createElement("div");
+            exitoBlock.id = "mensaje-exito-envio";
+            form.appendChild(exitoBlock);
+        }
 
-          <div style="
-              width:80px;
-              height:80px;
-              border-radius:50%;
-              background:#2e7d32;
-              margin:0 auto 20px auto;
-              display:flex;
-              align-items:center;
-              justify-content:center;
-              color:white;
-              font-size:2rem;
-              font-weight:900;
-          ">
-              ✓
-          </div>
+        // Estilizamos y mostramos el cuadro de éxito integrado acorde a tu diseño
+        exitoBlock.style.cssText = `
+            display: block; background: white; border-radius: 25px; 
+            padding: 40px 25px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        `;
+        exitoBlock.innerHTML = `
+            <div style="width:80px; height:80px; background:#e8f5e9; color:#2e7d32; border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 20px auto; font-size:2.5rem;">
+                <i class="fa-solid fa-circle-check"></i>
+            </div>
+            <h2 style="color:var(--pitch-green); margin-bottom:10px; font-family:'Black Ops One'; font-size:1.8rem;">¡PRONÓSTICO ENVIADO!</h2>
+            <p style="color:#666; font-weight:600; font-size:1.1rem; margin-bottom:25px; line-height:1.5;">Tu quiniela ha sido registrada exitosamente en nuestra base de datos. ¡Buena suerte en el torneo! 🏆</p>
+            <button type="button" onclick="goToSection('ranking')" class="btn-registro" style="margin:0 auto; padding:12px 25px; font-size:0.9rem; border-radius:12px; cursor:pointer;">Ver Clasificación</button>
+        `;
 
-          <h2 style="
-              margin:0 0 10px 0;
-              color:#1b5e20;
-              font-size:2rem;
-          ">
-              Pronósticos enviados
-          </h2>
+        // Devolvemos el estado del botón original por si acaso se vuelve a abrir después
+        if (botonSubmit) {
+            botonSubmit.disabled = false;
+            botonSubmit.innerText = "ENVIAR MIS PRONÓSTICOS 🏆";
+        }
 
-          <p style="
-              color:#555;
-              font-size:1rem;
-              line-height:1.6;
-              max-width:500px;
-              margin:0 auto 25px auto;
-          ">
-              Tus predicciones se han guardado correctamente.
-              Ya formas parte de la "Porra Mundial 2026".
-	<button onclick="window.location.hash='#ranking'; window.location.reload();" class="btn-registro" style=" margin:0 auto; justify-content:center; " > 	Volver al Ranking </button>
-          </p>
+    } catch (error) {
+        console.error("Error en el envío:", error);
+        const contenedorErrorRed = document.createElement("div");
+        contenedorErrorRed.style.cssText = `
+            background: #ffebee; color: #c62828; border: 1px solid #ffcdd2;
+            padding: 15px; border-radius: 12px; margin: 20px 0; font-weight: 600; text-align: center;
+        `;
+        contenedorErrorRed.innerHTML = `🏆 Hubo un error de conexión al enviar. Por favor, inténtalo de nuevo.`;
+        botonSubmit.parentNode.insertBefore(contenedorErrorRed, botonSubmit);
 
-      </div>
-
-  `;
-
-  } catch (error) {
-    console.error("Error al enviar el pronóstico:", error);
-    alert("Hubo un problema de conexión al enviar tus datos. Por favor, inténtalo de nuevo.");
-    
-    // Si la red falla de verdad, reactivamos el botón para que puedan reintentar
-    if (botonSubmit) {
-      botonSubmit.disabled = false;
-      botonSubmit.innerText = "Enviar Pronóstico";
+        if (botonSubmit) {
+            botonSubmit.disabled = false;
+            botonSubmit.innerText = "ENVIAR MIS PRONÓSTICOS 🏆";
+        }
     }
-  }
 };
-
 
 // ================= CONTADOR MUNDIAL =================
 
@@ -3523,28 +3391,48 @@ function updateHistory(section){
     );
 }
 
-function goToSection(section){
+function goToSection(sectionId) {
+    // 1. Ocultar todas las secciones
+    document.querySelectorAll('.section-content').forEach(sec => {
+        sec.classList.remove('active');
+    });
 
-    closeMenu();
-
-    switch(section){
-
-        case "ranking":
-            showRanking();
-            break;
-
-        case "register":
-            showRegister();
-            break;
-
-        case "player":
-            showPlayer();
-   	    break;
-
-        case "predictions":
-    		showPredictions();
-    	   break;
+    // 2. Mostrar la sección seleccionada
+    const targetSection = document.getElementById(sectionId);
+    if (targetSection) {
+        targetSection.classList.add('active');
     }
+
+    // 3. Modificar comportamiento de los botones de navegación
+    document.querySelectorAll('.bottom-nav button').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    const activeBtn = document.querySelector(`.bottom-nav button[onclick*="${sectionId}"]`);
+    if (activeBtn) activeBtn.classList.add('active');
+
+    // ====================================================================
+    // NUEVO: Si volvemos a la sección 'register', restauramos el formulario
+    // ====================================================================
+    if (sectionId === 'register') {
+        const form = document.getElementById("registrationForm");
+        const exitoBlock = document.getElementById("mensaje-exito-envio");
+        
+        // Si el mensaje de éxito estaba visible, lo ocultamos y reseteamos el formulario
+        if (exitoBlock && exitoBlock.style.display === "block") {
+            exitoBlock.style.display = "none";
+            form.reset(); // Limpia todos los campos seleccionados anteriormente
+            
+            // Volvemos a mostrar los elementos internos del formulario que ocultamos al enviar
+            Array.from(form.children).forEach(child => {
+                if (child.id !== "mensaje-exito-envio") {
+                    child.style.display = "";
+                }
+            });
+        }
+    }
+
+    // Hacer scroll al inicio de la página al cambiar de sección
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 
@@ -3700,36 +3588,6 @@ function ejecutarLlenadoAutomatico() {
         renderSimpleDropdowns(); 
     }
 }
-
-// --- LÓGICA DE REGISTRO (Validación y Formato) ---
-    document.addEventListener("DOMContentLoaded", function() {
-        const nameInput = document.getElementById("playerNameInput");
-        
-        if (nameInput) {
-            // Formateo mientras escribe (Capitalización)
-            nameInput.addEventListener("input", function() {
-                this.value = this.value
-                    .toLowerCase()
-                    .replace(/(^|\s)\S/g, (l) => l.toUpperCase());
-            });
-
-            // Validación al salir del campo (evitar duplicados)
-            nameInput.addEventListener("blur", function() {
-                const nombreEscrito = this.value.trim().toLowerCase();
-                // Comprobamos si el nombre ya está en el array 'data'
-                const existe = data.some(p => p.name && p.name.trim().toLowerCase() === nombreEscrito);
-                
-                if (existe) {
-                    const errorDiv = document.getElementById("errorMensaje");
-                    errorDiv.textContent = "Este nombre ya existe, por favor, escribe otro.";
-                    errorDiv.style.display = "block";
-                    this.value = ""; // Limpiamos el campo
-                    setTimeout(() => { errorDiv.style.display = "none"; }, 3000);
-                }
-            });
-        }
-    });
-
 </script>
 
 <!-- MENÚ INFERIOR (ICONOS) -->
@@ -3737,7 +3595,7 @@ function ejecutarLlenadoAutomatico() {
 <nav class="bottom-nav">
 
     <button onclick="goToSection('ranking')" title="Clasificación">
-        <i class="fa-solid fa-trophy"></i>
+        <i class="fa-solid fa-house"></i>
     </button>
 
     <button onclick="goToSection('register')" title="Registro">
