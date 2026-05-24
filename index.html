@@ -2566,56 +2566,36 @@ function renderRanking() {
   const nuevoRanking = {};
 
   tbody.innerHTML = rankingOrdenado.map((p, i) => {
-
     const nombre = p.name;
     const nuevaPos = i + 1;
     const posAnterior = rankingPrevio[nombre];
-
     let flecha = "";
-
     if (posAnterior !== undefined) {
-
-      if (nuevaPos < posAnterior) {
-        flecha = "up";
-      } 
-      else if (nuevaPos > posAnterior) {
-        flecha = "down";
-      }
+        if (nuevaPos < posAnterior) flecha = "up";
+        else if (nuevaPos > posAnterior) flecha = "down";
     }
 
     nuevoRanking[nombre] = nuevaPos;
-
     const realIndex = data.findIndex(d => d.name === nombre);
 
-	  return `
+    return `
       <tr onclick="openPlayerFromRanking(${realIndex})">
+        <td style="text-align: center; width: 60px;">${nuevaPos}º</td>
         
-        <td style="text-align: center;">
-            <div style="display:flex; flex-direction:column; align-items:center; gap:2px;">
-                <span>${nuevaPos}º</span>
-                ${flecha === "up" ? `<span style="color:#2e7d32;">⬆</span>` : ""}
-                ${flecha === "down" ? `<span style="color:#c62828;">⬇</span>` : ""}
-            </div>
+        <td style="text-align: center; width: 60px;">
+            <img src="https://api.iconify.design/game-icons:soccer-ball.svg" style="width:25px;">
         </td>
-
-        <td style="text-align: center;">
-            <div class="ranking-avatar">
-                <img src="https://api.iconify.design/game-icons:soccer-ball.svg" alt="avatar" style="width:30px;">
-            </div>
-        </td>
-
+        
         <td style="text-align: left; padding-left: 10px;">
             <span class="ranking-player-name">${nombre}</span>
         </td>
-
+        
         <td style="text-align: right; padding-right: 10px; font-weight: bold;">
             ${Number(parseFloat(String(p.total).replace(",", ".").trim()) || 0)}
         </td>
-
       </tr>
     `;
-    
-  }).join("");
+}).join("");
 
   localStorage.setItem("rankingPrevio", JSON.stringify(nuevoRanking));
 }
