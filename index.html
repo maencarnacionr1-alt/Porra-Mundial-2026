@@ -1176,7 +1176,6 @@ h1{
     text-align:center;
 }
 
-
 /* ==================================
    ALINEACIÓN PROFESIONAL RANKING
 ================================== */
@@ -2632,12 +2631,17 @@ function renderRanking() {
 
     </div>
 </td>
-<td class="rank-player-name">
-   ${nombre}
-</td>
+<td>
+    <div class="ranking-player-info">
 
-<td class="rank-points">
-   ${puntos}
+        <span class="ranking-player-name">
+            ${nombre}
+        </span>
+
+    </div>
+
+</div>
+
 </td>
 
         <td>${Number(parseFloat(String(p.total).replace(",", ".").trim()) || 0)}</td>
