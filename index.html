@@ -1581,44 +1581,70 @@ h1{
    MENÚ INFERIOR (APP STYLE)
 ========================= */
 
-.bottom-nav {
+.bottom-nav{
     position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
+
     display: flex;
     justify-content: space-around;
     align-items: center;
-    height: 70px; /* Aumentado para que respire */
-    
-    /* Mismo estilo de fondo y borde que el menú lateral */
-    background: linear-gradient(180deg, var(--soccer-dark), var(--pitch-green));
-    border-top: 3px solid var(--gold);
-    
+
+    height: 60px;
+
+    background: rgba(18,18,18,0.92);
+    backdrop-filter: blur(12px);
+
+    border-top: 2px solid var(--gold);
+
     z-index: 99999;
-    padding: 0 10px;
 }
 
-.bottom-nav button {
-    background: rgba(255, 255, 255, 0.05); /* Fondo suave como los links del lateral */
+.bottom-nav button{
+    background: transparent;
     border: none;
-    font-size: 1.2rem;
+
+    font-size: 1.4rem;
+
     color: white;
-    width: 60px; /* Ancho fijo para centrar iconos */
-    height: 45px;
-    border-radius: 12px;
+
+    width: 100%;
+
     display: flex;
     justify-content: center;
     align-items: center;
+
     cursor: pointer;
-    transition: 0.25s ease;
+
+    transition: 0.2s ease;
 }
 
-.bottom-nav button:hover {
-    background: rgba(255, 215, 0, 0.12); /* Color dorado al pasar el ratón */
-    color: var(--gold);
+.bottom-nav button:hover{
     transform: translateY(-2px);
+    color: var(--gold);
 }
+
+.bottom-nav button:active{
+    transform: scale(0.95);
+}
+
+/* evita que el menú tape contenido */
+body{
+    padding-bottom: 70px;
+}
+
+/* ocultar en desktop (opcional pero recomendado en tu UI) */
+@media (min-width: 900px){
+    .bottom-nav{
+        display: none;
+    }
+
+    body{
+        padding-bottom: 0;
+    }
+}
+
 
 /* =========================
    OCULTAR MENÚ INFERIOR EN LANDSCAPE
