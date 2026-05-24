@@ -2631,15 +2631,12 @@ function renderRanking() {
 
     </div>
 </td>
-<td>
-    <div class="ranking-player-info">
+<td class="rank-player-name">
+   ${nombre}
+</td>
 
-        <span class="ranking-player-name">
-            ${nombre}
-        </span>
-
-    </div>
-
+<td class="rank-points">
+   ${puntos}
 </td>
 
         <td>${Number(parseFloat(String(p.total).replace(",", ".").trim()) || 0)}</td>
