@@ -1195,7 +1195,7 @@ h1{
 
     text-align: left !important;
 
-    padding-left: 22px;
+    padding-left: 55px;
 
     font-weight: 700;
 }
@@ -1207,7 +1207,7 @@ h1{
 
     text-align: right !important;
 
-    padding-right: 22px;
+    padding-right: 40px;
 
     font-weight: 800;
 }
@@ -1866,6 +1866,131 @@ body{
     font-size: 1rem;
 }
 
+/* ==================================
+   PLAYER PREMIUM LAYOUT
+================================== */
+
+.ranking-player-wrapper{
+
+    display:flex;
+    align-items:center;
+    gap:14px;
+}
+
+.ranking-avatar{
+
+    width:52px;
+    height:52px;
+
+    border-radius:50%;
+
+    background:
+      linear-gradient(
+        135deg,
+        rgba(46,125,50,0.10),
+        rgba(255,215,0,0.14)
+      );
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border:
+      2px solid rgba(255,215,0,0.25);
+
+    box-shadow:
+      0 6px 14px rgba(0,0,0,0.08);
+
+    flex-shrink:0;
+}
+
+.ranking-avatar img{
+
+    width:28px;
+    height:28px;
+}
+
+.ranking-player-info{
+
+    display:flex;
+    flex-direction:column;
+
+    min-width:0;
+}
+
+.ranking-player-name{
+
+    font-size:1rem;
+    font-weight:800;
+
+    color:#222;
+
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.ranking-player-status{
+
+    font-size:0.72rem;
+
+    color:#777;
+
+    text-transform:uppercase;
+
+    letter-spacing:1px;
+
+    font-weight:700;
+}
+
+/* ==================================
+   TOP 3 PREMIUM
+================================== */
+
+.ranking-table tbody tr:nth-child(1){
+
+    background:
+      linear-gradient(
+        90deg,
+        rgba(255,215,0,0.12),
+        rgba(255,255,255,1)
+      );
+
+    border-left:
+      5px solid #FFD700;
+}
+
+.ranking-table tbody tr:nth-child(2){
+
+    background:
+      linear-gradient(
+        90deg,
+        rgba(189,189,189,0.14),
+        rgba(255,255,255,1)
+      );
+
+    border-left:
+      5px solid #C0C0C0;
+}
+
+.ranking-table tbody tr:nth-child(3){
+
+    background:
+      linear-gradient(
+        90deg,
+        rgba(205,127,50,0.14),
+        rgba(255,255,255,1)
+      );
+
+    border-left:
+      5px solid #CD7F32;
+}
+
+
+.ranking-player-wrapper{
+   background:red !important;
+}
+
     </style>
 
 </head>
@@ -2478,7 +2603,7 @@ function parseCSV(csv) {
     });
 }
 // ================= RANKING =================
-
+alert("ESTE JS ESTÁ CARGANDO");
 function renderRanking() {
 
   const tbody = document.getElementById("rankingBody");
@@ -2551,7 +2676,34 @@ function renderRanking() {
   </div>
 </td>
 
-        <td>${nombre}</td>
+<td>
+
+<div class="ranking-player-wrapper">
+
+    <div class="ranking-avatar">
+
+        <img
+          src="https://api.iconify.design/game-icons:soccer-ball.svg"
+          alt="avatar"
+        >
+
+    </div>
+
+    <div class="ranking-player-info">
+
+        <span class="ranking-player-name">
+            ${nombre}
+        </span>
+
+        <span class="ranking-player-status">
+            Predictor
+        </span>
+
+    </div>
+
+</div>
+
+</td>
 
         <td>${Number(parseFloat(String(p.total).replace(",", ".").trim()) || 0)}</td>
 
