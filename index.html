@@ -1914,113 +1914,106 @@ body{
 
     font-weight:700;
 }
+
+/* ==============================
+   CLASIFICACIÓN FASE DE GRUPOS
+============================== */
+
 .groups-grid{
     display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
-    gap:20px;
+    grid-template-columns:repeat(auto-fit,minmax(340px,1fr));
+    gap:18px;
     margin-top:20px;
 }
 
 .group-card{
     background:white;
-    padding:12px;
+    padding:10px;
     border-radius:18px;
-    overflow:hidden;
+    overflow-x:auto;
     box-shadow:0 8px 24px rgba(0,0,0,0.08);
     border:1px solid rgba(0,0,0,0.05);
 }
 
+/* CABECERA */
+
 .group-header{
     background:linear-gradient(135deg,#1b5e20,#2e7d32);
     color:white;
-    padding:18px;
-    font-size:1.3rem;
+    padding:10px 14px;
+    border-radius:14px;
+    font-size:1rem;
     font-weight:800;
     text-align:center;
-    letter-spacing:1px;
+    letter-spacing:0.5px;
+    margin-bottom:10px;
 }
+
+/* TABLA */
 
 .group-table{
     width:100%;
+    min-width:700px;
     border-collapse:collapse;
+    font-size:0.68rem;
 }
 
 .group-table th{
     background:#f5f5f5;
-    padding:10px;
-    font-size:0.75rem;
     color:#666;
+    font-size:0.62rem;
+    font-weight:800;
+    padding:5px 3px;
+    text-align:center;
+    white-space:nowrap;
 }
 
 .group-table td{
-    padding:12px 10px;
+    padding:6px 4px;
     border-bottom:1px solid #eee;
-    font-size:0.9rem;
+    font-size:0.68rem;
     text-align:center;
+    white-space:nowrap;
 }
 
 .group-table tr:last-child td{
     border-bottom:none;
 }
 
+/* COLUMNA SELECCIÓN */
+
 .group-team{
     text-align:left !important;
     font-weight:700;
     color:#222;
+    min-width:130px;
 }
 
+/* POSICIÓN */
+
+.rank-position{
+    width:36px;
+    text-align:center;
+    font-weight:800;
+}
+
+/* COLORES POSICIONES */
+
 .group-first{
-    background:rgba(46,125,50,0.08);
+    background:rgba(46,125,50,0.10);
 }
 
 .group-second{
-    background:rgba(76,175,80,0.05);
+    background:rgba(76,175,80,0.06);
 }
 
 .group-third{
-    background:rgba(255,193,7,0.08);
+    background:rgba(255,193,7,0.10);
 }
 
 .group-fourth{
     opacity:0.75;
-}.rank-position{
-
-    width:42px;
-
-    text-align:center;
-
-    font-weight:800;
 }
-
-.group-card table {
-    font-size: 0.72rem;
-}
-
-.group-card th,
-.group-card td {
-    padding: 6px 4px;
-}
-
-.group-card th:nth-child(2),
-.group-card td:nth-child(2) {
-    min-width: 120px;
-}
-
-.group-card{
-    overflow-x:auto;
-}
-
-.group-card table{
-    min-width:700px;
-    font-size:0.68rem;
-}
-
-.group-card th,
-.group-card td{
-    padding:4px 3px;
-    white-space:nowrap;
-}
-
 
     </style>
 
