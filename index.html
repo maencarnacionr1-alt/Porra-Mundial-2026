@@ -3039,37 +3039,35 @@ window.showGroups = function () {
 function renderAllGroups(){
 
     const container =
-        document.getElementById("groupsContainer");
+        document.getElementById("groupsGrid");
 
     if(!container) return;
 
-    let html = `<div class="groups-grid">`;
+    const letras =
+        [...new Set(groupsData.map(g => g.grupo))]
+        .filter(Boolean)
+        .sort();
 
-    for(let i = 0; i < 12; i++){
+    container.innerHTML = letras.map(grupo => {
 
-        const letra =
-            String.fromCharCode(65 + i);
+        const equipos =
+            groupsData.filter(r => r.grupo === grupo);
 
-        const rows =
-            groupsData.filter(
-                r => r.grupo === letra
-            );
-
-        html += `
+        return `
 
             <div class="group-card">
 
                 <div class="group-header">
-                    GRUPO ${letra}
+                    GRUPO ${grupo}
                 </div>
 
                 <table class="group-table">
 
                     <thead>
                         <tr>
-                            <th>Pos</th>
-                            <th>Selección</th>
-                            <th>Pts</th>
+                            <th>POS</th>
+                            <th style="text-align:left;">SELECCIÓN</th>
+                            <th>PTS</th>
                             <th>J</th>
                             <th>G</th>
                             <th>E</th>
@@ -3077,65 +3075,49 @@ function renderAllGroups(){
                             <th>GF</th>
                             <th>GC</th>
                             <th>DG</th>
-                            <th>Pts Fase</th>
+                            <th>PTS FASE</th>
                         </tr>
                     </thead>
 
                     <tbody>
 
-                        ${rows.map(r => {
+                        ${equipos.map((r,index)=>`
 
-                            let rowClass = "";
+                            <tr class="
+                                ${index===0 ? "group-first" : ""}
+                                ${index===1 ? "group-second" : ""}
+                                ${index===2 ? "group-third" : ""}
+                                ${index===3 ? "group-fourth" : ""}
+                            ">
 
-                            if(r.pos == "1"){
-                                rowClass = "group-first";
-                            }
-                            else if(r.pos == "2"){
-                                rowClass = "group-second";
-                            }
-                            else if(r.pos == "3"){
-                                rowClass = "group-third";
-                            }
-                            else{
-                                rowClass = "group-fourth";
-                            }
+                                <td>${r.pos}</td>
 
-                            return `
+                                <td class="group-team">
+                                    ${getBandera(r.seleccion)}
+                                    ${r.seleccion}
+                                </td>
 
-                                <tr class="${rowClass}">
+                                <td>${r.pts}</td>
 
-                                    <td class="rank-position">
-                                        ${r.pos}
-                                    </td>
+                                <td>${r.j}</td>
 
-                                    <td class="group-team">
-                                        ${getBandera(r.seleccion)}
-                                        ${r.seleccion}
-                                    </td>
+                                <td>${r.g}</td>
 
-                                    <td>${r.pts}</td>
+                                <td>${r.e}</td>
 
-                                    <td>${r.j}</td>
+                                <td>${r.p}</td>
 
-                                    <td>${r.g}</td>
+                                <td>${r.gf}</td>
 
-                                    <td>${r.e}</td>
+                                <td>${r.gc}</td>
 
-                                    <td>${r.p}</td>
+                                <td>${r.dg}</td>
 
-                                    <td>${r.gf}</td>
+                                <td>${r.pts_fase}</td>
 
-                                    <td>${r.gc}</td>
+                            </tr>
 
-                                    <td>${r.dg}</td>
-
-                                    <td>${r.pts_fase}</td>
-
-                                </tr>
-
-                            `;
-
-                        }).join("")}
+                        `).join("")}
 
                     </tbody>
 
@@ -3144,11 +3126,7 @@ function renderAllGroups(){
             </div>
 
         `;
-    }
-
-    html += `</div>`;
-
-    container.innerHTML = html;
+    }).join("");
 }
 
 
