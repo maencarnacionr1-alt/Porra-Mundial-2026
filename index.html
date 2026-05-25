@@ -1792,60 +1792,6 @@ body{
     font-size: 1rem;
 }
 
-/* ===============================
-   TABLA CLASIFICACIÓN FIFA
-================================ */
-
-.clasificacion-table{
-
-    width:100%;
-
-    border-collapse:collapse;
-
-    background:#d9d9d9;
-
-    font-size:0.92rem;
-
-    color:#123d73;
-
-    font-weight:600;
-}
-
-.clasificacion-table th{
-
-    padding:8px;
-
-    text-align:center;
-
-    font-weight:800;
-
-    color:#123d73;
-
-    border-bottom:2px solid rgba(0,0,0,0.08);
-}
-
-.clasificacion-table td{
-
-    padding:7px;
-
-    text-align:center;
-
-    border-bottom:1px solid rgba(0,0,0,0.06);
-}
-
-.clasificacion-table tbody tr:nth-child(1),
-.clasificacion-table tbody tr:nth-child(2){
-
-    background:rgba(255,255,255,0.25);
-}
-
-.clasificacion-table td:nth-child(2){
-
-    text-align:left;
-
-    font-weight:700;
-}
-
 /* ==================================
    PLAYER PREMIUM LAYOUT
 ================================== */
@@ -1968,8 +1914,75 @@ body{
 
     font-weight:700;
 }
+.groups-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+    gap:20px;
+    margin-top:20px;
+}
 
-.rank-position{
+.group-card{
+    background:white;
+    border-radius:24px;
+    overflow:hidden;
+    box-shadow:0 8px 24px rgba(0,0,0,0.08);
+    border:1px solid rgba(0,0,0,0.05);
+}
+
+.group-header{
+    background:linear-gradient(135deg,#1b5e20,#2e7d32);
+    color:white;
+    padding:18px;
+    font-size:1.3rem;
+    font-weight:800;
+    text-align:center;
+    letter-spacing:1px;
+}
+
+.group-table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+.group-table th{
+    background:#f5f5f5;
+    padding:10px;
+    font-size:0.75rem;
+    color:#666;
+}
+
+.group-table td{
+    padding:12px 10px;
+    border-bottom:1px solid #eee;
+    font-size:0.9rem;
+    text-align:center;
+}
+
+.group-table tr:last-child td{
+    border-bottom:none;
+}
+
+.group-team{
+    text-align:left !important;
+    font-weight:700;
+    color:#222;
+}
+
+.group-first{
+    background:rgba(46,125,50,0.08);
+}
+
+.group-second{
+    background:rgba(76,175,80,0.05);
+}
+
+.group-third{
+    background:rgba(255,193,7,0.08);
+}
+
+.group-fourth{
+    opacity:0.75;
+}.rank-position{
 
     width:42px;
 
@@ -2432,84 +2445,19 @@ body{
      CLASIFICACIÓN DE GRUPOS
 ========================= -->
 
+<!-- =========================
+     CLASIFICACIÓN DE GRUPOS
+========================= -->
+
 <div id="groupsSection" class="view-section hidden">
 
-        <div class="fase-container">
+    <div class="fase-container">
 
         <div class="fase-title">
-           CLASIFICACIÓN DE GRUPOS
+            CLASIFICACIÓN DE GRUPOS
         </div>
 
-        <div style="margin-bottom:20px;">
-
-            <label class="preg-label">
-                Selecciona un jugador
-            </label>
-
-            <div class="select-wrapper">
-
-                <select
-                    id="groupSelect"
-                    class="equipo-select-simple"
-                    onchange="loadGroupTable()"
-                >
-
-                    <option value="">
-                        Elegir grupo...
-                    </option>
-
-                    <option value="A">Grupo A</option>
-                    <option value="B">Grupo B</option>
-                    <option value="C">Grupo C</option>
-                    <option value="D">Grupo D</option>
-                    <option value="E">Grupo E</option>
-                    <option value="F">Grupo F</option>
-                    <option value="G">Grupo G</option>
-                    <option value="H">Grupo H</option>
-                    <option value="I">Grupo I</option>
-                    <option value="J">Grupo J</option>
-                    <option value="K">Grupo K</option>
-                    <option value="L">Grupo L</option>
-
-                </select>
-
-            </div>
-
-        </div>
-
-    </div>
-
-    <!-- TABLA -->
-
-    <div id="groupTableContainer" style="display:none;">
-
-        <div class="teams-table-wrapper">
-
-            <table class="teams-table">
-
-                <thead>
-
-                    <tr>
-                        <th>Pos</th>
-                        <th style="text-align:left">Selección</th>
-                        <th>Pts</th>
-                        <th>J</th>
-                        <th>G</th>
-                        <th>E</th>
-                        <th>P</th>
-                        <th>GF</th>
-                        <th>GC</th>
-                        <th>DG</th>
-                        <th>Pts Fase</th>
-                    </tr>
-
-                </thead>
-
-                <tbody id="groupsBody"></tbody>
-
-            </table>
-
-        </div>
+        <div id="groupsGrid" class="groups-grid"></div>
 
     </div>
 
@@ -3060,73 +3008,81 @@ window.showGroups = function () {
         ".btn-registro-container"
     ).style.display = "none";
 
-    document.getElementById(
-        "groupSelect"
-    ).value = "";
-
-    document.getElementById(
-        "groupTableContainer"
-    ).style.display = "none";
+    renderAllGroups();
 
     updateHistory("groups");
 };
-
-window.loadGroupTable = function(){
-
-    const grupo =
-        document.getElementById("groupSelect").value;
+function renderAllGroups(){
 
     const container =
-        document.getElementById("groupTableContainer");
+        document.getElementById("groupsGrid");
 
-    if(!grupo){
+    if(!container) return;
 
-        container.style.display = "none";
+    const letras =
+        [...new Set(groupsData.map(g => g.grupo))]
+        .filter(Boolean)
+        .sort();
 
-        return;
-    }
+    container.innerHTML = letras.map(grupo => {
 
-    const rows =
-        groupsData.filter(
-            r => r.grupo === grupo
-        );
+        const equipos =
+            groupsData.filter(r => r.grupo === grupo);
 
-    container.style.display = "block";
+        return `
 
-    document.getElementById(
-        "groupsBody"
-    ).innerHTML = rows.map(r => `
+            <div class="group-card">
 
-        <tr>
+                <div class="group-header">
+                    GRUPO ${grupo}
+                </div>
 
-            <td>${r.pos}</td>
+                <table class="group-table">
 
-            <td style="text-align:left">
-                ${r.seleccion}
-            </td>
+                    <thead>
+                        <tr>
+                            <th>POS</th>
+                            <th style="text-align:left;">SELECCIÓN</th>
+                            <th>PTS</th>
+                            <th>DG</th>
+                        </tr>
+                    </thead>
 
-            <td>${r.pts}</td>
+                    <tbody>
 
-            <td>${r.j}</td>
+                        ${equipos.map((r,index)=>`
 
-            <td>${r.g}</td>
+                            <tr class="
+                                ${index===0 ? "group-first" : ""}
+                                ${index===1 ? "group-second" : ""}
+                                ${index===2 ? "group-third" : ""}
+                                ${index===3 ? "group-fourth" : ""}
+                            ">
 
-            <td>${r.e}</td>
+                                <td>${r.pos}</td>
 
-            <td>${r.p}</td>
+                                <td class="group-team">
+                                    ${getBandera(r.seleccion)}
+                                    ${r.seleccion}
+                                </td>
 
-            <td>${r.gf}</td>
+                                <td>${r.pts}</td>
 
-            <td>${r.gc}</td>
+                                <td>${r.dg}</td>
 
-            <td>${r.dg}</td>
+                            </tr>
 
-            <td>${r.pts_fase}</td>
+                        `).join("")}
 
-        </tr>
+                    </tbody>
 
-    `).join("");
-};
+                </table>
+
+            </div>
+
+        `;
+    }).join("");
+}
 
 // ================= DROPDOWNS =================
 
