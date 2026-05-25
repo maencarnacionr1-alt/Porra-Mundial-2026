@@ -3043,9 +3043,7 @@ function renderAllGroups(){
 
     if(!container) return;
 
-    let html = `
-        <div class="groups-grid">
-    `;
+    let html = `<div class="groups-grid">`;
 
     for(let i = 0; i < 12; i++){
 
@@ -3054,7 +3052,7 @@ function renderAllGroups(){
 
         const rows =
             groupsData.filter(
-                r => r.grupo?.trim() === letra
+                r => r.grupo === letra
             );
 
         html += `
@@ -3107,31 +3105,31 @@ function renderAllGroups(){
                                 <tr class="${rowClass}">
 
                                     <td class="rank-position">
-                                        ${r.pos || "-"}
+                                        ${r.pos}
                                     </td>
 
                                     <td class="group-team">
                                         ${getBandera(r.seleccion)}
-                                        ${r.seleccion || "-"}
+                                        ${r.seleccion}
                                     </td>
 
-                                    <td>${r.pts || "0"}</td>
+                                    <td>${r.pts}</td>
 
-                                    <td>${r.j || "0"}</td>
+                                    <td>${r.j}</td>
 
-                                    <td>${r.g || "0"}</td>
+                                    <td>${r.g}</td>
 
-                                    <td>${r.e || "0"}</td>
+                                    <td>${r.e}</td>
 
-                                    <td>${r.p || "0"}</td>
+                                    <td>${r.p}</td>
 
-                                    <td>${r.gf || "0"}</td>
+                                    <td>${r.gf}</td>
 
-                                    <td>${r.gc || "0"}</td>
+                                    <td>${r.gc}</td>
 
-                                    <td>${r.dg || "0"}</td>
+                                    <td>${r.dg}</td>
 
-                                    <td>${r.pts_fase || "0"}</td>
+                                    <td>${r.pts_fase}</td>
 
                                 </tr>
 
