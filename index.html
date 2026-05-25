@@ -1978,10 +1978,6 @@ body{
     white-space:nowrap;
 }
 
-.group-table-wrapper{
-    overflow-x:auto;
-}
-
 .group-table tr:last-child td{
     border-bottom:none;
 }
@@ -3049,10 +3045,10 @@ function renderAllGroups(){
 
     if(!container) return;
 
-    const letras =
-        [...new Set(groupsData.map(g => g.grupo))]
-        .filter(Boolean)
-        .sort();
+    const letras = [
+    "A","B","C","D","E","F",
+    "G","H","I","J","K","L"
+];
 
     container.innerHTML = letras.map(grupo => {
 
