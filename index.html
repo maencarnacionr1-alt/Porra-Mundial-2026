@@ -2006,6 +2006,21 @@ body{
     min-width: 120px;
 }
 
+.group-card{
+    overflow-x:auto;
+}
+
+.group-card table{
+    min-width:700px;
+    font-size:0.68rem;
+}
+
+.group-card th,
+.group-card td{
+    padding:4px 3px;
+    white-space:nowrap;
+}
+
 
     </style>
 
@@ -3054,14 +3069,21 @@ function renderAllGroups(){
 
                 <table class="group-table">
 
-                    <thead>
-                        <tr>
-                            <th>POS</th>
-                            <th style="text-align:left;">SELECCIÓN</th>
-                            <th>PTS</th>
-                            <th>DG</th>
-                        </tr>
-                    </thead>
+<thead>
+    <tr>
+        <th>Pos</th>
+        <th>Selección</th>
+        <th>Pts</th>
+        <th>J</th>
+        <th>G</th>
+        <th>E</th>
+        <th>P</th>
+        <th>GF</th>
+        <th>GC</th>
+        <th>DG</th>
+        <th>Pts Fase</th>
+    </tr>
+</thead>
 
                     <tbody>
 
@@ -3082,8 +3104,14 @@ function renderAllGroups(){
                                 </td>
 
                                 <td>${r.pts}</td>
-
-                                <td>${r.dg}</td>
+                                td>${r.j}</td>
+            			<td>${r.g}</td>
+            			<td>${r.e}</td>
+           	 		<td>${r.p}</td>
+            			<td>${r.gf}</td>
+            			<td>${r.gc}</td>
+            			<td>${r.dg}</td>
+            			<td>${r.pts_fase}</td>
 
                             </tr>
 
