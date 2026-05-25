@@ -314,6 +314,7 @@ html,body{
             font-weight: 600;
         }
 
+
         .points-final {
             font-weight: 800;
             color: var(--pitch-green);
@@ -453,7 +454,8 @@ html,body{
     	}
 
  	}
-
+	
+	#groupsSection,
 	#registerSection,
 	#playerSection,
 	#predictionsSection{	
@@ -1790,6 +1792,60 @@ body{
     font-size: 1rem;
 }
 
+/* ===============================
+   TABLA CLASIFICACIÓN FIFA
+================================ */
+
+.clasificacion-table{
+
+    width:100%;
+
+    border-collapse:collapse;
+
+    background:#d9d9d9;
+
+    font-size:0.92rem;
+
+    color:#123d73;
+
+    font-weight:600;
+}
+
+.clasificacion-table th{
+
+    padding:8px;
+
+    text-align:center;
+
+    font-weight:800;
+
+    color:#123d73;
+
+    border-bottom:2px solid rgba(0,0,0,0.08);
+}
+
+.clasificacion-table td{
+
+    padding:7px;
+
+    text-align:center;
+
+    border-bottom:1px solid rgba(0,0,0,0.06);
+}
+
+.clasificacion-table tbody tr:nth-child(1),
+.clasificacion-table tbody tr:nth-child(2){
+
+    background:rgba(255,255,255,0.25);
+}
+
+.clasificacion-table td:nth-child(2){
+
+    text-align:left;
+
+    font-weight:700;
+}
+
 /* ==================================
    PLAYER PREMIUM LAYOUT
 ================================== */
@@ -2378,18 +2434,16 @@ body{
 
 <div id="groupsSection" class="view-section hidden">
 
-    <div class="fase-container">
+        <div class="fase-container">
 
         <div class="fase-title">
-            CLASIFICACIÓN
+           CLASIFICACIÓN DE GRUPOS
         </div>
-
-        <!-- SELECTOR GRUPO -->
 
         <div style="margin-bottom:20px;">
 
             <label class="preg-label">
-                Selecciona un grupo
+                Selecciona un jugador
             </label>
 
             <div class="select-wrapper">
