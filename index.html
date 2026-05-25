@@ -1935,24 +1935,6 @@ body{
     border:1px solid rgba(0,0,0,0.05);
 }
 
-/* CABECERA */
-
-.group-header{
-    display:table;
-    width:fit-content;
-    min-width:100%;
-    background:linear-gradient(135deg,#1b5e20,#2e7d32);
-    color:white;
-    padding:10px 14px;
-    border-radius:14px;
-    font-size:1rem;
-    font-weight:800;
-    text-align:center;
-    letter-spacing:0.5px;
-    margin-bottom:10px;
-    box-sizing:border-box;
-}
-
 /* TABLA */
 
 .group-table{
@@ -3060,17 +3042,13 @@ function renderAllGroups(){
         return `
 
             <div class="group-card">
-
-                <div class="group-header">
-                    GRUPO ${grupo}
-                </div>
-
                 <table class="group-table">
-
                     <thead>
+                        <tr class="group-title-row">
+                            <th colspan="9">Grupo ${grupo}</th>
+                        </tr>
                         <tr>
-                            <th>POS</th>
-                            <th style="text-align:left;">SELECCIÓN</th>
+                            <th style="text-align:left;padding-left: 20px;">SELECCIÓN</th>
                             <th>PTS</th>
                             <th>J</th>
                             <th>G</th>
