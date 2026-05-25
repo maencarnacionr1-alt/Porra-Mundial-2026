@@ -184,7 +184,7 @@ html,body{
 .ranking-table {
     border: 2px solid rgba(0,0,0,0.08);
     border-radius: 16px;
-    overflow: hidden;
+    overflow: visible;
     box-shadow: 0 8px 20px rgba(0,0,0,0.06);
 }
 
@@ -561,8 +561,8 @@ html,body{
     border-radius:10px;
 
     display:flex;
-    align-items:center;
     justify-content:center;
+    align-items:center;
 
     color:white;
 
@@ -571,31 +571,11 @@ html,body{
 
     letter-spacing:1px;
 
+    overflow:hidden;
+
     box-shadow:
         inset 0 1px 1px rgba(255,255,255,0.06),
         0 5px 12px rgba(0,0,0,0.45);
-
-    overflow:hidden;
-
-    font-variant-numeric: tabular-nums;
-}
-
-    color: white;
-
-    border-radius: 12px;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    font-size: 1.4rem;
-    font-weight: 700;
-
-    overflow: hidden;
-
-    box-shadow:
-        inset 0 1px 1px rgba(255,255,255,0.08),
-        0 4px 10px rgba(0,0,0,0.25);
 
     font-variant-numeric: tabular-nums;
 
@@ -1140,7 +1120,7 @@ h1{
     h1{
         font-size:1.2rem;
 		justify-content: space-between;
-		align-item: center;
+		align-items: center;
     }
 
     /* el botón queda normal pero compacto */
@@ -1429,7 +1409,7 @@ h1{
 
 .menu-header{
 
-    color:1px solid var(--gold);
+     color: var(--gold);
 
     font-family:'Black Ops One', cursive;
 
@@ -1681,7 +1661,7 @@ body{
 .switch-label {
     font-family: 'Inter', sans-serif;
     font-weight: 600;
-    color: var(--green)!important;
+    color: var(--pitch-green)!important;
     font-size: 0.95rem;
 }
 
@@ -1995,6 +1975,13 @@ body{
         <span class="menu-text">Mis Pronósticos</span>
     </a>
 
+    <a href="javascript:void(0)" onclick="goToSection('groups')">
+        <span class="menu-icon">
+             <i class="fa-solid fa-table"></i>
+        </span>
+        <span class="menu-text">Clasificación</span>
+    </a>
+
 </nav>
 
 <!-- OVERLAY -->
@@ -2287,19 +2274,13 @@ body{
 
         </div>
 
-		<!--CLASIFICACIÓN DE GRUPOS--> 
-
-<div id="worldCupGroupsSection" class="view-section hidden">
-    <h2 class="fase-title">Tablas de Clasificación</h2>
-    <div id="groupsContainer" class="grid-preguntas">
-        </div>
-</div>
-        <!-- CONTENIDO -->
+     <!-- CONTENIDO -->
         <div id="predictionsGlobalView"></div>
 
     </div>
 
 </div>
+
 
 <div id="playerSection" class="view-section hidden">
 
@@ -2391,6 +2372,94 @@ body{
     </div>
 </div>
 
+<!-- =========================
+     CLASIFICACIÓN DE GRUPOS
+========================= -->
+
+<div id="groupsSection" class="view-section hidden">
+
+    <div class="fase-container">
+
+        <div class="fase-title">
+            CLASIFICACIÓN
+        </div>
+
+        <!-- SELECTOR GRUPO -->
+
+        <div style="margin-bottom:20px;">
+
+            <label class="preg-label">
+                Selecciona un grupo
+            </label>
+
+            <div class="select-wrapper">
+
+                <select
+                    id="groupSelect"
+                    class="equipo-select-simple"
+                    onchange="loadGroupTable()"
+                >
+
+                    <option value="">
+                        Elegir grupo...
+                    </option>
+
+                    <option value="A">Grupo A</option>
+                    <option value="B">Grupo B</option>
+                    <option value="C">Grupo C</option>
+                    <option value="D">Grupo D</option>
+                    <option value="E">Grupo E</option>
+                    <option value="F">Grupo F</option>
+                    <option value="G">Grupo G</option>
+                    <option value="H">Grupo H</option>
+                    <option value="I">Grupo I</option>
+                    <option value="J">Grupo J</option>
+                    <option value="K">Grupo K</option>
+                    <option value="L">Grupo L</option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- TABLA -->
+
+    <div id="groupTableContainer" style="display:none;">
+
+        <div class="teams-table-wrapper">
+
+            <table class="teams-table">
+
+                <thead>
+
+                    <tr>
+                        <th>Pos</th>
+                        <th style="text-align:left">Selección</th>
+                        <th>Pts</th>
+                        <th>J</th>
+                        <th>G</th>
+                        <th>E</th>
+                        <th>P</th>
+                        <th>GF</th>
+                        <th>GC</th>
+                        <th>DG</th>
+                        <th>Pts Fase</th>
+                    </tr>
+
+                </thead>
+
+                <tbody id="groupsBody"></tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
 
 <script>
 
@@ -2427,6 +2496,9 @@ const URL_MAESTRA =
 
         const URL_PRONOSTICOS =
           "https://docs.google.com/spreadsheets/d/e/2PACX-1vSYe1nqTFOllYViQLj9x7NZ0buss9J-pqmIqeSziINNRDL5-a0m-sWcCg_48_zY5iAEhpHvzNYKuqbQ/pub?gid=1434944956&single=true&output=csv";
+	
+	const URL_GROUPS =
+	  "https://docs.google.com/spreadsheets/d/e/2PACX-1vSYe1nqTFOllYViQLj9x7NZ0buss9J-pqmIqeSziINNRDL5-a0m-sWcCg_48_zY5iAEhpHvzNYKuqbQ/pub?gid=1452212570&single=true&output=csv";
 
         const GOOGLE_SCRIPT_URL =
           "https://script.google.com/macros/s/AKfycbyHja8af8YynvIVbahczAbnG9E9A5d9Me_yt_sbCmbxokWE6nRtgDwDYuY45EHW0EfBeg/exec";
@@ -2439,17 +2511,24 @@ let selectsGlobalesGrupos = [];
 let equiposDisponibles = [];
 let equiposPorGrupo = {};
 let data = [];
+let groupsData = [];
 
 const GRUPOS = 12;
 
 // ================= INIT =================
 async function initApp() {
 
-  const [eq, rank, teams] = await Promise.all([
+  const [eq, rank, teams, groupsCsv] = await Promise.all([
+
     fetch(URL_MAESTRA).then(r => r.text()),
+
     fetch(URL_RANKING).then(r => r.text()),
-    fetch(URL_TEAMS).then(r => r.text())
-  ]);
+
+    fetch(URL_TEAMS).then(r => r.text()),
+
+    fetch(URL_GROUPS).then(r => r.text())
+
+]);
 
  const pronos = await fetch(URL_PRONOSTICOS).then(r => r.text());
  pronosticosData = parseCSV(pronos);
@@ -2477,6 +2556,7 @@ equiposRows.forEach(r => {
 
   const rankingRows = parseCSV(rank);
   const teamRows = parseCSV(teams);
+  groupsData = parseCSV(groupsCsv);
 
   data = rankingRows.map(p => ({
     name: p.name,
@@ -2909,6 +2989,89 @@ window.showPredictions = function () {
   resetPredictionsView();
   renderPlayerDropdown();
   updateHistory("predictions");
+};
+
+window.showGroups = function () {
+
+    document.querySelectorAll(".view-section")
+        .forEach(s => s.classList.add("hidden"));
+
+    document.getElementById("groupsSection")
+        .classList.remove("hidden");
+
+    document.getElementById("countdownBox")
+        .style.display = "none";
+
+    document.querySelector(
+        ".btn-registro-container"
+    ).style.display = "none";
+
+    document.getElementById(
+        "groupSelect"
+    ).value = "";
+
+    document.getElementById(
+        "groupTableContainer"
+    ).style.display = "none";
+
+    updateHistory("groups");
+};
+
+window.loadGroupTable = function(){
+
+    const grupo =
+        document.getElementById("groupSelect").value;
+
+    const container =
+        document.getElementById("groupTableContainer");
+
+    if(!grupo){
+
+        container.style.display = "none";
+
+        return;
+    }
+
+    const rows =
+        groupsData.filter(
+            r => r.grupo === grupo
+        );
+
+    container.style.display = "block";
+
+    document.getElementById(
+        "groupsBody"
+    ).innerHTML = rows.map(r => `
+
+        <tr>
+
+            <td>${r.pos}</td>
+
+            <td style="text-align:left">
+                ${r.seleccion}
+            </td>
+
+            <td>${r.pts}</td>
+
+            <td>${r.j}</td>
+
+            <td>${r.g}</td>
+
+            <td>${r.e}</td>
+
+            <td>${r.p}</td>
+
+            <td>${r.gf}</td>
+
+            <td>${r.gc}</td>
+
+            <td>${r.dg}</td>
+
+            <td>${r.pts_fase}</td>
+
+        </tr>
+
+    `).join("");
 };
 
 // ================= DROPDOWNS =================
@@ -3647,6 +3810,10 @@ function goToSection(section){
         case "predictions":
     		showPredictions();
     	   break;
+
+	case "groups":
+    		showGroups();
+	   break;
     }
 }
 
@@ -3675,6 +3842,10 @@ window.addEventListener("popstate", (e) => {
         case "predictions":
             showPredictions();
             break;
+
+	case "groups":
+	    showGroups();
+	    break;
     }
 });
 // ================= START =================
@@ -3853,6 +4024,10 @@ function ejecutarLlenadoAutomatico() {
 
     <button onclick="goToSection('predictions')" title="Pronósticos">
         <i class="fa-solid fa-chart-line"></i>
+    </button>
+
+    <button onclick="goToSection('groups')" title="Clasificación">
+    	<i class="fa-solid fa-table"></i>
     </button>
 
 </nav>
