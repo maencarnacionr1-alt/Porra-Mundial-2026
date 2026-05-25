@@ -2482,21 +2482,20 @@ body{
 
 <script>
 
-// Asegúrate de que tu objeto de banderas esté así:
-const banderas = {
-    "Alemania": "de", "Arabia Saudita": "sa", "Argelia": "dz", "Argentina": "ar", 
-    "Australia": "au", "Austria": "at", "Bélgica": "be", "Bosnia y Herzegovina": "ba", 
-    "Brasil": "br", "Cabo Verde": "cv", "Canadá": "ca", "Catar": "qa", 
-    "Colombia": "co", "Corea del Sur": "kr", "Costa de Marfil": "ci", "Croacia": "hr", 
-    "Curazao": "cw", "Ecuador": "ec", "Egipto": "eg", "Escocia": "gb-sct", 
-    "España": "es", "Estados Unidos": "us", "Francia": "fr", "Ghana": "gh", 
-    "Haití": "ht", "Inglaterra": "gb-eng", "Irak": "iq", "Irán": "ir", 
-    "Japón": "jp", "Jordania": "jo", "Marruecos": "ma", "México": "mx", 
-    "Noruega": "no", "Nueva Zelanda": "nz", "Países Bajos": "nl", "Panamá": "pa", 
-    "Paraguay": "py", "Portugal": "pt", "RD Congo": "cd", "República Checa": "cz", 
-    "Senegal": "sn", "Sudáfrica": "za", "Suecia": "se", "Suiza": "ch", 
-    "Túnez": "tn", "Turquía": "tr", "Uruguay": "uy", "Uzbekistán": "uz"
-};
+const codigosBanderas = {
+        "Alemania": "de", "Arabia Saudita": "sa", "Argelia": "dz", "Argentina": "ar", 
+        "Australia": "au", "Austria": "at", "Bélgica": "be", "Bosnia y Herzegovina": "ba", 
+        "Brasil": "br", "Cabo Verde": "cv", "Canadá": "ca", "Catar": "qa", 
+        "Colombia": "co", "Corea del Sur": "kr", "Costa de Marfil": "ci", "Croacia": "hr", 
+        "Curazao": "cw", "Ecuador": "ec", "Egipto": "eg", "Escocia": "gb-sct", 
+        "España": "es", "Estados Unidos": "us", "Francia": "fr", "Ghana": "gh", 
+        "Haití": "ht", "Inglanding": "gb-eng", "Irak": "iq", "Irán": "ir", 
+        "Japón": "jp", "Jordania": "jo", "Marruecos": "ma", "México": "mx", 
+        "Noruega": "no", "Nueva Zelanda": "nz", "Países Bajos": "nl", "Panamá": "pa", 
+        "Paraguay": "py", "Portugal": "pt", "RD Congo": "cd", "República Checa": "cz", 
+        "Senegal": "sn", "Sudáfrica": "za", "Suecia": "se", "Suiza": "ch", 
+        "Túnez": "tn", "Turquía": "tr", "Uruguay": "uy", "Uzbekistán": "uz"
+    };
 
     function getBandera(nombre) {
         const code = codigosBanderas[nombre];
