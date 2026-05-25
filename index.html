@@ -1930,7 +1930,7 @@ body{
     background:white;
     padding:10px;
     border-radius:18px;
-    overflow-x:auto;
+    overflow: hidden;
     box-shadow:0 8px 24px rgba(0,0,0,0.08);
     border:1px solid rgba(0,0,0,0.05);
 }
@@ -1947,6 +1947,8 @@ body{
     text-align:center;
     letter-spacing:0.5px;
     margin-bottom:10px;
+    width:100%;
+    box-sizing:border-box;
 }
 
 /* TABLA */
@@ -1974,6 +1976,10 @@ body{
     font-size:0.68rem;
     text-align:center;
     white-space:nowrap;
+}
+
+.group-table-wrapper{
+    overflow-x:auto;
 }
 
 .group-table tr:last-child td{
