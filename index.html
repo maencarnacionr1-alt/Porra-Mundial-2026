@@ -1935,13 +1935,20 @@ body{
     border:1px solid rgba(0,0,0,0.05);
 }
 
+.group-title {
+    font-weight: 800;
+    font-size: 1rem;
+    color: #333;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
 /* TABLA */
 
-.group-table{
-    width:max-content;
-    min-width:100%;
-    border-collapse:collapse;
-    font-size:0.68rem;
+.group-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.68rem;
 }
 
 .group-table th{
@@ -1949,13 +1956,13 @@ body{
     color:#666;
     font-size:0.62rem;
     font-weight:800;
-    padding:5px 3px;
+    padding:8px 4px;
     text-align:center;
     white-space:nowrap;
 }
 
 .group-table td{
-    padding:6px 4px;
+    padding:8px 4px;
     border-bottom:1px solid #eee;
     font-size:0.68rem;
     text-align:center;
@@ -1968,11 +1975,12 @@ body{
 
 /* COLUMNA SELECCIÓN */
 
-.group-team{
-    text-align:left !important;
-    font-weight:700;
-    color:#222;
-    min-width:140px;
+.group-team {
+    text-align: left !important;
+    padding-left: 10px !important;
+    font-weight: 700;
+    color: #222;
+    white-space: nowrap;
 }
 
 /* POSICIÓN */
@@ -3042,12 +3050,10 @@ function renderAllGroups(){
         return `
 
             <div class="group-card">
-                <table class="group-table">
-                    <thead>
-                        <tr class="group-title-row">
-                            <th colspan="9">Grupo ${grupo}</th>
-                        </tr>
-                        <tr>
+        	<div class="group-title">GRUPO ${grupo}</div>
+        	<table class="group-table">
+            	    <thead>
+                	<tr>
                             <th style="text-align:left;padding-left: 20px;">SELECCIÓN</th>
                             <th>PTS</th>
                             <th>J</th>
