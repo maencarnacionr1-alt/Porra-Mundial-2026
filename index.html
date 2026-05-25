@@ -103,6 +103,135 @@ html,body{
     		position: absolute;
 	}
 
+	.only-ranking{
+    	 display:block;
+	}
+        
+	.ranking-table {
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+    border-collapse: collapse;
+}
+
+.ranking-table tbody tr{
+
+    position: relative;
+
+    cursor: pointer;
+
+    transition:
+        background 0.25s ease,
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        border-bottom 0.25s ease;
+
+    border-bottom: 1px solid rgba(0,0,0,0.08);
+}
+
+.ranking-table tbody tr:nth-child(-n+3){
+    position: relative;
+}
+
+.ranking-table tbody tr:nth-child(-n+3) td:first-child{
+    border-left: 4px solid var(--pitch-green);
+}
+
+.ranking-table tbody tr:hover{
+
+    background: linear-gradient(
+        90deg,
+        rgba(46,125,50,0.08),
+        rgba(255,215,0,0.10)
+    );
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 6px 18px rgba(0,0,0,0.08);
+
+    border-bottom: 1px solid rgba(255,215,0,0.45);
+}
+
+
+.ranking-table tbody tr:hover td{
+
+    color: var(--pitch-green);
+
+    transition: color 0.25s ease;
+}
+
+        .ranking-table td{
+
+    padding: 18px 15px;
+
+    font-size: 1.1rem;
+
+    text-align: center;
+
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+
+    transition: color 0.25s ease;
+}
+
+/* ===============================
+   MEJORA VISUAL TABLA RANKING
+   ESTILO APP DEPORTIVA PRO
+================================ */
+
+/* borde general más premium */
+.ranking-table {
+    border: 2px solid rgba(0,0,0,0.08);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+}
+
+/* encabezado más “tarjeta app” */
+.ranking-table thead th {
+    background: white;
+    border-bottom: 2px solid rgba(0,0,0,0.08);
+    position: relative;
+}
+
+/* línea animada debajo del header */
+.ranking-table thead th::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 3px;
+    width: 0%;
+    background: linear-gradient(90deg, var(--gold), var(--pitch-green));
+    transition: width 0.35s ease;
+}
+
+/* activa la línea al hover de la tabla */
+.ranking-table:hover thead th::after {
+    width: 100%;
+}
+
+/* filas más “app deportiva” */
+.ranking-table tbody tr {
+    transition: all 0.25s ease;
+}
+
+/* hover más visible y moderno */
+.ranking-table tbody tr:hover {
+    background: rgba(46,125,50,0.06);
+    transform: scale(1.01);
+}
+
+/* efecto en celdas (más pro) */
+.ranking-table tbody tr:hover td {
+    color: var(--pitch-green);
+    font-weight: 700;
+}
+
+/* separador más limpio */
+.ranking-table td {
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+}
 
 /* ===============================
    MARCO GLOBAL TABLA RANKING
@@ -740,7 +869,8 @@ table {
     margin: 0 auto;
 	border-collapse: collapse;
     background: white;
-    border: 1px solid rgba(0,0,0,0.08);
+    border: 2px solid rgba(0,0,0,0.08);
+    border-radius: 16px;
     position: relative;
     overflow: hidden;
 
@@ -780,8 +910,28 @@ table {
     .teams-table td {
         padding: 10px 8px;
         font-size: 0.8rem;
+	 text-align:center;
     }
 
+    .ranking-table th {
+    padding: 15px;
+    text-align: left;
+    color: #666;
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    border-bottom: 2px solid #eee;
+    letter-spacing: 1px;
+    background: white;
+   }
+
+    .ranking-table th:last-child,
+    .ranking-table td:last-child{
+    text-align:left;
+  }
+   .ranking-table thead{
+    display: table-header-group;
+   }
 
   .btn-registro {
     flex-direction: row !important;
@@ -1043,7 +1193,6 @@ h1{
 .ranking-table th:nth-child(2){
 
     text-align: center;
-	padding-left: 30px;
     font-weight: 700;
 }
 
@@ -1053,15 +1202,14 @@ h1{
     width: 120px;
 
     text-align: left;
-    padding-left: 30px;
+    padding-left: 20px;
     font-weight: 800;
 }
 
 .ranking-table td:nth-child(4),
 .ranking-table th:nth-child(4){
 
-    text-align: left;
-	
+    text-align: center;
 
     font-weight: 800;
 }
