@@ -3035,80 +3035,109 @@ window.showGroups = function () {
 
     updateHistory("groups");
 };
+
 function renderAllGroups(){
 
     const container =
-        document.getElementById("groupsGrid");
+        document.getElementById("groupsContainer");
 
     if(!container) return;
 
-    const letras =
-        [...new Set(groupsData.map(g => g.grupo))]
-        .filter(Boolean)
-        .sort();
+    let html = `
+        <div class="groups-grid">
+    `;
 
-    container.innerHTML = letras.map(grupo => {
+    for(let i = 0; i < 12; i++){
 
-        const equipos =
-            groupsData.filter(r => r.grupo === grupo);
+        const letra =
+            String.fromCharCode(65 + i);
 
-        return `
+        const rows =
+            groupsData.filter(
+                r => r.grupo?.trim() === letra
+            );
+
+        html += `
 
             <div class="group-card">
 
                 <div class="group-header">
-                    GRUPO ${grupo}
+                    GRUPO ${letra}
                 </div>
 
                 <table class="group-table">
 
-<thead>
-    <tr>
-        <th>Pos</th>
-        <th>Selección</th>
-        <th>Pts</th>
-        <th>J</th>
-        <th>G</th>
-        <th>E</th>
-        <th>P</th>
-        <th>GF</th>
-        <th>GC</th>
-        <th>DG</th>
-        <th>Pts Fase</th>
-    </tr>
-</thead>
+                    <thead>
+                        <tr>
+                            <th>Pos</th>
+                            <th>Selección</th>
+                            <th>Pts</th>
+                            <th>J</th>
+                            <th>G</th>
+                            <th>E</th>
+                            <th>P</th>
+                            <th>GF</th>
+                            <th>GC</th>
+                            <th>DG</th>
+                            <th>Pts Fase</th>
+                        </tr>
+                    </thead>
 
                     <tbody>
 
-                        ${equipos.map((r,index)=>`
+                        ${rows.map(r => {
 
-                            <tr class="
-                                ${index===0 ? "group-first" : ""}
-                                ${index===1 ? "group-second" : ""}
-                                ${index===2 ? "group-third" : ""}
-                                ${index===3 ? "group-fourth" : ""}
-                            ">
+                            let rowClass = "";
 
-                                <td>${r.pos}</td>
+                            if(r.pos == "1"){
+                                rowClass = "group-first";
+                            }
+                            else if(r.pos == "2"){
+                                rowClass = "group-second";
+                            }
+                            else if(r.pos == "3"){
+                                rowClass = "group-third";
+                            }
+                            else{
+                                rowClass = "group-fourth";
+                            }
 
-                                <td class="group-team">
-                                    ${getBandera(r.seleccion)}
-                                    ${r.seleccion}
-                                </td>
+                            return `
 
-                                <td>${r.pts}</td>
-                                td>${r.j}</td>
-            			<td>${r.g}</td>
-            			<td>${r.e}</td>
-           	 		<td>${r.p}</td>
-            			<td>${r.gf}</td>
-            			<td>${r.gc}</td>
-            			<td>${r.dg}</td>
-            			<td>${r.pts_fase}</td>
+                                <tr class="${rowClass}">
 
-                            </tr>
+                                    <td class="rank-position">
+                                        ${r.pos || "-"}
+                                    </td>
 
-                        `).join("")}
+                                    <td class="group-team">
+                                        ${getBandera(r.seleccion)}
+                                        ${r.seleccion || "-"}
+                                    </td>
+
+                                    <td>${r.pts || "0"}</td>
+
+                                    <td>${r.j || "0"}</td>
+
+                                    <td>${r.g || "0"}</td>
+
+                                    <td>${r.e || "0"}</td>
+
+                                    <td>${r.p || "0"}</td>
+
+                                    <td>${r.gf || "0"}</td>
+
+                                    <td>${r.gc || "0"}</td>
+
+                                    <td>${r.dg || "0"}</td>
+
+                                    <td>${r.pts_fase || "0"}</td>
+
+                                </tr>
+
+                            `;
+
+                        }).join("")}
 
                     </tbody>
 
@@ -3117,8 +3146,13 @@ function renderAllGroups(){
             </div>
 
         `;
-    }).join("");
+    }
+
+    html += `</div>`;
+
+    container.innerHTML = html;
 }
+
 
 // ================= DROPDOWNS =================
 
