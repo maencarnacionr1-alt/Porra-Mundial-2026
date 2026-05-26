@@ -1965,171 +1965,20 @@ body{
     padding:20px;
 }
 
-/* =========================
-   TOP 3 MODERNO
-========================= */
+/* =========================================
+   TOP 3 PODIUM
+========================================= */
 
-.top3-wrapper{
+.top3-podium{
+
     display:flex;
     justify-content:center;
     align-items:flex-end;
-    gap:22px;
-    margin:40px auto 45px auto;
-    flex-wrap:nowrap;
-}
+    gap:24px;
 
-/* ORDEN VISUAL */
-.top-card.rank-1{
-    order:2;
-    transform:translateY(-25px);
-}
+    margin-bottom:40px;
 
-.top-card.rank-2{
-    order:1;
-}
-
-.top-card.rank-3{
-    order:3;
-}
-
-/* TARJETA */
-.top-card{
-    position:relative;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:flex-start;
-    background:#f8fafc;
-    border-radius:30px;
-    padding:26px 22px 22px;
-    min-width:150px;
-    transition:all .25s ease;
-    box-shadow:
-        0 6px 18px rgba(0,0,0,.06);
-}
-
-/* EFECTO HOVER */
-.top-card:hover{
-    transform:translateY(-6px);
-    background:#ffffff;
-    box-shadow:
-        0 10px 30px rgba(46,125,50,.18);
-}
-
-/* GANADOR MÁS GRANDE */
-.top-card.rank-1{
-    min-width:175px;
-    padding-top:34px;
-}
-
-/* AVATAR */
-.top-avatar-wrapper{
-    position:relative;
-    margin-bottom:18px;
-}
-
-.top-avatar{
-    width:95px;
-    height:95px;
-    border-radius:50%;
-    object-fit:cover;
-    border:5px solid white;
-    box-shadow:
-        0 5px 18px rgba(0,0,0,.15);
-    background:#eee;
-}
-
-/* AVATAR MÁS GRANDE */
-.rank-1 .top-avatar{
-    width:115px;
-    height:115px;
-}
-
-/* RANK SUPERPUESTO */
-.top-rank{
-    position:absolute;
-    left:50%;
-    bottom:-10px;
-    transform:translateX(-50%);
-    width:34px;
-    height:34px;
-    border-radius:50%;
-    background:#1b5e20;
-    color:white;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-weight:800;
-    font-size:.95rem;
-    border:3px solid white;
-    box-shadow:
-        0 3px 10px rgba(0,0,0,.15);
-}
-
-/* RANK GANADOR */
-.rank-1 .top-rank{
-    width:42px;
-    height:42px;
-    font-size:1.05rem;
-    background:linear-gradient(
-        135deg,
-        #f9a825,
-        #ffcc00
-    );
-    color:#222;
-}
-
-/* NOMBRE */
-.top-name{
-    margin-top:10px;
-    font-size:1rem;
-    font-weight:800;
-    color:#1f2937;
-    text-align:center;
-    line-height:1.2;
-}
-
-/* PUNTOS */
-.top-points{
-    margin-top:6px;
-    font-size:1.1rem;
-    font-weight:900;
-    color:#2e7d32;
-}
-
-/* MOBILE */
-@media(max-width:768px){
-
-    .top3-wrapper{
-        gap:12px;
-    }
-
-    .top-card{
-        min-width:110px;
-        padding:20px 12px 18px;
-    }
-
-    .top-card.rank-1{
-        min-width:125px;
-    }
-
-    .top-avatar{
-        width:72px;
-        height:72px;
-    }
-
-    .rank-1 .top-avatar{
-        width:88px;
-        height:88px;
-    }
-
-    .top-name{
-        font-size:.9rem;
-    }
-
-    .top-points{
-        font-size:1rem;
-    }
+    flex-wrap:wrap;
 }
 
 /* =========================================
@@ -2603,14 +2452,6 @@ body{
     }
 }
 
-.ranking-list{
-    display:grid;
-    grid-template-columns:
-        repeat(auto-fit,minmax(240px,1fr));
-    gap:18px;
-    margin-top:25px;
-}
-
 //OCULTAR BOTÓN REGISTRO
 
 .btn-registro-container{
@@ -2719,8 +2560,6 @@ body{
         </div>
 
         <!-- TOP 3 -->
-
-
 
         <div id="podiumContainer" class="podium-container">
 
@@ -3274,16 +3113,16 @@ function parseCSV(csv) {
 
 function renderRanking() {
 
-    const podiumContainer =
-    document.getElementById("podiumContainer");
-
-const rankingList =
-    document.getElementById("rankingList");
+    const container =
+        document.getElementById("rankingSection");
 
     const rankingOrdenado = [...data].sort((a, b) => {
 
-        const aTotal = parseFloat(String(a.total).replace(",", ".").trim()) || 0;
-        const bTotal = parseFloat(String(b.total).replace(",", ".").trim()) || 0;
+        const aTotal =
+            parseFloat(String(a.total).replace(",", ".")) || 0;
+
+        const bTotal =
+            parseFloat(String(b.total).replace(",", ".")) || 0;
 
         return bTotal - aTotal;
     });
@@ -3298,161 +3137,145 @@ const rankingList =
     // TOP 3
     // =========================
 
+    const top3 = rankingOrdenado.slice(0, 3);
+
     const top3HTML = `
+    
+    <div class="top3-podium">
 
-        <div class="top3-wrapper">
+        ${top3.map((p, i) => {
 
-            ${rankingOrdenado.slice(0,3).map((p, i) => {
+            const pos = i + 1;
 
-                const nombre = p.name;
+            nuevoRanking[p.name] = pos;
 
-                const nuevaPos = i + 1;
+            let clase = "podium-first";
 
-                const posAnterior = rankingPrevio[nombre];
+            if(pos === 2) clase = "podium-second";
+            if(pos === 3) clase = "podium-third";
 
-                let flecha = "";
+            return `
 
-                if (posAnterior !== undefined) {
+            <div class="podium-card ${clase}"
+                 onclick="openPlayerFromRanking(${data.findIndex(d => d.name === p.name)})">
 
-                    if (nuevaPos < posAnterior)
-                        flecha = `<div class="rank-arrow up">▲</div>`;
+                <img
+                    src="https://i.pravatar.cc/200?img=${pos + 10}"
+                    class="podium-avatar"
+                >
 
-                    else if (nuevaPos > posAnterior)
-                        flecha = `<div class="rank-arrow down">▼</div>`;
+                <div class="podium-name">
+                    ${p.name}
+                </div>
+
+                <div class="podium-points">
+                    ${Number(parseFloat(p.total) || 0)}
+                </div>
+
+                <div class="podium-rank">
+                    #${pos}
+                </div>
+
+            </div>
+
+            `;
+        }).join("")}
+
+    </div>
+    
+    `;
+
+    // =========================
+    // RESTO
+    // =========================
+
+    const resto = rankingOrdenado.slice(3);
+
+    const restoHTML = `
+
+    <div class="ranking-list-modern">
+
+        ${resto.map((p, index) => {
+
+            const posicion = index + 4;
+
+            const realIndex =
+                data.findIndex(d => d.name === p.name);
+
+            const posAnterior =
+                rankingPrevio[p.name];
+
+            let flecha = "";
+
+            if(posAnterior !== undefined){
+
+                if(posicion < posAnterior){
+
+                    flecha =
+                        `<div class="rank-movement" style="color:#4caf50;">▲</div>`;
                 }
 
-                nuevoRanking[nombre] = nuevaPos;
+                else if(posicion > posAnterior){
 
-                const realIndex = data.findIndex(
-                    d => d.name === nombre
-                );
+                    flecha =
+                        `<div class="rank-movement" style="color:#f44336;">▼</div>`;
+                }
+            }
 
-                const puntos = Number(
-                    parseFloat(
-                        String(p.total)
-                        .replace(",", ".")
-                        .trim()
-                    ) || 0
-                );
+            nuevoRanking[p.name] = posicion;
 
-                return `
+            return `
 
-                <div class="top-card rank-${i+1}"
-                     onclick="openPlayerFromRanking(${realIndex})">
+            <div class="ranking-row"
+                 onclick="openPlayerFromRanking(${realIndex})">
 
-                    <div class="top-avatar-wrapper">
+                <div class="rank-position">
 
-                        <img
-                            src="${p.avatar || 'https://i.imgur.com/6VBx3io.png'}"
-                            class="top-avatar"
-                        >
-
-                        <div class="top-rank">
-                            #${i+1}
-                        </div>
-
+                    <div class="rank-number">
+                        #${posicion}
                     </div>
 
                     ${flecha}
 
-                    <div class="top-name">
-                        ${nombre}
-                    </div>
-
-                    <div class="top-points">
-                        ${puntos} pts
-                    </div>
-
                 </div>
 
-                `;
+                <img
+                    src="https://i.pravatar.cc/150?img=${posicion}"
+                    class="ranking-avatar"
+                >
 
-            }).join("")}
+                <div class="ranking-player-name-modern">
+                    ${p.name}
+                </div>
+
+                <div class="ranking-points-modern">
+                    ${Number(parseFloat(p.total) || 0)}
+                </div>
+
+            </div>
+
+            `;
+        }).join("")}
+
+    </div>
+
+    `;
+
+    // =========================
+    // PINTAR TODO
+    // =========================
+
+    container.innerHTML = `
+
+        <div class="ranking-modern-wrapper">
+
+            ${top3HTML}
+
+            ${restoHTML}
 
         </div>
+
     `;
-
-    // =========================
-    // RESTO DEL RANKING
-    // =========================
-
-    const restHTML = `
-
-            ${rankingOrdenado.slice(3).map((p, index) => {
-
-                const posicion = index + 4;
-
-                const nombre = p.name;
-
-                const puntos = Number(
-                    parseFloat(
-                        String(p.total)
-                        .replace(",", ".")
-                        .trim()
-                    ) || 0
-                );
-
-                const posAnterior = rankingPrevio[nombre];
-
-                let flecha = "";
-
-                if (posAnterior !== undefined) {
-
-                    if (posicion < posAnterior)
-                        flecha = `<div class="rank-arrow up">▲</div>`;
-
-                    else if (posicion > posAnterior)
-                        flecha = `<div class="rank-arrow down">▼</div>`;
-                }
-
-                nuevoRanking[nombre] = posicion;
-
-                const realIndex = data.findIndex(
-                    d => d.name === nombre
-                );
-
-                return `
-
-                <div class="ranking-card"
-                     onclick="openPlayerFromRanking(${realIndex})">
-
-                    <div class="ranking-position">
-
-                        <div>
-                            #${posicion}
-                        </div>
-
-                        ${flecha}
-
-                    </div>
-
-                    <img
-                        src="${p.avatar || 'https://i.imgur.com/6VBx3io.png'}"
-                        class="ranking-avatar"
-                    >
-
-                    <div class="ranking-info">
-
-                        <div class="ranking-player-name">
-                            ${nombre}
-                        </div>
-
-                        <div class="ranking-points">
-                            ${puntos} pts
-                        </div>
-
-                    </div>
-
-                </div>
-
-                `;
-
-            }).join("")}
-    `;
-
-    podiumContainer.innerHTML = top3HTML;
-
-    rankingList.innerHTML = restHTML;
 
     localStorage.setItem(
         "rankingPrevio",
