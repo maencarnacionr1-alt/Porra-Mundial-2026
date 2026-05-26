@@ -1954,6 +1954,358 @@ body{
     margin:10px 0 20px 0;
 }
 
+/* =========================================
+   LEADERBOARD PREMIUM
+========================================= */
+
+.leaderboard-container{
+
+    padding:
+        20px 15px 120px 15px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #ffffff 0%,
+            #f5f7f3 100%
+        );
+
+    min-height:100vh;
+}
+
+/* HEADER */
+
+.leaderboard-header{
+
+    text-align:center;
+
+    margin-bottom:30px;
+}
+
+.leaderboard-header h1{
+
+    font-size:2rem;
+
+    margin:0;
+
+    color:var(--soccer-dark);
+
+    font-weight:900;
+}
+
+.leaderboard-header p{
+
+    margin-top:8px;
+
+    color:#777;
+
+    font-size:0.95rem;
+}
+
+/* =========================================
+   PODIUM
+========================================= */
+
+.podium-container{
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:flex-end;
+
+    gap:14px;
+
+    margin-bottom:35px;
+}
+
+.podium-card{
+
+    background:white;
+
+    border-radius:28px;
+
+    padding:20px 15px;
+
+    text-align:center;
+
+    position:relative;
+
+    box-shadow:
+        0 10px 30px rgba(0,0,0,0.08);
+
+    transition:0.3s;
+}
+
+.podium-card:hover{
+
+    transform:translateY(-5px);
+}
+
+/* 1º */
+
+.podium-first{
+
+    width:140px;
+
+    min-height:240px;
+
+    border:
+        3px solid #f5c542;
+}
+
+/* 2º y 3º */
+
+.podium-second,
+.podium-third{
+
+    width:115px;
+
+    min-height:200px;
+}
+
+.podium-second{
+
+    border:
+        3px solid #d9d9d9;
+}
+
+.podium-third{
+
+    border:
+        3px solid #cd7f32;
+}
+
+/* CORONA */
+
+.podium-crown{
+
+    position:absolute;
+
+    top:-18px;
+
+    left:50%;
+
+    transform:translateX(-50%);
+
+    font-size:1.8rem;
+}
+
+/* AVATAR */
+
+.podium-avatar{
+
+    width:78px;
+
+    height:78px;
+
+    border-radius:50%;
+
+    object-fit:cover;
+
+    margin:0 auto 12px auto;
+
+    display:block;
+
+    border:4px solid white;
+
+    box-shadow:
+        0 4px 14px rgba(0,0,0,0.15);
+}
+
+.podium-first .podium-avatar{
+
+    width:92px;
+
+    height:92px;
+}
+
+/* NOMBRE */
+
+.podium-name{
+
+    font-weight:800;
+
+    font-size:1rem;
+
+    color:var(--soccer-dark);
+
+    margin-bottom:8px;
+}
+
+/* PUNTOS */
+
+.podium-points{
+
+    font-size:1.3rem;
+
+    font-weight:900;
+
+    color:var(--pitch-green);
+}
+
+/* POSICIÓN */
+
+.podium-rank{
+
+    margin-top:10px;
+
+    font-size:1rem;
+
+    font-weight:800;
+
+    color:#666;
+}
+
+/* =========================================
+   LISTA RANKING
+========================================= */
+
+.ranking-list{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:14px;
+}
+
+/* CARD */
+
+.ranking-card{
+
+    background:#111827;
+
+    border-radius:22px;
+
+    padding:14px 18px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    color:white;
+
+    box-shadow:
+        0 8px 18px rgba(0,0,0,0.08);
+
+    transition:0.25s;
+}
+
+.ranking-card:hover{
+
+    transform:translateY(-2px);
+}
+
+/* IZQUIERDA */
+
+.ranking-left{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:14px;
+}
+
+/* POSICIÓN */
+
+.ranking-position{
+
+    width:34px;
+
+    text-align:center;
+
+    font-weight:900;
+
+    font-size:1rem;
+}
+
+/* FLECHAS */
+
+.rank-arrow{
+
+    display:block;
+
+    font-size:0.75rem;
+
+    margin-top:2px;
+}
+
+.rank-up{
+
+    color:#00e676;
+}
+
+.rank-down{
+
+    color:#ff5252;
+}
+
+/* AVATAR */
+
+.ranking-avatar{
+
+    width:48px;
+
+    height:48px;
+
+    border-radius:50%;
+
+    object-fit:cover;
+
+    border:2px solid rgba(255,255,255,0.15);
+}
+
+/* NOMBRE */
+
+.ranking-player-name{
+
+    font-weight:700;
+
+    font-size:0.95rem;
+    color:#f3f4f6;
+
+}
+
+/* PUNTOS */
+
+.ranking-points{
+
+    font-size:1-05rem;
+
+    font-weight:900;
+
+    color:#ffffff;
+
+    min-width:55px;
+
+    text-align:right;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:600px){
+
+    .podium-container{
+
+        gap:8px;
+    }
+
+    .podium-first{
+
+        width:125px;
+    }
+
+    .podium-second,
+    .podium-third{
+
+        width:100px;
+    }
+}
+
     </style>
 
 </head>
@@ -2591,72 +2943,191 @@ function parseCSV(csv) {
 
 function renderRanking() {
 
-  const tbody = document.getElementById("rankingBody");
+    const podiumContainer =
+        document.getElementById("podiumContainer");
 
-  const rankingOrdenado = [...data].sort((a, b) => {
+    const rankingList =
+        document.getElementById("rankingList");
 
-    const aTotal = parseFloat(String(a.total).replace(",", ".").trim()) || 0;
-    const bTotal = parseFloat(String(b.total).replace(",", ".").trim()) || 0;
+    if(!podiumContainer || !rankingList) return;
 
-    return bTotal - aTotal;
-  });
+    // ORDENAR
 
-  const rankingPrevio = JSON.parse(
-    localStorage.getItem("rankingPrevio") || "{}"
-  );
+    const rankingOrdenado = [...data].sort((a, b) => {
 
-  const nuevoRanking = {};
+        const aTotal =
+            parseFloat(
+                String(a.total)
+                .replace(",", ".")
+                .trim()
+            ) || 0;
 
-  tbody.innerHTML = rankingOrdenado.map((p, i) => {
-    const nombre = p.name;
-    const nuevaPos = i + 1;
-    const posAnterior = rankingPrevio[nombre];
-    let flecha = "";
-    if (posAnterior !== undefined) {
-        if (nuevaPos < posAnterior) flecha = "up";
-        else if (nuevaPos > posAnterior) flecha = "down";
-    }
+        const bTotal =
+            parseFloat(
+                String(b.total)
+                .replace(",", ".")
+                .trim()
+            ) || 0;
 
-    nuevoRanking[nombre] = nuevaPos;
-    const realIndex = data.findIndex(d => d.name === nombre);
+        return bTotal - aTotal;
+    });
 
-    return `
-      <tr onclick="openPlayerFromRanking(${realIndex})">
-        <td style="text-align: center; width: 60px;">${nuevaPos}</td>
-        
-        <td style="text-align: center; width: 60px;">
-            <img src="https://api.iconify.design/game-icons:soccer-ball.svg" style="width:25px;">
-        </td>
-        
-        <td style="text-align: left; padding-left: 10px;">
-            <span class="ranking-player-name">${nombre}</span>
-        </td>
-        
-        <td style="text-align: right; padding-right: 10px; font-weight: bold;">
-            ${Number(parseFloat(String(p.total).replace(",", ".").trim()) || 0)}
-        </td>
-      </tr>
-    `;
-}).join("");
+    // POSICIONES PREVIAS
 
-  localStorage.setItem("rankingPrevio", JSON.stringify(nuevoRanking));
-}
+    const rankingPrevio = JSON.parse(
+        localStorage.getItem("rankingPrevio") || "{}"
+    );
 
-function resetPredictionsView(){
+    const nuevoRanking = {};
 
-    const select =
-        document.getElementById("playerSelect");
+    // =====================================
+    // TOP 3
+    // =====================================
 
-    const container =
-        document.getElementById("predictionsGlobalView");
+    const top3 = rankingOrdenado.slice(0,3);
 
-    if(select){
-        select.value = "";
-    }
+    const podiumOrder = [
+        top3[1],
+        top3[0],
+        top3[2]
+    ];
 
-    if(container){
-        container.innerHTML = "";
-    }
+    podiumContainer.innerHTML = podiumOrder.map((p, visualIndex) => {
+
+        if(!p) return "";
+
+        const realPos =
+            rankingOrdenado.indexOf(p) + 1;
+
+        let className = "";
+
+        if(realPos === 1)
+            className = "podium-first";
+
+        else if(realPos === 2)
+            className = "podium-second";
+
+        else
+            className = "podium-third";
+
+        const avatar =
+            p.avatar ||
+            "https://i.pravatar.cc/150?img=12";
+
+        return `
+
+            <div
+                class="podium-card ${className}"
+                onclick="openPlayerFromRanking(${data.findIndex(d => d.name === p.name)})"
+            >
+
+                ${realPos === 1
+                    ? `<div class="podium-crown">👑</div>`
+                    : ""
+                }
+
+                <img
+                    src="${avatar}"
+                    class="podium-avatar"
+                >
+
+                <div class="podium-name">
+                    ${p.name}
+                </div>
+
+                <div class="podium-points">
+                    ${p.total}
+                </div>
+
+                <div class="podium-rank">
+                    #${realPos}
+                </div>
+
+            </div>
+
+        `;
+    }).join("");
+
+    // =====================================
+    // RESTO RANKING
+    // =====================================
+
+    const resto =
+        rankingOrdenado.slice(3);
+
+    rankingList.innerHTML = resto.map((p, i) => {
+
+        const pos = i + 4;
+
+        const posAnterior =
+            rankingPrevio[p.name];
+
+        let arrowHTML = "";
+
+        if(posAnterior !== undefined){
+
+            if(pos < posAnterior){
+
+                arrowHTML =
+                    `<span class="rank-arrow rank-up">▲</span>`;
+            }
+
+            else if(pos > posAnterior){
+
+                arrowHTML =
+                    `<span class="rank-arrow rank-down">▼</span>`;
+            }
+        }
+
+        nuevoRanking[p.name] = pos;
+
+        const avatar =
+            p.avatar ||
+            "https://i.pravatar.cc/150?img=12";
+
+        return `
+
+            <div
+                class="ranking-card"
+                onclick="openPlayerFromRanking(${data.findIndex(d => d.name === p.name)})"
+            >
+
+                <div class="ranking-left">
+
+                    <div class="ranking-position">
+
+                        #${pos}
+
+                        ${arrowHTML}
+
+                    </div>
+
+                    <img
+                        src="${avatar}"
+                        class="ranking-avatar"
+                    >
+
+                    <div class="ranking-player-name">
+                        ${p.name}
+                    </div>
+
+                </div>
+
+                <div class="ranking-points">
+
+                    ${p.total}
+
+                </div>
+
+            </div>
+
+        `;
+    }).join("");
+
+    localStorage.setItem(
+        "rankingPrevio",
+        JSON.stringify(nuevoRanking)
+    );
 }
 
 // ================= VISTAS =================
