@@ -2146,44 +2146,41 @@ body{
     }
 }
 
-/* =========================================
-   TOP 8 NUEVO DISEÑO
-========================================= */
+/* =========================
+   TOP 8 NUEVO
+========================= */
 
 .prediction-top8-grid{
 
     display:grid;
-
-    grid-template-columns:
-        repeat(2, 1fr);
-
-    gap:12px;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
 }
 
 .prediction-top-card{
 
-    background:
-        linear-gradient(
-            135deg,
-            #ffffff,
-            #f7f7f7
-        );
+    background:linear-gradient(
+        135deg,
+        #ffffff,
+        #f5f7f5
+    );
 
-    border-radius:18px;
+    border-radius:20px;
 
-    padding:14px;
-
-    border:
-        2px solid rgba(27,94,32,0.08);
+    padding:16px;
 
     display:flex;
-    align-items:center;
-    gap:12px;
 
-    transition:0.25s;
+    align-items:center;
+
+    gap:14px;
+
+    border:1px solid rgba(0,0,0,0.05);
 
     box-shadow:
-        0 4px 12px rgba(0,0,0,0.05);
+        0 4px 12px rgba(0,0,0,0.04);
+
+    transition:0.2s;
 }
 
 .prediction-top-card:hover{
@@ -2196,8 +2193,8 @@ body{
 
 .prediction-top-rank{
 
-    min-width:38px;
-    height:38px;
+    width:42px;
+    height:42px;
 
     border-radius:50%;
 
@@ -2205,34 +2202,53 @@ body{
 
     color:white;
 
+    font-weight:800;
+
     display:flex;
+
     align-items:center;
+
     justify-content:center;
 
-    font-weight:800;
-    font-size:0.95rem;
-
     flex-shrink:0;
+
+    font-size:0.9rem;
 }
 
 .prediction-top-team{
 
     display:flex;
+
     align-items:center;
+
     gap:10px;
 
     font-weight:700;
+
     color:var(--soccer-dark);
 
-    font-size:0.95rem;
+    font-size:0.96rem;
 }
 
-@media(max-width:600px){
+.prediction-top-team img{
+
+    width:28px !important;
+    height:28px !important;
+
+    border-radius:50%;
+
+    object-fit:cover;
+
+    border:1px solid rgba(0,0,0,0.08);
+}
+
+@media(max-width:768px){
 
     .prediction-top8-grid{
 
         grid-template-columns:1fr;
     }
+
 }
 
     </style>
@@ -3095,41 +3111,42 @@ window.openPlayerFromRanking = function(i){
 
 function renderPredictionsByPlayer(p) {
 
-  const c = document.getElementById("predictionsGlobalView");
+    const c = document.getElementById("predictionsGlobalView");
 
-  c.innerHTML = `
-    <div class="fase-container">
+    c.innerHTML = `
 
-      <!-- ================= TOP 8 ================= -->
+    <div class="predictions-wrapper">
 
-<div class="prediction-block">
+        <!-- TOP 8 -->
 
-    <div class="prediction-title">
-        🏆 TOP 8 FAVORITOS
-    </div>
+        <div class="prediction-block">
 
-    <div class="prediction-top8-grid">
-
-        ${Array.from({ length: 8 }, (_, i) => `
-
-            <div class="prediction-top-card">
-
-                <div class="prediction-top-rank">
-                    ${i + 1}º
-                </div>
-
-                <div class="prediction-top-team">
-                    ${getBandera(p[`equipo ${i + 1}`] || "")}
-                    <span>
-                        ${p[`equipo ${i + 1}`] || "-"}
-                    </span>
-                </div>
-
+            <div class="prediction-title">
+                🏆 TOP 8 FAVORITOS
             </div>
 
-        `).join("")}
+            <div class="prediction-top8-grid">
 
-    
+                ${Array.from({ length: 8 }, (_, i) => `
+
+                    <div class="prediction-top-card">
+
+                        <div class="prediction-top-rank">
+                            ${i + 1}º
+                        </div>
+
+                        <div class="prediction-top-team">
+                            ${getBandera(p[`equipo ${i + 1}`] || "")}
+
+                            <span>
+                                ${p[`equipo ${i + 1}`] || "-"}
+                            </span>
+                        </div>
+
+                    </div>
+
+                `).join("")}
+
             </div>
 
         </div>
