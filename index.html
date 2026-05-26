@@ -2958,36 +2958,19 @@ function parseCSV(csv) {
 
 function renderRanking() {
 
-    const podiumContainer =
-        document.getElementById("podiumContainer");
-
-    const rankingList =
-        document.getElementById("rankingList");
-
-    if(!podiumContainer || !rankingList) return;
-
-    // ORDENAR
+    const container =
+        document.getElementById("rankingSection");
 
     const rankingOrdenado = [...data].sort((a, b) => {
 
         const aTotal =
-            parseFloat(
-                String(a.total)
-                .replace(",", ".")
-                .trim()
-            ) || 0;
+            parseFloat(String(a.total).replace(",", ".")) || 0;
 
         const bTotal =
-            parseFloat(
-                String(b.total)
-                .replace(",", ".")
-                .trim()
-            ) || 0;
+            parseFloat(String(b.total).replace(",", ".")) || 0;
 
         return bTotal - aTotal;
     });
-
-    // POSICIONES PREVIAS
 
     const rankingPrevio = JSON.parse(
         localStorage.getItem("rankingPrevio") || "{}"
@@ -2995,54 +2978,34 @@ function renderRanking() {
 
     const nuevoRanking = {};
 
-    // =====================================
+    // =========================
     // TOP 3
-    // =====================================
+    // =========================
 
-    const top3 = rankingOrdenado.slice(0,3);
+    const top3 = rankingOrdenado.slice(0, 3);
 
-    const podiumOrder = [
-        top3[1],
-        top3[0],
-        top3[2]
-    ];
+    const top3HTML = `
+    
+    <div class="top3-podium">
 
-    podiumContainer.innerHTML = podiumOrder.map((p, visualIndex) => {
+        ${top3.map((p, i) => {
 
-        if(!p) return "";
+            const pos = i + 1;
 
-        const realPos =
-            rankingOrdenado.indexOf(p) + 1;
+            nuevoRanking[p.name] = pos;
 
-        let className = "";
+            let clase = "podium-first";
 
-        if(realPos === 1)
-            className = "podium-first";
+            if(pos === 2) clase = "podium-second";
+            if(pos === 3) clase = "podium-third";
 
-        else if(realPos === 2)
-            className = "podium-second";
+            return `
 
-        else
-            className = "podium-third";
-
-        const avatar =
-            p.avatar ||
-            "https://i.pravatar.cc/150?img=12";
-
-        return `
-
-            <div
-                class="podium-card ${className}"
-                onclick="openPlayerFromRanking(${data.findIndex(d => d.name === p.name)})"
-            >
-
-                ${realPos === 1
-                    ? `<div class="podium-crown">👑</div>`
-                    : ""
-                }
+            <div class="podium-card ${clase}"
+                 onclick="openPlayerFromRanking(${data.findIndex(d => d.name === p.name)})">
 
                 <img
-                    src="${avatar}"
+                    src="https://i.pravatar.cc/200?img=${pos + 10}"
                     class="podium-avatar"
                 >
 
@@ -3051,93 +3014,113 @@ function renderRanking() {
                 </div>
 
                 <div class="podium-points">
-                    ${p.total}
+                    ${Number(parseFloat(p.total) || 0)}
                 </div>
 
                 <div class="podium-rank">
-                    #${realPos}
+                    #${pos}
                 </div>
 
             </div>
 
-        `;
-    }).join("");
+            `;
+        }).join("")}
 
-    // =====================================
-    // RESTO RANKING
-    // =====================================
+    </div>
+    
+    `;
 
-    const resto =
-        rankingOrdenado.slice(3);
+    // =========================
+    // RESTO
+    // =========================
 
-    rankingList.innerHTML = resto.map((p, i) => {
+    const resto = rankingOrdenado.slice(3);
 
-        const pos = i + 4;
+    const restoHTML = `
 
-        const posAnterior =
-            rankingPrevio[p.name];
+    <div class="ranking-list-modern">
 
-        let arrowHTML = "";
+        ${resto.map((p, index) => {
 
-        if(posAnterior !== undefined){
+            const posicion = index + 4;
 
-            if(pos < posAnterior){
+            const realIndex =
+                data.findIndex(d => d.name === p.name);
 
-                arrowHTML =
-                    `<span class="rank-arrow rank-up">▲</span>`;
+            const posAnterior =
+                rankingPrevio[p.name];
+
+            let flecha = "";
+
+            if(posAnterior !== undefined){
+
+                if(posicion < posAnterior){
+
+                    flecha =
+                        `<div class="rank-movement" style="color:#4caf50;">▲</div>`;
+                }
+
+                else if(posicion > posAnterior){
+
+                    flecha =
+                        `<div class="rank-movement" style="color:#f44336;">▼</div>`;
+                }
             }
 
-            else if(pos > posAnterior){
+            nuevoRanking[p.name] = posicion;
 
-                arrowHTML =
-                    `<span class="rank-arrow rank-down">▼</span>`;
-            }
-        }
+            return `
 
-        nuevoRanking[p.name] = pos;
+            <div class="ranking-row"
+                 onclick="openPlayerFromRanking(${realIndex})">
 
-        const avatar =
-            p.avatar ||
-            "https://i.pravatar.cc/150?img=12";
+                <div class="rank-position">
 
-        return `
-
-            <div
-                class="ranking-card"
-                onclick="openPlayerFromRanking(${data.findIndex(d => d.name === p.name)})"
-            >
-
-                <div class="ranking-left">
-
-                    <div class="ranking-position">
-
-                        #${pos}
-
-                        ${arrowHTML}
-
+                    <div class="rank-number">
+                        #${posicion}
                     </div>
 
-                    <img
-                        src="${avatar}"
-                        class="ranking-avatar"
-                    >
-
-                    <div class="ranking-player-name">
-                        ${p.name}
-                    </div>
+                    ${flecha}
 
                 </div>
 
-                <div class="ranking-points">
+                <img
+                    src="https://i.pravatar.cc/150?img=${posicion}"
+                    class="ranking-avatar"
+                >
 
-                    ${p.total}
+                <div class="ranking-player-name-modern">
+                    ${p.name}
+                </div>
 
+                <div class="ranking-points-modern">
+                    ${Number(parseFloat(p.total) || 0)}
                 </div>
 
             </div>
 
-        `;
-    }).join("");
+            `;
+        }).join("")}
+
+    </div>
+
+    `;
+
+    // =========================
+    // PINTAR TODO
+    // =========================
+
+    container.innerHTML = `
+
+        <div class="ranking-modern-wrapper">
+
+            ${top3HTML}
+
+            ${restoHTML}
+
+        </div>
+
+    `;
 
     localStorage.setItem(
         "rankingPrevio",
