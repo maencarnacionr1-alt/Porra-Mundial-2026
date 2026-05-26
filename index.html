@@ -1969,6 +1969,18 @@ body{
    TOP 3
 ========================================= */
 
+.podium-first{
+    order: 2;
+}
+
+.podium-second{
+    order: 1;
+}
+
+.podium-third{
+    order: 3;
+}
+
 .top3-podium{
     display:flex;
     justify-content:center;
@@ -2289,6 +2301,17 @@ body{
         flex-wrap:nowrap;          /* evita salto */
         gap:8px;
         align-items:flex-end;
+	justify-content:center;
+    }
+
+/* mantenemos el orden pero afinamos tamaño */
+    .podium-first{ order:2; }
+    .podium-second{ order:1; }
+    .podium-third{ order:3; }
+
+    /* opcional: destacar el oro */
+    .podium-first{
+        transform:translateY(-8px);
     }
 
     .podium-card{
