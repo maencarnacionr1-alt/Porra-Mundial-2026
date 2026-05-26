@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Mundial Adquira 2026</title>
-    <link rel="preconnect" href="https://fonts.googFleapis.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=Black+Ops+One&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
@@ -107,7 +107,133 @@ html,body{
 	.only-ranking{
     	 display:block;
 	}
- 
+        
+	.ranking-table {
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+    border-collapse: collapse;
+}
+
+.ranking-table tbody tr{
+
+    position: relative;
+
+    cursor: pointer;
+
+    transition:
+        background 0.25s ease,
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        border-bottom 0.25s ease;
+
+    border-bottom: 1px solid rgba(0,0,0,0.08);
+}
+
+.ranking-table tbody tr:nth-child(-n+3){
+    position: relative;
+}
+
+.ranking-table tbody tr:nth-child(-n+3) td:first-child{
+    border-left: 4px solid var(--pitch-green);
+}
+
+.ranking-table tbody tr:hover{
+
+    background: linear-gradient(
+        90deg,
+        rgba(46,125,50,0.08),
+        rgba(255,215,0,0.10)
+    );
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 6px 18px rgba(0,0,0,0.08);
+
+    border-bottom: 1px solid rgba(255,215,0,0.45);
+}
+
+
+.ranking-table tbody tr:hover td{
+
+    color: var(--pitch-green);
+
+    transition: color 0.25s ease;
+}
+
+        .ranking-table td{
+
+    padding: 18px 15px;
+
+    font-size: 1.1rem;
+
+    text-align: center;
+
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+
+    transition: color 0.25s ease;
+}
+
+/* ===============================
+   MEJORA VISUAL TABLA RANKING
+   ESTILO APP DEPORTIVA PRO
+================================ */
+
+/* borde general más premium */
+.ranking-table {
+    border: 2px solid rgba(0,0,0,0.08);
+    border-radius: 16px;
+    overflow: visible;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+}
+
+/* encabezado más “tarjeta app” */
+.ranking-table thead th {
+    background: white;
+    border-bottom: 2px solid rgba(0,0,0,0.08);
+    position: relative;
+}
+
+/* línea animada debajo del header */
+.ranking-table thead th::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 3px;
+    width: 0%;
+    background: linear-gradient(90deg, var(--gold), var(--pitch-green));
+    transition: width 0.35s ease;
+}
+
+/* activa la línea al hover de la tabla */
+.ranking-table:hover thead th::after {
+    width: 100%;
+}
+
+/* filas más “app deportiva” */
+.ranking-table tbody tr {
+    transition: all 0.25s ease;
+}
+
+/* hover más visible y moderno */
+.ranking-table tbody tr:hover {
+    background: rgba(46,125,50,0.06);
+    transform: scale(1.01);
+}
+
+/* efecto en celdas (más pro) */
+.ranking-table tbody tr:hover td {
+    color: var(--pitch-green);
+    font-weight: 700;
+}
+
+/* separador más limpio */
+.ranking-table td {
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+}
+
 /* ===============================
    MARCO GLOBAL TABLA RANKING
    (ESTILO APP DEPORTIVA)
@@ -122,52 +248,79 @@ html,body{
 
         #playerNameBig {
             font-family: 'Black Ops One', cursive;
-            font-size: 1.6rem;
-	    font-weight:900;
-            color:var(--soccer-dark);
+            font-size: 4.5rem;
+            color: var(--pitch-green);
             text-align: center;
-            margin: 10px 0 50px 0;
+            margin: 10px 0 30px 0;
             text-transform: uppercase;
-            letter-spacing: 5px;
+            letter-spacing: 2px;
             background: linear-gradient(to bottom, var(--pitch-green), var(--grass-vibrant));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-.stats-row{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:12px;
-    margin:20px 0 25px 0;
-}
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            margin-bottom: 50px;
+        }
 
-.stat-card{
-    background:white;
-    border-radius:18px;
-    padding:14px 10px;
-    text-align:center;
-    box-shadow:0 4px 14px rgba(0,0,0,0.06);
-    border:1px solid rgba(0,0,0,0.05);
-}
+        .stat-card {
+            background: var(--soccer-dark);
+            color: white;
+            padding: 25px;
+            border-radius: 20px;
+            text-align: center;
+            border-bottom: 6px solid var(--gold);
+        }
 
-.stat-card label{
-    display:block;
-    font-size:0.78rem;
-    color:#666;
-    margin-bottom:6px;
-    font-weight:700;
-    text-transform:uppercase;
-    letter-spacing:.5px;
-}
+        .stat-card label {
+            display: block;
+            font-size: 0.75rem;
+            color: var(--gold);
+            text-transform: uppercase;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
 
-.stat-card span{
-    font-size:1.4rem;
-    font-weight:800;
-    color:var(--soccer-dark);
-}
+        .stat-card span {
+            font-size: 2.5rem;
+            font-weight: 800;
+        }
 
 
-        
+        .teams-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #fff;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .teams-table th {
+            background: #f8f9fa;
+            color: #444;
+            padding: 15px;
+            font-weight: 800;
+            font-size: 0.75rem;
+            border-bottom: 2px solid #eee;
+        }
+
+        .teams-table td {
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid #f0f0f0;
+            font-weight: 600;
+        }
+
+
+        .points-final {
+            font-weight: 800;
+            color: var(--pitch-green);
+            font-size: 1.1rem;
+        }
+
 	.btn-registro-container{
     		width:100%;
 
@@ -284,7 +437,7 @@ html,body{
     		position: fixed;
     		top: 0;
     		left: 0;
-		    right: 0;
+		right: 0;
     		width: 100%;
     		max-width: 1100px;
     		z-index: 9999;
@@ -1008,6 +1161,66 @@ h1{
 
 }
 
+.ranking-table th,
+.ranking-table td{
+    text-align:center;
+}
+
+/* ==================================
+   ALINEACIÓN PROFESIONAL RANKING
+================================== */
+
+.ranking-table td:nth-child(1),
+.ranking-table th:nth-child(1){
+
+    width: 90px;
+
+    text-align: center;
+
+    font-weight: 800;
+}
+
+.ranking-table td:nth-child(2),
+.ranking-table th:nth-child(2){
+
+    text-align: center;
+    font-weight: 700;
+}
+
+.ranking-table td:nth-child(3),
+.ranking-table th:nth-child(3){
+
+    width: 120px;
+
+    text-align: left;
+    padding-left: 20px;
+    font-weight: 800;
+}
+
+.ranking-table td:nth-child(4),
+.ranking-table th:nth-child(4){
+
+    text-align: center;
+
+    font-weight: 800;
+}
+.player-name{
+
+    white-space: nowrap;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+}
+
+.ranking-table thead th{
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: white;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
 /* ===============================
    SELECT COMPLETADO
 ================================ */
@@ -1090,7 +1303,6 @@ h1{
 .menu-toggle{
 
     position:absolute;
-	background: transparent !important;
 
     left:20px;
     top:20px;
@@ -1101,6 +1313,7 @@ h1{
     border:none;
     border-radius:14px;
 
+    background: rgba(18,18,18,0.92);
 
     color:white;
 
@@ -1528,6 +1741,9 @@ body{
 	padding: 12px 8px;
 }
 
+.ranking-table td:nth-child(2){
+    padding-left: 0;
+}
 
 .teams-table tbody tr {
     transition: all 0.2s ease;
@@ -1583,7 +1799,7 @@ body{
 .ranking-player-wrapper{
 
     display:flex;
-    align-items:flex;
+    align-items:center;
     gap:10px;
 	justify-content:flex-start;
 	height: 100%;
@@ -1642,6 +1858,61 @@ body{
     white-space:nowrap;
     overflow:hidden;
     text-overflow:ellipsis;
+}
+
+/* ==================================
+   TOP 3 PREMIUM
+================================== */
+
+.ranking-table tbody tr:nth-child(1){
+
+    background:
+      linear-gradient(
+        90deg,
+        rgba(255,215,0,0.12),
+        rgba(255,255,255,1)
+      );
+
+    border-left:
+      5px solid #FFD700;
+}
+
+.ranking-table tbody tr:nth-child(2){
+
+    background:
+      linear-gradient(
+        90deg,
+        rgba(189,189,189,0.14),
+        rgba(255,255,255,1)
+      );
+
+    border-left:
+      5px solid #C0C0C0;
+}
+
+.ranking-table tbody tr:nth-child(3){
+
+    background:
+      linear-gradient(
+        90deg,
+        rgba(205,127,50,0.14),
+        rgba(255,255,255,1)
+      );
+
+    border-left:
+      5px solid #CD7F32;
+}
+
+.rank-avatar-cell{
+
+    width:64px;
+
+    text-align:center;
+}
+
+.rank-player-name{
+
+    font-weight:700;
 }
 
 /* ==============================
@@ -1738,220 +2009,350 @@ body{
     opacity:0.75;
 }
 
-.player-card-container{
-    background:white;
-    border-radius:25px;
-    padding:18px;
-    box-shadow:0 8px 30px rgba(0,0,0,0.06);
-    margin-top:15px;
+/* =========================================
+   LEADERBOARD PREMIUM
+========================================= */
+
+.leaderboard-container{
+
+    padding:
+        20px 15px 120px 15px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #ffffff 0%,
+            #f5f7f3 100%
+        );
+
+    min-height:100vh;
 }
 
-@media(max-width:768px){
+/* HEADER */
 
-    .stats-row{
+.leaderboard-header{
+
+    text-align:center;
+
+    margin-bottom:30px;
+}
+
+.leaderboard-header h1{
+
+    font-size:2rem;
+
+    margin:0;
+
+    color:var(--soccer-dark);
+
+    font-weight:900;
+}
+
+.leaderboard-header p{
+
+    margin-top:8px;
+
+    color:#777;
+
+    font-size:0.95rem;
+}
+
+/* =========================================
+   PODIUM
+========================================= */
+
+.podium-container{
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:flex-end;
+
+    gap:14px;
+
+    margin-bottom:35px;
+}
+
+.podium-card{
+
+    background:white;
+
+    border-radius:28px;
+
+    padding:20px 15px;
+
+    text-align:center;
+
+    position:relative;
+
+    box-shadow:
+        0 10px 30px rgba(0,0,0,0.08);
+
+    transition:0.3s;
+}
+
+.podium-card:hover{
+
+    transform:translateY(-5px);
+}
+
+/* 1º */
+
+.podium-first{
+
+    width:140px;
+
+    min-height:240px;
+
+    border:
+        3px solid #f5c542;
+}
+
+/* 2º y 3º */
+
+.podium-second,
+.podium-third{
+
+    width:115px;
+
+    min-height:200px;
+}
+
+.podium-second{
+
+    border:
+        3px solid #d9d9d9;
+}
+
+.podium-third{
+
+    border:
+        3px solid #cd7f32;
+}
+
+/* CORONA */
+
+.podium-crown{
+
+    position:absolute;
+
+    top:-18px;
+
+    left:50%;
+
+    transform:translateX(-50%);
+
+    font-size:1.8rem;
+}
+
+/* AVATAR */
+
+.podium-avatar{
+
+    width:78px;
+
+    height:78px;
+
+    border-radius:50%;
+
+    object-fit:cover;
+
+    margin:0 auto 12px auto;
+
+    display:block;
+
+    border:4px solid white;
+
+    box-shadow:
+        0 4px 14px rgba(0,0,0,0.15);
+}
+
+.podium-first .podium-avatar{
+
+    width:92px;
+
+    height:92px;
+}
+
+/* NOMBRE */
+
+.podium-name{
+
+    font-weight:800;
+
+    font-size:1rem;
+
+    color:var(--soccer-dark);
+
+    margin-bottom:8px;
+}
+
+/* PUNTOS */
+
+.podium-points{
+
+    font-size:1.3rem;
+
+    font-weight:900;
+
+    color:var(--pitch-green);
+}
+
+/* POSICIÓN */
+
+.podium-rank{
+
+    margin-top:10px;
+
+    font-size:1rem;
+
+    font-weight:800;
+
+    color:#666;
+}
+
+/* =========================================
+   LISTA RANKING
+========================================= */
+
+.ranking-list{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:14px;
+}
+
+/* CARD */
+
+.ranking-card{
+
+    background:#111827;
+
+    border-radius:22px;
+
+    padding:14px 18px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    color:white;
+
+    box-shadow:
+        0 8px 18px rgba(0,0,0,0.08);
+
+    transition:0.25s;
+}
+
+.ranking-card:hover{
+
+    transform:translateY(-2px);
+}
+
+/* IZQUIERDA */
+
+.ranking-left{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:14px;
+}
+
+/* POSICIÓN */
+
+.ranking-position{
+
+    width:34px;
+
+    text-align:center;
+
+    font-weight:900;
+
+    font-size:1rem;
+}
+
+/* FLECHAS */
+
+.rank-arrow{
+
+    display:block;
+
+    font-size:0.75rem;
+
+    margin-top:2px;
+}
+
+.rank-up{
+
+    color:#00e676;
+}
+
+.rank-down{
+
+    color:#ff5252;
+}
+
+/* AVATAR */
+
+.ranking-avatar{
+
+    width:48px;
+
+    height:48px;
+
+    border-radius:50%;
+
+    object-fit:cover;
+
+    border:2px solid rgba(255,255,255,0.15);
+}
+
+/* NOMBRE */
+
+.ranking-player-name{
+
+    font-weight:700;
+
+    font-size:0.95rem;
+}
+
+/* PUNTOS */
+
+.ranking-points{
+
+    font-size:1rem;
+
+    font-weight:900;
+
+    color:white;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:600px){
+
+    .podium-container{
+
         gap:8px;
     }
 
-    .stat-card{
-        padding:10px 6px;
-        border-radius:14px;
+    .podium-first{
+
+        width:125px;
     }
 
-    .stat-card span{
-        font-size:1.1rem;
+    .podium-second,
+    .podium-third{
+
+        width:100px;
     }
-
-    .stat-card label{
-        font-size:0.65rem;
-    }
-
-    .teams-table td,
-    .teams-table th{
-        font-size:0.68rem;
-        padding:8px 4px;
-    }
-
-    #playerNameBig{
-        font-size:1.3rem;
-    }
-}
-
-.predictions-app {
-    display: flex;
-    flex-direction: column;
-    gap: 22px;
-}
-
-.prediction-card {
-    background: white;
-    border-radius: 22px;
-    padding: 22px;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
-}
-
-.prediction-section-title {
-    font-size: 1.15rem;
-    font-weight: 800;
-    color: var(--pitch-green);
-    margin-bottom: 18px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.top8-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-}
-
-.top8-team {
-    background: #f7f7f7;
-    border-radius: 16px;
-    padding: 14px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-weight: 700;
-}
-
-.top8-rank-badge {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    background: var(--pitch-green);
-    color: white;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:0.9rem;
-    font-weight:800;
-    flex-shrink:0;
-}
-
-.groups-grid-predictions {
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:14px;
-}
-
-.group-mini-card {
-    background:#fafafa;
-    border-radius:16px;
-    padding:14px;
-    border:1px solid #ececec;
-}
-
-.group-mini-title {
-    font-weight:800;
-    color:var(--pitch-green);
-    margin-bottom:10px;
-}
-
-.group-team-line {
-    display:flex;
-    align-items:center;
-    gap:8px;
-    padding:6px 0;
-    font-weight:600;
-    min-width: 18px;
-    display:inline-block;
-    color: var(--pitch-green);
-}
-
-.prediction-pill {
-    background: #f5f5f5;
-    border-radius: 14px;
-    padding: 14px;
-    display:flex;
-    align-items:center;
-    gap:10px;
-    font-weight:700;
-    margin-bottom:10px;
-}
-
-.knockout-grid {
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:12px;
-}
-
-.knockout-team {
-    background:white;
-    border:2px solid #f1f1f1;
-    border-radius:16px;
-    padding:14px;
-    display:flex;
-    align-items:center;
-    gap:10px;
-    font-weight:700;
-}
-
-.podium-grid {
-    display:grid;
-    grid-template-columns:1fr;
-    gap:14px;
-}
-
-.podium-card {
-    border-radius:18px;
-    padding:18px;
-    color:white;
-    font-weight:800;
-    display:flex;
-    align-items:center;
-    gap:14px;
-    font-size:1.05rem;
-}
-
-.gold {
-    background: linear-gradient(135deg,#caa100,#f7d54a);
-}
-
-.silver {
-    background: linear-gradient(135deg,#7e7e7e,#cfcfcf);
-}
-
-.bronze {
-    background: linear-gradient(135deg,#8a4b08,#c57b39);
-}
-
-.stage-label {
-    font-size:0.8rem;
-    opacity:0.9;
-}
-
-@media(max-width:768px){
-
-    .top8-grid,
-    .groups-grid-predictions,
-    .knockout-grid{
-        grid-template-columns:1fr;
-    }
-}
-
-/* =========================
-   DIVISORES DE CATEGORÍAS
-========================= */
-
-.pred-section-divider{
-    width:100%;
-    height:2px;
-    background:linear-gradient(
-        90deg,
-        transparent,
-        #fbc02d,
-        transparent
-    );
-    margin:8px 0 18px 0;
-    border-radius:999px;
-}
-
-.pred-section-divider{
-    width:100%;
-    height:1px;
-    background:rgba(251,192,45,0.5);
-    margin:10px 0 20px 0;
 }
 
     </style>
@@ -2041,16 +2442,34 @@ body{
 
    <div id="rankingSection" class="view-section">
 
-    <table class="ranking-table">
-        <tbody id="rankingBody">
-            <tr>
-                <td colspan="4" style="text-align:center;">
-                    Cargando datos del mundial...
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    
+    <div class="leaderboard-container">
+
+        <!-- HEADER -->
+
+        <div class="leaderboard-header">
+
+            <h1>🏆 RANKING GENERAL</h1>
+
+            <p>
+                Actualizado en tiempo real
+            </p>
+
+        </div>
+
+        <!-- TOP 3 -->
+
+        <div id="podiumContainer" class="podium-container">
+
+        </div>
+
+        <!-- RESTO RANKING -->
+
+        <div id="rankingList" class="ranking-list">
+
+        </div>
+
+    </div>
+
 </div>
 
     <div id="registerSection" class="view-section hidden">
@@ -2287,7 +2706,7 @@ body{
         </div>
 
         <!-- SELECTOR -->
-        <div style="margin-bottom:10px;">
+        <div style="margin-bottom:20px;">
 
             <label class="preg-label">
                 Selecciona un jugador
@@ -2351,7 +2770,7 @@ body{
 
     <!-- CONTENIDO -->
 
-    <div id="playerCardContainer" class="player-card-container" style="display:none;">
+    <div id="playerCardContainer" style="display:none;">
 
         <h2 id="playerNameBig">NOMBRE</h2>
 
@@ -2363,7 +2782,7 @@ body{
             </div>
 
             <div class="stat-card">
-                <label>Puntos</label>
+                <label>Puntos Finales</label>
                 <span id="statTotal">0</span>
             </div>
 
@@ -2381,13 +2800,14 @@ body{
                 <thead>
                     <tr>
                         <th>POS</th>
-                        <th style="text-align: left; padding-left: 45px;">EQUIPO</th>
+                        <th style="text-align:left">EQUIPO</th>
+                        <th>COEF</th>
                         <th>1ª F</th>
                         <th>16VOS</th>
                         <th>8VOS</th>
                         <th>4TOS</th>
                         <th>SEMIS</th>
-			<			th>FINAL</th>
+			<th>FINAL</th>
                         <th>3º</th>
                         <th>TOTAL</th>
                     </tr>
@@ -2406,12 +2826,16 @@ body{
      CLASIFICACIÓN DE GRUPOS
 ========================= -->
 
+<!-- =========================
+     CLASIFICACIÓN DE GRUPOS
+========================= -->
+
 <div id="groupsSection" class="view-section hidden">
 
     <div class="fase-container">
 
         <div class="fase-title">
-            CLASIFICACIÓN FASE DE GRUPOS
+            CLASIFICACIÓN DE GRUPOS
         </div>
 
         <div id="groupsGrid" class="groups-grid"></div>
@@ -2422,20 +2846,21 @@ body{
 
 <script>
 
-const codigosBanderas = {
-        "Alemania": "de", "Arabia Saudita": "sa", "Argelia": "dz", "Argentina": "ar", 
-        "Australia": "au", "Austria": "at", "Bélgica": "be", "Bosnia y Herzegovina": "ba", 
-        "Brasil": "br", "Cabo Verde": "cv", "Canadá": "ca", "Catar": "qa", 
-        "Colombia": "co", "Corea del Sur": "kr", "Costa de Marfil": "ci", "Croacia": "hr", 
-        "Curazao": "cw", "Ecuador": "ec", "Egipto": "eg", "Escocia": "gb-sct", 
-        "España": "es", "Estados Unidos": "us", "Francia": "fr", "Ghana": "gh", 
-        "Haití": "ht", "Inglaterra": "gb-eng", "Irak": "iq", "Irán": "ir", 
-        "Japón": "jp", "Jordania": "jo", "Marruecos": "ma", "México": "mx", 
-        "Noruega": "no", "Nueva Zelanda": "nz", "Países Bajos": "nl", "Panamá": "pa", 
-        "Paraguay": "py", "Portugal": "pt", "RD Congo": "cd", "República Checa": "cz", 
-        "Senegal": "sn", "Sudáfrica": "za", "Suecia": "se", "Suiza": "ch", 
-        "Túnez": "tn", "Turquía": "tr", "Uruguay": "uy", "Uzbekistán": "uz"
-    };
+// Asegúrate de que tu objeto de banderas esté así:
+const banderas = {
+    "Alemania": "de", "Arabia Saudita": "sa", "Argelia": "dz", "Argentina": "ar", 
+    "Australia": "au", "Austria": "at", "Bélgica": "be", "Bosnia y Herzegovina": "ba", 
+    "Brasil": "br", "Cabo Verde": "cv", "Canadá": "ca", "Catar": "qa", 
+    "Colombia": "co", "Corea del Sur": "kr", "Costa de Marfil": "ci", "Croacia": "hr", 
+    "Curazao": "cw", "Ecuador": "ec", "Egipto": "eg", "Escocia": "gb-sct", 
+    "España": "es", "Estados Unidos": "us", "Francia": "fr", "Ghana": "gh", 
+    "Haití": "ht", "Inglaterra": "gb-eng", "Irak": "iq", "Irán": "ir", 
+    "Japón": "jp", "Jordania": "jo", "Marruecos": "ma", "México": "mx", 
+    "Noruega": "no", "Nueva Zelanda": "nz", "Países Bajos": "nl", "Panamá": "pa", 
+    "Paraguay": "py", "Portugal": "pt", "RD Congo": "cd", "República Checa": "cz", 
+    "Senegal": "sn", "Sudáfrica": "za", "Suecia": "se", "Suiza": "ch", 
+    "Túnez": "tn", "Turquía": "tr", "Uruguay": "uy", "Uzbekistán": "uz"
+};
 
     function getBandera(nombre) {
         const code = codigosBanderas[nombre];
@@ -2591,55 +3016,191 @@ function parseCSV(csv) {
 
 function renderRanking() {
 
-  const tbody = document.getElementById("rankingBody");
+    const podiumContainer =
+        document.getElementById("podiumContainer");
 
-  const rankingOrdenado = [...data].sort((a, b) => {
+    const rankingList =
+        document.getElementById("rankingList");
 
-    const aTotal = parseFloat(String(a.total).replace(",", ".").trim()) || 0;
-    const bTotal = parseFloat(String(b.total).replace(",", ".").trim()) || 0;
+    if(!podiumContainer || !rankingList) return;
 
-    return bTotal - aTotal;
-  });
+    // ORDENAR
 
-  const rankingPrevio = JSON.parse(
-    localStorage.getItem("rankingPrevio") || "{}"
-  );
+    const rankingOrdenado = [...data].sort((a, b) => {
 
-  const nuevoRanking = {};
+        const aTotal =
+            parseFloat(
+                String(a.total)
+                .replace(",", ".")
+                .trim()
+            ) || 0;
 
-  tbody.innerHTML = rankingOrdenado.map((p, i) => {
-    const nombre = p.name;
-    const nuevaPos = i + 1;
-    const posAnterior = rankingPrevio[nombre];
-    let flecha = "";
-    if (posAnterior !== undefined) {
-        if (nuevaPos < posAnterior) flecha = "up";
-        else if (nuevaPos > posAnterior) flecha = "down";
-    }
+        const bTotal =
+            parseFloat(
+                String(b.total)
+                .replace(",", ".")
+                .trim()
+            ) || 0;
 
-    nuevoRanking[nombre] = nuevaPos;
-    const realIndex = data.findIndex(d => d.name === nombre);
+        return bTotal - aTotal;
+    });
 
-    return `
-      <tr onclick="openPlayerFromRanking(${realIndex})">
-        <td style="text-align: center; width: 60px;">${nuevaPos}</td>
-        
-        <td style="text-align: center; width: 60px;">
-            <img src="https://api.iconify.design/game-icons:soccer-ball.svg" style="width:25px;">
-        </td>
-        
-        <td style="text-align: left; padding-left: 10px;">
-            <span class="ranking-player-name">${nombre}</span>
-        </td>
-        
-        <td style="text-align: right; padding-right: 10px; font-weight: bold;">
-            ${Number(parseFloat(String(p.total).replace(",", ".").trim()) || 0)}
-        </td>
-      </tr>
-    `;
-}).join("");
+    // POSICIONES PREVIAS
 
-  localStorage.setItem("rankingPrevio", JSON.stringify(nuevoRanking));
+    const rankingPrevio = JSON.parse(
+        localStorage.getItem("rankingPrevio") || "{}"
+    );
+
+    const nuevoRanking = {};
+
+    // =====================================
+    // TOP 3
+    // =====================================
+
+    const top3 = rankingOrdenado.slice(0,3);
+
+    const podiumOrder = [
+        top3[1],
+        top3[0],
+        top3[2]
+    ];
+
+    podiumContainer.innerHTML = podiumOrder.map((p, visualIndex) => {
+
+        if(!p) return "";
+
+        const realPos =
+            rankingOrdenado.indexOf(p) + 1;
+
+        let className = "";
+
+        if(realPos === 1)
+            className = "podium-first";
+
+        else if(realPos === 2)
+            className = "podium-second";
+
+        else
+            className = "podium-third";
+
+        const avatar =
+            p.avatar ||
+            "https://i.pravatar.cc/150?img=12";
+
+        return `
+
+            <div
+                class="podium-card ${className}"
+                onclick="openPlayerFromRanking(${data.findIndex(d => d.name === p.name)})"
+            >
+
+                ${realPos === 1
+                    ? `<div class="podium-crown">👑</div>`
+                    : ""
+                }
+
+                <img
+                    src="${avatar}"
+                    class="podium-avatar"
+                >
+
+                <div class="podium-name">
+                    ${p.name}
+                </div>
+
+                <div class="podium-points">
+                    ${p.total}
+                </div>
+
+                <div class="podium-rank">
+                    #${realPos}
+                </div>
+
+            </div>
+
+        `;
+    }).join("");
+
+    // =====================================
+    // RESTO RANKING
+    // =====================================
+
+    const resto =
+        rankingOrdenado.slice(3);
+
+    rankingList.innerHTML = resto.map((p, i) => {
+
+        const pos = i + 4;
+
+        const posAnterior =
+            rankingPrevio[p.name];
+
+        let arrowHTML = "";
+
+        if(posAnterior !== undefined){
+
+            if(pos < posAnterior){
+
+                arrowHTML =
+                    `<span class="rank-arrow rank-up">▲</span>`;
+            }
+
+            else if(pos > posAnterior){
+
+                arrowHTML =
+                    `<span class="rank-arrow rank-down">▼</span>`;
+            }
+        }
+
+        nuevoRanking[p.name] = pos;
+
+        const avatar =
+            p.avatar ||
+            "https://i.pravatar.cc/150?img=12";
+
+        return `
+
+            <div
+                class="ranking-card"
+                onclick="openPlayerFromRanking(${data.findIndex(d => d.name === p.name)})"
+            >
+
+                <div class="ranking-left">
+
+                    <div class="ranking-position">
+
+                        #${pos}
+
+                        ${arrowHTML}
+
+                    </div>
+
+                    <img
+                        src="${avatar}"
+                        class="ranking-avatar"
+                    >
+
+                    <div class="ranking-player-name">
+                        ${p.name}
+                    </div>
+
+                </div>
+
+                <div class="ranking-points">
+
+                    ${p.total}
+
+                </div>
+
+            </div>
+
+        `;
+    }).join("");
+
+    localStorage.setItem(
+        "rankingPrevio",
+        JSON.stringify(nuevoRanking)
+    );
 }
 
 function resetPredictionsView(){
@@ -2780,6 +3341,7 @@ window.loadRankingPlayer = function(){
             <td style="text-align:left; font-weight:700; color: var(--soccer-dark);">
                 ${getBandera(t.team)} ${t.team || "-"}
             </td>
+            <td style="color: #444;">${t.coef || "-"}</td>
             <td>${t.fase || "0"}</td>
             <td>${t.dieciseisavos || "0"}</td>
             <td>${t.octavos || "0"}</td>
@@ -2814,289 +3376,94 @@ window.openPlayerFromRanking = function(i){
 
 function renderPredictionsByPlayer(p) {
 
-    const c = document.getElementById("predictionsGlobalView");
+  const c = document.getElementById("predictionsGlobalView");
 
-    const grupos = ["A","B","C","D","E","F","G","H","I","J","K","L"];
+  c.innerHTML = `
+    <div class="fase-container">
 
-    c.innerHTML = `
-
-    <div class="predictions-app">
-
-        <!-- TOP 8 -->
-
-        <div class="prediction-card">
-
-            <div class="prediction-section-title">
-                🏆 TOP 8 FAVORITOS
-            </div>
-
-            <div class="top8-grid">
-
-                ${Array.from({ length: 8 }, (_, i) => `
-
-                    <div class="top8-team">
-
-                        <div class="top8-rank-badge">
-                            ${i + 1}
-                        </div>
-
-                        <div>
-                            ${getBandera(p[`equipo ${i + 1}`])}
-                            ${p[`equipo ${i + 1}`] || "-"}
-                        </div>
-
-                    </div>
-
-                `).join("")}
-
-            </div>
-
-        </div>
-
-        <!-- FASE DE GRUPOS -->
-
-<div class="prediction-card">
-
-    <div class="prediction-section-title">
-        ⚽ FASE DE GRUPOS
-    </div>
-
-    <!-- PRIMEROS -->
-
-    <div class="group-mini-title" style="margin-bottom:15px;">
-        🥇 Primeros de Grupo
-    </div>
-
-   <div class="pred-section-divider"></div>
-
-    <div class="groups-grid-predictions">
-
-        ${grupos.map(g => `
-
-            <div class="group-mini-card">
-
-                <div class="group-team-line">
-
-                    <strong>${g}</strong>
-
-                    ${getBandera(p[`Primero Grupo ${g}`])}
-
-                    ${p[`Primero Grupo ${g}`] || "-"}
-
-                </div>
-
-            </div>
-
+      <!-- ================= TOP 8 ================= -->
+      <h3>🏆 TOP 8</h3>
+      <ol>
+        ${Array.from({ length: 8 }, (_, i) => `
+          <li><strong>${p[`equipo ${i + 1}`] || "-"}</strong></li>
         `).join("")}
+      </ol>
 
-    </div>
+      <!-- ================= GRUPOS ================= -->
+      <h3>⚽ FASE DE GRUPOS</h3>
 
-    <!-- SEGUNDOS -->
+      <h4>Primeros</h4>
+      <ul>
+        ${["A","B","C","D","E","F","G","H","I","J","K","L"]
+          .map(g => `<li>${p[`Primero Grupo ${g}`] || "-"}</li>`)
+          .join("")}
+      </ul>
 
-    <div class="group-mini-title" style="margin-top:28px; margin-bottom:15px;">
-        🥈 Segundos de Grupo
-    </div>
-    <div class="pred-section-divider"></div>
+      <h4>Segundos</h4>
+      <ul>
+        ${["A","B","C","D","E","F","G","H","I","J","K","L"]
+          .map(g => `<li>${p[`Segundo Grupo ${g}`] || "-"}</li>`)
+          .join("")}
+      </ul>
 
-    <div class="groups-grid-predictions">
+      <h4>Terceros</h4>
+      <ul>
+        ${["A","B","C","D","E","F","G","H","I","J","K","L"]
+          .map(g => `<li>${p[`Tercero Grupo ${g}`] || "-"}</li>`)
+          .join("")}
+      </ul>
 
-        ${grupos.map(g => `
+      <!-- ================= ESPECIALES ================= -->
+      <h3>🔥 ESPECIALES</h3>
+      <ul>
+        <li>⚽ Máximo goleador: <strong>${p["Maxímo Goleador"] || "-"}</strong></li>
+        <li>🧤 Menos goleado: <strong>${p["Menos Goleado"] || "-"}</strong></li>
+      </ul>
 
-            <div class="group-mini-card">
+      <!-- ================= ELIMINATORIAS ================= -->
+      <h3>🏁 ELIMINATORIAS</h3>
 
-                <div class="group-team-line">
-
-                    <strong>${g}</strong>
-
-                    ${getBandera(p[`Segundo Grupo ${g}`])}
-
-                    ${p[`Segundo Grupo ${g}`] || "-"}
-
-                </div>
-
-            </div>
-
+      <h4>Octavos</h4>
+      <ul>
+        ${Array.from({ length: 16 }, (_, i) => `
+          <li>${p[`Octavos ${i + 1}`] || "-"}</li>
         `).join("")}
+      </ul>
+
+      <h4>Cuartos</h4>
+      <ul>
+        ${Array.from({ length: 8 }, (_, i) => `
+          <li>${p[`Cuartos ${i + 1}`] || "-"}</li>
+        `).join("")}
+      </ul>
+
+      <h4>Semifinales</h4>
+      <ul>
+        ${Array.from({ length: 4 }, (_, i) => `
+          <li>${p[`Semifinal ${i + 1}`] || "-"}</li>
+        `).join("")}
+      </ul>
+
+      <h4>Final</h4>
+      <ul>
+        ${Array.from({ length: 2 }, (_, i) => `
+          <li>${p[`Final ${i + 1}`] || "-"}</li>
+        `).join("")}
+      </ul>
+
+      <!-- ================= PODIO ================= -->
+      <h3>🏆 PODIO</h3>
+      <ul>
+        <li>🥇 Campeón: <strong>${p["Campeón"] || "-"}</strong></li>
+        <li>🥈 Subcampeón: <strong>${p["Subcampeón"] || "-"}</strong></li>
+        <li>🥉 Tercero: <strong>${p["Tercero"] || "-"}</strong></li>
+      </ul>
 
     </div>
-
-    <!-- TERCEROS -->
-
-    <div class="group-mini-title" style="margin-top:28px; margin-bottom:15px;">
-        🥉 8 Mejores Terceros
-    </div>
-
-    <div class="pred-section-divider"></div>
-
-    <div class="groups-grid-predictions">
-
-        ${grupos.map(g => {
-
-            const tercero = p[`Tercero Grupo ${g}`];
-
-            if(!tercero) return "";
-
-            return `
-
-                <div class="group-mini-card">
-
-                    <div class="group-team-line">
-
-                        <strong>${g}</strong>
-
-                        ${getBandera(tercero)}
-
-                        ${tercero}
-
-                    </div>
-
-                </div>
-
-            `;
-
-        }).join("")}
-
-    </div>
-
-</div>
-
-        <!-- ESPECIALES -->
-
-        <div class="prediction-card">
-
-            <div class="prediction-section-title">
-                🔥 PREMIOS ESPECIALES
-            </div>
-
-            <div class="prediction-pill">
-                ⚽
-                ${getBandera(p["Maxímo Goleador"])}
-                Máximo goleador:
-                ${p["Maxímo Goleador"] || "-"}
-            </div>
-
-            <div class="prediction-pill">
-                🧤
-                ${getBandera(p["Menos Goleado"])}
-                Menos goleado:
-                ${p["Menos Goleado"] || "-"}
-            </div>
-
-        </div>
-
-        <!-- ELIMINATORIAS -->
-
-        <div class="prediction-card">
-
-            <div class="prediction-section-title">
-                🏁 ELIMINATORIAS
-            </div>
-
-            <h3 class="group-mini-title">Octavos</h3>
-			<div class="pred-section-divider"></div>
-
-            <div class="knockout-grid">
-
-                ${Array.from({ length: 16 }, (_, i) => `
-
-                    <div class="knockout-team">
-                        ${getBandera(p[`Octavos ${i + 1}`])}
-                        ${p[`Octavos ${i + 1}`] || "-"}
-                    </div>
-
-                `).join("")}
-
-            </div>
-
-            <h3 class="group-mini-title" style="margin-top:25px;">
-                Cuartos
-            </h3>
-			<div class="pred-section-divider"></div>
-            <div class="knockout-grid">
-
-                ${Array.from({ length: 8 }, (_, i) => `
-
-                    <div class="knockout-team">
-                        ${getBandera(p[`Cuartos ${i + 1}`])}
-                        ${p[`Cuartos ${i + 1}`] || "-"}
-                    </div>
-
-                `).join("")}
-
-            </div>
-
-            <h3 class="group-mini-title" style="margin-top:25px;">
-                Semifinales
-            </h3>
-<div class="pred-section-divider"></div>
-            <div class="knockout-grid">
-
-                ${Array.from({ length: 4 }, (_, i) => `
-
-                    <div class="knockout-team">
-                        ${getBandera(p[`Semifinal ${i + 1}`])}
-                        ${p[`Semifinal ${i + 1}`] || "-"}
-                    </div>
-
-                `).join("")}
-
-            </div>
-
-            <h3 class="group-mini-title" style="margin-top:25px;">
-                Final
-            </h3>
-<div class="pred-section-divider"></div>
-            <div class="knockout-grid">
-
-                ${Array.from({ length: 2 }, (_, i) => `
-
-                    <div class="knockout-team">
-                        ${getBandera(p[`Final ${i + 1}`])}
-                        ${p[`Final ${i + 1}`] || "-"}
-                    </div>
-
-                `).join("")}
-
-            </div>
-
-        </div>
-
-        <!-- PODIO -->
-
-        <div class="prediction-card">
-
-            <div class="prediction-section-title">
-                🏆 PODIO FINAL
-            </div>
-
-            <div class="podium-grid">
-
-                <div class="podium-card gold">
-                    🥇
-                    ${getBandera(p["Campeón"])}
-                    ${p["Campeón"] || "-"}
-                </div>
-
-                <div class="podium-card silver">
-                    🥈
-                    ${getBandera(p["Subcampeón"])}
-                    ${p["Subcampeón"] || "-"}
-                </div>
-
-                <div class="podium-card bronze">
-                    🥉
-                    ${getBandera(p["Tercero"])}
-                    ${p["Tercero"] || "-"}
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-    `;
+  `;
 }
+
+
 
 window.showPlayer = function () {
 
@@ -3189,7 +3556,7 @@ function renderAllGroups(){
             	    <thead>
                 	<tr>
 			    <th>POS</th>
-                            <th style="text-align:left; padding: 15px;">SELECCIÓN</th>
+                            <th>SELECCIÓN</th>
                             <th>PTS</th>
                             <th>J</th>
                             <th>G</th>
@@ -3197,6 +3564,8 @@ function renderAllGroups(){
                             <th>P</th>
                             <th>GF</th>
                             <th>GC</th>
+                            <th>DG</th>
+                            <th>PTS FASE</th>
                         </tr>
                     </thead>
 
@@ -3230,7 +3599,11 @@ function renderAllGroups(){
 
                                 <td>${r.gf}</td>
 
-                                <td>${r.gc}</td>   
+                                <td>${r.gc}</td>
+
+                                <td>${r.dg}</td>
+
+                                <td>${r.pts_fase}</td>
 
                             </tr>
 
