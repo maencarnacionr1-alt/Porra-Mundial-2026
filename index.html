@@ -107,74 +107,7 @@ html,body{
 	.only-ranking{
     	 display:block;
 	}
-        
-	.ranking-table {
-    width: 100%;
-    max-width: 500px;
-    margin: 0 auto;
-    border-collapse: collapse;
-}
-
-.ranking-table tbody tr{
-
-    position: relative;
-
-    cursor: pointer;
-
-    transition:
-        background 0.25s ease,
-        transform 0.25s ease,
-        box-shadow 0.25s ease,
-        border-bottom 0.25s ease;
-
-    border-bottom: 1px solid rgba(0,0,0,0.08);
-}
-
-.ranking-table tbody tr:nth-child(-n+3){
-    position: relative;
-}
-
-.ranking-table tbody tr:nth-child(-n+3) td:first-child{
-    border-left: 4px solid var(--pitch-green);
-}
-
-.ranking-table tbody tr:hover{
-
-    background: linear-gradient(
-        90deg,
-        rgba(46,125,50,0.08),
-        rgba(255,215,0,0.10)
-    );
-
-    transform: translateY(-2px);
-
-    box-shadow:
-        0 6px 18px rgba(0,0,0,0.08);
-
-    border-bottom: 1px solid rgba(255,215,0,0.45);
-}
-
-
-.ranking-table tbody tr:hover td{
-
-    color: var(--pitch-green);
-
-    transition: color 0.25s ease;
-}
-
-        .ranking-table td{
-
-    padding: 18px 15px;
-
-    font-size: 1.1rem;
-
-    text-align: center;
-
-    border-bottom: 1px solid rgba(0,0,0,0.06);
-
-    transition: color 0.25s ease;
-}
-
+ 
 /* ===============================
    MARCO GLOBAL TABLA RANKING
    (ESTILO APP DEPORTIVA)
