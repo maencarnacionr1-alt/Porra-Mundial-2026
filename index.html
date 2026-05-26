@@ -2283,100 +2283,55 @@ body{
     color:#1b5e20;
 }
 
-/* =========================================
-   MOBILE
-========================================= */
-
 @media(max-width:768px){
 
     .top3-podium{
-
-        gap:14px;
+        flex-wrap:nowrap;          /* evita salto */
+        gap:8px;
+        align-items:flex-end;
     }
 
     .podium-card{
+        width:30%;
+        min-width:95px;
 
-        width:120px;
-        height:120px;
+        height:auto;
+        min-height:170px;
 
-        padding:14px;
+        padding:12px 8px;
     }
 
     .podium-first{
+        width:34%;
+        min-width:110px;
 
-        width:155px;
-        height:155px;
+        min-height:190px;
     }
 
     .podium-avatar{
-
-        width:52px;
-        height:52px;
+        width:46px;
+        height:46px;
     }
 
     .podium-first .podium-avatar{
-
-        width:68px;
-        height:68px;
+        width:58px;
+        height:58px;
     }
 
     .podium-name{
-
-        font-size:.9rem;
+        font-size:.8rem;
     }
 
     .podium-points{
-
-        font-size:1.4rem;
+        font-size:1.2rem;
     }
 
     .podium-first .podium-points{
-
-        font-size:2rem;
+        font-size:1.6rem;
     }
 
     .podium-rank{
-
-        font-size:.85rem;
-    }
-
-    .ranking-list-modern{
-
-        gap:8px;
-    }
-
-    .ranking-row{
-
-        grid-template-columns:
-            45px
-            45px
-            1fr
-            auto;
-
-        padding:10px 12px;
-    }
-
-    .ranking-avatar{
-
-        width:38px;
-        height:38px;
-    }
-
-    .ranking-player-name-modern{
-
-        font-size:.9rem;
-
-        padding-left:10px;
-    }
-
-    .ranking-points-modern{
-
-        font-size:1rem;
-    }
-
-    .rank-number{
-
-        font-size:.9rem;
+        font-size:.75rem;
     }
 }
 
@@ -2828,7 +2783,7 @@ body{
                         <th>8VOS</th>
                         <th>4TOS</th>
                         <th>SEMIS</th>
-						<th>FINAL</th>
+			<			th>FINAL</th>
                         <th>3º</th>
                         <th>TOTAL</th>
                     </tr>
