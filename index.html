@@ -2060,6 +2060,93 @@ body{
     }
 }
 
+/* =========================================
+   MIS PRONÓSTICOS - NUEVO DISEÑO
+========================================= */
+
+.predictions-wrapper{
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+}
+
+.prediction-block{
+    background:white;
+    border-radius:22px;
+    padding:20px;
+    box-shadow:0 6px 20px rgba(0,0,0,0.05);
+}
+
+.prediction-title{
+    font-size:1.1rem;
+    font-weight:800;
+    color:var(--pitch-green);
+    margin-bottom:18px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.prediction-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+}
+
+.prediction-chip{
+    background:#f7f9f7;
+    border-radius:16px;
+    padding:14px;
+    font-weight:700;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    border:1px solid rgba(0,0,0,0.05);
+    transition:0.2s;
+}
+
+.prediction-chip:hover{
+    transform:translateY(-2px);
+    background:white;
+    box-shadow:0 4px 12px rgba(0,0,0,0.06);
+}
+
+.prediction-rank{
+    width:30px;
+    height:30px;
+    border-radius:50%;
+    background:var(--pitch-green);
+    color:white;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:0.8rem;
+    font-weight:800;
+    flex-shrink:0;
+}
+
+.prediction-team{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-size:0.95rem;
+}
+
+@media(max-width:768px){
+
+    .prediction-grid{
+        grid-template-columns:1fr;
+    }
+
+    .prediction-chip{
+        padding:12px;
+    }
+
+    .prediction-team{
+        font-size:0.88rem;
+    }
+}
+
     </style>
 
 </head>
@@ -2487,7 +2574,7 @@ body{
                 <thead>
                     <tr>
                         <th>POS</th>
-                        <th style="text-align:left; padding: 35px;">EQUIPO</th>
+                        <th style="text-align:left; padding:35pax;">EQUIPO</th>
                         <th>1ª F</th>
                         <th>16VOS</th>
                         <th>8VOS</th>
@@ -2918,96 +3005,36 @@ window.openPlayerFromRanking = function(i){
 
 // ================= PLAYER =================
 
-function renderPredictionsByPlayer(p) {
+<!-- ================= TOP 8 ================= -->
 
-  const c = document.getElementById("predictionsGlobalView");
+<div class="prediction-block">
 
-  c.innerHTML = `
-    <div class="fase-container">
+    <div class="prediction-title">
+        🏆 TOP 8 FAVORITOS
+    </div>
 
-      <!-- ================= TOP 8 ================= -->
-      <h3>🏆 TOP 8</h3>
-      <ol>
+    <div class="prediction-grid">
+
         ${Array.from({ length: 8 }, (_, i) => `
-          <li><strong>${p[`equipo ${i + 1}`] || "-"}</strong></li>
+
+            <div class="prediction-chip">
+
+                <div class="prediction-rank">
+                    ${i + 1}
+                </div>
+
+                <div class="prediction-team">
+                    ${getBandera(p[`equipo ${i + 1}`])}
+                    ${p[`equipo ${i + 1}`] || "-"}
+                </div>
+
+            </div>
+
         `).join("")}
-      </ol>
-
-      <!-- ================= GRUPOS ================= -->
-      <h3>⚽ FASE DE GRUPOS</h3>
-
-      <h4>Primeros</h4>
-      <ul>
-        ${["A","B","C","D","E","F","G","H","I","J","K","L"]
-          .map(g => `<li>${p[`Primero Grupo ${g}`] || "-"}</li>`)
-          .join("")}
-      </ul>
-
-      <h4>Segundos</h4>
-      <ul>
-        ${["A","B","C","D","E","F","G","H","I","J","K","L"]
-          .map(g => `<li>${p[`Segundo Grupo ${g}`] || "-"}</li>`)
-          .join("")}
-      </ul>
-
-      <h4>Terceros</h4>
-      <ul>
-        ${["A","B","C","D","E","F","G","H","I","J","K","L"]
-          .map(g => `<li>${p[`Tercero Grupo ${g}`] || "-"}</li>`)
-          .join("")}
-      </ul>
-
-      <!-- ================= ESPECIALES ================= -->
-      <h3>🔥 ESPECIALES</h3>
-      <ul>
-        <li>⚽ Máximo goleador: <strong>${p["Maxímo Goleador"] || "-"}</strong></li>
-        <li>🧤 Menos goleado: <strong>${p["Menos Goleado"] || "-"}</strong></li>
-      </ul>
-
-      <!-- ================= ELIMINATORIAS ================= -->
-      <h3>🏁 ELIMINATORIAS</h3>
-
-      <h4>Octavos</h4>
-      <ul>
-        ${Array.from({ length: 16 }, (_, i) => `
-          <li>${p[`Octavos ${i + 1}`] || "-"}</li>
-        `).join("")}
-      </ul>
-
-      <h4>Cuartos</h4>
-      <ul>
-        ${Array.from({ length: 8 }, (_, i) => `
-          <li>${p[`Cuartos ${i + 1}`] || "-"}</li>
-        `).join("")}
-      </ul>
-
-      <h4>Semifinales</h4>
-      <ul>
-        ${Array.from({ length: 4 }, (_, i) => `
-          <li>${p[`Semifinal ${i + 1}`] || "-"}</li>
-        `).join("")}
-      </ul>
-
-      <h4>Final</h4>
-      <ul>
-        ${Array.from({ length: 2 }, (_, i) => `
-          <li>${p[`Final ${i + 1}`] || "-"}</li>
-        `).join("")}
-      </ul>
-
-      <!-- ================= PODIO ================= -->
-      <h3>🏆 PODIO</h3>
-      <ul>
-        <li>🥇 Campeón: <strong>${p["Campeón"] || "-"}</strong></li>
-        <li>🥈 Subcampeón: <strong>${p["Subcampeón"] || "-"}</strong></li>
-        <li>🥉 Tercero: <strong>${p["Tercero"] || "-"}</strong></li>
-      </ul>
 
     </div>
-  `;
-}
 
-
+</div>
 
 window.showPlayer = function () {
 
@@ -3100,7 +3127,7 @@ function renderAllGroups(){
             	    <thead>
                 	<tr>
 			    <th>POS</th>
-                            <th style="text-align:left; padding: 25px;">SELECCIÓN</th>
+                            <th style="text-align:left; padding: 15px;">SELECCIÓN</th>
                             <th>PTS</th>
                             <th>J</th>
                             <th>G</th>
