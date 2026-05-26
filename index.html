@@ -2603,6 +2603,14 @@ body{
     }
 }
 
+.ranking-list{
+    display:grid;
+    grid-template-columns:
+        repeat(auto-fit,minmax(240px,1fr));
+    gap:18px;
+    margin-top:25px;
+}
+
 //OCULTAR BOTÓN REGISTRO
 
 .btn-registro-container{
@@ -3370,8 +3378,6 @@ const rankingList =
 
     const restHTML = `
 
-        <div class="ranking-grid">
-
             ${rankingOrdenado.slice(3).map((p, index) => {
 
                 const posicion = index + 4;
@@ -3442,8 +3448,6 @@ const rankingList =
                 `;
 
             }).join("")}
-
-        </div>
     `;
 
     podiumContainer.innerHTML = top3HTML;
