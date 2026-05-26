@@ -2680,7 +2680,7 @@ body{
                 <thead>
                     <tr>
                         <th>POS</th>
-                        <th style="text-align:left; padding:35pax;">EQUIPO</th>
+                        <th style="text-align:left; padding:35px;">EQUIPO</th>
                         <th>1ª F</th>
                         <th>16VOS</th>
                         <th>8VOS</th>
@@ -3120,7 +3120,6 @@ function renderPredictionsByPlayer(p) {
     <div class="predictions-wrapper">
 
         <!-- TOP 8 -->
-
         <div class="prediction-block">
 
             <div class="prediction-title">
@@ -3143,6 +3142,7 @@ function renderPredictionsByPlayer(p) {
                             <span>
                                 ${p[`equipo ${i + 1}`] || "-"}
                             </span>
+
                         </div>
 
                     </div>
@@ -3153,85 +3153,106 @@ function renderPredictionsByPlayer(p) {
 
         </div>
 
+        <!-- ================= GRUPOS ================= -->
+
+        <h3>⚽ FASE DE GRUPOS</h3>
+
+        <h4>Primeros</h4>
+
+        <ul>
+            ${["A","B","C","D","E","F","G","H","I","J","K","L"]
+                .map(g => `<li>${p[`Primero Grupo ${g}`] || "-"}</li>`)
+                .join("")}
+        </ul>
+
+        <h4>Segundos</h4>
+
+        <ul>
+            ${["A","B","C","D","E","F","G","H","I","J","K","L"]
+                .map(g => `<li>${p[`Segundo Grupo ${g}`] || "-"}</li>`)
+                .join("")}
+        </ul>
+
+        <h4>Terceros</h4>
+
+        <ul>
+            ${["A","B","C","D","E","F","G","H","I","J","K","L"]
+                .map(g => `<li>${p[`Tercero Grupo ${g}`] || "-"}</li>`)
+                .join("")}
+        </ul>
+
+        <!-- ================= ESPECIALES ================= -->
+
+        <h3>🔥 ESPECIALES</h3>
+
+        <ul>
+            <li>⚽ Máximo goleador:
+                <strong>${p["Maxímo Goleador"] || "-"}</strong>
+            </li>
+
+            <li>🧤 Menos goleado:
+                <strong>${p["Menos Goleado"] || "-"}</strong>
+            </li>
+        </ul>
+
+        <!-- ================= ELIMINATORIAS ================= -->
+
+        <h3>🏁 ELIMINATORIAS</h3>
+
+        <h4>Octavos</h4>
+
+        <ul>
+            ${Array.from({ length: 16 }, (_, i) => `
+                <li>${p[`Octavos ${i + 1}`] || "-"}</li>
+            `).join("")}
+        </ul>
+
+        <h4>Cuartos</h4>
+
+        <ul>
+            ${Array.from({ length: 8 }, (_, i) => `
+                <li>${p[`Cuartos ${i + 1}`] || "-"}</li>
+            `).join("")}
+        </ul>
+
+        <h4>Semifinales</h4>
+
+        <ul>
+            ${Array.from({ length: 4 }, (_, i) => `
+                <li>${p[`Semifinal ${i + 1}`] || "-"}</li>
+            `).join("")}
+        </ul>
+
+        <h4>Final</h4>
+
+        <ul>
+            ${Array.from({ length: 2 }, (_, i) => `
+                <li>${p[`Final ${i + 1}`] || "-"}</li>
+            `).join("")}
+        </ul>
+
+        <!-- ================= PODIO ================= -->
+
+        <h3>🏆 PODIO</h3>
+
+        <ul>
+            <li>🥇 Campeón:
+                <strong>${p["Campeón"] || "-"}</strong>
+            </li>
+
+            <li>🥈 Subcampeón:
+                <strong>${p["Subcampeón"] || "-"}</strong>
+            </li>
+
+            <li>🥉 Tercero:
+                <strong>${p["Tercero"] || "-"}</strong>
+            </li>
+        </ul>
+
     </div>
 
     `;
 }
-
-      <!-- ================= GRUPOS ================= -->
-      <h3>⚽ FASE DE GRUPOS</h3>
-
-      <h4>Primeros</h4>
-      <ul>
-        ${["A","B","C","D","E","F","G","H","I","J","K","L"]
-          .map(g => `<li>${p[`Primero Grupo ${g}`] || "-"}</li>`)
-          .join("")}
-      </ul>
-
-      <h4>Segundos</h4>
-      <ul>
-        ${["A","B","C","D","E","F","G","H","I","J","K","L"]
-          .map(g => `<li>${p[`Segundo Grupo ${g}`] || "-"}</li>`)
-          .join("")}
-      </ul>
-
-      <h4>Terceros</h4>
-      <ul>
-        ${["A","B","C","D","E","F","G","H","I","J","K","L"]
-          .map(g => `<li>${p[`Tercero Grupo ${g}`] || "-"}</li>`)
-          .join("")}
-      </ul>
-
-      <!-- ================= ESPECIALES ================= -->
-      <h3>🔥 ESPECIALES</h3>
-      <ul>
-        <li>⚽ Máximo goleador: <strong>${p["Maxímo Goleador"] || "-"}</strong></li>
-        <li>🧤 Menos goleado: <strong>${p["Menos Goleado"] || "-"}</strong></li>
-      </ul>
-
-      <!-- ================= ELIMINATORIAS ================= -->
-      <h3>🏁 ELIMINATORIAS</h3>
-
-      <h4>Octavos</h4>
-      <ul>
-        ${Array.from({ length: 16 }, (_, i) => `
-          <li>${p[`Octavos ${i + 1}`] || "-"}</li>
-        `).join("")}
-      </ul>
-
-      <h4>Cuartos</h4>
-      <ul>
-        ${Array.from({ length: 8 }, (_, i) => `
-          <li>${p[`Cuartos ${i + 1}`] || "-"}</li>
-        `).join("")}
-      </ul>
-
-      <h4>Semifinales</h4>
-      <ul>
-        ${Array.from({ length: 4 }, (_, i) => `
-          <li>${p[`Semifinal ${i + 1}`] || "-"}</li>
-        `).join("")}
-      </ul>
-
-      <h4>Final</h4>
-      <ul>
-        ${Array.from({ length: 2 }, (_, i) => `
-          <li>${p[`Final ${i + 1}`] || "-"}</li>
-        `).join("")}
-      </ul>
-
-      <!-- ================= PODIO ================= -->
-      <h3>🏆 PODIO</h3>
-      <ul>
-        <li>🥇 Campeón: <strong>${p["Campeón"] || "-"}</strong></li>
-        <li>🥈 Subcampeón: <strong>${p["Subcampeón"] || "-"}</strong></li>
-        <li>🥉 Tercero: <strong>${p["Tercero"] || "-"}</strong></li>
-      </ul>
-
-    </div>
-  `;
-}
-
 
 
 window.showPlayer = function () {
