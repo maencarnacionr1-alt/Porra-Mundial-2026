@@ -1973,13 +1973,15 @@ body{
     min-height:100vh;
 }
 
-/* HEADER */
+/* =========================================
+   HEADER
+========================================= */
 
 .leaderboard-header{
 
     text-align:center;
 
-    margin-bottom:30px;
+    margin-bottom:35px;
 }
 
 .leaderboard-header h1{
@@ -2014,10 +2016,14 @@ body{
 
     align-items:flex-end;
 
-    gap:14px;
+    gap:18px;
 
-    margin-bottom:35px;
+    margin-bottom:45px;
+
+    flex-wrap:wrap;
 }
+
+/* CARD */
 
 .podium-card{
 
@@ -2025,9 +2031,7 @@ body{
 
     border-radius:28px;
 
-    padding:20px 15px;
-
-    text-align:center;
+    padding:18px 14px;
 
     position:relative;
 
@@ -2035,6 +2039,14 @@ body{
         0 10px 30px rgba(0,0,0,0.08);
 
     transition:0.3s;
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    justify-content:flex-start;
 }
 
 .podium-card:hover{
@@ -2042,26 +2054,32 @@ body{
     transform:translateY(-5px);
 }
 
-/* 1º */
+/* =========================================
+   TOP 1
+========================================= */
 
 .podium-first{
 
-    width:140px;
+    width:150px;
 
-    min-height:240px;
+    height:215px;
 
     border:
         3px solid #f5c542;
+
+    transform:translateY(-10px);
 }
 
-/* 2º y 3º */
+/* =========================================
+   TOP 2 Y 3
+========================================= */
 
 .podium-second,
 .podium-third{
 
-    width:115px;
+    width:120px;
 
-    min-height:200px;
+    height:185px;
 }
 
 .podium-second{
@@ -2076,7 +2094,9 @@ body{
         3px solid #cd7f32;
 }
 
-/* CORONA */
+/* =========================================
+   CORONA
+========================================= */
 
 .podium-crown{
 
@@ -2091,7 +2111,9 @@ body{
     font-size:1.8rem;
 }
 
-/* AVATAR */
+/* =========================================
+   AVATAR
+========================================= */
 
 .podium-avatar{
 
@@ -2103,7 +2125,7 @@ body{
 
     object-fit:cover;
 
-    margin:0 auto 12px auto;
+    margin:0 auto;
 
     display:block;
 
@@ -2120,7 +2142,9 @@ body{
     height:92px;
 }
 
-/* NOMBRE */
+/* =========================================
+   NOMBRE
+========================================= */
 
 .podium-name{
 
@@ -2130,27 +2154,45 @@ body{
 
     color:var(--soccer-dark);
 
-    margin-bottom:8px;
+    margin-top:10px;
+
+    text-align:center;
+
+    line-height:1.2;
+
+    min-height:42px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
 }
 
-/* PUNTOS */
+/* =========================================
+   PUNTOS
+========================================= */
 
 .podium-points{
 
-    font-size:1.3rem;
+    font-size:1.5rem;
 
     font-weight:900;
 
     color:var(--pitch-green);
+
+    margin-top:auto;
 }
 
-/* POSICIÓN */
+/* =========================================
+   POSICIÓN
+========================================= */
 
 .podium-rank{
 
-    margin-top:10px;
+    margin-top:8px;
 
-    font-size:1rem;
+    font-size:0.95rem;
 
     font-weight:800;
 
@@ -2170,15 +2212,17 @@ body{
     gap:14px;
 }
 
-/* CARD */
+/* =========================================
+   CARD RANKING
+========================================= */
 
 .ranking-card{
 
     background:#111827;
 
-    border-radius:22px;
+    border-radius:20px;
 
-    padding:14px 18px;
+    padding:12px 18px;
 
     display:flex;
 
@@ -2192,6 +2236,10 @@ body{
         0 8px 18px rgba(0,0,0,0.08);
 
     transition:0.25s;
+
+    width:min(100%, 650px);
+
+    margin:0 auto;
 }
 
 .ranking-card:hover{
@@ -2199,7 +2247,9 @@ body{
     transform:translateY(-2px);
 }
 
-/* IZQUIERDA */
+/* =========================================
+   IZQUIERDA
+========================================= */
 
 .ranking-left{
 
@@ -2207,10 +2257,14 @@ body{
 
     align-items:center;
 
-    gap:14px;
+    gap:16px;
+
+    min-width:0;
 }
 
-/* POSICIÓN */
+/* =========================================
+   POSICIÓN
+========================================= */
 
 .ranking-position{
 
@@ -2221,9 +2275,13 @@ body{
     font-weight:900;
 
     font-size:1rem;
+
+    color:white;
 }
 
-/* FLECHAS */
+/* =========================================
+   FLECHAS
+========================================= */
 
 .rank-arrow{
 
@@ -2244,7 +2302,9 @@ body{
     color:#ff5252;
 }
 
-/* AVATAR */
+/* =========================================
+   AVATAR
+========================================= */
 
 .ranking-avatar{
 
@@ -2259,17 +2319,28 @@ body{
     border:2px solid rgba(255,255,255,0.15);
 }
 
-/* NOMBRE */
+/* =========================================
+   NOMBRE
+========================================= */
 
 .ranking-player-name{
 
     font-weight:700;
-    font-size:1.10rem;
+
+    font-size:1rem;
+
     color:#f3f4f6;
 
+    white-space:nowrap;
+
+    overflow:hidden;
+
+    text-overflow:ellipsis;
 }
 
-/* PUNTOS */
+/* =========================================
+   PUNTOS
+========================================= */
 
 .ranking-points{
 
@@ -2281,27 +2352,57 @@ body{
 
     min-width:55px;
 
-    
+    text-align:right;
 }
 
-/* RESPONSIVE */
+/* =========================================
+   RESPONSIVE
+========================================= */
 
 @media(max-width:600px){
 
     .podium-container{
 
-        gap:8px;
+        gap:10px;
     }
 
     .podium-first{
 
-        width:125px;
+        width:130px;
+
+        height:205px;
     }
 
     .podium-second,
     .podium-third{
 
-        width:100px;
+        width:105px;
+
+        height:180px;
+    }
+
+    .podium-avatar{
+
+        width:68px;
+
+        height:68px;
+    }
+
+    .podium-first .podium-avatar{
+
+        width:82px;
+
+        height:82px;
+    }
+
+    .leaderboard-header h1{
+
+        font-size:1.7rem;
+    }
+
+    .ranking-card{
+
+        width:100%;
     }
 }
 
