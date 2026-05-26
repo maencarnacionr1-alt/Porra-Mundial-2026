@@ -3005,7 +3005,14 @@ window.openPlayerFromRanking = function(i){
 
 // ================= PLAYER =================
 
-<!-- ================= TOP 8 ================= -->
+function renderPredictionsByPlayer(p) {
+
+  const c = document.getElementById("predictionsGlobalView");
+
+  c.innerHTML = `
+    <div class="fase-container">
+
+      <!-- ================= TOP 8 ================= -->
 
 <div class="prediction-block">
 
@@ -3013,19 +3020,21 @@ window.openPlayerFromRanking = function(i){
         🏆 TOP 8 FAVORITOS
     </div>
 
-    <div class="prediction-grid">
+    <div class="prediction-top8-grid">
 
         ${Array.from({ length: 8 }, (_, i) => `
 
-            <div class="prediction-chip">
+            <div class="prediction-top-card">
 
-                <div class="prediction-rank">
-                    ${i + 1}
+                <div class="prediction-top-rank">
+                    ${i + 1}º
                 </div>
 
-                <div class="prediction-team">
-                    ${getBandera(p[`equipo ${i + 1}`])}
-                    ${p[`equipo ${i + 1}`] || "-"}
+                <div class="prediction-top-team">
+                    ${getBandera(p[`equipo ${i + 1}`] || "")}
+                    <span>
+                        ${p[`equipo ${i + 1}`] || "-"}
+                    </span>
                 </div>
 
             </div>
@@ -3035,6 +3044,82 @@ window.openPlayerFromRanking = function(i){
     </div>
 
 </div>
+
+      <!-- ================= GRUPOS ================= -->
+      <h3>⚽ FASE DE GRUPOS</h3>
+
+      <h4>Primeros</h4>
+      <ul>
+        ${["A","B","C","D","E","F","G","H","I","J","K","L"]
+          .map(g => `<li>${p[`Primero Grupo ${g}`] || "-"}</li>`)
+          .join("")}
+      </ul>
+
+      <h4>Segundos</h4>
+      <ul>
+        ${["A","B","C","D","E","F","G","H","I","J","K","L"]
+          .map(g => `<li>${p[`Segundo Grupo ${g}`] || "-"}</li>`)
+          .join("")}
+      </ul>
+
+      <h4>Terceros</h4>
+      <ul>
+        ${["A","B","C","D","E","F","G","H","I","J","K","L"]
+          .map(g => `<li>${p[`Tercero Grupo ${g}`] || "-"}</li>`)
+          .join("")}
+      </ul>
+
+      <!-- ================= ESPECIALES ================= -->
+      <h3>🔥 ESPECIALES</h3>
+      <ul>
+        <li>⚽ Máximo goleador: <strong>${p["Maxímo Goleador"] || "-"}</strong></li>
+        <li>🧤 Menos goleado: <strong>${p["Menos Goleado"] || "-"}</strong></li>
+      </ul>
+
+      <!-- ================= ELIMINATORIAS ================= -->
+      <h3>🏁 ELIMINATORIAS</h3>
+
+      <h4>Octavos</h4>
+      <ul>
+        ${Array.from({ length: 16 }, (_, i) => `
+          <li>${p[`Octavos ${i + 1}`] || "-"}</li>
+        `).join("")}
+      </ul>
+
+      <h4>Cuartos</h4>
+      <ul>
+        ${Array.from({ length: 8 }, (_, i) => `
+          <li>${p[`Cuartos ${i + 1}`] || "-"}</li>
+        `).join("")}
+      </ul>
+
+      <h4>Semifinales</h4>
+      <ul>
+        ${Array.from({ length: 4 }, (_, i) => `
+          <li>${p[`Semifinal ${i + 1}`] || "-"}</li>
+        `).join("")}
+      </ul>
+
+      <h4>Final</h4>
+      <ul>
+        ${Array.from({ length: 2 }, (_, i) => `
+          <li>${p[`Final ${i + 1}`] || "-"}</li>
+        `).join("")}
+      </ul>
+
+      <!-- ================= PODIO ================= -->
+      <h3>🏆 PODIO</h3>
+      <ul>
+        <li>🥇 Campeón: <strong>${p["Campeón"] || "-"}</strong></li>
+        <li>🥈 Subcampeón: <strong>${p["Subcampeón"] || "-"}</strong></li>
+        <li>🥉 Tercero: <strong>${p["Tercero"] || "-"}</strong></li>
+      </ul>
+
+    </div>
+  `;
+}
+
+
 
 window.showPlayer = function () {
 
