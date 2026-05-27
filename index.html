@@ -2542,6 +2542,37 @@ body{
 
 }
 
+/* ===== PREVIEW AVATAR ===== */
+
+.avatar-preview-container {
+
+    display: flex;
+    justify-content: center;
+
+    margin-bottom: 18px;
+
+}
+
+#selectedAvatarPreview {
+
+    width: 110px;
+    height: 110px;
+
+    border-radius: 50%;
+
+    object-fit: cover;
+
+    border: 5px solid #22c55e;
+
+    box-shadow:
+    0 0 25px rgba(34,197,94,.35);
+
+    transition: .25s;
+
+    background: #fff;
+
+}
+
 
     </style>
 
@@ -2703,6 +2734,16 @@ body{
         >
 
     </div>
+
+<div class="avatar-preview-container">
+
+    <img
+        id="selectedAvatarPreview"
+        src="assets/avatares-futbolistas/avatar_001.png"
+        alt="avatar"
+    >
+
+</div>
 
     <!-- BOTÓN -->
 
@@ -3021,7 +3062,7 @@ body{
                         <th>8VOS</th>
                         <th>4TOS</th>
                         <th>SEMIS</th>
-			<			th>FINAL</th>
+			<th>FINAL</th>
                         <th>3º</th>
                         <th>TOTAL</th>
                     </tr>
@@ -3397,6 +3438,9 @@ function renderRanking() {
 
 const avatars = [];
 
+let selectedAvatar =
+'assets/avatares-futbolistas/avatar_001.png';
+
 for (let i = 1; i <= 73; i++) {
 
     const number = String(i).padStart(3, '0');
@@ -3440,6 +3484,18 @@ function closeAvatarModal() {
     document
         .getElementById('avatarModal')
         .classList.add('hidden');
+
+}
+
+function selectAvatar(avatar) {
+
+    selectedAvatar = avatar;
+
+    document.getElementById(
+        'selectedAvatarPreview'
+    ).src = avatar;
+
+    closeAvatarModal();
 
 }
 
