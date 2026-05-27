@@ -2422,158 +2422,6 @@ body{
         0 10px 25px rgba(46,125,50,.35);
 }
 
-/* ===== MODAL AVATARES ===== */
-
-.avatar-modal {
-
-    position: fixed;
-    inset: 0;
-
-    background: rgba(0,0,0,0.75);
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    z-index: 99999;
-
-    backdrop-filter: blur(6px);
-
-}
-
-.hidden {
-    display: none;
-}
-
-.avatar-modal-content {
-
-    width: 90%;
-    max-width: 900px;
-
-    background: white;
-
-    border-radius: 28px;
-
-    padding: 30px;
-
-    box-shadow: 0 20px 60px rgba(0,0,0,0.35);
-
-}
-
-.avatar-modal-header {
-
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    margin-bottom: 25px;
-
-}
-
-.avatar-modal-header h2 {
-
-    color: #111;
-    font-size: 28px;
-
-}
-
-.close-avatar-modal {
-
-    border: none;
-    background: transparent;
-
-    font-size: 28px;
-    cursor: pointer;
-
-}
-
-.avatars-grid {
-
-    display: grid;
-
-    grid-template-columns:
-    repeat(auto-fill, minmax(90px, 1fr));
-
-    gap: 18px;
-
-    max-height: 500px;
-
-    overflow-y: auto;
-
-    padding-right: 10px;
-
-}
-
-.avatar-option {
-
-    aspect-ratio: 1;
-
-    border-radius: 50%;
-
-    overflow: hidden;
-
-    cursor: pointer;
-
-    border: 4px solid transparent;
-
-    transition: .25s;
-
-    background: #f3f4f6;
-
-}
-
-.avatar-option img {
-
-    width: 100%;
-    height: 100%;
-
-    object-fit: cover;
-
-}
-
-.avatar-option:hover {
-
-    transform: translateY(-4px) scale(1.05);
-
-    border-color: #22c55e;
-
-    box-shadow:
-    0 0 20px rgba(34,197,94,.45);
-
-}
-
-/* ===== PREVIEW AVATAR ===== */
-
-.avatar-preview-container {
-	
-    display: flex;
-    justify-content: center;
-
-    margin-top:22px;
-    margin-bottom: 18px;
-
-}
-
-#selectedAvatarPreview {
-
-    width: 110px;
-    height: 110px;
-
-    border-radius: 50%;
-
-    object-fit: cover;
-
-    border: 5px solid #22c55e;
-
-    box-shadow:
-    0 0 25px rgba(34,197,94,.35);
-
-    transition: .25s;
-
-    background: #fff;
-
-}
-
 
     </style>
 
@@ -2722,15 +2570,19 @@ body{
      SISTEMA AVATAR
 ========================= -->
 
-<div class="avatar-preview-container">
+<div class="avatar-register-box">
 
-    <img
-        id="selectedAvatarPreview"
-        src="assets/avatares-futbolistas/avatar_001.png"
-        alt="avatar"
-    >
+    <!-- PREVIEW -->
 
-</div>
+    <div class="avatar-preview-wrapper">
+
+        <img
+            id="selectedAvatarPreview"
+            src="https://i.imgur.com/6VBx3io.png"
+            class="avatar-preview"
+        >
+
+    </div>
 
     <!-- BOTÓN -->
 
@@ -3049,7 +2901,7 @@ body{
                         <th>8VOS</th>
                         <th>4TOS</th>
                         <th>SEMIS</th>
-			<th>FINAL</th>
+			<			th>FINAL</th>
                         <th>3º</th>
                         <th>TOTAL</th>
                     </tr>
@@ -3183,8 +3035,6 @@ equiposRows.forEach(r => {
     name: p.name,
     preguntas: p.preguntas,
     total: p.total,
-    avatar: p.avatar || 'assets/avatares-futbolistas/avatar_001.png',
-
     teams: teamRows
       .filter(t => t.name === p.name)
       .map(t => ({
@@ -3302,7 +3152,7 @@ function renderRanking() {
                  onclick="openPlayerFromRanking(${data.findIndex(d => d.name === p.name)})">
 
                 <img
-                    src="${p.avatar}"
+                    src="https://i.pravatar.cc/200?img=${pos + 10}"
                     class="podium-avatar"
                 >
 
@@ -3382,7 +3232,7 @@ function renderRanking() {
                 </div>
 
                 <img
-                    src="${p.avatar}"
+                    src="https://i.pravatar.cc/150?img=${posicion}"
                     class="ranking-avatar"
                 >
 
@@ -3425,67 +3275,11 @@ function renderRanking() {
     );
 }
 
-const avatars = [];
+function openAvatarModal(){
 
-let selectedAvatar =
-'assets/avatares-futbolistas/avatar_001.png';
-
-for (let i = 1; i <= 73; i++) {
-
-    const number = String(i).padStart(3, '0');
-
-    avatars.push(
-        `assets/avatares-futbolistas/avatar_${number}.png`
+    alert(
+        "Siguiente paso: modal premium de avatares 😎"
     );
-
-}
-
-function openAvatarModal() {
-
-    const modal = document.getElementById('avatarModal');
-
-    const grid = document.getElementById('avatarsGrid');
-
-    grid.innerHTML = '';
-
-    avatars.forEach(avatar => {
-
-        const div = document.createElement('div');
-
-        div.className = 'avatar-option';
-
-        div.innerHTML = `
-            <img src="${avatar}" alt="avatar">
-        `;
-
-        div.onclick = () => selectAvatar(avatar);
-
-        grid.appendChild(div);
-
-    });
-
-    modal.classList.remove('hidden');
-
-}
-
-function closeAvatarModal() {
-
-    document
-        .getElementById('avatarModal')
-        .classList.add('hidden');
-
-}
-
-function selectAvatar(avatar) {
-
-    selectedAvatar = avatar;
-
-    document.getElementById(
-        'selectedAvatarPreview'
-    ).src = avatar;
-
-    closeAvatarModal();
-
 }
 
 // ================= VISTAS =================
@@ -3499,10 +3293,8 @@ window.showRanking = function () {
   document.getElementById("rankingSection").classList.remove("hidden");
   document.getElementById("countdownBox").style.display = "block";
 
-// OCULTAR SECCIONES
+// MOSTRAR + CONTADOR
   
-<div id="registerSection" class="view-section hidden">
-
 updateHistory("ranking");
 };
 
@@ -3513,7 +3305,6 @@ window.showRegister = function () {
 
 // OCULTAR + CONTADOR
 
-  
   document.getElementById("registerSection").classList.remove("hidden");
   document.getElementById("countdownBox").style.display = "none";
 
@@ -4559,9 +4350,6 @@ document.getElementById("registrationForm").onsubmit = async (e) => {
     }
 
     const obj = {};
-
-    obj.avatar = selectedAvatar;
-
     new FormData(e.target).forEach((v, k) => {
         if (k.startsWith("grupo_tercero")) {
             obj[k] = v; 
@@ -5030,29 +4818,6 @@ function ejecutarLlenadoAutomatico() {
     </button>
 
 </nav>
-
-<!-- MODAL AVATARES -->
-
-<div id="avatarModal" class="avatar-modal hidden">
-
-    <div class="avatar-modal-content">
-
-        <div class="avatar-modal-header">
-
-            <h2>⚽ Elige tu avatar</h2>
-
-            <button class="close-avatar-modal"
-                    onclick="closeAvatarModal()">
-                ✕
-            </button>
-
-        </div>
-
-        <div id="avatarsGrid" class="avatars-grid"></div>
-
-    </div>
-
-</div>
 
 </body>
 </html>
