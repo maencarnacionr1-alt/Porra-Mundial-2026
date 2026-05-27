@@ -3499,8 +3499,10 @@ window.showRanking = function () {
   document.getElementById("rankingSection").classList.remove("hidden");
   document.getElementById("countdownBox").style.display = "block";
 
-// MOSTRAR + CONTADOR
+// OCULTAR SECCIONES
   
+<div id="registerSection" class="view-section hidden">
+
 updateHistory("ranking");
 };
 
@@ -3511,6 +3513,7 @@ window.showRegister = function () {
 
 // OCULTAR + CONTADOR
 
+  
   document.getElementById("registerSection").classList.remove("hidden");
   document.getElementById("countdownBox").style.display = "none";
 
