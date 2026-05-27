@@ -2545,10 +2545,11 @@ body{
 /* ===== PREVIEW AVATAR ===== */
 
 .avatar-preview-container {
-
+	
     display: flex;
     justify-content: center;
 
+    margin-top:22px;
     margin-bottom: 18px;
 
 }
@@ -3182,6 +3183,8 @@ equiposRows.forEach(r => {
     name: p.name,
     preguntas: p.preguntas,
     total: p.total,
+    avatar: p.avatar || 'assets/avatares-futbolistas/avatar_001.png',
+
     teams: teamRows
       .filter(t => t.name === p.name)
       .map(t => ({
@@ -3299,7 +3302,7 @@ function renderRanking() {
                  onclick="openPlayerFromRanking(${data.findIndex(d => d.name === p.name)})">
 
                 <img
-                    src="https://i.pravatar.cc/200?img=${pos + 10}"
+                    src="${p.avatar}"
                     class="podium-avatar"
                 >
 
@@ -3379,7 +3382,7 @@ function renderRanking() {
                 </div>
 
                 <img
-                    src="https://i.pravatar.cc/150?img=${posicion}"
+                    src="${p.avatar}"
                     class="ranking-avatar"
                 >
 
@@ -4553,6 +4556,9 @@ document.getElementById("registrationForm").onsubmit = async (e) => {
     }
 
     const obj = {};
+
+    obj.avatar = selectedAvatar;
+
     new FormData(e.target).forEach((v, k) => {
         if (k.startsWith("grupo_tercero")) {
             obj[k] = v; 
