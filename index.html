@@ -3125,7 +3125,7 @@ const URL_MAESTRA =
 	  "https://docs.google.com/spreadsheets/d/e/2PACX-1vSYe1nqTFOllYViQLj9x7NZ0buss9J-pqmIqeSziINNRDL5-a0m-sWcCg_48_zY5iAEhpHvzNYKuqbQ/pub?gid=390514000&single=true&output=csv";
 
         const GOOGLE_SCRIPT_URL =
-          "https://script.google.com/macros/s/AKfycbyHja8af8YynvIVbahczAbnG9E9A5d9Me_yt_sbCmbxokWE6nRtgDwDYuY45EHW0EfBeg/exec";
+          "https://script.google.com/macros/s/AKfycbzCBYfJJjdibQom2IDtXBF4lL4UQQB2vkgm2UVuL-8bIxVlp0uGZiYt5R6j0s5Wki0xQw/exec";
 
 let dropdownListenerAttached = false;
 let pronosticosData = [];
@@ -3243,7 +3243,6 @@ function parseCSV(csv) {
     return lines.slice(1).map(line => {
         const values = splitLine(line);
         const obj = {};
-        
         headers.forEach((h, i) => {
             // Asignamos el valor limpio a la clave correspondiente
             obj[h] = values[i] ? values[i].trim().replace(/\r/g, "") : "";
@@ -4556,6 +4555,8 @@ document.getElementById("registrationForm").onsubmit = async (e) => {
     }
 
     const obj = {};
+	obj.avatar = selectedAvatar;
+	
     new FormData(e.target).forEach((v, k) => {
         if (k.startsWith("grupo_tercero")) {
             obj[k] = v; 
