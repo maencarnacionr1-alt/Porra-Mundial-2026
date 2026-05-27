@@ -2359,6 +2359,69 @@ body{
     }
 }
 
+/* =========================
+   AVATAR REGISTER
+========================= */
+
+.avatar-register-box{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    margin-top:20px;
+    gap:14px;
+}
+
+.avatar-preview-wrapper{
+    position:relative;
+}
+
+.avatar-preview{
+    width:110px;
+    height:110px;
+    border-radius:50%;
+    object-fit:cover;
+    border:5px solid white;
+
+    box-shadow:
+        0 8px 25px rgba(0,0,0,.15);
+
+    background:#f1f5f9;
+}
+
+.btn-avatar{
+
+    background:
+        linear-gradient(
+            135deg,
+            #2e7d32,
+            #43a047
+        );
+
+    color:white;
+    border:none;
+    border-radius:16px;
+
+    padding:12px 22px;
+
+    font-weight:700;
+    font-size:.95rem;
+
+    cursor:pointer;
+
+    transition:all .25s ease;
+
+    box-shadow:
+        0 5px 15px rgba(46,125,50,.25);
+}
+
+.btn-avatar:hover{
+
+    transform:translateY(-2px);
+
+    box-shadow:
+        0 10px 25px rgba(46,125,50,.35);
+}
+
 
     </style>
 
@@ -2486,7 +2549,7 @@ body{
 	
         <div style="margin-bottom:30px; text-align:center;">
 
-            <label class="preg-label" style="font-size:1.2rem;">
+            <label class="preg-label" style="font-size:1rem;">
                 Nombre de Participante:
             </label>
 
@@ -2496,12 +2559,55 @@ body{
     name="nombre"
     required
     placeholder="Escribe tu nombre..."
-    style="width:80%; padding:15px; border-radius:15px; border:3px solid var(--pitch-green); font-size:1.2rem; text-align:center; font-weight:700;"
->
-<div id="errorMensaje" style="display:none; color: #d32f2f; background: #ffebee; padding: 10px; border-radius: 8px; margin-top: 5px; font-weight: bold;"></div>
-        </div>
 
-        <!-- TOP 8 -->
+    style="width:50%; padding:10px; border-radius:15px; border:3px solid var(--pitch-green); font-size:1rem; text-align:center; font-weight:600;"
+>
+<div id="errorMensaje" style="display:none; color: #d32f2f; background: #ffebee; padding: 10px; border-radius: 8px; margin-top: 5px; font-weight: bold;">
+
+</div>
+
+<!-- =========================
+     SISTEMA AVATAR
+========================= -->
+
+<div class="avatar-register-box">
+
+    <!-- PREVIEW -->
+
+    <div class="avatar-preview-wrapper">
+
+        <img
+            id="selectedAvatarPreview"
+            src="https://i.imgur.com/6VBx3io.png"
+            class="avatar-preview"
+        >
+
+    </div>
+
+    <!-- BOTÓN -->
+
+    <button
+        type="button"
+        class="btn-avatar"
+        onclick="openAvatarModal()"
+    >
+        Elegir Avatar
+    </button>
+
+    <!-- INPUT OCULTO -->
+
+    <input
+        type="hidden"
+        id="avatarInput"
+        name="avatar"
+        value="https://i.imgur.com/6VBx3io.png"
+    >
+
+</div>
+      </div>
+
+
+        <!-- SECCIÓN DE REGISTRO TOP 8 -->
 
         <div class="fase-container">
 
@@ -3166,6 +3272,13 @@ function renderRanking() {
     localStorage.setItem(
         "rankingPrevio",
         JSON.stringify(nuevoRanking)
+    );
+}
+
+function openAvatarModal(){
+
+    alert(
+        "Siguiente paso: modal premium de avatares 😎"
     );
 }
 
