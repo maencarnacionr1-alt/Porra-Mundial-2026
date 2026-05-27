@@ -165,6 +165,95 @@ html,body{
     font-weight:800;
     color:var(--soccer-dark);
 }
+
+
+        
+	.btn-registro-container{
+    		width:100%;
+
+    		display:flex;
+    		flex-direction:column;
+    		align-items:center;
+    		justify-content:center;
+
+    		gap:18px;
+
+    		padding:18px;
+	}
+
+        .btn-registro {
+            background-color: var(--gold);
+            color: var(--soccer-dark);
+            padding: 10px 22px;
+            font-weight: 900;
+            cursor: pointer;
+            text-transform: uppercase;
+            font-size: 0.78rem;
+            display: flex;
+            align-items: center;
+	    justify-content: center;
+            gap: 8px;
+            text-decoration: none;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.35);
+	    width:fit-content;
+	    margin: 0 auto;
+            white-space: nowrap;
+
+
+   	    transition: 0.25s;
+	}
+
+
+	#btnRegistro{
+    	align-self: flex-start;
+    	margin-left: 20px;
+	}
+
+	.btn-registro:hover {
+    	    transform: translateY(-2px);
+	}
+
+        .dot-online {
+            width: 8px;
+            height: 8px;
+            background-color: var(--pitch-green);
+            border-radius: 50%;
+            animation: pulse-dot 1.5s infinite;
+        }
+
+        @keyframes pulse-dot {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.4); }
+            100% { transform: scale(1); }
+        }
+
+        .fase-container {
+            background: #fff;
+            padding: 25px;
+            border-radius: 20px;
+            margin-bottom: 25px;
+            border: 1px solid #eee;
+        }
+
+        .fase-title {
+            color: var(--pitch-green);
+            font-family: 'Black Ops One';
+            font-size: 1.4rem;
+            border-bottom: 3px solid var(--gold);
+            padding-bottom: 8px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+
+        .preg-label {
+            font-weight: 800;
+            display: block;
+            margin-bottom: 5px;
+            font-size: 0.85rem;
+            color: #444;
+            text-transform: uppercase;
+        }
+
         .equipo-select,
         .equipo-select-simple {
             width: 100%;
@@ -530,6 +619,12 @@ table {
         font-size: 3rem;
     }
 
+    .btn-registro-container {
+        position: static;
+        margin-top: 20px;
+        align-items: center;
+    }
+
     .countdown-box {
         width: 100%;
         max-width: 320px;
@@ -677,9 +772,20 @@ table {
 
     white-space: nowrap;
 }
+
+.btn-registro-container {
+    padding: 6px 10px 4px 10px; /* MUY importante */
+    gap: 8px;
+    margin-top: -6px; /* lo sube hacia la línea amarilla */
+   }
+
 .top-fixed-zone {
     padding-bottom: 0;
 }
+
+#btnRegistro{
+        margin-left: 0;
+    }
 
     #playerNameBig {
         font-size: 2rem;
@@ -759,9 +865,32 @@ table {
     margin: 8px auto 0 auto;  /* justo debajo del header */
 }
 
+
+   .btn-registro-container{
+
+    width:100%;
+
+    display:flex;
+    flex-direction:column;
+
+    align-items:center;
+    justify-content:center;
+
+    gap:16px;
+
+    padding:20px 15px;
+
+    background:white;
+  }
+
+
 h1{
     order:1;
     text-align:center;
+}
+
+.btn-registro-container{
+    order:2;
 }
 
 .countdown-box{
@@ -842,6 +971,13 @@ h1{
 		justify-content: space-between;
 		align-items: center;
     }
+
+    /* el botón queda normal pero compacto */
+    .btn-registro-container{
+    padding: 10px; /* MUY importante */
+    gap: 8px;
+    margin-top: 6px; /* lo sube hacia la línea amarilla */
+   }
 
     /* contador flotante */
     #countdownBox{
@@ -3044,7 +3180,7 @@ window.showRanking = function () {
   document.getElementById("rankingSection").classList.remove("hidden");
   document.getElementById("countdownBox").style.display = "block";
 
-// MOSTRAR CONTADOR
+// MOSTRAR + CONTADOR
   
 updateHistory("ranking");
 };
@@ -3054,7 +3190,8 @@ window.showRegister = function () {
   document.querySelectorAll(".view-section")
     .forEach(s => s.classList.add("hidden"));
 
-// OCULTAR CONTADOR
+// OCULTAR + CONTADOR
+
   document.getElementById("registerSection").classList.remove("hidden");
   document.getElementById("countdownBox").style.display = "none";
 
@@ -3481,6 +3618,7 @@ window.showPlayer = function () {
 
     document.getElementById("countdownBox")
         .style.display = "none";
+
     // reset visual
     document.getElementById(
         "rankingPlayerSelect"
@@ -3504,7 +3642,8 @@ window.showPredictions = function () {
     .classList.remove("hidden");
 
   document.getElementById("countdownBox").style.display = "none";
-	
+
+
   resetPredictionsView();
   renderPlayerDropdown();
   updateHistory("predictions");
