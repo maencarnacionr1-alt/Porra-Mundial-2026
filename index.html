@@ -3150,9 +3150,7 @@ async function initApp() {
 
  const pronos = await fetch(URL_PRONOSTICOS).then(r => r.text());
  pronosticosData = parseCSV(pronos);
-
- renderPlayerDropdown();
-
+	
   const equiposRows = parseCSV(eq);
 
 equiposDisponibles = equiposRows
@@ -4484,6 +4482,8 @@ function renderPlayerDropdown() {
     const select =
         document.getElementById("playerSelect");
 
+    if (!select) return;
+
     // reset
     select.innerHTML = `
         <option value="">
@@ -4536,7 +4536,7 @@ function renderRankingPlayersDropdown(){
             "rankingPlayerSelect"
         );
 
-    if(!select) return;
+    if (!select) return;
 
     select.innerHTML = `
         <option value="">
