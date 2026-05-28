@@ -2745,7 +2745,7 @@ body{
         type="hidden"
         id="avatarInput"
         name="avatar"
-        value="https://i.imgur.com/6VBx3io.png"
+        value=""
     >
 
 </div>
@@ -3486,13 +3486,18 @@ function closeAvatarModal() {
 
 function selectAvatar(avatar) {
 
-    // Guardamos la URL GitHub
+    // URL que se guardará en Sheets
     selectedAvatar = avatar.github;
 
-    // Mostramos la imagen LOCAL
+    // Preview visual
     document.getElementById(
         'selectedAvatarPreview'
     ).src = avatar.local;
+
+    // ACTUALIZAR INPUT OCULTO
+    document.getElementById(
+        'avatarInput'
+    ).value = avatar.github;
 
     closeAvatarModal();
 
