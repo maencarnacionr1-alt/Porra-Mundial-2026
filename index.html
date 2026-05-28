@@ -4476,7 +4476,6 @@ function mostrarConfirmacion() {
   document.body.appendChild(modal);
 }
 
-
 function renderPlayerDropdown() {
 
     const select =
@@ -4484,39 +4483,46 @@ function renderPlayerDropdown() {
 
     if (!select) return;
 
-    // reset
     select.innerHTML = `
         <option value="">
             Selecciona un jugador...
         </option>
     `;
 
-    // obtener nombres únicos
+    // Detectar automáticamente la columna nombre
+    const firstRow = pronosticosData[0] || {};
+
+    const nombreKey = Object.keys(firstRow).find(
+        k =>
+            k.toLowerCase().includes("nombre") ||
+            k.toLowerCase().includes("jugador") ||
+            k.toLowerCase().includes("name")
+    );
+
+    if (!nombreKey) {
+        console.error("No se encontró columna nombre");
+        return;
+    }
+
     const nombres = [
         ...new Set(
             pronosticosData
-                .map(p => (p.nombre || p.name || "").trim())
+                .map(p => (p[nombreKey] || "").trim())
                 .filter(Boolean)
         )
-    ]
-
-    // ordenar alfabéticamente
-    .sort((a, b) =>
+    ].sort((a, b) =>
         a.localeCompare(b, "es")
     );
 
-    // primera letra mayúscula
-   const capitalizar = (texto) => {
-    return texto
-        .toLowerCase()
-        .replace(
-            /(?<=^|\s)[\p{L}]/gu,
-            letra => letra.toUpperCase()
-        );
-};
+    const capitalizar = texto =>
 
+        texto
+            .toLowerCase()
+            .replace(
+                /(^|\s)\S/g,
+                l => l.toUpperCase()
+            );
 
-    // pintar opciones
     select.innerHTML += nombres.map(nombre => `
 
         <option value="${nombre}">
@@ -4525,7 +4531,6 @@ function renderPlayerDropdown() {
 
     `).join("");
 
-    // reset visual
     select.value = "";
 }
 
@@ -4546,7 +4551,8 @@ function renderRankingPlayersDropdown(){
 
     const nombres = [...new Set(
 
-        data.map(p => p.name?.trim())
+        data
+            .map(p => (p.name || "").trim())
             .filter(Boolean)
 
     )]
@@ -4560,7 +4566,7 @@ function renderRankingPlayersDropdown(){
         texto
             .toLowerCase()
             .replace(
-                /\b\w/g,
+                /(^|\s)\S/g,
                 l => l.toUpperCase()
             );
 
