@@ -3248,21 +3248,48 @@ function parseCSV(csv) {
 }
 // ================= RANKING =================
 
-function renderRanking() {
+const rankingOrdenado = [...data].sort((a, b) => {
 
-    const container =
-        document.getElementById("rankingSection");
+    const aTotal =
+        parseFloat(String(a.total).replace(",", ".")) || 0;
 
-    const rankingOrdenado = [...data].sort((a, b) => {
+    const bTotal =
+        parseFloat(String(b.total).replace(",", ".")) || 0;
 
-        const aTotal =
-            parseFloat(String(a.total).replace(",", ".")) || 0;
+    // Detectar si TODOS tienen 0 puntos
+    const nadieTienePuntos = data.every(p => {
 
-        const bTotal =
-            parseFloat(String(b.total).replace(",", ".")) || 0;
+        const total =
+            parseFloat(String(p.total).replace(",", ".")) || 0;
+
+        return total === 0;
+
+    });
+
+    // =========================
+    // TODOS A 0 → ALFABÉTICO
+    // =========================
+    if (nadieTienePuntos) {
+
+        return a.name.localeCompare(b.name, "es");
+
+    }
+
+    // =========================
+    // ORDEN POR PUNTOS
+    // =========================
+    if (bTotal !== aTotal) {
 
         return bTotal - aTotal;
-    });
+
+    }
+
+    // =========================
+    // EMPATE → ALFABÉTICO
+    // =========================
+    return a.name.localeCompare(b.name, "es");
+
+});
 
     const rankingPrevio = JSON.parse(
         localStorage.getItem("rankingPrevio") || "{}"
@@ -3586,10 +3613,47 @@ window.loadRankingPlayer = function(){
     
     // 2. CALCULAR EL RANKING REAL (Ordenando por puntos como en la tabla principal)
     const rankingOrdenado = [...data].sort((a, b) => {
-        const aTotal = parseFloat(String(a.total).replace(",", ".").trim()) || 0;
-        const bTotal = parseFloat(String(b.total).replace(",", ".").trim()) || 0;
-        return bTotal - aTotal;
+
+    const aTotal =
+        parseFloat(String(a.total).replace(",", ".").trim()) || 0;
+
+    const bTotal =
+        parseFloat(String(b.total).replace(",", ".").trim()) || 0;
+
+    // Detectar si TODOS tienen 0 puntos
+    const nadieTienePuntos = data.every(p => {
+
+        const total =
+            parseFloat(String(p.total).replace(",", ".").trim()) || 0;
+
+        return total === 0;
+
     });
+
+    // =========================
+    // TODOS A 0 → ALFABÉTICO
+    // =========================
+    if (nadieTienePuntos) {
+
+        return a.name.localeCompare(b.name, "es");
+
+    }
+
+    // =========================
+    // ORDEN POR PUNTOS
+    // =========================
+    if (bTotal !== aTotal) {
+
+        return bTotal - aTotal;
+
+    }
+
+    // =========================
+    // EMPATE → ALFABÉTICO
+    // =========================
+    return a.name.localeCompare(b.name, "es");
+
+});
     
     const posicionReal = rankingOrdenado.findIndex(p => p.name === player.name) + 1;
     
