@@ -1998,7 +1998,7 @@ body{
     width:210px;
     min-height:290px;
 
-    border-radius:34px;
+    border-radius:50px;
 
     display:flex;
     flex-direction:column;
@@ -2391,13 +2391,7 @@ body{
 .btn-avatar{
 
     background:
-        linear-gradient(
-            135deg,
-            #2e7d32,
-            #43a047
-        );
-
-    color:white;
+		color: var(--pitch-green);
     border:none;
     border-radius:16px;
 
@@ -3125,7 +3119,7 @@ const URL_MAESTRA =
 	  "https://docs.google.com/spreadsheets/d/e/2PACX-1vSYe1nqTFOllYViQLj9x7NZ0buss9J-pqmIqeSziINNRDL5-a0m-sWcCg_48_zY5iAEhpHvzNYKuqbQ/pub?gid=390514000&single=true&output=csv";
 
         const GOOGLE_SCRIPT_URL =
-          "https://script.google.com/macros/s/AKfycbzjHzMpicYg4C7WIzyEcSdUVUktfMkJ_4UJ2xbEeHKjGX1ZnzB-VUt7bwwfYZ0ZbynSsA/exec";
+          "https://script.google.com/macros/s/AKfycbzuZN3DtTxF3qaT86DQbKAft0qtkzTc_oh1pAA17RiPhWbOa5qmV5Yy8T9B-gFp-LJszQ/exec";
 
 let dropdownListenerAttached = false;
 let pronosticosData = [];
@@ -3156,9 +3150,7 @@ async function initApp() {
 
  const pronos = await fetch(URL_PRONOSTICOS).then(r => r.text());
  pronosticosData = parseCSV(pronos);
-
- renderPlayerDropdown();
-
+	
   const equiposRows = parseCSV(eq);
 
 equiposDisponibles = equiposRows
@@ -3256,19 +3248,51 @@ function parseCSV(csv) {
 
 function renderRanking() {
 
-    const container =
-        document.getElementById("rankingSection");
+const container =
+        document.getElementById("rankingContainer");
+	
+const rankingOrdenado = [...data].sort((a, b) => {
 
-    const rankingOrdenado = [...data].sort((a, b) => {
+    const aTotal =
+        parseFloat(String(a.total).replace(",", ".")) || 0;
 
-        const aTotal =
-            parseFloat(String(a.total).replace(",", ".")) || 0;
+    const bTotal =
+        parseFloat(String(b.total).replace(",", ".")) || 0;
 
-        const bTotal =
-            parseFloat(String(b.total).replace(",", ".")) || 0;
+    // Detectar si TODOS tienen 0 puntos
+    const nadieTienePuntos = data.every(p => {
+
+        const total =
+            parseFloat(String(p.total).replace(",", ".")) || 0;
+
+        return total === 0;
+
+    });
+
+    // =========================
+    // TODOS A 0 → ALFABÉTICO
+    // =========================
+    if (nadieTienePuntos) {
+
+        return a.name.localeCompare(b.name, "es");
+
+    }
+
+    // =========================
+    // ORDEN POR PUNTOS
+    // =========================
+    if (bTotal !== aTotal) {
 
         return bTotal - aTotal;
-    });
+
+    }
+
+    // =========================
+    // EMPATE → ALFABÉTICO
+    // =========================
+    return a.name.localeCompare(b.name, "es");
+
+});
 
     const rankingPrevio = JSON.parse(
         localStorage.getItem("rankingPrevio") || "{}"
@@ -3427,16 +3451,30 @@ function renderRanking() {
 }
 
 const avatars = [];
+
+// BASE LOCAL (para visualizar en el grid)
+const LOCAL_AVATAR_BASE =
+'assets/avatares-futbolistas/';
+
+// BASE GITHUB (para guardar en Sheets)
+const GITHUB_AVATAR_BASE =
+'https://github.com/maencarnacionr1-alt/Porra-Mundial-2026/tree/main/assets/avatares-futbolistas/';
+
+// Avatar por defecto
 let selectedAvatar =
-'assets/avatares-futbolistas/avatar_001.png';
-	
+`${GITHUB_AVATAR_BASE}avatar_001.png`;
+
 for (let i = 1; i <= 73; i++) {
 
     const number = String(i).padStart(3, '0');
 
-    avatars.push(
-        `assets/avatares-futbolistas/avatar_${number}.png`
-    );
+    avatars.push({
+        local:
+            `${LOCAL_AVATAR_BASE}avatar_${number}.png`,
+
+        github:
+            `${GITHUB_AVATAR_BASE}avatar_${number}.png`
+    });
 
 }
 
@@ -3455,7 +3493,7 @@ function openAvatarModal() {
         div.className = 'avatar-option';
 
         div.innerHTML = `
-            <img src="${avatar}" alt="avatar">
+            <img src="${avatar.local}" alt="avatar">
         `;
 
         div.onclick = () => selectAvatar(avatar);
@@ -3478,11 +3516,13 @@ function closeAvatarModal() {
 
 function selectAvatar(avatar) {
 
-    selectedAvatar = avatar;
+    // Guardamos la URL GitHub
+    selectedAvatar = avatar.github;
 
+    // Mostramos la imagen LOCAL
     document.getElementById(
         'selectedAvatarPreview'
-    ).src = avatar;
+    ).src = avatar.local;
 
     closeAvatarModal();
 
@@ -3587,10 +3627,47 @@ window.loadRankingPlayer = function(){
     
     // 2. CALCULAR EL RANKING REAL (Ordenando por puntos como en la tabla principal)
     const rankingOrdenado = [...data].sort((a, b) => {
-        const aTotal = parseFloat(String(a.total).replace(",", ".").trim()) || 0;
-        const bTotal = parseFloat(String(b.total).replace(",", ".").trim()) || 0;
-        return bTotal - aTotal;
+
+    const aTotal =
+        parseFloat(String(a.total).replace(",", ".").trim()) || 0;
+
+    const bTotal =
+        parseFloat(String(b.total).replace(",", ".").trim()) || 0;
+
+    // Detectar si TODOS tienen 0 puntos
+    const nadieTienePuntos = data.every(p => {
+
+        const total =
+            parseFloat(String(p.total).replace(",", ".").trim()) || 0;
+
+        return total === 0;
+
     });
+
+    // =========================
+    // TODOS A 0 → ALFABÉTICO
+    // =========================
+    if (nadieTienePuntos) {
+
+        return a.name.localeCompare(b.name, "es");
+
+    }
+
+    // =========================
+    // ORDEN POR PUNTOS
+    // =========================
+    if (bTotal !== aTotal) {
+
+        return bTotal - aTotal;
+
+    }
+
+    // =========================
+    // EMPATE → ALFABÉTICO
+    // =========================
+    return a.name.localeCompare(b.name, "es");
+
+});
     
     const posicionReal = rankingOrdenado.findIndex(p => p.name === player.name) + 1;
     
@@ -4405,6 +4482,8 @@ function renderPlayerDropdown() {
     const select =
         document.getElementById("playerSelect");
 
+    if (!select) return;
+
     // reset
     select.innerHTML = `
         <option value="">
@@ -4457,7 +4536,7 @@ function renderRankingPlayersDropdown(){
             "rankingPlayerSelect"
         );
 
-    if(!select) return;
+    if (!select) return;
 
     select.innerHTML = `
         <option value="">
