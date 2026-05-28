@@ -1969,18 +1969,6 @@ body{
    TOP 3
 ========================================= */
 
-.podium-first{
-    order: 2;
-}
-
-.podium-second{
-    order: 1;
-}
-
-.podium-third{
-    order: 3;
-}
-
 .top3-podium{
     display:flex;
     justify-content:center;
@@ -1990,7 +1978,9 @@ body{
     flex-wrap:wrap;
 }
 
-/* TARJETA BASE */
+/* =========================================
+   TARJETA BASE
+========================================= */
 
 .podium-card{
     position:relative;
@@ -2014,35 +2004,44 @@ body{
     overflow:hidden;
 }
 
-/* EFECTO HOVER */
+/* =========================================
+   EFECTO HOVER
+========================================= */
 
 .podium-card:hover{
     transform:translateY(-10px) scale(1.03);
 }
 
 /* =========================================
-   ORO
+   CAMPEÓN
 ========================================= */
 
-.podium-first{
+.podium-card.first-place{
+
+    order:2;
+
     background:linear-gradient(
         180deg,
         #fff8dc 0%,
         #fff3b0 100%
-		transform:translateY(-8px);
     );
 
     border:4px solid #f2c94c;
 
     box-shadow:
         0 12px 35px rgba(242,201,76,.25);
+
+    transform:translateY(-12px) scale(1.05);
 }
 
 /* =========================================
-   PLATA
+   SEGUNDO
 ========================================= */
 
-.podium-second{
+.podium-card.second-place{
+
+    order:1;
+
     background:linear-gradient(
         180deg,
         #f7f7f7 0%,
@@ -2056,10 +2055,13 @@ body{
 }
 
 /* =========================================
-   BRONCE
+   TERCERO
 ========================================= */
 
-.podium-third{
+.podium-card.third-place{
+
+    order:3;
+
     background:linear-gradient(
         180deg,
         #fff1e6 0%,
@@ -2150,6 +2152,7 @@ body{
 .rank-arrow.down{
     color:#d32f2f;
 }
+
 /* =========================================
    RESTO DEL RANKING
 ========================================= */
@@ -2251,7 +2254,7 @@ body{
 
     margin-top:4px;
 }
-
+		
 /* =========================================
    AVATAR RESTO
 ========================================= */
@@ -3286,10 +3289,10 @@ function renderRanking() {
 
             nuevoRanking[p.name] = pos;
 
-            let clase = "podium-first";
+           let clase = "first-place";
 
-            if(pos === 2) clase = "podium-second";
-            if(pos === 3) clase = "podium-third";
+			if(pos === 2) clase = "second-place";
+			if(pos === 3) clase = "third-place";
 
             return `
 
