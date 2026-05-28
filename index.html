@@ -3119,7 +3119,7 @@ const URL_MAESTRA =
 	  "https://docs.google.com/spreadsheets/d/e/2PACX-1vSYe1nqTFOllYViQLj9x7NZ0buss9J-pqmIqeSziINNRDL5-a0m-sWcCg_48_zY5iAEhpHvzNYKuqbQ/pub?gid=390514000&single=true&output=csv";
 
         const GOOGLE_SCRIPT_URL =
-          "https://script.google.com/macros/s/AKfycbzuZN3DtTxF3qaT86DQbKAft0qtkzTc_oh1pAA17RiPhWbOa5qmV5Yy8T9B-gFp-LJszQ/exec";
+          "https://script.google.com/macros/s/AKfycbynQ7hsYLNaRYSTY4_foLsQjosXQ3JovtNh9CFsi-BYp0wJvpIxuM8oZy9J6RwZX8UoVQ/exec";
 
 let dropdownListenerAttached = false;
 let pronosticosData = [];
@@ -3150,7 +3150,9 @@ async function initApp() {
 
  const pronos = await fetch(URL_PRONOSTICOS).then(r => r.text());
  pronosticosData = parseCSV(pronos);
-	
+
+ renderPlayerDropdown();
+
   const equiposRows = parseCSV(eq);
 
 equiposDisponibles = equiposRows
@@ -3248,51 +3250,19 @@ function parseCSV(csv) {
 
 function renderRanking() {
 
-const container =
-        document.getElementById("rankingContainer");
-	
-const rankingOrdenado = [...data].sort((a, b) => {
+    const container =
+        document.getElementById("rankingSection");
 
-    const aTotal =
-        parseFloat(String(a.total).replace(",", ".")) || 0;
+    const rankingOrdenado = [...data].sort((a, b) => {
 
-    const bTotal =
-        parseFloat(String(b.total).replace(",", ".")) || 0;
+        const aTotal =
+            parseFloat(String(a.total).replace(",", ".")) || 0;
 
-    // Detectar si TODOS tienen 0 puntos
-    const nadieTienePuntos = data.every(p => {
-
-        const total =
-            parseFloat(String(p.total).replace(",", ".")) || 0;
-
-        return total === 0;
-
-    });
-
-    // =========================
-    // TODOS A 0 → ALFABÉTICO
-    // =========================
-    if (nadieTienePuntos) {
-
-        return a.name.localeCompare(b.name, "es");
-
-    }
-
-    // =========================
-    // ORDEN POR PUNTOS
-    // =========================
-    if (bTotal !== aTotal) {
+        const bTotal =
+            parseFloat(String(b.total).replace(",", ".")) || 0;
 
         return bTotal - aTotal;
-
-    }
-
-    // =========================
-    // EMPATE → ALFABÉTICO
-    // =========================
-    return a.name.localeCompare(b.name, "es");
-
-});
+    });
 
     const rankingPrevio = JSON.parse(
         localStorage.getItem("rankingPrevio") || "{}"
@@ -3451,30 +3421,16 @@ const rankingOrdenado = [...data].sort((a, b) => {
 }
 
 const avatars = [];
-
-// BASE LOCAL (para visualizar en el grid)
-const LOCAL_AVATAR_BASE =
-'assets/avatares-futbolistas/';
-
-// BASE GITHUB (para guardar en Sheets)
-const GITHUB_AVATAR_BASE =
-'https://github.com/maencarnacionr1-alt/Porra-Mundial-2026/tree/main/assets/avatares-futbolistas/';
-
-// Avatar por defecto
 let selectedAvatar =
-`${GITHUB_AVATAR_BASE}avatar_001.png`;
-
+'assets/avatares-futbolistas/avatar_001.png';
+	
 for (let i = 1; i <= 73; i++) {
 
     const number = String(i).padStart(3, '0');
 
-    avatars.push({
-        local:
-            `${LOCAL_AVATAR_BASE}avatar_${number}.png`,
-
-        github:
-            `${GITHUB_AVATAR_BASE}avatar_${number}.png`
-    });
+    avatars.push(
+        `assets/avatares-futbolistas/avatar_${number}.png`
+    );
 
 }
 
@@ -3493,7 +3449,7 @@ function openAvatarModal() {
         div.className = 'avatar-option';
 
         div.innerHTML = `
-            <img src="${avatar.local}" alt="avatar">
+            <img src="${avatar}" alt="avatar">
         `;
 
         div.onclick = () => selectAvatar(avatar);
@@ -3516,13 +3472,11 @@ function closeAvatarModal() {
 
 function selectAvatar(avatar) {
 
-    // Guardamos la URL GitHub
-    selectedAvatar = avatar.github;
+    selectedAvatar = avatar;
 
-    // Mostramos la imagen LOCAL
     document.getElementById(
         'selectedAvatarPreview'
-    ).src = avatar.local;
+    ).src = avatar;
 
     closeAvatarModal();
 
@@ -3627,47 +3581,10 @@ window.loadRankingPlayer = function(){
     
     // 2. CALCULAR EL RANKING REAL (Ordenando por puntos como en la tabla principal)
     const rankingOrdenado = [...data].sort((a, b) => {
-
-    const aTotal =
-        parseFloat(String(a.total).replace(",", ".").trim()) || 0;
-
-    const bTotal =
-        parseFloat(String(b.total).replace(",", ".").trim()) || 0;
-
-    // Detectar si TODOS tienen 0 puntos
-    const nadieTienePuntos = data.every(p => {
-
-        const total =
-            parseFloat(String(p.total).replace(",", ".").trim()) || 0;
-
-        return total === 0;
-
-    });
-
-    // =========================
-    // TODOS A 0 → ALFABÉTICO
-    // =========================
-    if (nadieTienePuntos) {
-
-        return a.name.localeCompare(b.name, "es");
-
-    }
-
-    // =========================
-    // ORDEN POR PUNTOS
-    // =========================
-    if (bTotal !== aTotal) {
-
+        const aTotal = parseFloat(String(a.total).replace(",", ".").trim()) || 0;
+        const bTotal = parseFloat(String(b.total).replace(",", ".").trim()) || 0;
         return bTotal - aTotal;
-
-    }
-
-    // =========================
-    // EMPATE → ALFABÉTICO
-    // =========================
-    return a.name.localeCompare(b.name, "es");
-
-});
+    });
     
     const posicionReal = rankingOrdenado.findIndex(p => p.name === player.name) + 1;
     
@@ -4476,53 +4393,45 @@ function mostrarConfirmacion() {
   document.body.appendChild(modal);
 }
 
+
 function renderPlayerDropdown() {
 
     const select =
         document.getElementById("playerSelect");
 
-    if (!select) return;
-
+    // reset
     select.innerHTML = `
         <option value="">
             Selecciona un jugador...
         </option>
     `;
 
-    // Detectar automáticamente la columna nombre
-    const firstRow = pronosticosData[0] || {};
-
-    const nombreKey = Object.keys(firstRow).find(
-        k =>
-            k.toLowerCase().includes("nombre") ||
-            k.toLowerCase().includes("jugador") ||
-            k.toLowerCase().includes("name")
-    );
-
-    if (!nombreKey) {
-        console.error("No se encontró columna nombre");
-        return;
-    }
-
+    // obtener nombres únicos
     const nombres = [
         ...new Set(
             pronosticosData
-                .map(p => (p[nombreKey] || "").trim())
+                .map(p => (p.nombre || p.name || "").trim())
                 .filter(Boolean)
         )
-    ].sort((a, b) =>
+    ]
+
+    // ordenar alfabéticamente
+    .sort((a, b) =>
         a.localeCompare(b, "es")
     );
 
-    const capitalizar = texto =>
+    // primera letra mayúscula
+   const capitalizar = (texto) => {
+    return texto
+        .toLowerCase()
+        .replace(
+            /(?<=^|\s)[\p{L}]/gu,
+            letra => letra.toUpperCase()
+        );
+};
 
-        texto
-            .toLowerCase()
-            .replace(
-                /(^|\s)\S/g,
-                l => l.toUpperCase()
-            );
 
+    // pintar opciones
     select.innerHTML += nombres.map(nombre => `
 
         <option value="${nombre}">
@@ -4531,6 +4440,7 @@ function renderPlayerDropdown() {
 
     `).join("");
 
+    // reset visual
     select.value = "";
 }
 
@@ -4541,7 +4451,7 @@ function renderRankingPlayersDropdown(){
             "rankingPlayerSelect"
         );
 
-    if (!select) return;
+    if(!select) return;
 
     select.innerHTML = `
         <option value="">
@@ -4551,8 +4461,7 @@ function renderRankingPlayersDropdown(){
 
     const nombres = [...new Set(
 
-        data
-            .map(p => (p.name || "").trim())
+        data.map(p => p.name?.trim())
             .filter(Boolean)
 
     )]
@@ -4566,7 +4475,7 @@ function renderRankingPlayersDropdown(){
         texto
             .toLowerCase()
             .replace(
-                /(^|\s)\S/g,
+                /\b\w/g,
                 l => l.toUpperCase()
             );
 
