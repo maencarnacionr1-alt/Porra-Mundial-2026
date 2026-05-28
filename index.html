@@ -3457,9 +3457,9 @@ function openAvatarModal() {
 
         div.className = 'avatar-option';
 
-        div.innerHTML = `
-            <img src="${avatar}" alt="avatar">
-        `;
+       div.innerHTML = `
+    <img src="${avatar.local}" alt="avatar">
+`;
 
         div.onclick = () => selectAvatar(avatar);
 
@@ -3481,11 +3481,13 @@ function closeAvatarModal() {
 
 function selectAvatar(avatar) {
 
-    selectedAvatar = avatar;
+    // Guardamos la URL GitHub
+    selectedAvatar = avatar.github;
 
+    // Mostramos la imagen LOCAL
     document.getElementById(
         'selectedAvatarPreview'
-    ).src = avatar;
+    ).src = avatar.local;
 
     closeAvatarModal();
 
