@@ -3449,10 +3449,15 @@ const rankingOrdenado = [...data].sort((a, b) => {
 
 const avatars = [];
 
-// URL BASE DE TUS AVATARES EN GITHUB
+// BASE LOCAL (para visualizar en el grid)
+const LOCAL_AVATAR_BASE =
+'assets/avatares-futbolistas/';
+
+// BASE GITHUB (para guardar en Sheets)
 const GITHUB_AVATAR_BASE =
 'https://github.com/maencarnacionr1-alt/Porra-Mundial-2026/tree/main/assets/avatares-futbolistas/';
 
+// Avatar por defecto
 let selectedAvatar =
 `${GITHUB_AVATAR_BASE}avatar_001.png`;
 
@@ -3460,9 +3465,13 @@ for (let i = 1; i <= 73; i++) {
 
     const number = String(i).padStart(3, '0');
 
-    avatars.push(
-        `${GITHUB_AVATAR_BASE}avatar_${number}.png`
-    );
+    avatars.push({
+        local:
+            `${LOCAL_AVATAR_BASE}avatar_${number}.png`,
+
+        github:
+            `${GITHUB_AVATAR_BASE}avatar_${number}.png`
+    });
 
 }
 
@@ -3481,7 +3490,7 @@ function openAvatarModal() {
         div.className = 'avatar-option';
 
         div.innerHTML = `
-            <img src="${avatar}" alt="avatar">
+            <img src="${avatar.local}" alt="avatar">
         `;
 
         div.onclick = () => selectAvatar(avatar);
@@ -3504,11 +3513,13 @@ function closeAvatarModal() {
 
 function selectAvatar(avatar) {
 
-    selectedAvatar = avatar;
+    // Guardamos la URL GitHub
+    selectedAvatar = avatar.github;
 
+    // Mostramos la imagen LOCAL
     document.getElementById(
         'selectedAvatarPreview'
-    ).src = avatar;
+    ).src = avatar.local;
 
     closeAvatarModal();
 
