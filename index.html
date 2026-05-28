@@ -2031,12 +2031,15 @@ body{
     box-shadow:
         0 12px 35px rgba(242,201,76,.25);
 
-    box-shadow:
-        0 12px 35px rgba(242,201,76,.25);
-
     transform:translateY(-12px) scale(1.05);
 }
-		
+
+/* HOVER DEL PRIMERO */
+
+.podium-card.first-place:hover{
+    transform:translateY(-20px) scale(1.08);
+}
+
 /* =========================================
    SEGUNDO
 ========================================= */
@@ -2044,7 +2047,7 @@ body{
 .podium-card.second-place{
 
     order:1;
-	
+
     background:linear-gradient(
         180deg,
         #f7f7f7 0%,
@@ -2055,6 +2058,10 @@ body{
 
     box-shadow:
         0 12px 30px rgba(0,0,0,.08);
+
+    /* IGUALAMOS ALTURA Y ESPACIADO */
+    min-height:290px;
+    padding:28px 20px;
 }
 
 /* =========================================
@@ -2064,7 +2071,6 @@ body{
 .podium-card.third-place{
 
     order:3;
-	
 
     background:linear-gradient(
         180deg,
@@ -2076,6 +2082,10 @@ body{
 
     box-shadow:
         0 12px 30px rgba(217,130,43,.18);
+
+    /* EXACTAMENTE IGUAL QUE EL SEGUNDO */
+    min-height:290px;
+    padding:28px 20px;
 }
 
 /* =========================================
