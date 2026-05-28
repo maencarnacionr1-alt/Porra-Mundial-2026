@@ -2576,6 +2576,52 @@ body{
 
 }
 
+/* =========================================
+   DESKTOP FIX PODIUM
+========================================= */
+
+@media (min-width: 992px){
+
+    .top3-podium{
+        align-items:flex-end;
+        flex-wrap:nowrap;
+    }
+
+    .podium-card{
+        width:210px;
+    }
+
+    .podium-card.first-place{
+        transform:translateY(-18px);
+        z-index:3;
+    }
+
+    .podium-card.second-place,
+    .podium-card.third-place{
+        transform:none;
+    }
+
+    .podium-card.first-place .podium-avatar{
+        width:102px;
+        height:102px;
+    }
+
+    .podium-card.second-place .podium-avatar,
+    .podium-card.third-place .podium-avatar{
+        width:88px;
+        height:88px;
+    }
+
+    .podium-card.first-place .podium-points{
+        font-size:2.8rem;
+    }
+
+    .podium-card.second-place .podium-points,
+    .podium-card.third-place .podium-points{
+        font-size:2.2rem;
+    }
+}
+
 
     </style>
 
