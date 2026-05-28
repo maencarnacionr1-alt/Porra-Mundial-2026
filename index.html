@@ -1986,8 +1986,7 @@ body{
     position:relative;
 
     width:210px;
-    min-height:290px;
-
+    height:290px;
     border-radius:50px;
 
     display:flex;
@@ -2577,51 +2576,41 @@ body{
 }
 
 /* =========================================
-   DESKTOP FIX PODIUM
+   PODIUM DESKTOP REAL
 ========================================= */
 
-@media (min-width: 992px){
+@media (min-width:992px){
 
     .top3-podium{
         align-items:flex-end;
-        flex-wrap:nowrap;
-    }
-
-    .podium-card{
-        width:210px;
     }
 
     .podium-card.first-place{
-        transform:translateY(-18px);
-        z-index:3;
+        height:340px;
+        margin-bottom:12px;
     }
 
-    .podium-card.second-place,
+    .podium-card.second-place{
+        height:285px;
+    }
+
     .podium-card.third-place{
-        transform:none;
+        height:275px;
     }
 
     .podium-card.first-place .podium-avatar{
-        width:102px;
-        height:102px;
+        width:108px;
+        height:108px;
     }
 
-    .podium-card.second-place .podium-avatar,
-    .podium-card.third-place .podium-avatar{
-        width:88px;
-        height:88px;
+    .podium-card.first-place .podium-name{
+        font-size:1.7rem;
     }
 
     .podium-card.first-place .podium-points{
-        font-size:2.8rem;
-    }
-
-    .podium-card.second-place .podium-points,
-    .podium-card.third-place .podium-points{
-        font-size:2.2rem;
+        font-size:3rem;
     }
 }
-
 
     </style>
 
