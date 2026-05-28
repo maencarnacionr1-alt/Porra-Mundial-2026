@@ -3421,15 +3421,20 @@ function renderRanking() {
 }
 
 const avatars = [];
+
+// URL BASE DE TUS AVATARES EN GITHUB
+const GITHUB_AVATAR_BASE =
+'https://github.com/maencarnacionr1-alt/Porra-Mundial-2026/tree/main/assets/avatares-futbolistas/';
+
 let selectedAvatar =
-'assets/avatares-futbolistas/avatar_001.png';
-	
+`${GITHUB_AVATAR_BASE}avatar_001.png`;
+
 for (let i = 1; i <= 73; i++) {
 
     const number = String(i).padStart(3, '0');
 
     avatars.push(
-        `assets/avatares-futbolistas/avatar_${number}.png`
+        `${GITHUB_AVATAR_BASE}avatar_${number}.png`
     );
 
 }
