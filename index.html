@@ -3250,51 +3250,19 @@ function parseCSV(csv) {
 
 function renderRanking() {
 
-const container =
-        document.getElementById("rankingContainer");
-	
-const rankingOrdenado = [...data].sort((a, b) => {
+    const container =
+        document.getElementById("rankingSection");
 
-    const aTotal =
-        parseFloat(String(a.total).replace(",", ".")) || 0;
+    const rankingOrdenado = [...data].sort((a, b) => {
 
-    const bTotal =
-        parseFloat(String(b.total).replace(",", ".")) || 0;
+        const aTotal =
+            parseFloat(String(a.total).replace(",", ".")) || 0;
 
-    // Detectar si TODOS tienen 0 puntos
-    const nadieTienePuntos = data.every(p => {
-
-        const total =
-            parseFloat(String(p.total).replace(",", ".")) || 0;
-
-        return total === 0;
-
-    });
-
-    // =========================
-    // TODOS A 0 → ALFABÉTICO
-    // =========================
-    if (nadieTienePuntos) {
-
-        return a.name.localeCompare(b.name, "es");
-
-    }
-
-    // =========================
-    // ORDEN POR PUNTOS
-    // =========================
-    if (bTotal !== aTotal) {
+        const bTotal =
+            parseFloat(String(b.total).replace(",", ".")) || 0;
 
         return bTotal - aTotal;
-
-    }
-
-    // =========================
-    // EMPATE → ALFABÉTICO
-    // =========================
-    return a.name.localeCompare(b.name, "es");
-
-});
+    });
 
     const rankingPrevio = JSON.parse(
         localStorage.getItem("rankingPrevio") || "{}"
@@ -3454,15 +3422,10 @@ const rankingOrdenado = [...data].sort((a, b) => {
 
 const avatars = [];
 
-// BASE LOCAL (para visualizar en el grid)
-const LOCAL_AVATAR_BASE =
-'assets/avatares-futbolistas/';
-
-// BASE GITHUB (para guardar en Sheets)
+// URL BASE DE TUS AVATARES EN GITHUB
 const GITHUB_AVATAR_BASE =
 'https://github.com/maencarnacionr1-alt/Porra-Mundial-2026/tree/main/assets/avatares-futbolistas/';
 
-// Avatar por defecto
 let selectedAvatar =
 `${GITHUB_AVATAR_BASE}avatar_001.png`;
 
@@ -3470,13 +3433,9 @@ for (let i = 1; i <= 73; i++) {
 
     const number = String(i).padStart(3, '0');
 
-    avatars.push({
-        local:
-            `${LOCAL_AVATAR_BASE}avatar_${number}.png`,
-
-        github:
-            `${GITHUB_AVATAR_BASE}avatar_${number}.png`
-    });
+    avatars.push(
+        `${GITHUB_AVATAR_BASE}avatar_${number}.png`
+    );
 
 }
 
@@ -3495,7 +3454,7 @@ function openAvatarModal() {
         div.className = 'avatar-option';
 
         div.innerHTML = `
-            <img src="${avatar.local}" alt="avatar">
+            <img src="${avatar}" alt="avatar">
         `;
 
         div.onclick = () => selectAvatar(avatar);
@@ -3518,13 +3477,11 @@ function closeAvatarModal() {
 
 function selectAvatar(avatar) {
 
-    // Guardamos la URL GitHub
-    selectedAvatar = avatar.github;
+    selectedAvatar = avatar;
 
-    // Mostramos la imagen LOCAL
     document.getElementById(
         'selectedAvatarPreview'
-    ).src = avatar.local;
+    ).src = avatar;
 
     closeAvatarModal();
 
@@ -3629,47 +3586,10 @@ window.loadRankingPlayer = function(){
     
     // 2. CALCULAR EL RANKING REAL (Ordenando por puntos como en la tabla principal)
     const rankingOrdenado = [...data].sort((a, b) => {
-
-    const aTotal =
-        parseFloat(String(a.total).replace(",", ".").trim()) || 0;
-
-    const bTotal =
-        parseFloat(String(b.total).replace(",", ".").trim()) || 0;
-
-    // Detectar si TODOS tienen 0 puntos
-    const nadieTienePuntos = data.every(p => {
-
-        const total =
-            parseFloat(String(p.total).replace(",", ".").trim()) || 0;
-
-        return total === 0;
-
-    });
-
-    // =========================
-    // TODOS A 0 → ALFABÉTICO
-    // =========================
-    if (nadieTienePuntos) {
-
-        return a.name.localeCompare(b.name, "es");
-
-    }
-
-    // =========================
-    // ORDEN POR PUNTOS
-    // =========================
-    if (bTotal !== aTotal) {
-
+        const aTotal = parseFloat(String(a.total).replace(",", ".").trim()) || 0;
+        const bTotal = parseFloat(String(b.total).replace(",", ".").trim()) || 0;
         return bTotal - aTotal;
-
-    }
-
-    // =========================
-    // EMPATE → ALFABÉTICO
-    // =========================
-    return a.name.localeCompare(b.name, "es");
-
-});
+    });
     
     const posicionReal = rankingOrdenado.findIndex(p => p.name === player.name) + 1;
     
