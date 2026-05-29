@@ -1887,285 +1887,187 @@ body{
     font-weight:700;
 }
 
-.podium-grid {
-    display:grid;
-    grid-template-columns:1fr;
-    gap:14px;
-}
-
-.podium-card {
-    border-radius:18px;
-    padding:18px;
-    color:white;
-    font-weight:800;
-    display:flex;
-    align-items:center;
-    gap:14px;
-    font-size:1.05rem;
-}
-
-.gold {
-    background: linear-gradient(135deg,#caa100,#f7d54a);
-}
-
-.silver {
-    background: linear-gradient(135deg,#7e7e7e,#cfcfcf);
-}
-
-.bronze {
-    background: linear-gradient(135deg,#8a4b08,#c57b39);
-}
-
-.stage-label {
-    font-size:0.8rem;
-    opacity:0.9;
-}
-
-@media(max-width:768px){
-
-    .top8-grid,
-    .groups-grid-predictions,
-    .knockout-grid{
-        grid-template-columns:1fr;
-    }
-}
-
-/* =========================
-   DIVISORES DE CATEGORÍAS
-========================= */
-
-.pred-section-divider{
-    width:100%;
-    height:2px;
-    background:linear-gradient(
-        90deg,
-        transparent,
-        #fbc02d,
-        transparent
-    );
-    margin:8px 0 18px 0;
-    border-radius:999px;
-}
-
-.pred-section-divider{
-    width:100%;
-    height:1px;
-    background:rgba(251,192,45,0.5);
-    margin:10px 0 20px 0;
-}
-
 /* =========================================
    RANKING MODERNO PREMIUM
 ========================================= */
 
-.ranking-modern-wrapper{
-    width:100%;
-    max-width:1200px;
-    margin:0 auto;
-    padding:20px;
+.ranking-modern-wrapper {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    box-sizing: border-box;
 }
 
 /* =========================================
    TOP 3 PREMIUM MODERNO
 ========================================= */
 
-.top3-podium{
-    display:flex;
-    justify-content:center;
-    align-items:flex-end;
-    gap:18px;
-    margin-bottom:32px;
-    flex-wrap:nowrap;
+.top3-podium {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 16px;
+    margin-bottom: 32px;
+    flex-wrap: nowrap;
+    width: 100%;
 }
 
 /* =========================================
-   TARJETA BASE
+   TARJETA BASE (TAMAÑO IDÉNTICO PARA TODAS)
 ========================================= */
 
-.podium-card{
+.podium-card {
+    position: relative;
+    width: 185px;
+    height: 260px; /* Incrementado ligeramente para dar aire al contenido */
+    border-radius: 28px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between; /* Distribuye el espacio eficientemente */
+    padding: 16px 12px;
+    box-sizing: border-box;
+    transition: transform .28s ease, box-shadow .28s ease;
+    cursor: pointer;
+    overflow: hidden; /* Evita que cualquier elemento se salga de los bordes redondeados */
+}
 
-    position:relative;
-
-    width:185px;
-    height:250px;
-
-    border-radius:36px;
-
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:space-between;
-
-    padding:22px 18px;
-
-    box-sizing:border-box;
-
-    transition:
-        transform .28s ease,
-        box-shadow .28s ease;
-
-    cursor:pointer;
-
-    overflow:visible;
+/* Hover general */
+.podium-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 18px 30px rgba(0,0,0,.10);
 }
 
 /* =========================================
-   HOVER GENERAL
+   PRIMER PUESTO (DESTACA POR ELEVACIÓN, NO POR TAMAÑO)
 ========================================= */
 
-.podium-card:hover{
-
-    transform:translateY(-6px);
-
-    box-shadow:
-        0 18px 30px rgba(0,0,0,.10);
-}
-
-/* =========================================
-   PRIMER PUESTO
-========================================= */
-
-.podium-card.first-place{
-
-    order:2;
-
-    width:195px;
-    height:270px;
-
-    transform:translateY(-10px);
-
-    background:
-        linear-gradient(
-            180deg,
-            #fff8dc 0%,
-            #fff3b0 100%
-        );
-
-    border:3px solid #f2c94c;
-
-    box-shadow:
-        0 10px 28px rgba(242,201,76,.18);
+.podium-card.first-place {
+    order: 2;
+    width: 185px; /* Mismo ancho que las demás */
+    height: 260px; /* Mismo alto que las demás */
+    transform: translateY(-12px); /* Se eleva permanentemente para destacar */
+    background: linear-gradient(180deg, #fff8dc 0%, #fff3b0 100%);
+    border: 3px solid #f2c94c;
+    box-shadow: 0 10px 28px rgba(242,201,76,.18);
 }
 
 /* Hover específico campeón */
-
-.podium-card.first-place:hover{
-
-    transform:translateY(-16px);
-
-    box-shadow:
-        0 22px 40px rgba(242,201,76,.22);
+.podium-card.first-place:hover {
+    transform: translateY(-18px);
+    box-shadow: 0 22px 40px rgba(242,201,76,.22);
 }
 
 /* =========================================
-   SEGUNDO
+   SEGUNDO PUESTO
 ========================================= */
 
-.podium-card.second-place{
-
-    order:1;
-
-    background:
-        linear-gradient(
-            180deg,
-            #f7f7f7 0%,
-            #ececec 100%
-        );
-
-    border:3px solid #d9d9d9;
-
-    box-shadow:
-        0 10px 24px rgba(0,0,0,.06);
+.podium-card.second-place {
+    order: 1;
+    background: linear-gradient(180deg, #f7f7f7 0%, #ececec 100%);
+    border: 3px solid #d9d9d9;
+    box-shadow: 0 10px 24px rgba(0,0,0,.06);
 }
 
 /* =========================================
-   TERCERO
+   TERCERO PUESTO
 ========================================= */
 
-.podium-card.third-place{
-
-    order:3;
-
-    background:
-        linear-gradient(
-            180deg,
-            #fff3ea 0%,
-            #ffe0c7 100%
-        );
-
-    border:3px solid #d9822b;
-
-    box-shadow:
-        0 10px 24px rgba(217,130,43,.12);
+.podium-card.third-place {
+    order: 3;
+    background: linear-gradient(180deg, #fff3ea 0%, #ffe0c7 100%);
+    border: 3px solid #d9822b;
+    box-shadow: 0 10px 24px rgba(217,130,43,.12);
 }
 
 /* =========================================
-   AVATAR
+   ELEMENTOS INTERNOS (MÁRGENES CONTROLADOS)
 ========================================= */
 
-.podium-avatar{
+.podium-avatar {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid rgba(255,255,255,.9);
+    box-shadow: 0 6px 16px rgba(0,0,0,.12);
+    margin-bottom: 4px; /* Reducido para evitar empujar el texto */
+    flex-shrink: 0; /* Evita que el avatar se deforme en pantallas pequeñas */
+}
 
-    width:78px;
-    height:78px;
+.podium-name {
+    font-size: 1rem;
+    font-weight: 800;
+    color: #10213a;
+    text-align: center;
+    line-height: 1.2;
+    margin: 0;
+    word-break: break-word; /* Evita que nombres largos rompan la tarjeta */
+}
 
-    border-radius:50%;
+.podium-points {
+    font-size: 1.8rem;
+    font-weight: 900;
+    color: #1b5e20;
+    line-height: 1;
+    margin: 4px 0;
+}
 
-    object-fit:cover;
-
-    border:4px solid rgba(255,255,255,.9);
-
-    box-shadow:
-        0 6px 16px rgba(0,0,0,.12);
-
-    margin-bottom:16px;
+.podium-rank {
+    font-size: 1.1rem;
+    font-weight: 900;
+    color: #4f4f4f;
+    margin: 0;
 }
 
 /* =========================================
-   NOMBRE
+   ADAPTABILIDAD RESPONSIVE (MÓVIL)
 ========================================= */
 
-.podium-name{
+@media (max-width: 768px) {
+    .top3-podium {
+        gap: 8px; /* Reduce la separación en pantallas pequeñas */
+        padding: 0 4px;
+        box-sizing: border-box;
+    }
 
-    font-size:1.05rem;
-    font-weight:800;
+    .podium-card {
+        width: 32%; /* Las tres tarjetas ocupan el ancho de la pantalla proporcionalmente */
+        height: 220px; /* Reducción de altura armónica para móvil */
+        padding: 12px 6px;
+        border-radius: 20px;
+    }
 
-    color:#10213a;
+    .podium-card.first-place {
+        width: 32%;
+        height: 220px;
+        transform: translateY(-10px); /* Sigue destacando hacia arriba en móvil */
+    }
 
-    text-align:center;
+    .podium-card.first-place:hover {
+        transform: translateY(-14px);
+    }
 
-    line-height:1.2;
+    .podium-avatar {
+        width: 55px; /* Avatares más pequeños en móvil */
+        height: 55px;
+    }
 
-    margin-bottom:18px;
+    .podium-name {
+        font-size: 0.85rem; /* Texto legible pero compacto */
+    }
+
+    .podium-points {
+        font-size: 1.5rem;
+    }
+
+    .podium-rank {
+        font-size: 0.95rem;
+    }
 }
 
-/* =========================================
-   PUNTOS
-========================================= */
-
-.podium-points{
-
-    font-size:2.1rem;
-    font-weight:900;
-
-    color:#1b5e20;
-
-    line-height:1;
-
-    margin-bottom:14px;
-}
-
-/* =========================================
-   POSICIÓN
-========================================= */
-
-.podium-rank{
-
-    font-size:1.15rem;
-    font-weight:900;
-
-    color:#4f4f4f;
-}
-
+		
 /* =========================================
    FLECHAS
 ========================================= */
