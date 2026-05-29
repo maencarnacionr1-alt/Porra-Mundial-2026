@@ -2026,54 +2026,52 @@ body{
 
 @media (max-width: 768px) {
     .top3-podium {
-        gap: 4px; 
+        gap: 6px; 
         width: calc(100% + 8px); 
         margin-left: -4px; 
         padding: 0 4px;
         box-sizing: border-box;
-        margin-top: 20px; /* Añade espacio arriba para que el primer puesto no choque con el reloj */
+        margin-top: 14px;
     }
 
     .podium-card {
         width: 33.33% !important; 
-        height: 185px; 
-        padding: 10px 4px; 
+        height: 190px !important; /* Altura idéntica forzada para asegurar simetría perfecta */
+        padding: 10px 4px 12px 4px; 
         border-radius: 16px;
         box-sizing: border-box !important;
     }
 
     .podium-card.first-place {
         width: 33.33% !important;
-        height: 185px;
-        /* Mayor elevación física hacia arriba para destacar igual que en PC */
-        transform: translateY(-16px); 
-        /* Sombra premium dorada más intensa para darle efecto de flotación */
-        box-shadow: 0 12px 24px rgba(242, 201, 76, 0.35); 
-        z-index: 2; /* Asegura que se dibuje por encima de las tarjetas laterales */
+        height: 190px !important; /* Mismo alto exacto */
+        transform: translateY(-8px); /* Elevación justa para destacar sin encogerse */
+        box-shadow: 0 10px 20px rgba(242, 201, 76, 0.3); 
+        z-index: 2; 
     }
 
     .podium-card.first-place:hover {
-        transform: translateY(-20px);
-        box-shadow: 0 16px 28px rgba(242, 201, 76, 0.45);
+        transform: translateY(-12px);
     }
 
     .podium-avatar {
-        width: 40px; 
-        height: 40px;
+        width: 42px; 
+        height: 42px;
         border: 2px solid rgba(255,255,255,.9);
         margin-bottom: 2px;
     }
 
     .podium-name {
-        font-size: 0.7rem; 
-        line-height: 1.1;
+        font-size: 0.72rem; 
+        line-height: 1.15;
         font-weight: 700;
         overflow-wrap: anywhere;
     }
 
     .podium-points {
-        font-size: 1.15rem; 
-        font-weight: 800;
+        font-size: 1rem !important; /* Tamaño clonado de la tarjeta inferior (Rank #4) */
+        font-weight: 900;
+        color: #1b5e20;
         margin: 2px 0;
     }
 
