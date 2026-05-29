@@ -2006,7 +2006,7 @@ body{
 
     cursor:pointer;
 
-    overflow:hidden;
+    overflow:visible;
 }
 
 /* =========================================
@@ -2349,50 +2349,47 @@ body{
         transform:translateY(-8px);
     }
 
-    .podium-card{
-        width:30%;
-        min-width:95px;
-
-        height:auto;
-        min-height:170px;
-
-        padding:12px 8px;
+    .top3-podium{
+        gap:12px;
+        margin-bottom:24px;
     }
 
-    .podium-first{
-        width:34%;
-        min-width:110px;
+    .podium-card{
 
-        min-height:190px;
+        width:135px;
+        height:205px;
+
+        padding:16px 12px;
+
+        border-radius:28px;
+    }
+
+    .podium-card.first-place{
+        transform:translateY(-6px) scale(1.03);
     }
 
     .podium-avatar{
-        width:46px;
-        height:46px;
-    }
+        width:68px;
+        height:68px;
 
-    .podium-first .podium-avatar{
-        width:58px;
-        height:58px;
+        margin-bottom:10px;
     }
 
     .podium-name{
-        font-size:.8rem;
+        font-size:1.05rem;
+        margin-bottom:6px;
     }
 
     .podium-points{
-        font-size:1.2rem;
-    }
-
-    .podium-first .podium-points{
-        font-size:1.6rem;
+        font-size:2rem;
+        margin-bottom:4px;
     }
 
     .podium-rank{
-        font-size:.75rem;
+        font-size:1rem;
     }
 }
-
+    
 /* =========================
    AVATAR REGISTER
 ========================= */
