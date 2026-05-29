@@ -1888,7 +1888,7 @@ body{
 }
 
 /* =========================================
-   RANKING MODERNO PREMIUM (CONTENEDOR AISLADO)
+   RANKING MODERNO PREMIUM (CON FONDO TEMÁTICO SEGURO)
 ========================================= */
 
 .ranking-modern-wrapper {
@@ -1897,8 +1897,21 @@ body{
     margin: 24px auto;
     padding: 24px;
     box-sizing: border-box;
-    /* Fondo claro premium exclusivo para esta sección, no rompe el resto de la web */
-    background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+    
+    /* CAPA 1: El degradado claro que ya teníamos */
+    background-image: linear-gradient(180deg, rgba(248, 250, 252, 0.95) 0%, rgba(241, 245, 249, 0.95) 100%), 
+    /* CAPA 2: Imagen del Mundial en alta resolución (Estadio/Textura deportiva) */
+    url('https://unsplash.com');
+    
+    /* Configuración de la imagen de fondo */
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    
+    /* El truco mágico: Mezcla la imagen con el degradado para que quede como una marca de agua sutil */
+    background-blend-mode: overlay; 
+    opacity: 0.99; /* Fuerza el renderizado limpio en navegadores móviles */
+
     border-radius: 32px;
     border: 1px solid #e2e8f0;
 }
@@ -1934,6 +1947,8 @@ body{
     box-sizing: border-box;
     transition: transform .32s cubic-bezier(0.25, 1, 0.5, 1), box-shadow .32s ease;
     cursor: pointer;
+    /* Efecto cristal sutil sobre las tarjetas para que resalten sobre la imagen de fondo */
+    backdrop-filter: blur(4px);
 }
 
 /* Hover general */
@@ -1951,12 +1966,11 @@ body{
     width: 185px;
     height: 260px;
     transform: translateY(-12px);
-    background: linear-gradient(180deg, #fffcf0 0%, #fff3b0 100%);
+    background: linear-gradient(180deg, rgba(255, 252, 240, 0.95) 0%, rgba(255, 243, 176, 0.95) 100%);
     border: 3px solid #f2c94c;
     box-shadow: 0 10px 24px rgba(242,201,76,0.22);
 }
 
-/* Borde del avatar personalizado para el ganador (Ya no se camufla) */
 .podium-card.first-place .podium-avatar {
     border: 4px solid #f2c94c;
     box-shadow: 0 4px 12px rgba(242,201,76,0.3);
@@ -1973,7 +1987,7 @@ body{
 
 .podium-card.second-place {
     order: 1;
-    background: linear-gradient(180deg, #ffffff 0%, #f1f3f5 100%);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.95) 0%, rgba(241, 243, 245, 0.95) 100%);
     border: 3px solid #cbd5e1;
     box-shadow: 0 10px 24px rgba(0,0,0,0.04);
 }
@@ -1989,7 +2003,7 @@ body{
 
 .podium-card.third-place {
     order: 3;
-    background: linear-gradient(180deg, #fff7f2 0%, #ffe6d5 100%);
+    background: linear-gradient(180deg, rgba(255, 247, 242, 0.95) 0%, rgba(255, 230, 213, 0.95) 100%);
     border: 3px solid #e29547;
     box-shadow: 0 10px 24px rgba(226,149,71,0.12);
 }
@@ -2015,7 +2029,7 @@ body{
 .podium-name {
     font-size: 1rem;
     font-weight: 800;
-    color: #0f172a; /* Tono pizarra oscuro muy elegante */
+    color: #0f172a; 
     text-align: center;
     line-height: 1.2;
     margin: 0;
@@ -2025,13 +2039,13 @@ body{
 .podium-points {
     font-size: 1.8rem;
     font-weight: 900;
-    color: #166534; /* Verde esmeralda premium */
+    color: #166534; 
     line-height: 1;
     margin: 4px 0;
-    background: rgba(255, 255, 255, 0.6); /* Cápsula sutil que estiliza los puntos */
+    background: rgba(255, 255, 255, 0.75); /* Incrementada opacidad para legibilidad total */
     padding: 4px 12px;
     border-radius: 99px;
-    border: 1px solid rgba(0,0,0,0.03);
+    border: 1px solid rgba(0,0,0,0.05);
 }
 
 .podium-rank {
@@ -2047,7 +2061,7 @@ body{
 
 @media (max-width: 768px) {
     .ranking-modern-wrapper {
-        padding: 14px 8px; /* Ajuste de padding del contenedor en móvil */
+        padding: 14px 8px; 
         margin: 12px auto;
         border-radius: 20px;
     }
@@ -2084,7 +2098,7 @@ body{
     .podium-avatar {
         width: 42px; 
         height: 42px;
-        border-width: 2px !important; /* Bordes más finos acordes al tamaño en móvil */
+        border-width: 2px !important; 
     }
 
     .podium-name {
