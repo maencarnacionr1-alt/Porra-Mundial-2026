@@ -1926,7 +1926,7 @@ body{
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
-    padding: 16px 12px 20px 12px; /* Más espacio abajo para la posición */
+    padding: 16px 12px 20px 12px;
     box-sizing: border-box;
     transition: transform .28s ease, box-shadow .28s ease;
     cursor: pointer;
@@ -2026,48 +2026,52 @@ body{
 
 @media (max-width: 768px) {
     .top3-podium {
-        gap: 6px; /* Ajuste fino de separación */
+        gap: 4px; /* Separación mínima para ganar espacio de pantalla */
+        width: calc(100% + 8px); /* Expande ligeramente el contenedor a los lados */
+        margin-left: -4px; /* Centra el contenedor expandido */
         padding: 0 4px;
         box-sizing: border-box;
     }
 
     .podium-card {
-        width: 32%;
-        height: 215px; /* Reducción milimétrica para ajustar proporciones */
-        padding: 10px 4px 14px 4px; /* Mayor margen interno abajo */
-        border-radius: 20px;
+        width: 33.33% !important; /* Fuerza matemática pura: las 3 miden idéntico */
+        height: 200px; /* Altura compacta ideal para móviles pequeños */
+        padding: 8px 4px 12px 4px; /* Reducción de relleno interior */
+        border-radius: 18px;
+        box-sizing: border-box !important;
     }
 
     .podium-card.first-place {
-        width: 32%;
-        height: 215px;
-        transform: translateY(-10px);
+        width: 33.33% !important;
+        height: 200px;
+        transform: translateY(-8px); /* Elevación sutil para que no tape el contador de arriba */
     }
 
     .podium-card.first-place:hover {
-        transform: translateY(-14px);
+        transform: translateY(-12px);
     }
 
     .podium-avatar {
-        width: 46px; /* Reducido para dar espacio vital al texto y números */
-        height: 46px;
-        border: 3px solid rgba(255,255,255,.9);
+        width: 42px; /* Avatar optimizado para pantallas compactas */
+        height: 42px;
+        border: 2px solid rgba(255,255,255,.9);
     }
 
     .podium-name {
-        font-size: 0.8rem; /* Tamaño óptimo para evitar que las letras se corten solas */
-        max-width: 100%;
+        font-size: 0.75rem; /* Tamaño compacto para asegurar que "Miguel Ángel" quepa perfecto */
+        line-height: 1.1;
         overflow-wrap: anywhere;
     }
 
     .podium-points {
-        font-size: 1.4rem;
+        font-size: 1.2rem; /* Puntos más pequeños para dar aire abajo */
         margin: 2px 0;
     }
 
     .podium-rank {
-        font-size: 0.9rem;
+        font-size: 0.85rem;
         line-height: 1;
+        margin-top: auto; /* Empuja el número firmemente abajo pero con margen asegurado */
     }
 }
 
