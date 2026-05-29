@@ -1966,16 +1966,16 @@ body{
 }
 
 /* =========================================
-   TOP 3
+   TOP 3 PREMIUM MODERNO
 ========================================= */
 
 .top3-podium{
     display:flex;
     justify-content:center;
     align-items:flex-end;
-    gap:22px;
-    margin-bottom:40px;
-    flex-wrap:wrap;
+    gap:18px;
+    margin-bottom:32px;
+    flex-wrap:nowrap;
 }
 
 /* =========================================
@@ -1983,21 +1983,26 @@ body{
 ========================================= */
 
 .podium-card{
+
     position:relative;
 
-    width:210px;
-    min-height:290px;
+    width:185px;
+    height:250px;
 
-    border-radius:50px;
+    border-radius:36px;
 
     display:flex;
     flex-direction:column;
     align-items:center;
     justify-content:flex-start;
 
-    padding:28px 20px;
+    padding:22px 18px;
 
-    transition:all .35s ease;
+    box-sizing:border-box;
+
+    transition:
+        transform .28s ease,
+        box-shadow .28s ease;
 
     cursor:pointer;
 
@@ -2005,39 +2010,51 @@ body{
 }
 
 /* =========================================
-   EFECTO HOVER
+   HOVER GENERAL
 ========================================= */
 
 .podium-card:hover{
-    transform:translateY(-10px) scale(1.03);
+
+    transform:translateY(-6px);
+
+    box-shadow:
+        0 18px 30px rgba(0,0,0,.10);
 }
 
 /* =========================================
-   CAMPEÓN
+   PRIMER PUESTO
 ========================================= */
 
 .podium-card.first-place{
 
     order:2;
 
-    background:linear-gradient(
-        180deg,
-        #fff8dc 0%,
-        #fff3b0 100%
-    );
+    width:195px;
+    height:270px;
 
-    border:4px solid #f2c94c;
+    transform:translateY(-10px);
+
+    background:
+        linear-gradient(
+            180deg,
+            #fff8dc 0%,
+            #fff3b0 100%
+        );
+
+    border:3px solid #f2c94c;
 
     box-shadow:
-        0 12px 35px rgba(242,201,76,.25);
-
-    transform:translateY(-12px) scale(1.05);
+        0 10px 28px rgba(242,201,76,.18);
 }
 
-/* HOVER DEL PRIMERO */
+/* Hover específico campeón */
 
 .podium-card.first-place:hover{
-    transform:translateY(-20px) scale(1.08);
+
+    transform:translateY(-16px);
+
+    box-shadow:
+        0 22px 40px rgba(242,201,76,.22);
 }
 
 /* =========================================
@@ -2048,20 +2065,17 @@ body{
 
     order:1;
 
-    background:linear-gradient(
-        180deg,
-        #f7f7f7 0%,
-        #ececec 100%
-    );
+    background:
+        linear-gradient(
+            180deg,
+            #f7f7f7 0%,
+            #ececec 100%
+        );
 
-    border:4px solid #d6d6d6;
+    border:3px solid #d9d9d9;
 
     box-shadow:
-        0 12px 30px rgba(0,0,0,.08);
-
-    /* IGUALAMOS ALTURA Y ESPACIADO */
-    min-height:290px;
-    padding:28px 20px;
+        0 10px 24px rgba(0,0,0,.06);
 }
 
 /* =========================================
@@ -2072,20 +2086,17 @@ body{
 
     order:3;
 
-    background:linear-gradient(
-        180deg,
-        #fff1e6 0%,
-        #ffd8b5 100%
-    );
+    background:
+        linear-gradient(
+            180deg,
+            #fff3ea 0%,
+            #ffe0c7 100%
+        );
 
-    border:4px solid #d9822b;
+    border:3px solid #d9822b;
 
     box-shadow:
-        0 12px 30px rgba(217,130,43,.18);
-
-    /* EXACTAMENTE IGUAL QUE EL SEGUNDO */
-    min-height:290px;
-    padding:28px 20px;
+        0 10px 24px rgba(217,130,43,.12);
 }
 
 /* =========================================
@@ -2093,18 +2104,20 @@ body{
 ========================================= */
 
 .podium-avatar{
-    width:92px;
-    height:92px;
+
+    width:78px;
+    height:78px;
 
     border-radius:50%;
+
     object-fit:cover;
 
-    border:5px solid white;
+    border:4px solid rgba(255,255,255,.9);
 
     box-shadow:
-        0 8px 20px rgba(0,0,0,.18);
+        0 6px 16px rgba(0,0,0,.12);
 
-    margin-bottom:18px;
+    margin-bottom:16px;
 }
 
 /* =========================================
@@ -2112,15 +2125,17 @@ body{
 ========================================= */
 
 .podium-name{
-    font-size:1.45rem;
+
+    font-size:1.05rem;
     font-weight:800;
+
     color:#10213a;
 
     text-align:center;
 
-    margin-bottom:12px;
-
     line-height:1.2;
+
+    margin-bottom:18px;
 }
 
 /* =========================================
@@ -2128,14 +2143,15 @@ body{
 ========================================= */
 
 .podium-points{
-    font-size:2.4rem;
+
+    font-size:2.1rem;
     font-weight:900;
 
     color:#1b5e20;
 
     line-height:1;
 
-    margin-bottom:10px;
+    margin-bottom:14px;
 }
 
 /* =========================================
@@ -2143,7 +2159,8 @@ body{
 ========================================= */
 
 .podium-rank{
-    font-size:1.3rem;
+
+    font-size:1.15rem;
     font-weight:900;
 
     color:#4f4f4f;
