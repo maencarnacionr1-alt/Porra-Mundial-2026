@@ -1888,7 +1888,7 @@ body{
 }
 
 /* =========================================
-   RANKING MODERNO PREMIUM (CON FONDO TEMÁTICO SEGURO)
+   RANKING MODERNO PREMIUM (FONDO TEMÁTICO GARANTIZADO)
 ========================================= */
 
 .ranking-modern-wrapper {
@@ -1898,22 +1898,21 @@ body{
     padding: 24px;
     box-sizing: border-box;
     
-    /* CAPA 1: El degradado claro que ya teníamos */
-    background-image: linear-gradient(180deg, rgba(248, 250, 252, 0.95) 0%, rgba(241, 245, 249, 0.95) 100%), 
-    /* CAPA 2: Imagen del Mundial en alta resolución (Estadio/Textura deportiva) */
-    url('https://unsplash.com');
+    /* Fondo base claro premium */
+    background-color: #f1f5f9;
     
-    /* Configuración de la imagen de fondo */
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: cover;
+    /* PATRÓN GEOMÉTRICO DEPORTIVO INCRUSTADO (Líneas de red/campo de fútbol abstractas) 
+       Este código SVG está optimizado para cargar instantáneamente sin depender de servidores externos */
+    background-image: 
+        linear-gradient(180deg, rgba(248, 250, 252, 0.94) 0%, rgba(241, 245, 249, 0.94) 100%),
+        url("data:image/svg+xml,%3Csvg xmlns='http://w3.org' width='60' height='60' viewBox='0 0 60 60'%3E%3Cpath d='M0 0h30v30H0zm30 30h30v30H30z' fill='%23cbd5e1' fill-opacity='0.15'/%3E%3Cpath d='M30 0h30v30H30zM0 30h30v30H0z' fill='%2394a3b8' fill-opacity='0.08'/%3E%3Ccircle cx='30' cy='30' r='2' fill='%2364748b' fill-opacity='0.1'/%3E%3C/svg%3E");
+        
+    background-repeat: repeat; /* Se repite al infinito sin pixelarse al añadir más puestos */
+    background-size: 60px 60px; /* Controla el tamaño del patrón geométrico */
     
-    /* El truco mágico: Mezcla la imagen con el degradado para que quede como una marca de agua sutil */
-    background-blend-mode: overlay; 
-    opacity: 0.99; /* Fuerza el renderizado limpio en navegadores móviles */
-
     border-radius: 32px;
     border: 1px solid #e2e8f0;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.01);
 }
 
 /* =========================================
@@ -1947,8 +1946,7 @@ body{
     box-sizing: border-box;
     transition: transform .32s cubic-bezier(0.25, 1, 0.5, 1), box-shadow .32s ease;
     cursor: pointer;
-    /* Efecto cristal sutil sobre las tarjetas para que resalten sobre la imagen de fondo */
-    backdrop-filter: blur(4px);
+    background-clip: padding-box;
 }
 
 /* Hover general */
@@ -1966,7 +1964,7 @@ body{
     width: 185px;
     height: 260px;
     transform: translateY(-12px);
-    background: linear-gradient(180deg, rgba(255, 252, 240, 0.95) 0%, rgba(255, 243, 176, 0.95) 100%);
+    background: linear-gradient(180deg, #fffcf0 0%, #fff3b0 100%);
     border: 3px solid #f2c94c;
     box-shadow: 0 10px 24px rgba(242,201,76,0.22);
 }
@@ -1987,7 +1985,7 @@ body{
 
 .podium-card.second-place {
     order: 1;
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.95) 0%, rgba(241, 243, 245, 0.95) 100%);
+    background: linear-gradient(180deg, #ffffff 0%, #f1f3f5 100%);
     border: 3px solid #cbd5e1;
     box-shadow: 0 10px 24px rgba(0,0,0,0.04);
 }
@@ -2003,7 +2001,7 @@ body{
 
 .podium-card.third-place {
     order: 3;
-    background: linear-gradient(180deg, rgba(255, 247, 242, 0.95) 0%, rgba(255, 230, 213, 0.95) 100%);
+    background: linear-gradient(180deg, #fff7f2 0%, #ffe6d5 100%);
     border: 3px solid #e29547;
     box-shadow: 0 10px 24px rgba(226,149,71,0.12);
 }
@@ -2042,7 +2040,7 @@ body{
     color: #166534; 
     line-height: 1;
     margin: 4px 0;
-    background: rgba(255, 255, 255, 0.75); /* Incrementada opacidad para legibilidad total */
+    background: rgba(255, 255, 255, 0.75); 
     padding: 4px 12px;
     border-radius: 99px;
     border: 1px solid rgba(0,0,0,0.05);
