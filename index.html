@@ -1888,20 +1888,25 @@ body{
 }
 
 /* =========================================
-   RANKING MODERNO PREMIUM
+   RANKING MODERNO PREMIUM (CONTENEDOR AISLADO)
 ========================================= */
 
 .ranking-modern-wrapper {
     width: 100%;
     max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
+    margin: 24px auto;
+    padding: 24px;
     box-sizing: border-box;
+    /* Fondo claro premium exclusivo para esta sección, no rompe el resto de la web */
+    background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+    border-radius: 32px;
+    border: 1px solid #e2e8f0;
 }
 
 /* =========================================
    TOP 3 PREMIUM MODERNO
 ========================================= */
+
 .top3-podium {
     display: flex;
     justify-content: center;
@@ -1915,6 +1920,7 @@ body{
 /* =========================================
    TARJETA BASE (TAMAÑO IDÉNTICO PARA TODAS)
 ========================================= */
+
 .podium-card {
     position: relative;
     width: 185px;
@@ -1930,63 +1936,73 @@ body{
     cursor: pointer;
 }
 
-/* Hover general (Efecto flotado premium) */
+/* Hover general */
 .podium-card:hover {
-    transform: translateY(-8px) scale(1.02);
+    transform: translateY(-6px);
+    box-shadow: 0 14px 28px rgba(0,0,0,0.08);
 }
 
 /* =========================================
-   PRIMER PUESTO (ORO PREMIUM)
+   PRIMER PUESTO (ORO ENRIQUECIDO)
 ========================================= */
+
 .podium-card.first-place {
     order: 2;
     width: 185px;
     height: 260px;
     transform: translateY(-12px);
-    /* Degradado enriquecido con destello superior */
-    background: linear-gradient(135deg, #fff9e6 0%, #fcd866 50%, #f1b814 100%);
-    border: 2px solid #ffe899;
-    box-shadow: 0 12px 30px rgba(241, 184, 20, 0.25);
+    background: linear-gradient(180deg, #fffcf0 0%, #fff3b0 100%);
+    border: 3px solid #f2c94c;
+    box-shadow: 0 10px 24px rgba(242,201,76,0.22);
 }
-.podium-card.first-place .podium-name { color: #3a2a00; }
-.podium-card.first-place .podium-rank { color: #785800; }
-.podium-card.first-place .podium-avatar { border-color: #ffe899; box-shadow: 0 0 12px rgba(241, 184, 20, 0.6); }
 
-/* Hover específico campeón */
+/* Borde del avatar personalizado para el ganador (Ya no se camufla) */
+.podium-card.first-place .podium-avatar {
+    border: 4px solid #f2c94c;
+    box-shadow: 0 4px 12px rgba(242,201,76,0.3);
+}
+
 .podium-card.first-place:hover {
-    transform: translateY(-18px) scale(1.02);
-    box-shadow: 0 20px 40px rgba(241, 184, 20, 0.4);
+    transform: translateY(-18px);
+    box-shadow: 0 18px 32px rgba(242,201,76,0.35);
 }
 
 /* =========================================
-   SEGUNDO PUESTO (PLATA PREMIUM)
+   SEGUNDO PUESTO (PLATA LIMPIA)
 ========================================= */
+
 .podium-card.second-place {
     order: 1;
-    background: linear-gradient(135deg, #ffffff 0%, #e0e4e8 60%, #b9c1c9 100%);
-    border: 2px solid #ffffff;
-    box-shadow: 0 10px 24px rgba(185, 193, 201, 0.2);
+    background: linear-gradient(180deg, #ffffff 0%, #f1f3f5 100%);
+    border: 3px solid #cbd5e1;
+    box-shadow: 0 10px 24px rgba(0,0,0,0.04);
 }
-.podium-card.second-place .podium-name { color: #1e252d; }
-.podium-card.second-place .podium-rank { color: #5a6573; }
-.podium-card.second-place .podium-avatar { border-color: #ffffff; box-shadow: 0 0 12px rgba(255,255,255,0.4); }
+
+.podium-card.second-place .podium-avatar {
+    border: 4px solid #ffffff;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
 
 /* =========================================
-   TERCER PUESTO (BRONCE PREMIUM)
+   TERCERO PUESTO (BRONCE CÁLIDO)
 ========================================= */
+
 .podium-card.third-place {
     order: 3;
-    background: linear-gradient(135deg, #fff3eb 0%, #f3be98 60%, #cf8249 100%);
-    border: 2px solid #ffe6d5;
-    box-shadow: 0 10px 24px rgba(207, 130, 73, 0.2);
+    background: linear-gradient(180deg, #fff7f2 0%, #ffe6d5 100%);
+    border: 3px solid #e29547;
+    box-shadow: 0 10px 24px rgba(226,149,71,0.12);
 }
-.podium-card.third-place .podium-name { color: #442207; }
-.podium-card.third-place .podium-rank { color: #874817; }
-.podium-card.third-place .podium-avatar { border-color: #ffe6d5; box-shadow: 0 0 12px rgba(207, 130, 73, 0.4); }
+
+.podium-card.third-place .podium-avatar {
+    border: 4px solid #ffe6d5;
+    box-shadow: 0 4px 12px rgba(226,149,71,0.2);
+}
 
 /* =========================================
    ELEMENTOS INTERNOS COHESIVOS
 ========================================= */
+
 .podium-avatar {
     width: 70px;
     height: 70px;
@@ -1994,15 +2010,12 @@ body{
     object-fit: cover;
     margin-bottom: 4px;
     flex-shrink: 0;
-    transition: transform 0.3s ease;
-}
-.podium-card:hover .podium-avatar {
-    transform: scale(1.05);
 }
 
 .podium-name {
     font-size: 1rem;
     font-weight: 800;
+    color: #0f172a; /* Tono pizarra oscuro muy elegante */
     text-align: center;
     line-height: 1.2;
     margin: 0;
@@ -2012,24 +2025,33 @@ body{
 .podium-points {
     font-size: 1.8rem;
     font-weight: 900;
-    color: #1b5e20; /* Mantiene tu color verde característico */
+    color: #166534; /* Verde esmeralda premium */
     line-height: 1;
     margin: 4px 0;
-    background: rgba(255, 255, 255, 0.25); /* Pequeña cápsula translúcida para los puntos */
+    background: rgba(255, 255, 255, 0.6); /* Cápsula sutil que estiliza los puntos */
     padding: 4px 12px;
     border-radius: 99px;
+    border: 1px solid rgba(0,0,0,0.03);
 }
 
 .podium-rank {
     font-size: 1.1rem;
     font-weight: 900;
+    color: #475569;
     margin: 0;
 }
 
 /* =========================================
    ADAPTABILIDAD RESPONSIVE (MÓVIL VERTICAL)
 ========================================= */
+
 @media (max-width: 768px) {
+    .ranking-modern-wrapper {
+        padding: 14px 8px; /* Ajuste de padding del contenedor en móvil */
+        margin: 12px auto;
+        border-radius: 20px;
+    }
+
     .top3-podium {
         gap: 6px; 
         width: calc(100% + 8px); 
@@ -2051,7 +2073,7 @@ body{
         width: 33.33% !important;
         height: 190px !important; 
         transform: translateY(-8px); 
-        box-shadow: 0 10px 20px rgba(241, 184, 20, 0.35); 
+        box-shadow: 0 10px 20px rgba(242, 201, 76, 0.3); 
         z-index: 2; 
     }
 
@@ -2062,12 +2084,14 @@ body{
     .podium-avatar {
         width: 42px; 
         height: 42px;
-        border-width: 2px;
+        border-width: 2px !important; /* Bordes más finos acordes al tamaño en móvil */
     }
 
     .podium-name {
         font-size: 0.72rem; 
         line-height: 1.15;
+        font-weight: 700;
+        overflow-wrap: anywhere;
     }
 
     .podium-points {
@@ -2077,6 +2101,9 @@ body{
 
     .podium-rank {
         font-size: 0.8rem;
+        font-weight: 700;
+        line-height: 1;
+        color: #64748b; 
     }
 }
 
