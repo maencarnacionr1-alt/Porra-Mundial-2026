@@ -2344,80 +2344,65 @@ body{
     }
 }
     
-/* =========================
-   AVATAR REGISTER
-========================= */
+/* =========================================
+   AVATAR REGISTER (OPTIMIZADO MODO CLARO)
+========================================= */
 
-.avatar-register-box{
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    margin-top:20px;
-    gap:14px;
+.avatar-register-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 24px;
+    gap: 16px;
 }
 
-.avatar-preview-wrapper{
-    position:relative;
+.avatar-preview-wrapper {
+    position: relative;
 }
 
-.avatar-preview{
-    width:110px;
-    height:110px;
-    border-radius:50%;
-    object-fit:cover;
-    border:5px solid white;
-
-    box-shadow:
-        0 8px 25px rgba(0,0,0,.15);
-
-    background:#f1f5f9;
+.avatar-preview {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    object-fit: cover;
+    /* Corregido: Borde gris suave para que resalte sobre el fondo blanco general */
+    border: 4px solid #cbd5e1;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+    background: #f1f5f9;
+    transition: border-color 0.25s ease;
 }
 
-.btn-avatar{
-
-    background:
-		color: var(--pitch-green);
-    border:none;
-    border-radius:16px;
-
-    padding:12px 22px;
-
-    font-weight:700;
-    font-size:.95rem;
-
-    cursor:pointer;
-
-    transition:all .25s ease;
-
-    box-shadow:
-        0 5px 15px rgba(46,125,50,.25);
+.btn-avatar {
+    /* CORREGIDO: Sintaxis limpia y fondo verde deportivo premium */
+    background: linear-gradient(180deg, #388e3c 0%, #2e7d32 100%);
+    color: #ffffff;
+    border: none;
+    border-radius: 99px; /* Forma de píldora para dar un aspecto más moderno */
+    padding: 11px 24px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    box-shadow: 0 4px 12px rgba(46, 125, 50, 0.2);
 }
 
-.btn-avatar:hover{
-
-    transform:translateY(-2px);
-
-    box-shadow:
-        0 10px 25px rgba(46,125,50,.35);
+.btn-avatar:hover {
+    transform: translateY(-2px);
+    background: linear-gradient(180deg, #43a047 0%, #388e3c 100%);
+    box-shadow: 0 6px 16px rgba(46, 125, 50, 0.3);
 }
 
 /* ===== MODAL AVATARES ===== */
 
 .avatar-modal {
-
     position: fixed;
     inset: 0;
-
-    background: rgba(0,0,0,0.75);
-
+    background: rgba(16, 33, 58, 0.7); /* Fondo oscuro azulado translúcido a juego con tus títulos */
     display: flex;
     justify-content: center;
     align-items: center;
-
     z-index: 99999;
-
     backdrop-filter: blur(6px);
-
 }
 
 .hidden {
@@ -2425,131 +2410,134 @@ body{
 }
 
 .avatar-modal-content {
-
     width: 90%;
-    max-width: 900px;
-
-    background: white;
-
-    border-radius: 28px;
-
-    padding: 30px;
-
-    box-shadow: 0 20px 60px rgba(0,0,0,0.35);
-
+    max-width: 600px; /* Tamaño más compacto y elegante */
+    background: #ffffff;
+    border-radius: 24px;
+    padding: 28px;
+    box-shadow: 0 20px 50px rgba(16, 33, 58, 0.15);
 }
 
 .avatar-modal-header {
-
     display: flex;
     justify-content: space-between;
     align-items: center;
-
-    margin-bottom: 25px;
-
+    margin-bottom: 20px;
 }
 
 .avatar-modal-header h2 {
-
-    color: #111;
-    font-size: 28px;
-
+    color: #10213a; /* Color azul oscuro unificado */
+    font-size: 22px;
+    font-weight: 800;
+    margin: 0;
 }
 
 .close-avatar-modal {
-
     border: none;
     background: transparent;
-
-    font-size: 28px;
+    font-size: 26px;
+    color: #94a3b8;
     cursor: pointer;
+    transition: color 0.2s ease;
+}
 
+.close-avatar-modal:hover {
+    color: #d32f2f; /* Rojo sutil al cerrar */
 }
 
 .avatars-grid {
-
     display: grid;
-
-    grid-template-columns:
-    repeat(auto-fill, minmax(90px, 1fr));
-
-    gap: 18px;
-
-    max-height: 500px;
-
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: 16px;
+    max-height: 380px; /* Altura máxima controlada para evitar desbordamientos */
     overflow-y: auto;
+    padding-right: 6px;
+}
 
-    padding-right: 10px;
-
+/* Personalización elegante de la barra de desplazamiento del modal */
+.avatars-grid::-webkit-scrollbar {
+    width: 6px;
+}
+.avatars-grid::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 99px;
 }
 
 .avatar-option {
-
     aspect-ratio: 1;
-
     border-radius: 50%;
-
     overflow: hidden;
-
     cursor: pointer;
-
-    border: 4px solid transparent;
-
-    transition: .25s;
-
-    background: #f3f4f6;
-
+    border: 3px solid #e2e8f0;
+    background: #f8fafc;
+    transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
 }
 
 .avatar-option img {
-
     width: 100%;
     height: 100%;
-
     object-fit: cover;
-
 }
 
 .avatar-option:hover {
-
-    transform: translateY(-4px) scale(1.05);
-
+    transform: translateY(-3px) scale(1.03);
     border-color: #22c55e;
-
-    box-shadow:
-    0 0 20px rgba(34,197,94,.45);
-
+    box-shadow: 0 6px 14px rgba(34, 197, 94, 0.25);
 }
 
-/* ===== PREVIEW AVATAR ===== */
+/* ===== PREVIEW AVATAR SELECCIONADO ===== */
 
 .avatar-preview-container {
-
     display: flex;
     justify-content: center;
-
-    margin-bottom: 18px;
-
+    margin-bottom: 20px;
 }
 
 #selectedAvatarPreview {
-
     width: 110px;
     height: 110px;
-
     border-radius: 50%;
-
     object-fit: cover;
+    border: 4px solid #22c55e; /* Marco verde para el avatar activo */
+    box-shadow: 0 0 20px rgba(34, 197, 94, 0.2);
+    background: #ffffff;
+    transition: all 0.25s ease;
+}
 
-    border: 5px solid #22c55e;
+/* =========================================
+   ADAPTABILIDAD RESPONSIVE (MÓVIL VERTICAL)
+========================================= */
 
-    box-shadow:
-    0 0 25px rgba(34,197,94,.35);
+@media (max-width: 768px) {
+    .avatar-register-box {
+        margin-top: 16px;
+        gap: 12px;
+    }
 
-    transition: .25s;
+    .avatar-preview, #selectedAvatarPreview {
+        width: 95px;
+        height: 95px;
+    }
 
-    background: #fff;
+    .btn-avatar {
+        padding: 9px 20px;
+        font-size: 0.85rem;
+    }
 
+    .avatar-modal-content {
+        padding: 20px;
+        border-radius: 20px;
+    }
+
+    .avatar-modal-header h2 {
+        font-size: 18px;
+    }
+
+    .avatars-grid {
+        grid-template-columns: repeat(auto-fill, minmax(68px, 1fr));
+        gap: 12px;
+        max-height: 280px; /* Más compacto en móvil para que no ocupe toda la pantalla */
+    }
 }
 
 	
