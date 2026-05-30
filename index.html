@@ -1888,7 +1888,7 @@ body{
 }
 
 /* ==========================================================================
-   1. VARIABLES DE COLOR (MODO CLARO POR DEFECTO / MODO OSCURO)
+   1. VARIABLES DE COLOR (MODO CLARO POR DEFECTO / MODO OSCURO AUTOMÁTICO)
    ========================================================================== */
 
 :root {
@@ -1896,54 +1896,46 @@ body{
     --bg-wrapper: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
     --border-wrapper: #e2e8f0;
     
-    /* Colores del Top 3 (Podio) */
-    --bg-card-1st: linear-gradient(180deg, #fffcf0 0%, #fff3b0 100%);
-    --bg-card-2nd: linear-gradient(180deg, #ffffff 0%, #f1f3f5 100%);
-    --bg-card-3rd: linear-gradient(180deg, #fff7f2 0%, #ffe6d5 100%);
-    
-    /* Textos comunes y cápsula de puntos */
-    --text-main: #10213a;
+    /* Textos y elementos comunes */
+    --text-main: #0f172a;
     --text-muted: #475569;
     --card-points-bg: rgba(255, 255, 255, 0.75);
     --card-points-border: rgba(0, 0, 0, 0.05);
 
-    /* Filas (A partir del rango 4) */
-    --bg-fila: linear-gradient(90deg, rgba(255,255,255,.96) 0%, rgba(248,248,248,.96) 100%);
-    --bg-fila-hover: linear-gradient(90deg, #ffffff 0%, #fff8dc 100%);
-    --border-fila: rgba(0, 0, 0, 0.05);
-    --shadow-fila: rgba(0, 0, 0, 0.05);
-    --points-fila: #1b5e20;
+    /* Tarjetas del Top 3 */
+    --bg-card-1st: linear-gradient(180deg, #fffcf0 0%, #fff3b0 100%);
+    --bg-card-2nd: linear-gradient(180deg, #ffffff 0%, #f1f3f5 100%);
+    --bg-card-3rd: linear-gradient(180deg, #fff7f2 0%, #ffe6d5 100%);
+
+    /* Filas del Puesto 4 en adelante */
+    --bg-fila-regular: #ffffff;
+    --border-fila-regular: #e2e8f0;
 }
 
-/* Colores adaptados automáticamente para el MODO OSCURO */
+/* Colores alternativos cuando el Modo Oscuro se activa */
 [data-theme="dark"] {
-    --bg-pagina-completa: #0f172a; /* Fondo azul oscuro profundo para la web */
+    --bg-pagina-completa: #0f172a; 
     --bg-wrapper: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
     --border-wrapper: #1e293b;
     
-    /* Degradados del Top 3 ajustados para oscuridad */
-    --bg-card-1st: linear-gradient(180deg, #2c2514 0%, #bf991f 100%);
-    --bg-card-2nd: linear-gradient(180deg, #222d3d 0%, #475569 100%);
-    --bg-card-3rd: linear-gradient(180deg, #331f12 0%, #92400e 100%);
-    
-    /* Textos en modo oscuro */
-    --text-main: #f8fafc; /* Blanco brillante reflectante */
-    --text-muted: #94a3b8; /* Gris claro legible */
+    --text-main: #f8fafc; 
+    --text-muted: #94a3b8; 
     --card-points-bg: rgba(15, 23, 42, 0.6);
     --card-points-border: rgba(255, 255, 255, 0.1);
 
-    /* Filas (A partir del rango 4) en modo oscuro */
-    --bg-fila: linear-gradient(90deg, #1e293b 0%, #161e2e 100%);
-    --bg-fila-hover: linear-gradient(90deg, #1e293b 0%, #2c2514 100%); /* Destello dorado sutil al pasar el ratón */
-    --border-fila: #334155;
-    --shadow-fila: rgba(0, 0, 0, 0.2);
-    --points-fila: #22c55e; /* Verde brillante esmeralda */
+    --bg-card-1st: linear-gradient(180deg, #2c2514 0%, #bf991f 100%);
+    --bg-card-2nd: linear-gradient(180deg, #222d3d 0%, #475569 100%);
+    --bg-card-3rd: linear-gradient(180deg, #331f12 0%, #92400e 100%);
+
+    --bg-fila-regular: #1e293b; 
+    --border-fila-regular: #334155;
 }
 
 /* ==========================================================================
-   2. CONFIGURACIÓN GLOBAL E INTERFACES
+   2. CONFIGURACIÓN ESTRUCTURAL GENERAL
    ========================================================================== */
 
+/* Vincula el fondo dinámico al body de tu app */
 body {
     background-color: var(--bg-pagina-completa);
     color: var(--text-main);
@@ -1963,7 +1955,21 @@ body {
 }
 
 /* ==========================================================================
-   3. ESTRUCTURA TOP 3 (PODIO REVISADO Y SIMÉTRICO)
+   3. FILAS DEL PUESTO 4 EN ADELANTE (SOPORTE DE MODOS)
+   ========================================================================== */
+
+/* NOTA: Modifica estas 3 clases si en tu HTML real se llaman de otra forma */
+.ranking-row {
+    background-color: var(--bg-fila-regular);
+    border: 1px solid var(--border-fila-regular);
+    color: var(--text-main);
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+.ranking-row-name { color: var(--text-main); }
+.ranking-row-rank { color: var(--text-muted); }
+
+/* ==========================================================================
+   4. DISEÑO PREMIUM DEL TOP 3 (PODIO)
    ========================================================================== */
 
 .top3-podium {
@@ -1996,7 +2002,7 @@ body {
     box-shadow: 0 14px 28px rgba(0,0,0,0.15);
 }
 
-/* ORO */
+/* Puesto 1 (Oro) */
 .podium-card.first-place {
     order: 2;
     width: 185px;
@@ -2010,12 +2016,8 @@ body {
     border: 4px solid #f2c94c;
     box-shadow: 0 4px 12px rgba(242,201,76,0.3);
 }
-.podium-card.first-place:hover {
-    transform: translateY(-18px);
-    box-shadow: 0 18px 32px rgba(242,201,76,0.35);
-}
 
-/* PLATA */
+/* Puesto 2 (Plata) */
 .podium-card.second-place {
     order: 1;
     background: var(--bg-card-2nd);
@@ -2025,7 +2027,7 @@ body {
     border: 4px solid #ffffff;
 }
 
-/* BRONCE */
+/* Puesto 3 (Bronce) */
 .podium-card.third-place {
     order: 3;
     background: var(--bg-card-3rd);
@@ -2035,7 +2037,7 @@ body {
     border: 4px solid #ffe6d5;
 }
 
-/* Elementos internos del Podio */
+/* Elementos internos */
 .podium-avatar {
     width: 70px;
     height: 70px;
@@ -2075,88 +2077,8 @@ body {
 }
 
 /* ==========================================================================
-   4. FILAS COMPLETA (PUESTO 4 EN ADELANTE)
+   5. AJUSTES MÉTRICOS PARA MÓVIL VERTICAL (SIMETRÍA PERFECTA)
    ========================================================================== */
-
-.ranking-list-modern {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    max-width: 760px;
-    margin: 0 auto;
-}
-
-.ranking-row {
-    display: grid;
-    grid-template-columns: 60px 60px 1fr auto;
-    align-items: center;
-    background: var(--bg-fila);
-    border-radius: 18px;
-    padding: 10px 16px;
-    border: 1px solid var(--border-fila);
-    transition: transform .28s ease, background 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease;
-    cursor: pointer;
-    box-shadow: 0 4px 12px var(--shadow-fila);
-}
-
-.ranking-row:hover {
-    transform: translateY(-4px);
-    background: var(--bg-fila-hover);
-    box-shadow: 0 0 18px rgba(242,201,76,.15), 0 10px 24px var(--shadow-fila);
-}
-
-.rank-position {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-.rank-number {
-    font-size: 1rem;
-    font-weight: 900;
-    color: var(--text-main);
-}
-
-.rank-movement {
-    font-size: .85rem;
-    margin-top: 4px;
-}
-
-.rank-arrow {
-    margin-top: 8px;
-    font-size: 1.1rem;
-    font-weight: 900;
-}
-.rank-arrow.up { color: #2e7d32; }
-.rank-arrow.down { color: #d32f2f; }
-
-.ranking-avatar {
-    width: 46px;
-    height: 46px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 3px solid rgba(255,255,255,.95);
-    box-shadow: 0 4px 10px rgba(0,0,0,.08);
-}
-
-.ranking-player-name-modern {
-    font-size: 1rem;
-    font-weight: 700;
-    color: var(--text-main);
-    padding-left: 12px;
-}
-
-.ranking-points-modern {
-    font-size: 1.15rem;
-    font-weight: 900;
-    color: var(--points-fila);
-}
-
-/* ==========================================================================
-   5. RESPONSIVE COMPACTO MÓVIL VERTICAL (CERO ERRORES)
-   ========================================================================== */
-
 @media (max-width: 768px) {
     .ranking-modern-wrapper {
         padding: 14px 8px;
@@ -2215,9 +2137,8 @@ body {
 }
 
 /* ==========================================================================
-   6. INTERRUPTOR FLOTANTE PREMIUM (SOL / LUNA)
+   6. INTERFAZ INTERRUPTOR FLOTANTE (SOL / LUNA)
    ========================================================================== */
-
 .theme-btn {
     position: fixed;
     bottom: 24px;
@@ -2230,7 +2151,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 999999 !important; /* Fuerza máxima para que aparezca SIEMPRE arriba */
+    z-index: 9999;
     box-shadow: 0 4px 14px rgba(0, 0, 0, 0.16);
     transition: transform 0.25s ease, background-color 0.3s ease;
     background-color: var(--bg-fila-regular);
@@ -2248,7 +2169,235 @@ body, .ranking-modern-wrapper, .podium-card, .ranking-row {
 }
 
 @media (max-width: 768px) {
+    .theme-btn { bottom: 16px; right: 16px; width: 42px; height: 42px; }
+    .theme-btn .theme-icon-sun, .theme-btn .theme-icon-moon { width: 18px; height: 18px; }
+}
 
+		
+/* =========================================
+   FLECHAS
+========================================= */
+
+.rank-arrow{
+    margin-top:8px;
+    font-size:1.1rem;
+    font-weight:900;
+}
+
+.rank-arrow.up{
+    color:#2e7d32;
+}
+
+.rank-arrow.down{
+    color:#d32f2f;
+}
+
+/* =========================================
+   RESTO DEL RANKING
+========================================= */
+
+.ranking-list-modern{
+
+    display:flex;
+    flex-direction:column;
+
+    gap:10px;
+
+    max-width:760px;
+
+    margin:0 auto;
+}
+
+/* =========================================
+   FILAS
+========================================= */
+
+.ranking-row{
+
+    display:grid;
+
+    grid-template-columns:
+        60px
+        60px
+        1fr
+        auto;
+
+    align-items:center;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(255,255,255,.96) 0%,
+            rgba(248,248,248,.96) 100%
+        );
+
+    border-radius:18px;
+
+    padding:10px 16px;
+
+    border:
+        1px solid rgba(0,0,0,.05);
+
+    transition:all .28s ease;
+
+    cursor:pointer;
+
+    box-shadow:
+        0 4px 12px rgba(0,0,0,.05);
+}
+
+/* =========================================
+   HOVER FILAS
+========================================= */
+
+.ranking-row:hover{
+
+    transform:translateY(-4px);
+
+    background:
+        linear-gradient(
+            90deg,
+            #ffffff 0%,
+            #fff8dc 100%
+        );
+
+    box-shadow:
+        0 0 18px rgba(242,201,76,.22),
+        0 10px 24px rgba(0,0,0,.08);
+}
+
+/* =========================================
+   POSICIÓN
+========================================= */
+
+.rank-position{
+
+    display:flex;
+    flex-direction:column;
+
+    align-items:center;
+    justify-content:center;
+}
+
+.rank-number{
+
+    font-size:1rem;
+    font-weight:900;
+
+    color:#10213a;
+}
+
+.rank-movement{
+
+    font-size:.85rem;
+
+    margin-top:4px;
+}
+		
+/* =========================================
+   AVATAR RESTO
+========================================= */
+
+.ranking-avatar{
+
+    width:46px;
+    height:46px;
+
+    border-radius:50%;
+    object-fit:cover;
+
+    border:3px solid rgba(255,255,255,.95);
+
+    box-shadow:
+        0 4px 10px rgba(0,0,0,.08);
+}
+
+/* =========================================
+   NOMBRE RESTO
+========================================= */
+
+.ranking-player-name-modern{
+
+    font-size:1rem;
+    font-weight:700;
+
+    color:#10213a;
+
+    padding-left:12px;
+}
+
+/* =========================================
+   PUNTOS RESTO
+========================================= */
+
+.ranking-points-modern{
+
+    font-size:1.15rem;
+    font-weight:900;
+
+    color:#1b5e20;
+}
+
+@media(max-width:768px){
+
+    .top3-podium{
+        flex-wrap:nowrap;          /* evita salto */
+        gap:8px;
+        align-items:flex-end;
+	justify-content:center;
+    }
+
+/* mantenemos el orden pero afinamos tamaño */
+    .podium-first{ order:2; }
+    .podium-second{ order:1; }
+    .podium-third{ order:3; }
+
+    /* opcional: destacar el oro */
+    .podium-first{
+        transform:translateY(-8px);
+    }
+
+    .top3-podium{
+        gap:12px;
+        margin-bottom:24px;
+    }
+
+    .podium-card{
+
+        width:135px;
+        height:205px;
+
+        padding:16px 12px;
+
+        border-radius:28px;
+    }
+
+    .podium-card.first-place{
+        transform:translateY(-6px) scale(1.03);
+    }
+
+    .podium-avatar{
+        width:68px;
+        height:68px;
+
+        margin-bottom:10px;
+    }
+
+    .podium-name{
+        font-size:1.05rem;
+        margin-bottom:6px;
+    }
+
+    .podium-points{
+        font-size:2rem;
+        margin-bottom:4px;
+    }
+
+    .podium-rank{
+        font-size:1rem;
+    }
+}
+    
 /* =========================
    AVATAR REGISTER
 ========================= */
