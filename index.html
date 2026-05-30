@@ -2696,75 +2696,6 @@ body{
     .btn-registro-modern { width: 100%; }
 }
 
-/* ==========================================================================
-   INTERFAZ: SEGUROS VISUALES Y BOTÓN SCROLL TO TOP
-   ========================================================================== */
-
-/* Seguro en CSS para que si el div está vacío bajo ninguna circunstancia pinte fondo */
-.error-box-modern:empty, #errorMensaje:empty {
-    display: none !important;
-}
-
-/* Estilos de la flecha flotante inteligente */
-.scroll-top-btn {
-    position: fixed;
-    bottom: 84px; /* Se posiciona de forma exacta encima de tu botón del Sol/Luna */
-    right: 24px;
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    border: 1px solid #cbd5e1;
-    background-color: #ffffff;
-    color: #10213a;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 999999 !important;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    
-    /* Estado inicial: Oculto y ligeramente desplazado hacia abajo */
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(10px);
-    transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
-}
-
-/* Clase dinámica que se activa mediante JavaScript al hacer scroll */
-.scroll-top-btn.show-btn {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
-}
-
-.scroll-top-btn:hover {
-    transform: translateY(-3px);
-    background-color: #10213a;
-    color: #ffffff;
-    border-color: #10213a;
-    box-shadow: 0 6px 16px rgba(16, 33, 58, 0.15);
-}
-
-.scroll-top-btn svg {
-    width: 18px;
-    height: 18px;
-}
-
-/* Adaptación responsive para que en móviles reduzca su escala */
-@media (max-width: 768px) {
-    .scroll-top-btn {
-        bottom: 74px;
-        right: 16px;
-        width: 38px;
-        height: 38px;
-    }
-    .scroll-top-btn svg {
-        width: 16px;
-        height: 16px;
-    }
-}
-
-
 	
 
     </style>
@@ -2897,35 +2828,7 @@ body{
 
             <input type="text" id="playerNameInput" name="nombre" required placeholder="Escribe tu nombre..." class="input-name-modern">
             
-              <div id="errorMensaje" class="error-box-modern" style="display: none;"></div>
-
-            <!-- SISTEMA AVATAR -->
-            <div class="avatar-register-box">
-                <div class="avatar-preview-wrapper">
-                    <img 
-						id="selectedAvatarPreview" 
-						src="data:image/svg+xml,%3Csvg xmlns='http://w3.org' viewBox='0 0 24 24' fill='%2394a3b8'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 4c1.93 0 3.5 1.57 3.5 3.5S13.93 13 12 13s-3.5-1.57-3.5-3.5S10.07 6 12 6zm0 14c-2.03 0-4.43-.82-6.14-2.88C7.55 15.8 9.68 15 12 15s4.45.8 6.14 2.12C16.43 19.18 14.03 20 12 20z'/%3E%3C/svg%3E" 
-          				class="avatar-preview" 
-            			alt="Avatar por defecto"
-                </div>
-                <button type="button" class="btn-avatar" onclick="openAvatarModal()">
-                    Elegir Avatar
-                </button>
-                <input type="hidden" id="avatarInput" name="avatar" value="">
-            </div>
-        </div>
-
-            <!-- SISTEMA AVATAR -->
-            <div class="avatar-register-box">
-                <div class="avatar-preview-wrapper">
-                    <img id="selectedAvatarPreview" src="https://imgur.com" class="avatar-preview">
-                </div>
-                <button type="button" class="btn-avatar" onclick="openAvatarModal()">
-                    Elegir Avatar
-                </button>
-                <input type="hidden" id="avatarInput" name="avatar" value="">
-            </div>
-        </div>
+            <div id="errorMensaje" class="error-box-modern"></div>
 
             <!-- SISTEMA AVATAR -->
             <div class="avatar-register-box">
@@ -5150,37 +5053,6 @@ function ejecutarLlenadoAutomatico() {
             });
         }
     });
-
-
-	// ==========================================================================
-// CONTROL INTERACTIVO DEL BOTÓN VOLVER ARRIBA (SCROLL TO TOP)
-// ==========================================================================
-(() => {
-    // Ejecuta una vez que el árbol DOM está completamente estructurado
-    document.addEventListener("DOMContentLoaded", () => {
-        const scrollTopBtn = document.getElementById("scrollToTopBtn");
-        if (!scrollTopBtn) return;
-
-        // Monitorea el evento de desplazamiento global
-        window.addEventListener("scroll", () => {
-            // Si el usuario baja más de 400 píxeles de altura, activa la flecha flotante
-            if (window.scrollY > 400) {
-                scrollTopBtn.classList.add("show-btn");
-            } else {
-                scrollTopBtn.classList.remove("show-btn");
-            }
-        });
-
-        // Evento de escucha al hacer click sobre el botón
-        scrollTopBtn.addEventListener("click", () => {
-            window.scrollTo({
-                top: 0,
-                behavior: "smooth" // Desplazamiento animado suave de alta gama
-            });
-        });
-    });
-})();
-
 
 </script>
 
