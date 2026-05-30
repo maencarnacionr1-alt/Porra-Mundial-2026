@@ -2151,7 +2151,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 9999;
+    z-index: 999999 !important; /* Fuerza máxima para que aparezca SIEMPRE arriba */
     box-shadow: 0 4px 14px rgba(0, 0, 0, 0.16);
     transition: transform 0.25s ease, background-color 0.3s ease;
     background-color: var(--bg-fila-regular);
@@ -2212,38 +2212,17 @@ body, .ranking-modern-wrapper, .podium-card, .ranking-row {
    FILAS
 ========================================= */
 
-.ranking-row{
-
-    display:grid;
-
-    grid-template-columns:
-        60px
-        60px
-        1fr
-        auto;
-
-    align-items:center;
-
-    background:
-        linear-gradient(
-            90deg,
-            rgba(255,255,255,.96) 0%,
-            rgba(248,248,248,.96) 100%
-        );
-
-    border-radius:18px;
-
-    padding:10px 16px;
-
-    border:
-        1px solid rgba(0,0,0,.05);
-
-    transition:all .28s ease;
-
-    cursor:pointer;
-
-    box-shadow:
-        0 4px 12px rgba(0,0,0,.05);
+.ranking-row {
+    display: grid;
+    grid-template-columns: 60px 60px 1fr auto;
+    align-items: center;
+    background: var(--bg-fila); /* Dinámico */
+    border-radius: 18px;
+    padding: 10px 16px;
+    border: 1px solid var(--border-fila); /* Dinámico */
+    transition: transform .28s ease, background 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease;
+    cursor: pointer;
+    box-shadow: 0 4px 12px var(--shadow-fila); /* Dinámico */
 }
 
 /* =========================================
@@ -2266,25 +2245,18 @@ body, .ranking-modern-wrapper, .podium-card, .ranking-row {
         0 10px 24px rgba(0,0,0,.08);
 }
 
-/* =========================================
-   POSICIÓN
-========================================= */
-
-.rank-position{
-
-    display:flex;
-    flex-direction:column;
-
-    align-items:center;
-    justify-content:center;
+/* HOVER FILAS */
+.ranking-row:hover {
+    transform: translateY(-4px);
+    background: var(--bg-fila-hover); /* Dinámico */
+    box-shadow: 0 0 18px rgba(242,201,76,.15), 0 10px 24px var(--shadow-fila);
 }
 
-.rank-number{
-
-    font-size:1rem;
-    font-weight:900;
-
-    color:#10213a;
+/* POSICIÓN Y TEXTOS */
+.rank-number {
+    font-size: 1rem;
+    font-weight: 900;
+    color: var(--text-main); /* Dinámico */
 }
 
 .rank-movement{
@@ -2316,26 +2288,21 @@ body, .ranking-modern-wrapper, .podium-card, .ranking-row {
    NOMBRE RESTO
 ========================================= */
 
-.ranking-player-name-modern{
-
-    font-size:1rem;
-    font-weight:700;
-
-    color:#10213a;
-
-    padding-left:12px;
+.ranking-player-name-modern {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-main); /* Dinámico */
+    padding-left: 12px;
 }
 
 /* =========================================
    PUNTOS RESTO
 ========================================= */
 
-.ranking-points-modern{
-
-    font-size:1.15rem;
-    font-weight:900;
-
-    color:#1b5e20;
+.ranking-points-modern {
+    font-size: 1.15rem;
+    font-weight: 900;
+    color: var(--points-fila); /* Dinámico */
 }
 
 @media(max-width:768px){
