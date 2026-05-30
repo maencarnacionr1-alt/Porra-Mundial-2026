@@ -1887,9 +1887,60 @@ body{
     font-weight:700;
 }
 
-/* =========================================
-   RANKING MODERNO PREMIUM (FONDO TEMÁTICO GARANTIZADO)
-========================================= */
+/* ==========================================================================
+   1. VARIABLES DE COLOR (MODO CLARO POR DEFECTO / MODO OSCURO AUTOMÁTICO)
+   ========================================================================== */
+
+:root {
+    --bg-pagina-completa: #ffffff;
+    --bg-wrapper: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+    --border-wrapper: #e2e8f0;
+    
+    /* Textos y elementos comunes */
+    --text-main: #0f172a;
+    --text-muted: #475569;
+    --card-points-bg: rgba(255, 255, 255, 0.75);
+    --card-points-border: rgba(0, 0, 0, 0.05);
+
+    /* Tarjetas del Top 3 */
+    --bg-card-1st: linear-gradient(180deg, #fffcf0 0%, #fff3b0 100%);
+    --bg-card-2nd: linear-gradient(180deg, #ffffff 0%, #f1f3f5 100%);
+    --bg-card-3rd: linear-gradient(180deg, #fff7f2 0%, #ffe6d5 100%);
+
+    /* Filas del Puesto 4 en adelante */
+    --bg-fila-regular: #ffffff;
+    --border-fila-regular: #e2e8f0;
+}
+
+/* Colores alternativos cuando el Modo Oscuro se activa */
+[data-theme="dark"] {
+    --bg-pagina-completa: #0f172a; 
+    --bg-wrapper: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+    --border-wrapper: #1e293b;
+    
+    --text-main: #f8fafc; 
+    --text-muted: #94a3b8; 
+    --card-points-bg: rgba(15, 23, 42, 0.6);
+    --card-points-border: rgba(255, 255, 255, 0.1);
+
+    --bg-card-1st: linear-gradient(180deg, #2c2514 0%, #bf991f 100%);
+    --bg-card-2nd: linear-gradient(180deg, #222d3d 0%, #475569 100%);
+    --bg-card-3rd: linear-gradient(180deg, #331f12 0%, #92400e 100%);
+
+    --bg-fila-regular: #1e293b; 
+    --border-fila-regular: #334155;
+}
+
+/* ==========================================================================
+   2. CONFIGURACIÓN ESTRUCTURAL GENERAL
+   ========================================================================== */
+
+/* Vincula el fondo dinámico al body de tu app */
+body {
+    background-color: var(--bg-pagina-completa);
+    color: var(--text-main);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
 
 .ranking-modern-wrapper {
     width: 100%;
@@ -1897,27 +1948,29 @@ body{
     margin: 24px auto;
     padding: 24px;
     box-sizing: border-box;
-    
-    /* Fondo base claro premium */
-    background-color: #f1f5f9;
-    
-    /* PATRÓN GEOMÉTRICO DEPORTIVO INCRUSTADO (Líneas de red/campo de fútbol abstractas) 
-       Este código SVG está optimizado para cargar instantáneamente sin depender de servidores externos */
-    background-image: 
-        linear-gradient(180deg, rgba(248, 250, 252, 0.94) 0%, rgba(241, 245, 249, 0.94) 100%),
-        url("data:image/svg+xml,%3Csvg xmlns='http://w3.org' width='60' height='60' viewBox='0 0 60 60'%3E%3Cpath d='M0 0h30v30H0zm30 30h30v30H30z' fill='%23cbd5e1' fill-opacity='0.15'/%3E%3Cpath d='M30 0h30v30H30zM0 30h30v30H0z' fill='%2394a3b8' fill-opacity='0.08'/%3E%3Ccircle cx='30' cy='30' r='2' fill='%2364748b' fill-opacity='0.1'/%3E%3C/svg%3E");
-        
-    background-repeat: repeat; /* Se repite al infinito sin pixelarse al añadir más puestos */
-    background-size: 60px 60px; /* Controla el tamaño del patrón geométrico */
-    
+    background: var(--bg-wrapper);
     border-radius: 32px;
-    border: 1px solid #e2e8f0;
-    box-shadow: inset 0 2px 4px rgba(0,0,0,0.01);
+    border: 1px solid var(--border-wrapper);
+    transition: background 0.3s ease, border 0.3s ease;
 }
 
-/* =========================================
-   TOP 3 PREMIUM MODERNO
-========================================= */
+/* ==========================================================================
+   3. FILAS DEL PUESTO 4 EN ADELANTE (SOPORTE DE MODOS)
+   ========================================================================== */
+
+/* NOTA: Modifica estas 3 clases si en tu HTML real se llaman de otra forma */
+.ranking-row {
+    background-color: var(--bg-fila-regular);
+    border: 1px solid var(--border-fila-regular);
+    color: var(--text-main);
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+.ranking-row-name { color: var(--text-main); }
+.ranking-row-rank { color: var(--text-muted); }
+
+/* ==========================================================================
+   4. DISEÑO PREMIUM DEL TOP 3 (PODIO)
+   ========================================================================== */
 
 .top3-podium {
     display: flex;
@@ -1928,10 +1981,6 @@ body{
     flex-wrap: nowrap;
     width: 100%;
 }
-
-/* =========================================
-   TARJETA BASE (TAMAÑO IDÉNTICO PARA TODAS)
-========================================= */
 
 .podium-card {
     position: relative;
@@ -1944,77 +1993,51 @@ body{
     justify-content: space-between;
     padding: 16px 12px 20px 12px;
     box-sizing: border-box;
-    transition: transform .32s cubic-bezier(0.25, 1, 0.5, 1), box-shadow .32s ease;
+    transition: transform .32s cubic-bezier(0.25, 1, 0.5, 1), box-shadow .32s ease, background 0.3s ease;
     cursor: pointer;
-    background-clip: padding-box;
 }
 
-/* Hover general */
 .podium-card:hover {
     transform: translateY(-6px);
-    box-shadow: 0 14px 28px rgba(0,0,0,0.08);
+    box-shadow: 0 14px 28px rgba(0,0,0,0.15);
 }
 
-/* =========================================
-   PRIMER PUESTO (ORO ENRIQUECIDO)
-========================================= */
-
+/* Puesto 1 (Oro) */
 .podium-card.first-place {
     order: 2;
     width: 185px;
     height: 260px;
     transform: translateY(-12px);
-    background: linear-gradient(180deg, #fffcf0 0%, #fff3b0 100%);
+    background: var(--bg-card-1st);
     border: 3px solid #f2c94c;
     box-shadow: 0 10px 24px rgba(242,201,76,0.22);
 }
-
 .podium-card.first-place .podium-avatar {
     border: 4px solid #f2c94c;
     box-shadow: 0 4px 12px rgba(242,201,76,0.3);
 }
 
-.podium-card.first-place:hover {
-    transform: translateY(-18px);
-    box-shadow: 0 18px 32px rgba(242,201,76,0.35);
-}
-
-/* =========================================
-   SEGUNDO PUESTO (PLATA LIMPIA)
-========================================= */
-
+/* Puesto 2 (Plata) */
 .podium-card.second-place {
     order: 1;
-    background: linear-gradient(180deg, #ffffff 0%, #f1f3f5 100%);
+    background: var(--bg-card-2nd);
     border: 3px solid #cbd5e1;
-    box-shadow: 0 10px 24px rgba(0,0,0,0.04);
 }
-
 .podium-card.second-place .podium-avatar {
     border: 4px solid #ffffff;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
 }
 
-/* =========================================
-   TERCERO PUESTO (BRONCE CÁLIDO)
-========================================= */
-
+/* Puesto 3 (Bronce) */
 .podium-card.third-place {
     order: 3;
-    background: linear-gradient(180deg, #fff7f2 0%, #ffe6d5 100%);
+    background: var(--bg-card-3rd);
     border: 3px solid #e29547;
-    box-shadow: 0 10px 24px rgba(226,149,71,0.12);
 }
-
 .podium-card.third-place .podium-avatar {
     border: 4px solid #ffe6d5;
-    box-shadow: 0 4px 12px rgba(226,149,71,0.2);
 }
 
-/* =========================================
-   ELEMENTOS INTERNOS COHESIVOS
-========================================= */
-
+/* Elementos internos */
 .podium-avatar {
     width: 70px;
     height: 70px;
@@ -2027,7 +2050,7 @@ body{
 .podium-name {
     font-size: 1rem;
     font-weight: 800;
-    color: #0f172a; 
+    color: var(--text-main);
     text-align: center;
     line-height: 1.2;
     margin: 0;
@@ -2037,77 +2060,72 @@ body{
 .podium-points {
     font-size: 1.8rem;
     font-weight: 900;
-    color: #166534; 
+    color: #22c55e; 
     line-height: 1;
     margin: 4px 0;
-    background: rgba(255, 255, 255, 0.75); 
+    background: var(--card-points-bg);
+    border: 1px solid var(--card-points-border);
     padding: 4px 12px;
     border-radius: 99px;
-    border: 1px solid rgba(0,0,0,0.05);
 }
 
 .podium-rank {
     font-size: 1.1rem;
     font-weight: 900;
-    color: #475569;
+    color: var(--text-muted);
     margin: 0;
 }
 
-/* =========================================
-   ADAPTABILIDAD RESPONSIVE (MÓVIL VERTICAL)
-========================================= */
-
+/* ==========================================================================
+   5. AJUSTES MÉTRICOS PARA MÓVIL VERTICAL (SIMETRÍA PERFECTA)
+   ========================================================================== */
 @media (max-width: 768px) {
     .ranking-modern-wrapper {
-        padding: 14px 8px; 
+        padding: 14px 8px;
         margin: 12px auto;
         border-radius: 20px;
     }
 
     .top3-podium {
-        gap: 6px; 
-        width: calc(100% + 8px); 
-        margin-left: -4px; 
+        gap: 6px;
+        width: calc(100% + 8px);
+        margin-left: -4px;
         padding: 0 4px;
         box-sizing: border-box;
         margin-top: 14px;
     }
 
     .podium-card {
-        width: 33.33% !important; 
-        height: 190px !important; 
-        padding: 10px 4px 12px 4px; 
+        width: 33.33% !important;
+        height: 190px !important;
+        padding: 10px 4px 12px 4px;
         border-radius: 16px;
         box-sizing: border-box !important;
     }
 
     .podium-card.first-place {
         width: 33.33% !important;
-        height: 190px !important; 
-        transform: translateY(-8px); 
-        box-shadow: 0 10px 20px rgba(242, 201, 76, 0.3); 
-        z-index: 2; 
-    }
-
-    .podium-card.first-place:hover {
-        transform: translateY(-12px);
+        height: 190px !important;
+        transform: translateY(-8px);
+        box-shadow: 0 10px 20px rgba(242, 201, 76, 0.3);
+        z-index: 2;
     }
 
     .podium-avatar {
-        width: 42px; 
+        width: 42px;
         height: 42px;
-        border-width: 2px !important; 
+        border-width: 2px !important;
     }
 
     .podium-name {
-        font-size: 0.72rem; 
+        font-size: 0.72rem;
         line-height: 1.15;
         font-weight: 700;
         overflow-wrap: anywhere;
     }
 
     .podium-points {
-        font-size: 1rem !important; 
+        font-size: 1rem !important;
         padding: 2px 8px;
     }
 
@@ -2115,8 +2133,44 @@ body{
         font-size: 0.8rem;
         font-weight: 700;
         line-height: 1;
-        color: #64748b; 
     }
+}
+
+/* ==========================================================================
+   6. INTERFAZ INTERRUPTOR FLOTANTE (SOL / LUNA)
+   ========================================================================== */
+.theme-btn {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 1px solid var(--border-wrapper);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.16);
+    transition: transform 0.25s ease, background-color 0.3s ease;
+    background-color: var(--bg-fila-regular);
+    color: var(--text-main);
+}
+.theme-btn:hover { transform: scale(1.1); }
+.theme-btn .theme-icon-sun { width: 22px; height: 22px; display: block; }
+.theme-btn .theme-icon-moon { width: 20px; height: 20px; display: none; }
+
+[data-theme="dark"] .theme-btn .theme-icon-sun { display: none; }
+[data-theme="dark"] .theme-btn .theme-icon-moon { display: block; color: #fcd866; }
+
+body, .ranking-modern-wrapper, .podium-card, .ranking-row {
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease !important;
+}
+
+@media (max-width: 768px) {
+    .theme-btn { bottom: 16px; right: 16px; width: 42px; height: 42px; }
+    .theme-btn .theme-icon-sun, .theme-btn .theme-icon-moon { width: 18px; height: 18px; }
 }
 
 		
@@ -5000,6 +5054,57 @@ function ejecutarLlenadoAutomatico() {
         }
     });
 
+document.addEventListener("DOMContentLoaded", () => {
+    const root = document.documentElement;
+    const themeBtn = document.getElementById("theme-toggle");
+
+    // Evalúa automáticamente el entorno horaria y del sistema operativo del terminal
+    function obtenerPreferenciaEntorno() {
+        const horaActual = new Date().getHours();
+        const esDeNoche = horaActual >= 20 || horaActual < 7; // Activo automáticamente de 20:00 a 07:00
+        const sistemaEnOscuro = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        
+        return (esDeNoche || sistemaEnOscuro) ? 'dark' : 'light';
+    }
+
+    // Arranca y define el tema correspondiente al cargar la página
+    function inicializarTema() {
+        const temaGuardado = localStorage.getItem('theme-preference');
+        
+        if (temaGuardado) {
+            if (temaGuardado === 'dark') root.setAttribute('data-theme', 'dark');
+            else root.removeAttribute('data-theme');
+        } else {
+            const temaAutomatico = obtenerPreferenciaEntorno();
+            if (temaAutomatico === 'dark') root.setAttribute('data-theme', 'dark');
+            else root.removeAttribute('data-theme');
+        }
+    }
+
+    // Escucha el click manual sobre el botón flotante del Sol/Luna
+    themeBtn.addEventListener("click", () => {
+        const temaActual = root.getAttribute('data-theme');
+        
+        if (temaActual === 'dark') {
+            root.removeAttribute('data-theme');
+            localStorage.setItem('theme-preference', 'light');
+        } else {
+            root.setAttribute('data-theme', 'dark');
+            localStorage.setItem('theme-preference', 'dark');
+        }
+    });
+
+    // Cambia dinámicamente si el usuario altera el modo nativo de su móvil (si no hay override manual)
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+        if (!localStorage.getItem('theme-preference')) {
+            inicializarTema();
+        }
+    });
+
+    inicializarTema();
+});
+
+
 </script>
 
 <!-- MENÚ INFERIOR (ICONOS) -->
@@ -5050,6 +5155,13 @@ function ejecutarLlenadoAutomatico() {
     </div>
 
 </div>
+
+<!-- Botón flotante para alternar el modo claro/oscuro de forma manual -->
+<button id="theme-toggle" class="theme-btn" aria-label="Cambiar modo de luz">
+  <svg class="theme-icon-sun" xmlns="http://w3.org" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.22" x2="5.64" y2="17.78"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+  <svg class="theme-icon-moon" xmlns="http://w3.org" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+</button>
+
 
 </body>
 </html>
