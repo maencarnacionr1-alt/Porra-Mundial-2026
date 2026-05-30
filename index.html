@@ -2345,210 +2345,86 @@ body{
 }
     
 /* =========================================
-   AVATAR REGISTER (OPTIMIZADO MODO CLARO)
+   SISTEMA AVATAR: ALINEACIÓN Y COLOR PREMIUM
 ========================================= */
 
+/* Fuerza a todo el bloque a centrarse en el eje de la pantalla */
 .avatar-register-box {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 24px;
-    gap: 16px;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin: 24px auto 0 auto !important;
+    width: 100% !important;
+    gap: 14px !important;
+    text-align: center !important;
 }
 
-.avatar-preview-wrapper {
-    position: relative;
-}
-
-.avatar-preview {
+/* El círculo del avatar con el color amarillo exacto de tu tooltip (?) */
+.avatar-preview-wrapper-fixed {
     width: 110px;
     height: 110px;
     border-radius: 50%;
+    /* Color amarillo/dorado idéntico al botón de ayuda (?) */
+    border: 4px solid #fbc02d; 
+    background-color: #f8fafc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
+    box-sizing: border-box;
+}
+
+/* Estilos de la imagen/silueta interna */
+.avatar-preview-fixed {
+    width: 100%;
+    height: 100%;
     object-fit: cover;
-    /* Corregido: Borde gris suave para que resalte sobre el fondo blanco general */
-    border: 4px solid #cbd5e1;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
-    background: #f1f5f9;
-    transition: border-color 0.25s ease;
+    display: block;
+    transition: transform 0.2s ease;
 }
 
-/* Inyecta la silueta de usuario como fondo cuando no hay avatar elegido */
-.avatar-preview.default-user-icon {
-    background-color: #f1f5f9;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://w3.org' viewBox='0 0 24 24' fill='%2394a3b8'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 4c1.93 0 3.5 1.57 3.5 3.5S13.93 13 12 13s-3.5-1.57-3.5-3.5S10.07 6 12 6zm0 14c-2.03 0-4.43-.82-6.14-2.88C7.55 15.8 9.68 15 12 15s4.45.8 6.14 2.12C16.43 19.18 14.03 20 12 20z'/%3E%3C/svg%3E");
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: 65% 65%; /* Centra y escala el icono perfectamente dentro del círculo */
+/* Si es la silueta por defecto (Data-SVG), le damos un ligero margen interior para que no toque los bordes */
+.avatar-preview-fixed[src^="data:image/svg+xml"] {
+    transform: scale(0.6);
 }
 
-.btn-avatar {
-    /* CORREGIDO: Sintaxis limpia y fondo verde deportivo premium */
+/* El botón Elegir Avatar centrado */
+.btn-avatar-fixed {
     background: linear-gradient(180deg, #388e3c 0%, #2e7d32 100%);
     color: #ffffff;
     border: none;
-    border-radius: 99px; /* Forma de píldora para dar un aspecto más moderno */
-    padding: 11px 24px;
+    border-radius: 99px;
+    padding: 10px 22px;
     font-weight: 700;
-    font-size: 0.9rem;
+    font-size: 0.88rem;
     cursor: pointer;
-    transition: all 0.25s ease;
     box-shadow: 0 4px 12px rgba(46, 125, 50, 0.2);
+    transition: all 0.2s ease;
+    display: inline-block;
+    margin: 0 auto;
 }
 
-.btn-avatar:hover {
+.btn-avatar-fixed:hover {
     transform: translateY(-2px);
     background: linear-gradient(180deg, #43a047 0%, #388e3c 100%);
     box-shadow: 0 6px 16px rgba(46, 125, 50, 0.3);
 }
 
-/* ===== MODAL AVATARES ===== */
-
-.avatar-modal {
-    position: fixed;
-    inset: 0;
-    background: rgba(16, 33, 58, 0.7); /* Fondo oscuro azulado translúcido a juego con tus títulos */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 99999;
-    backdrop-filter: blur(6px);
-}
-
-.hidden {
-    display: none;
-}
-
-.avatar-modal-content {
-    width: 90%;
-    max-width: 600px; /* Tamaño más compacto y elegante */
-    background: #ffffff;
-    border-radius: 24px;
-    padding: 28px;
-    box-shadow: 0 20px 50px rgba(16, 33, 58, 0.15);
-}
-
-.avatar-modal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-}
-
-.avatar-modal-header h2 {
-    color: #10213a; /* Color azul oscuro unificado */
-    font-size: 22px;
-    font-weight: 800;
-    margin: 0;
-}
-
-.close-avatar-modal {
-    border: none;
-    background: transparent;
-    font-size: 26px;
-    color: #94a3b8;
-    cursor: pointer;
-    transition: color 0.2s ease;
-}
-
-.close-avatar-modal:hover {
-    color: #d32f2f; /* Rojo sutil al cerrar */
-}
-
-.avatars-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-    gap: 16px;
-    max-height: 380px; /* Altura máxima controlada para evitar desbordamientos */
-    overflow-y: auto;
-    padding-right: 6px;
-}
-
-/* Personalización elegante de la barra de desplazamiento del modal */
-.avatars-grid::-webkit-scrollbar {
-    width: 6px;
-}
-.avatars-grid::-webkit-scrollbar-thumb {
-    background: #cbd5e1;
-    border-radius: 99px;
-}
-
-.avatar-option {
-    aspect-ratio: 1;
-    border-radius: 50%;
-    overflow: hidden;
-    cursor: pointer;
-    border: 3px solid #e2e8f0;
-    background: #f8fafc;
-    transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
-}
-
-.avatar-option img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.avatar-option:hover {
-    transform: translateY(-3px) scale(1.03);
-    border-color: #22c55e;
-    box-shadow: 0 6px 14px rgba(34, 197, 94, 0.25);
-}
-
-/* ===== PREVIEW AVATAR SELECCIONADO ===== */
-
-.avatar-preview-container {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 20px;
-}
-
-#selectedAvatarPreview {
-    width: 110px;
-    height: 110px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 4px solid #22c55e; /* Marco verde para el avatar activo */
-    box-shadow: 0 0 20px rgba(34, 197, 94, 0.2);
-    background: #ffffff;
-    transition: all 0.25s ease;
-}
-
-/* =========================================
-   ADAPTABILIDAD RESPONSIVE (MÓVIL VERTICAL)
-========================================= */
-
+/* Ajuste móvil para mantenerlo compacto */
 @media (max-width: 768px) {
-    .avatar-register-box {
-        margin-top: 16px;
-        gap: 12px;
-    }
-
-    .avatar-preview, #selectedAvatarPreview {
+    .avatar-preview-wrapper-fixed {
         width: 95px;
         height: 95px;
     }
-
-    .btn-avatar {
-        padding: 9px 20px;
-        font-size: 0.85rem;
-    }
-
-    .avatar-modal-content {
-        padding: 20px;
-        border-radius: 20px;
-    }
-
-    .avatar-modal-header h2 {
-        font-size: 18px;
-    }
-
-    .avatars-grid {
-        grid-template-columns: repeat(auto-fill, minmax(68px, 1fr));
-        gap: 12px;
-        max-height: 280px; /* Más compacto en móvil para que no ocupe toda la pantalla */
+    .btn-avatar-fixed {
+        padding: 8px 18px;
+        font-size: 0.82rem;
     }
 }
 
+		
 		/* ==========================================================================
    ESTILOS PREMIUM FORMULARIO DE REGISTRO
    ========================================================================== */
@@ -2844,9 +2720,9 @@ body{
                 <div class="avatar-preview-wrapper">
                     <img 
 						id="selectedAvatarPreview" 
-						src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" 
-            			class="avatar-preview default-user-icon"  
-			            alt=""
+						src="data:image/svg+xml,%3Csvg xmlns='http://w3.org' viewBox='0 0 448 512' fill='%2394a3b8'%3E%3Cpath d='M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z'/%3E%3C/svg%3E" 
+            			class="avatar-preview-fixed"
+			            alt="Avatar"
                 </div>
                 <button type="button" class="btn-avatar" onclick="openAvatarModal()">
                     Elegir Avatar
