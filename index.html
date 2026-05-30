@@ -2372,6 +2372,15 @@ body{
     transition: border-color 0.25s ease;
 }
 
+/* Inyecta la silueta de usuario como fondo cuando no hay avatar elegido */
+.avatar-preview.default-user-icon {
+    background-color: #f1f5f9;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://w3.org' viewBox='0 0 24 24' fill='%2394a3b8'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 4c1.93 0 3.5 1.57 3.5 3.5S13.93 13 12 13s-3.5-1.57-3.5-3.5S10.07 6 12 6zm0 14c-2.03 0-4.43-.82-6.14-2.88C7.55 15.8 9.68 15 12 15s4.45.8 6.14 2.12C16.43 19.18 14.03 20 12 20z'/%3E%3C/svg%3E");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 65% 65%; /* Centra y escala el icono perfectamente dentro del círculo */
+}
+
 .btn-avatar {
     /* CORREGIDO: Sintaxis limpia y fondo verde deportivo premium */
     background: linear-gradient(180deg, #388e3c 0%, #2e7d32 100%);
@@ -2835,9 +2844,9 @@ body{
                 <div class="avatar-preview-wrapper">
                     <img 
 						id="selectedAvatarPreview" 
-						src="data:image/svg+xml,%3Csvg xmlns='http://w3.org' viewBox='0 0 24 24' fill='%2394a3b8'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 4c1.93 0 3.5 1.57 3.5 3.5S13.93 13 12 13s-3.5-1.57-3.5-3.5S10.07 6 12 6zm0 14c-2.03 0-4.43-.82-6.14-2.88C7.55 15.8 9.68 15 12 15s4.45.8 6.14 2.12C16.43 19.18 14.03 20 12 20z'/%3E%3C/svg%3E" 
-            			class="avatar-preview" 
-			            alt="Avatar por defecto"
+						src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" 
+            			class="avatar-preview default-user-icon"  
+			            alt=""
                 </div>
                 <button type="button" class="btn-avatar" onclick="openAvatarModal()">
                     Elegir Avatar
