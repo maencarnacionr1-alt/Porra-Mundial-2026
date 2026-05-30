@@ -2540,6 +2540,162 @@ body{
     }
 }
 
+		/* ==========================================================================
+   ESTILOS PREMIUM FORMULARIO DE REGISTRO
+   ========================================================================== */
+
+.form-modern-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 16px;
+    box-sizing: border-box;
+}
+
+.participant-card-header {
+    margin-bottom: 30px;
+    text-align: center;
+    background: #ffffff;
+    padding: 24px;
+    border-radius: 24px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+}
+
+.switch-left-side {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.grid-two-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.margin-bottom-medium {
+    margin-bottom: 30px;
+}
+
+.fase-subtitle {
+    color: var(--pitch-green);
+    font-size: 1.1rem;
+    font-weight: 800;
+    margin: 0 0 14px 0;
+}
+
+.input-name-modern {
+    width: 60%;
+    max-width: 400px;
+    margin: 12px auto 0 auto;
+    display: block;
+    padding: 12px 20px;
+    border-radius: 99px;
+    border: 2px solid #cbd5e1;
+    font-size: 1rem;
+    text-align: center;
+    font-weight: 600;
+    outline: none;
+    box-sizing: border-box;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.input-name-modern:focus {
+    border-color: var(--pitch-green);
+    box-shadow: 0 0 0 4px rgba(46, 125, 50, 0.12);
+}
+
+.error-box-modern {
+    color: #d32f2f;
+    background: #ffebee;
+    padding: 10px 16px;
+    border-radius: 12px;
+    margin: 10px auto 0 auto;
+    max-width: 400px;
+    font-weight: 700;
+    font-size: 0.9rem;
+}
+
+/* ZONA DE ENVÍO Y PROGRESO ELEGANTE */
+.submit-section-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 40px 0;
+    gap: 20px;
+}
+
+.btn-registro-modern {
+    width: auto;
+    min-width: 280px;
+    padding: 14px 36px;
+    font-size: 1.05rem;
+    font-weight: 800;
+    letter-spacing: 0.03em;
+    color: #ffffff;
+    background: linear-gradient(180deg, #388e3c 0%, #2e7d32 100%);
+    border: none;
+    border-radius: 99px;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(46, 125, 50, 0.25);
+    transition: transform 0.25s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.25s ease, background 0.25s ease;
+}
+
+.btn-registro-modern:hover {
+    transform: translateY(-3px);
+    background: linear-gradient(180deg, #43a047 0%, #388e3c 100%);
+    box-shadow: 0 8px 24px rgba(46, 125, 50, 0.35);
+}
+
+.progress-wrapper {
+    width: 100%;
+    max-width: 400px;
+    background: #ffffff;
+    padding: 16px;
+    border-radius: 18px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.04);
+    box-sizing: border-box;
+}
+
+.progress-header-status {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #10213a;
+    margin-bottom: 8px;
+}
+
+.progress-bar-rail {
+    width: 100%;
+    height: 10px;
+    background-color: #f1f5f9;
+    border-radius: 99px;
+    overflow: hidden;
+    position: relative;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #42a5f5, #22c55e);
+    border-radius: 99px;
+    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.progress-wrapper.success-state .progress-bar-fill { background: #22c55e; }
+.progress-wrapper.success-state #progressStatusText { color: #1b5e20; }
+
+@media (max-width: 768px) {
+    .grid-two-columns { grid-template-columns: 1fr; gap: 8px; }
+    .input-name-modern { width: 100%; max-width: 100%; }
+    .participant-card-header { padding: 16px; border-radius: 18px; }
+    .btn-registro-modern { width: 100%; }
+}
+
 	
 
     </style>
@@ -2645,269 +2801,150 @@ body{
 
     <div id="registerSection" class="view-section hidden">
 
-    
-    <form id="registrationForm" style="max-width:900px; margin:0 auto;">
+    <form id="registrationForm" class="form-modern-container">
 
-        <!-- PARTICIPANTE -->
-
-	<div class="automation-switch-container">
-    <div style="display: flex; align-items: center; gap: 8px;">
-        <span class="switch-label">✨ Llenado rápido por cruces FIFA</span>
-        <div class="tooltip-icon"> ?
-            <div class="tooltip-box">
-                <strong>¿Cómo funciona?</strong><br><br>
-                Analiza tus selecciones de Fase de Grupos y rellena de forma matemática todos los cruces directos (Dieciseisavos) basándose en el criterio oficial de la FIFA.<br><br>
-                Para ahorrarte tiempo, también proyecta de forma automática una simulación en cascada hasta el Campeón. ¡Luego puedes cambiar el que quieras!
+        <!-- CONFIGURACIÓN: LLENADO RÁPIDO -->
+        <div class="automation-switch-container">
+            <div class="switch-left-side">
+                <span class="switch-label">✨ Llenado rápido por cruces FIFA</span>
+                <div class="tooltip-icon"> ?
+                    <div class="tooltip-box">
+                        <strong>¿Cómo funciona?</strong><br><br>
+                        Analiza tus selecciones de Fase de Grupos y rellena de forma matemática todos los cruces directos (Dieciseisavos) basándose en el criterio oficial de la FIFA.<br><br>
+                        Para ahorrarte tiempo, también proyecta de forma automática una simulación en cascada hasta el Campeón. ¡Luego puedes cambiar el que quieras!
+                    </div>
+                </div>
+            </div>
+            <div class="custom-switch" id="automationToggle" onclick="toggleCustomSwitch()">
+                <div class="custom-switch-circle"></div>
             </div>
         </div>
-    </div>
-    <div class="custom-switch" id="automationToggle" onclick="toggleCustomSwitch()">
-        <div class="custom-switch-circle"></div>
-    </div>
-</div>
 	
-        <div style="margin-bottom:30px; text-align:center;">
-
-            <label class="preg-label" style="font-size:1rem;">
+        <!-- PARTICIPANTE Y AVATAR -->
+        <div class="participant-card-header">
+            <label class="preg-label">
                 Nombre de Participante:
             </label>
 
-            <input
-    type="text"
-    id="playerNameInput"
-    name="nombre"
-    required
-    placeholder="Escribe tu nombre..."
+            <input type="text" id="playerNameInput" name="nombre" required placeholder="Escribe tu nombre..." class="input-name-modern">
+            
+            <div id="errorMensaje" class="error-box-modern"></div>
 
-    style="width:50%; padding:10px; border-radius:15px; border:3px solid var(--pitch-green); font-size:1rem; text-align:center; font-weight:600;"
->
-<div id="errorMensaje" style="display:none; color: #d32f2f; background: #ffebee; padding: 10px; border-radius: 8px; margin-top: 5px; font-weight: bold;">
-
-</div>
-
-<!-- =========================
-     SISTEMA AVATAR
-========================= -->
-
-<div class="avatar-register-box">
-
-    <!-- PREVIEW -->
-
-    <div class="avatar-preview-wrapper">
-
-        <img
-            id="selectedAvatarPreview"
-            src="https://i.imgur.com/6VBx3io.png"
-            class="avatar-preview"
-        >
-
-    </div>
-
-    <!-- BOTÓN -->
-
-    <button
-        type="button"
-        class="btn-avatar"
-        onclick="openAvatarModal()"
-    >
-        Elegir Avatar
-    </button>
-
-    <!-- INPUT OCULTO -->
-
-    <input
-        type="hidden"
-        id="avatarInput"
-        name="avatar"
-        value=""
-    >
-
-</div>
-      </div>
-
-
-        <!-- SECCIÓN DE REGISTRO TOP 8 -->
-
-        <div class="fase-container">
-
-           <div class="fase-title title-with-tooltip">
-
-    <span>TOP 8 EQUIPOS</span>
-
-    <div class="tooltip-icon">
-
-        ?
-
-        <div class="tooltip-box">
-            Selecciona los 8 equipos que crees que llegarán más lejos
-            en el torneo.
-
-            <br><br>
-
-            El ORDEN es muy importante:
-
-            <br><br>
-
-            🥇 El 1º tendrá el coeficiente más alto.<br>
-            🥈 El 2º un coeficiente menor.<br>
-            🥉 Y así sucesivamente hasta el 8º.
-
-            <br><br>
-
-            Cuanto mejor rinda el equipo en el torneo,
-            más puntos generará.
+            <!-- SISTEMA AVATAR -->
+            <div class="avatar-register-box">
+                <div class="avatar-preview-wrapper">
+                    <img id="selectedAvatarPreview" src="https://imgur.com" class="avatar-preview">
+                </div>
+                <button type="button" class="btn-avatar" onclick="openAvatarModal()">
+                    Elegir Avatar
+                </button>
+                <input type="hidden" id="avatarInput" name="avatar" value="">
+            </div>
         </div>
 
-    </div>
-
-</div>
-
-            <div id="top8Container"
-                style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+        <!-- SECCIÓN: TOP 8 -->
+        <div class="fase-container">
+            <div class="fase-title title-with-tooltip">
+                <span>TOP 8 EQUIPOS</span>
+                <div class="tooltip-icon"> ?
+                    <div class="tooltip-box">
+                        Selecciona los 8 equipos que crees que llegarán más lejos en el torneo.<br><br>
+                        El ORDEN es muy importante:<br><br>
+                        🥇 El 1º tendrá el coeficiente más alto.<br>
+                        🥈 El 2º un coeficiente menor.<br>
+                        🥉 Y así sucesivamente hasta el 8º.<br><br>
+                        Cuanto mejor rinda el equipo en el torneo, más puntos generará.
+                    </div>
+                </div>
             </div>
-
+            <div id="top8Container" class="grid-two-columns"></div>
         </div>
 
         <!-- FASE DE GRUPOS -->
-
         <div class="fase-container">
-
             <div class="fase-title title-with-tooltip">
-
-    <span>FASE DE GRUPOS</span>
-
-    <div class="tooltip-icon">
-
-        ?
-
-        <div class="tooltip-box">
-
-            A partir de octavos deberás predecir
-            qué equipos avanzarán ronda a ronda
-            hasta llegar a la final.
-
-            <br><br>
-
-            Cada acierto otorgará puntos.
-
-        </div>
-
-    </div>
-
-</div>
-
-            <h3 style="color:var(--pitch-green)">
-                Primeros de Grupo
-            </h3>
-
-            <div id="primerosGrupoContainer"
-                style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:30px;">
+                <span>FASE DE GRUPOS</span>
+                <div class="tooltip-icon"> ?
+                    <div class="tooltip-box">
+                        A partir de octavos deberás predecir qué equipos avanzarán ronda a ronda hasta llegar a la final.<br><br>
+                        Cada acierto otorgará puntos.
+                    </div>
+                </div>
             </div>
 
-            <h3 style="color:var(--pitch-green)">
-                Segundos de Grupo
-            </h3>
+            <h3 class="fase-subtitle">Primeros de Grupo</h3>
+            <div id="primerosGrupoContainer" class="grid-two-columns margin-bottom-medium"></div>
 
-            <div id="segundosGrupoContainer"
-                style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:30px;">
-            </div>
+            <h3 class="fase-subtitle">Segundos de Grupo</h3>
+            <div id="segundosGrupoContainer" class="grid-two-columns margin-bottom-medium"></div>
 
-            <h3 style="color:var(--pitch-green)">
-                8 Mejores Terceros
-            </h3>
-
-            <div id="mejoresTercerosContainer"
-                style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:30px;">
-            </div>
+            <h3 class="fase-subtitle">8 Mejores Terceros</h3>
+            <div id="mejoresTercerosContainer" class="grid-two-columns margin-bottom-medium"></div>
 
             <div class="grid-preguntas">
-
                 <div>
                     <label class="preg-label">Equipo más goleador</label>
                     <select name="mas_goles" class="equipo-select-simple" required></select>
                 </div>
-
                 <div>
                     <label class="preg-label">Equipo menos goleado</label>
                     <select name="menos_goles" class="equipo-select-simple" required></select>
                 </div>
-
             </div>
-
         </div>
 
         <!-- ELIMINATORIAS -->
-
         <div class="fase-container">
+            <div class="fase-title">ELIMINATORIAS</div>
 
-            <div class="fase-title">
-                ELIMINATORIAS
-            </div>
+            <h3 class="fase-subtitle">Clasificados a Octavos</h3>
+            <div id="octavosContainer" class="grid-two-columns margin-bottom-medium"></div>
 
-            <h3 style="color:var(--pitch-green)">
-                Clasificados a Octavos
-            </h3>
+            <h3 class="fase-subtitle">Clasificados a Cuartos</h3>
+            <div id="cuartosContainer" class="grid-two-columns margin-bottom-medium"></div>
 
-            <div id="octavosContainer"
-                style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:30px;">
-            </div>
+            <h3 class="fase-subtitle">Semifinalistas</h3>
+            <div id="semisContainer" class="grid-two-columns margin-bottom-medium"></div>
 
-            <h3 style="color:var(--pitch-green)">
-                Clasificados a Cuartos
-            </h3>
-
-            <div id="cuartosContainer"
-                style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:30px;">
-            </div>
-
-            <h3 style="color:var(--pitch-green)">
-                Semifinalistas
-            </h3>
-
-            <div id="semisContainer"
-                style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:30px;">
-            </div>
-
-            <h3 style="color:var(--pitch-green)">
-                Finalistas
-            </h3>
-
-            <div id="finalistasContainer"
-                style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:30px;">
-            </div>
+            <h3 class="fase-subtitle">Finalistas</h3>
+            <div id="finalistasContainer" class="grid-two-columns margin-bottom-medium"></div>
 
             <div class="grid-preguntas">
-
                 <div>
                     <label class="preg-label">Campeón</label>
                     <select name="campeon" class="equipo-select-simple" required></select>
                 </div>
-
                 <div>
                     <label class="preg-label">Subcampeón</label>
                     <select name="subcampeon" class="equipo-select-simple" required></select>
                 </div>
-
                 <div>
                     <label class="preg-label">Tercer Puesto</label>
                     <select name="tercero" class="equipo-select-simple" required></select>
                 </div>
-
             </div>
-
         </div>
 
-        <button
-            type="submit"
-            class="btn-registro"
-            style="width:100%; justify-content:center; padding:20px; font-size:1.2rem; border-radius:20px;"
-        >
-            ENVIAR MIS PRONÓSTICOS 🏆
-        </button>
+        <!-- ZONA DE ENVÍO Y PROGRESO -->
+        <div class="submit-section-container">
+            <button type="submit" id="btnSubmitPronosticos" class="btn-registro-modern">
+                ENVIAR MIS PRONÓSTICOS 🏆
+            </button>
+            
+            <div id="uploadProgressContainer" class="progress-wrapper hidden">
+                <div class="progress-header-status">
+                    <span id="progressStatusText">Enviando tus datos...</span>
+                    <span id="progressPercentage">0%</span>
+                </div>
+                <div class="progress-bar-rail">
+                    <div id="progressBarFill" class="progress-bar-fill"></div>
+                </div>
+            </div>
+        </div>
 
     </form>
-
 </div>
+
 
 <!-- MIS PRONÓSTICOS (NUEVA SECCIÓN INDEPENDIENTE) -->
 
@@ -4527,9 +4564,9 @@ document.getElementById("registrationForm").onsubmit = async (e) => {
             <span>¡Atención! Debes elegir exactamente a los 8 mejores terceros. Actualmente tienes <strong>${conteoTerceros}</strong> seleccionados.</span>
         `;
         
-        // Lo colocamos justo antes del botón de enviar para que el usuario lo vea claro
-        const botonSubmit = e.target.querySelector("button[type='submit']");
-        botonSubmit.parentNode.insertBefore(contenedorError, botonSubmit);
+        // Lo colocamos justo antes de la sección del botón para que el usuario lo vea claro
+        const submitSection = e.target.querySelector(".submit-section-container");
+        submitSection.parentNode.insertBefore(contenedorError, submitSection);
         
         // Hacemos un scroll suave hacia el mensaje de error para dar feedback visual mas cómodo
         contenedorError.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -4537,15 +4574,30 @@ document.getElementById("registrationForm").onsubmit = async (e) => {
     }
     // ========================================================
 
-    // Obtener el botón de envío y deshabilitarlo
-    const botonSubmit = e.target.querySelector("button[type='submit']");
-    if (botonSubmit) {
-        botonSubmit.disabled = true;
-        botonSubmit.innerText = "Enviando...";
-    }
+    // 1. INTEGRACIÓN DE TU NUEVA BARRA DE PROGRESO ELEGANTE
+    const btnSubmit = document.getElementById("btnSubmitPronosticos");
+    const progressContainer = document.getElementById("uploadProgressContainer");
+    const barFill = document.getElementById("progressBarFill");
+    const statusText = document.getElementById("progressStatusText");
+    const percentageText = document.getElementById("progressPercentage");
 
+    if (btnSubmit) btnSubmit.style.display = "none";
+    if (progressContainer) progressContainer.classList.remove("hidden");
+
+    // Simulador inteligente: Sube rápido hasta el 85% para dar feedback inmediato al usuario
+    let progreso = 0;
+    const intervaloSimulado = setInterval(() => {
+        if (progreso < 85) {
+            progreso += Math.floor(Math.random() * 15) + 5;
+            if (progreso > 85) progreso = 85;
+            if (barFill) barFill.style.width = progreso + "%";
+            if (percentageText) percentageText.innerHTML = progreso + "%";
+        }
+    }, 120);
+
+    // Preparar objeto de envío de datos
     const obj = {};
-	obj.avatar = selectedAvatar;
+    obj.avatar = selectedAvatar;
 	
     new FormData(e.target).forEach((v, k) => {
         if (k.startsWith("grupo_tercero")) {
@@ -4556,76 +4608,90 @@ document.getElementById("registrationForm").onsubmit = async (e) => {
     });
 
     try {
+        // Enviar datos reales a Google Apps Script
         await fetch(GOOGLE_SCRIPT_URL, {
             method: "POST",
             headers: { "Content-Type": "text/plain;charset=utf-8" },
             body: JSON.stringify(obj)
         });
 
-	window.onbeforeunload = null;
+        // Detener el simulador previo y forzar la barra al 100% de golpe (Envío Exitoso)
+        clearInterval(intervaloSimulado);
+        progreso = 100;
+        if (barFill) barFill.style.width = "100%";
+        if (percentageText) percentageText.innerHTML = "100%";
+        if (statusText) statusText.innerHTML = "¡Enviado con éxito! 🏆";
+        if (progressContainer) progressContainer.classList.add("success-state");
 
-    // 3. Pintar el diseño de éxito una vez que el servidor responde
-    document.getElementById("registrationForm").innerHTML = `
+        window.onbeforeunload = null;
 
-      <div style="
-          background:white;
-          border-radius:25px;
-          padding:40px 25px;
-          text-align:center;
-          box-shadow:0 10px 30px rgba(0,0,0,0.12);
-      ">
+        // Esperar 800 milisegundos para que el usuario aprecie el estado verde de la barra antes de borrar el formulario
+        await new Promise(resolve => setTimeout(resolve, 800));
 
+        // 3. Pintar el diseño de éxito una vez que el servidor responde
+        document.getElementById("registrationForm").innerHTML = `
           <div style="
-              width:80px;
-              height:80px;
-              border-radius:50%;
-              background:#2e7d32;
-              margin:0 auto 20px auto;
-              display:flex;
-              align-items:center;
-              justify-content:center;
-              color:white;
-              font-size:2rem;
-              font-weight:900;
+              background:white;
+              border-radius:25px;
+              padding:40px 25px;
+              text-align:center;
+              box-shadow:0 10px 30px rgba(0,0,0,0.12);
           ">
-              ✓
+              <div style="
+                  width:80px;
+                  height:80px;
+                  border-radius:50%;
+                  background:#2e7d32;
+                  margin:0 auto 20px auto;
+                  display:flex;
+                  align-items:center;
+                  justify-content:center;
+                  color:white;
+                  font-size:2rem;
+                  font-weight:900;
+              ">
+                  ✓
+              </div>
+
+              <h2 style="
+                  margin:0 0 10px 0;
+                  color:#1b5e20;
+                  font-size:2rem;
+              ">
+                  Pronósticos enviados
+              </h2>
+
+              <p style="
+                  color:#555;
+                  font-size:1rem;
+                  line-height:1.6;
+                  max-width:500px;
+                  margin:0 auto 25px auto;
+              ">
+                  Tus predicciones se han guardado correctamente.
+                  Ya formas parte de la "Porra Mundial 2026".
+              </p>
+              <button onclick="window.location.hash='#ranking'; window.location.reload();" class="btn-registro" style="margin:0 auto; justify-content:center;"> 	
+                  Volver al Ranking 
+              </button>
           </div>
+        `;
 
-          <h2 style="
-              margin:0 0 10px 0;
-              color:#1b5e20;
-              font-size:2rem;
-          ">
-              Pronósticos enviados
-          </h2>
-
-          <p style="
-              color:#555;
-              font-size:1rem;
-              line-height:1.6;
-              max-width:500px;
-              margin:0 auto 25px auto;
-          ">
-              Tus predicciones se han guardado correctamente.
-              Ya formas parte de la "Porra Mundial 2026".
-	<button onclick="window.location.hash='#ranking'; window.location.reload();" class="btn-registro" style=" margin:0 auto; justify-content:center; " > 	Volver al Ranking </button>
-          </p>
-
-      </div>
-
-  `;
-
-  } catch (error) {
-    console.error("Error al enviar el pronóstico:", error);
-    alert("Hubo un problema de conexión al enviar tus datos. Por favor, inténtalo de nuevo.");
-    
-    // Si la red falla de verdad, reactivamos el botón para que puedan reintentar
-    if (botonSubmit) {
-      botonSubmit.disabled = false;
-      botonSubmit.innerText = "Enviar Pronóstico";
+    } catch (error) {
+        console.error("Error al enviar el pronóstico:", error);
+        clearInterval(intervaloSimulado);
+        alert("Hubo un problema de conexión al enviar tus datos. Por favor, inténtalo de nuevo.");
+        
+        // Si la red falla de verdad, restauramos la UI original para reintentar
+        if (progressContainer) progressContainer.classList.add("hidden");
+        if (btnSubmit) {
+            btnSubmit.style.display = "flex";
+            btnSubmit.disabled = false;
+            btnSubmit.innerText = "ENVIAR MIS PRONÓSTICOS 🏆";
+        }
     }
-  }
 };
+
 
 
 // ================= CONTADOR MUNDIAL =================
