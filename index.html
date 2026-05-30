@@ -2355,12 +2355,15 @@ body{
     justify-content: center !important;
     margin: 24px auto 0 auto !important;
     width: 100% !important;
-    gap: 14px !important;
+    gap: 16px !important; /* Espaciado moderno ligeramente más amplio */
     text-align: center !important;
 }
 
 .avatar-preview-wrapper {
     position: relative;
+    cursor: pointer; /* Indica al usuario que se puede hacer clic */
+    overflow: hidden; /* Evita que el texto roto de la imagen se salga del círculo */
+    border-radius: 50%;
 }
 
 .avatar-preview {
@@ -2368,12 +2371,29 @@ body{
     height: 110px;
     border-radius: 50%;
     object-fit: cover;
-    /* Corregido: Borde gris suave para que resalte sobre el fondo blanco general */
     border: 4px solid #cbd5e1;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); /* Sombra más sutil y limpia */
     background: #f1f5f9;
-    transition: border-color 0.25s ease;
+    /* Transición suave para todos los estados (borde, sombra, transformación) */
+    transition: border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+                box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+                transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
+
+/* --- MEJORAS PROFESIONALES (EFECTOS INTERACTIVOS) --- */
+
+/* Efecto al pasar el cursor sobre el contenedor del avatar */
+.avatar-preview-wrapper:hover .avatar-preview {
+    border-color: #10b981; /* Cambia al verde del botón (puedes usar tu color corporativo) */
+    box-shadow: 0 8px 24px rgba(16, 185, 129, 0.2); /* Sombra difuminada con el color del borde */
+    transform: scale(1.03); /* Micro-zoom muy sutil que da sensación de respuesta */
+}
+
+/* Efecto visual de click (Feedback táctil) */
+.avatar-preview-wrapper:active .avatar-preview {
+    transform: scale(0.98);
+}
+
 
 .btn-avatar {
     /* CORREGIDO: Sintaxis limpia y fondo verde deportivo premium */
