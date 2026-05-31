@@ -528,11 +528,34 @@ html,body{
 /* ================= TOP 8 ORDEN ================= */
 
 .top8-card{
-    background:#f8f9fa;
-    border:2px solid #e0e0e0;
-    border-radius:16px;
-    padding:12px;
+
+    background:white;
+
+    border:1px solid rgba(0,0,0,0.06);
+
+    border-radius:20px;
+
+    padding:16px;
+
     position:relative;
+
+    box-shadow:
+        0 4px 14px rgba(0,0,0,0.04);
+
+    transition:
+        transform .25s ease,
+        box-shadow .25s ease,
+        border-color .25s ease;
+}
+
+.top8-card:hover{
+
+    transform:translateY(-3px);
+
+    border-color:rgba(255,215,0,0.45);
+
+    box-shadow:
+        0 10px 24px rgba(0,0,0,0.08);
 }
 
 .top8-rank{
