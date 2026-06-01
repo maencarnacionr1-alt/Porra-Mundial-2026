@@ -2968,10 +2968,12 @@ body{
 
             <h3 class="fase-subtitle">Segundos de Grupo</h3>
             <div id="segundosGrupoContainer" class="grid-two-columns margin-bottom-medium"></div>
-
+			
+		<div id="contenedor-marcado-terceros" style="transition: border 0.3s ease; border: 2px solid transparent; border-radius: 15px; padding: 10px;">
             <h3 class="fase-subtitle">8 Mejores Terceros</h3>
             <div id="mejoresTercerosContainer" class="grid-two-columns margin-bottom-medium"></div>
-
+    	</div>
+		
             <div class="grid-preguntas">
                 <div>
                     <label class="preg-label">Equipo más goleador</label>
@@ -4657,7 +4659,7 @@ document.getElementById("registrationForm").onsubmit = async (e) => {
         submitSection.parentNode.insertBefore(contenedorError, submitSection);
         
         // 2. SCROLL DIRECTO A LA SECCIÓN DE TERCEROS (EL CAMBIO PRO)
-        const seccionTerceros = document.getElementById("section-terceros");
+        const seccionTerceros = document.getElementById("contenedor-marcado-terceros");
         if (seccionTerceros) {
             seccionTerceros.scrollIntoView({ behavior: 'smooth', block: 'center' });
             
