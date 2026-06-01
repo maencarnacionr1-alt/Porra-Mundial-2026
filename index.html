@@ -3650,6 +3650,8 @@ window.showRegister = function () {
   renderEliminatorias("semisContainer", "semis", 4);
   renderEliminatorias("finalistasContainer", "finalista", 2);
 
+  renderPodio();
+
   renderSimpleDropdowns();
   updateHistory("register");
 };
@@ -4035,6 +4037,40 @@ function renderEliminatorias(containerId, prefix, n) {
             </div>
         `;
     }
+}
+
+function renderPodio() {
+    const c = document.getElementById("podioContainer"); // Asegúrate de que este ID exista en tu HTML
+    if (!c) return; // Si no existe el contenedor, no hace nada
+
+    c.innerHTML = `
+        <div class="top8-card">
+            <label class="preg-label">🥇 Campeón</label>
+            <div class="select-wrapper">
+                <select name="campeon" class="equipo-select-simple" data-section="podio" required>
+                    <option value="">Elegir equipo...</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="top8-card">
+            <label class="preg-label">🥈 Subcampeón</label>
+            <div class="select-wrapper">
+                <select name="subcampeon" class="equipo-select-simple" data-section="podio" required>
+                    <option value="">Elegir equipo...</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="top8-card">
+            <label class="preg-label">🥉 Tercer Puesto</label>
+            <div class="select-wrapper">
+                <select name="tercero" class="equipo-select-simple" data-section="podio" required>
+                    <option value="">Elegir equipo...</option>
+                </select>
+            </div>
+        </div>
+    `;
 }
 function renderSimpleDropdowns() {
 
