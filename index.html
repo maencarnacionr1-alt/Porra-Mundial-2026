@@ -5158,36 +5158,33 @@ function ejecutarLlenadoAutomatico() {
         }
     });
 
-document.querySelectorAll('select[name^="grupo_tercero"]').forEach(select => {
-    select.addEventListener('change', () => {
-        
-        // 1. Contamos cuántos hay seleccionados
-        const selectTerceros = document.querySelectorAll('select[name^="grupo_tercero"]');
-        let conteo = 0;
-        selectTerceros.forEach(s => { 
-            if (s.value !== "") conteo++; 
-        });
+// Este código NO necesita ser reiniciado si se redibujan los selects
+const contenedorPadre = document.getElementById("mejoresTercerosContainer");
 
-        const contenedor = document.getElementById("contenedor-marcado-terceros");
-        const errorDiv = document.getElementById("error-terceros");
+if (contenedorPadre) {
+    contenedorPadre.addEventListener('change', (e) => {
+        // Solo actuamos si lo que cambió es un select
+        if (e.target.matches('select[name^="grupo_tercero"]')) {
+            
+            const todosLosSelects = document.querySelectorAll('select[name^="grupo_tercero"]');
+            let conteo = 0;
+            todosLosSelects.forEach(s => { if (s.value !== "") conteo++; });
 
-        // 2. Lógica visual: ¿Está bien o está mal?
-        if (conteo === 8) {
-            // ESTÁ BIEN: Borde verde y quitamos el mensaje
-            if (contenedor) {
-                contenedor.style.border = "2px solid #2e7d32"; // Verde éxito
-            }
-            if (errorDiv) {
-                errorDiv.remove();
-            }
-        } else if (conteo > 0) {
-            // ESTÁ MAL: Borde rojo (solo si ya ha empezado a seleccionar algo)
-            if (contenedor) {
-                contenedor.style.border = "2px solid #c62828"; // Rojo error
+            const marco = document.getElementById("contenedor-marcado-terceros");
+            const mensaje = document.getElementById("error-terceros");
+
+            if (conteo === 8) {
+                // ÉXITO
+                if (marco) marco.style.border = "2px solid #2e7d32"; 
+                if (mensaje) mensaje.style.display = "none";
+            } else if (conteo > 0) {
+                // ERROR
+                if (marco) marco.style.border = "2px solid #c62828";
+                if (mensaje) mensaje.style.display = "block";
             }
         }
     });
-});
+}
 
 </script>
 
