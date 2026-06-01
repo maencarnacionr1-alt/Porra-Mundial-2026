@@ -3774,61 +3774,36 @@ function renderPredictionsByPlayer(p) {
         <div class="prediction-card">
             <div class="prediction-section-title">⚽ FASE DE GRUPOS</div>
 
-            <div class="group-mini-title" style="margin-bottom:15px;">🥇 Primeros de Grupo</div>
-            <div class="pred-section-divider"></div>
-            <div class="groups-grid-predictions">
-                ${grupos.map(g => `
-                    <div class="top8-card"> <div class="group-team-line">
-                            <strong>${g}</strong>
-                            ${getBandera(p[`Primero Grupo ${g}`])}
-                            ${p[`Primero Grupo ${g}`] || "-"}
-                        </div>
-                    </div>
-                `).join("")}
-            </div>
-
-            <div class="group-mini-title" style="margin-top:28px; margin-bottom:15px;">🥈 Segundos de Grupo</div>
-            <div class="pred-section-divider"></div>
-            <div class="groups-grid-predictions">
-                ${grupos.map(g => `
-                    <div class="top8-card"> <div class="group-team-line">
-                            <strong>${g}</strong>
-                            ${getBandera(p[`Segundo Grupo ${g}`])}
-                            ${p[`Segundo Grupo ${g}`] || "-"}
-                        </div>
-                    </div>
-                `).join("")}
-            </div>
-
-            <div class="group-mini-title" style="margin-top:28px; margin-bottom:15px;">🥉 8 Mejores Terceros</div>
-            <div class="pred-section-divider"></div>
-            <div class="groups-grid-predictions">
-                ${grupos.map(g => {
-                    const tercero = p[`Tercero Grupo ${g}`];
-                    if(!tercero) return "";
-                    return `
-                        <div class="top8-card"> <div class="group-team-line">
+            ${["Primeros", "Segundos", "Terceros"].map(tipo => `
+                <div class="group-mini-title" style="margin:20px 0 15px 0;">${tipo === "Primeros" ? "🥇" : tipo === "Segundos" ? "🥈" : "🥉"} ${tipo} de Grupo</div>
+                <div class="pred-section-divider"></div>
+                <div style="display: flex; flex-wrap: wrap; gap: 15px;">
+                    ${grupos.map(g => {
+                        const valor = tipo === "Terceros" ? p[`Tercero Grupo ${g}`] : p[`${tipo === "Primeros" ? "Primero" : "Segundo"} Grupo ${g}`];
+                        if (!valor) return "";
+                        return `
+                            <div class="top8-card" style="flex: 1 1 200px;">
                                 <strong>${g}</strong>
-                                ${getBandera(tercero)}
-                                ${tercero}
+                                ${getBandera(valor)}
+                                ${valor}
                             </div>
-                        </div>
-                    `;
-                }).join("")}
-            </div>
+                        `;
+                    }).join("")}
+                </div>
+            `).join("")}
         </div>
 
         <div class="prediction-card">
             <div class="prediction-section-title">🏁 ELIMINATORIAS</div>
-            
             ${['Octavos','Cuartos','Semifinales','Final'].map((fase, i) => {
                 const cantidades = [16, 8, 4, 2];
                 return `
                     <h3 class="group-mini-title" style="margin-top:25px;">${fase}</h3>
                     <div class="pred-section-divider"></div>
-                    <div class="knockout-grid">
+                    <div style="display: flex; flex-wrap: wrap; gap: 15px;">
                         ${Array.from({ length: cantidades[i] }, (_, j) => `
-                            <div class="top8-card"> ${getBandera(p[`${fase} ${j + 1}`])}
+                            <div class="top8-card" style="flex: 1 1 150px;">
+                                ${getBandera(p[`${fase} ${j + 1}`])}
                                 ${p[`${fase} ${j + 1}`] || "-"}
                             </div>
                         `).join("")}
