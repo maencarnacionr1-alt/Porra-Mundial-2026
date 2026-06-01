@@ -4640,37 +4640,32 @@ document.getElementById("registrationForm").onsubmit = async (e) => {
     });
 
     if (conteoTerceros !== 8) {
-        // 1. Mostrar el aviso
-        const contenedorError = document.createElement("div");
-        contenedorError.id = "error-terceros";
-        contenedorError.style.cssText = `
-            background: #ffebee; color: #c62828; border: 1px solid #ffcdd2;
-            padding: 15px; border-radius: 12px; margin: 20px 0;
-            font-weight: 600; font-size: 0.95rem; text-align: center;
-            display: flex; align-items: center; justify-content: center;
-            gap: 10px; box-shadow: 0 4px 12px rgba(198, 40, 40, 0.05);
-        `;
-        contenedorError.innerHTML = `
-            <i class="fa-solid fa-triangle-exclamation"></i>
-            <span>¡Atención! Selecciona 8 terceros. (Tienes ${conteoTerceros})</span>
-        `;
-        
-        const submitSection = e.target.querySelector(".submit-section-container");
-        submitSection.parentNode.insertBefore(contenedorError, submitSection);
-        
-        // 2. SCROLL DIRECTO A LA SECCIÓN DE TERCEROS (EL CAMBIO PRO)
+       // 1. Mostrar el aviso
+    const contenedorError = document.createElement("div");
+    contenedorError.id = "error-terceros";
+    // ... (tus estilos aquí)
+    contenedorError.innerHTML = `
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        <span>¡Atención! Selecciona 8 terceros. (Tienes ${conteoTerceros})</span>
+    `;
+    
+    const submitSection = e.target.querySelector(".submit-section-container");
+    submitSection.parentNode.insertBefore(contenedorError, submitSection);
+    
+    // 2. NUEVA LÓGICA: Esperar 1.5 segundos antes del scroll
+    setTimeout(() => {
         const seccionTerceros = document.getElementById("contenedor-marcado-terceros");
         if (seccionTerceros) {
             seccionTerceros.scrollIntoView({ behavior: 'smooth', block: 'center' });
             
-            // Opcional: efecto visual de "atención" en la sección
+            // Efecto visual de resaltado
             seccionTerceros.style.border = "2px solid #c62828";
-            setTimeout(() => { seccionTerceros.style.border = "1px solid #eee"; }, 2000);
+            seccionTerceros.style.borderRadius = "15px";
         }
-        
-        return; // Detiene el envío
-    }
-	
+    }, 1500); // 1500 milisegundos = 1.5 segundos
+    
+    return; // Detiene el envío
+		
     // ========================================================
 
     // 1. INTEGRACIÓN DE TU NUEVA BARRA DE PROGRESO ELEGANTE
