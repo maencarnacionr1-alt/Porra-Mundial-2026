@@ -4643,7 +4643,15 @@ document.getElementById("registrationForm").onsubmit = async (e) => {
        // 1. Mostrar el aviso
     const contenedorError = document.createElement("div");
     contenedorError.id = "error-terceros";
-    // ... (tus estilos aquí)
+
+	contenedorError.style.cssText = `
+            background: #ffebee; color: #c62828; border: 1px solid #ffcdd2;
+            padding: 15px; border-radius: 12px; margin: 20px 0;
+            font-weight: 600; font-size: 0.95rem; text-align: center;
+            display: flex; align-items: center; justify-content: center;
+            gap: 10px; box-shadow: 0 4px 12px rgba(198, 40, 40, 0.05);
+        `;	
+		
     contenedorError.innerHTML = `
         <i class="fa-solid fa-triangle-exclamation"></i>
         <span>¡Atención! Selecciona 8 terceros. (Tienes ${conteoTerceros})</span>
