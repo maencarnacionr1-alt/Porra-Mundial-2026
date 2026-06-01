@@ -2952,7 +2952,7 @@ body{
         </div>
 
         <!-- FASE DE GRUPOS -->
-        <div class="fase-container">
+        <div id="section-terceros" class="fase-container">
             <div class="fase-title title-with-tooltip">
                 <span>FASE DE GRUPOS</span>
                 <div class="tooltip-icon"> ?
@@ -4621,7 +4621,7 @@ function renderRankingPlayersDropdown(){
 document.getElementById("registrationForm").onsubmit = async (e) => {
     e.preventDefault();
 
-    // Eliminar cualquier mensaje de error previo si existiera
+    // Eliminar cualquier mensaje de error previo
     const errorPrevio = document.getElementById("error-terceros");
     if (errorPrevio) errorPrevio.remove();
 
@@ -4638,38 +4638,37 @@ document.getElementById("registrationForm").onsubmit = async (e) => {
     });
 
     if (conteoTerceros !== 8) {
-        // En lugar de un alert(), creamos un contenedor elegante con diseño integrado
+        // 1. Mostrar el aviso
         const contenedorError = document.createElement("div");
         contenedorError.id = "error-terceros";
         contenedorError.style.cssText = `
-            background: #ffebee;
-            color: #c62828;
-            border: 1px solid #ffcdd2;
-            padding: 15px;
-            border-radius: 12px;
-            margin: 20px 0;
-            font-weight: 600;
-            font-size: 0.95rem;
-            text-align: center;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            box-shadow: 0 4px 12px rgba(198, 40, 40, 0.05);
+            background: #ffebee; color: #c62828; border: 1px solid #ffcdd2;
+            padding: 15px; border-radius: 12px; margin: 20px 0;
+            font-weight: 600; font-size: 0.95rem; text-align: center;
+            display: flex; align-items: center; justify-content: center;
+            gap: 10px; box-shadow: 0 4px 12px rgba(198, 40, 40, 0.05);
         `;
         contenedorError.innerHTML = `
-            <i class="fa-solid fa-triangle-exclamation" style="font-size: 1.2rem;"></i>
-            <span>¡Atención! Debes elegir exactamente a los 8 mejores terceros. Actualmente tienes <strong>${conteoTerceros}</strong> seleccionados.</span>
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            <span>¡Atención! Selecciona 8 terceros. (Tienes ${conteoTerceros})</span>
         `;
         
-        // Lo colocamos justo antes de la sección del botón para que el usuario lo vea claro
         const submitSection = e.target.querySelector(".submit-section-container");
         submitSection.parentNode.insertBefore(contenedorError, submitSection);
         
-        // Hacemos un scroll suave hacia el mensaje de error para dar feedback visual mas cómodo
-        contenedorError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        // 2. SCROLL DIRECTO A LA SECCIÓN DE TERCEROS (EL CAMBIO PRO)
+        const seccionTerceros = document.getElementById("section-terceros");
+        if (seccionTerceros) {
+            seccionTerceros.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            
+            // Opcional: efecto visual de "atención" en la sección
+            seccionTerceros.style.border = "2px solid #c62828";
+            setTimeout(() => { seccionTerceros.style.border = "1px solid #eee"; }, 2000);
+        }
+        
         return; // Detiene el envío
     }
+	
     // ========================================================
 
     // 1. INTEGRACIÓN DE TU NUEVA BARRA DE PROGRESO ELEGANTE
