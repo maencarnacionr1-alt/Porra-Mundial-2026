@@ -5159,32 +5159,35 @@ function ejecutarLlenadoAutomatico() {
     });
 
 document.querySelectorAll('select[name^="grupo_tercero"]').forEach(select => {
-        select.addEventListener('change', () => {
-            
-            // 1. Volvemos a contar cuántos hay seleccionados
-            const selectTerceros = document.querySelectorAll('select[name^="grupo_tercero"]');
-            let conteo = 0;
-            selectTerceros.forEach(s => { 
-                if (s.value !== "") conteo++; 
-            });
-
-            // 2. Si el usuario llega a 8, el error desaparece automáticamente
-            if (conteo === 8) {
-                const contenedor = document.getElementById("contenedor-marcado-terceros");
-                const errorDiv = document.getElementById("error-terceros");
-                
-                // Quitamos el borde rojo del contenedor
-                if (contenedor) {
-                    contenedor.style.border = "2px solid transparent";
-                }
-                
-                // Eliminamos el mensaje de aviso si existe
-                if (errorDiv) {
-                    errorDiv.remove();
-                }
-            }
+    select.addEventListener('change', () => {
+        
+        // 1. Contamos cuántos hay seleccionados
+        const selectTerceros = document.querySelectorAll('select[name^="grupo_tercero"]');
+        let conteo = 0;
+        selectTerceros.forEach(s => { 
+            if (s.value !== "") conteo++; 
         });
+
+        const contenedor = document.getElementById("contenedor-marcado-terceros");
+        const errorDiv = document.getElementById("error-terceros");
+
+        // 2. Lógica visual: ¿Está bien o está mal?
+        if (conteo === 8) {
+            // ESTÁ BIEN: Borde verde y quitamos el mensaje
+            if (contenedor) {
+                contenedor.style.border = "2px solid #2e7d32"; // Verde éxito
+            }
+            if (errorDiv) {
+                errorDiv.remove();
+            }
+        } else if (conteo > 0) {
+            // ESTÁ MAL: Borde rojo (solo si ya ha empezado a seleccionar algo)
+            if (contenedor) {
+                contenedor.style.border = "2px solid #c62828"; // Rojo error
+            }
+        }
     });
+});
 
 </script>
 
