@@ -3766,290 +3766,131 @@ window.openPlayerFromRanking = function(i){
 };
 
 // ================= PLAYER =================
-
 function renderPredictionsByPlayer(p) {
-
     const c = document.getElementById("predictionsGlobalView");
-
     const grupos = ["A","B","C","D","E","F","G","H","I","J","K","L"];
 
     c.innerHTML = `
-
     <div class="predictions-app">
-
-        <!-- TOP 8 -->
-
         <div class="prediction-card">
-
             <div class="prediction-section-title">
-                🏆 TOP 8 FAVORITOS
+                ⚽ FASE DE GRUPOS
             </div>
 
-            <div class="top8-grid">
-
-                ${Array.from({ length: 8 }, (_, i) => `
-
-                    <div class="top8-team">
-
-                        <div class="top8-rank-badge">
-                            ${i + 1}
+            <div class="group-mini-title" style="margin-bottom:15px;">🥇 Primeros de Grupo</div>
+            <div class="pred-section-divider"></div>
+            <div class="groups-grid-predictions">
+                ${grupos.map(g => `
+                    <div class="top8-card">
+                        <div class="group-team-line">
+                            <strong>${g}</strong>
+                            ${getBandera(p[`Primero Grupo ${g}`])}
+                            ${p[`Primero Grupo ${g}`] || "-"}
                         </div>
-
-                        <div>
-                            ${getBandera(p[`equipo ${i + 1}`])}
-                            ${p[`equipo ${i + 1}`] || "-"}
-                        </div>
-
                     </div>
-
                 `).join("")}
-
             </div>
 
-        </div>
-
-        <!-- FASE DE GRUPOS -->
-
-<div class="prediction-card">
-
-    <div class="prediction-section-title">
-        ⚽ FASE DE GRUPOS
-    </div>
-
-    <!-- PRIMEROS -->
-
-    <div class="group-mini-title" style="margin-bottom:15px;">
-        🥇 Primeros de Grupo
-    </div>
-
-   <div class="pred-section-divider"></div>
-
-    <div class="groups-grid-predictions">
-
-        ${grupos.map(g => `
-
-            <div class="group-mini-card">
-
-                <div class="group-team-line">
-
-                    <strong>${g}</strong>
-
-                    ${getBandera(p[`Primero Grupo ${g}`])}
-
-                    ${p[`Primero Grupo ${g}`] || "-"}
-
-                </div>
-
-            </div>
-
-        `).join("")}
-
-    </div>
-
-    <!-- SEGUNDOS -->
-
-    <div class="group-mini-title" style="margin-top:28px; margin-bottom:15px;">
-        🥈 Segundos de Grupo
-    </div>
-    <div class="pred-section-divider"></div>
-
-    <div class="groups-grid-predictions">
-
-        ${grupos.map(g => `
-
-            <div class="group-mini-card">
-
-                <div class="group-team-line">
-
-                    <strong>${g}</strong>
-
-                    ${getBandera(p[`Segundo Grupo ${g}`])}
-
-                    ${p[`Segundo Grupo ${g}`] || "-"}
-
-                </div>
-
-            </div>
-
-        `).join("")}
-
-    </div>
-
-    <!-- TERCEROS -->
-
-    <div class="group-mini-title" style="margin-top:28px; margin-bottom:15px;">
-        🥉 8 Mejores Terceros
-    </div>
-
-    <div class="pred-section-divider"></div>
-
-    <div class="groups-grid-predictions">
-
-        ${grupos.map(g => {
-
-            const tercero = p[`Tercero Grupo ${g}`];
-
-            if(!tercero) return "";
-
-            return `
-
-                <div class="group-mini-card">
-
-                    <div class="group-team-line">
-
-                        <strong>${g}</strong>
-
-                        ${getBandera(tercero)}
-
-                        ${tercero}
-
+            <div class="group-mini-title" style="margin-top:28px; margin-bottom:15px;">🥈 Segundos de Grupo</div>
+            <div class="pred-section-divider"></div>
+            <div class="groups-grid-predictions">
+                ${grupos.map(g => `
+                    <div class="top8-card">
+                        <div class="group-team-line">
+                            <strong>${g}</strong>
+                            ${getBandera(p[`Segundo Grupo ${g}`])}
+                            ${p[`Segundo Grupo ${g}`] || "-"}
+                        </div>
                     </div>
-
-                </div>
-
-            `;
-
-        }).join("")}
-
-    </div>
-
-</div>
-
-        <!-- ESPECIALES -->
-
-        <div class="prediction-card">
-
-            <div class="prediction-section-title">
-                🔥 PREMIOS ESPECIALES
+                `).join("")}
             </div>
 
-            <div class="prediction-pill">
-                ⚽
-                ${getBandera(p["Maxímo Goleador"])}
-                Máximo goleador:
-                ${p["Maxímo Goleador"] || "-"}
+            <div class="group-mini-title" style="margin-top:28px; margin-bottom:15px;">🥉 8 Mejores Terceros</div>
+            <div class="pred-section-divider"></div>
+            <div class="groups-grid-predictions">
+                ${grupos.map(g => {
+                    const tercero = p[`Tercero Grupo ${g}`];
+                    if(!tercero) return "";
+                    return `
+                        <div class="top8-card">
+                            <div class="group-team-line">
+                                <strong>${g}</strong>
+                                ${getBandera(tercero)}
+                                ${tercero}
+                            </div>
+                        </div>
+                    `;
+                }).join("")}
             </div>
-
-            <div class="prediction-pill">
-                🧤
-                ${getBandera(p["Menos Goleado"])}
-                Menos goleado:
-                ${p["Menos Goleado"] || "-"}
-            </div>
-
         </div>
 
-        <!-- ELIMINATORIAS -->
+        <div class="prediction-card">
+            <div class="prediction-section-title">🔥 PREMIOS ESPECIALES</div>
+            <div class="prediction-pill">
+                ⚽ ${getBandera(p["Maxímo Goleador"])} Máximo goleador: ${p["Maxímo Goleador"] || "-"}
+            </div>
+            <div class="prediction-pill">
+                🧤 ${getBandera(p["Menos Goleado"])} Menos goleado: ${p["Menos Goleado"] || "-"}
+            </div>
+        </div>
 
         <div class="prediction-card">
-
-            <div class="prediction-section-title">
-                🏁 ELIMINATORIAS
-            </div>
-
+            <div class="prediction-section-title">🏁 ELIMINATORIAS</div>
+            
             <h3 class="group-mini-title">Octavos</h3>
-			<div class="pred-section-divider"></div>
-
+            <div class="pred-section-divider"></div>
             <div class="knockout-grid">
-
                 ${Array.from({ length: 16 }, (_, i) => `
-
-                    <div class="knockout-team">
+                    <div class="top8-card">
                         ${getBandera(p[`Octavos ${i + 1}`])}
                         ${p[`Octavos ${i + 1}`] || "-"}
                     </div>
-
                 `).join("")}
-
             </div>
 
-            <h3 class="group-mini-title" style="margin-top:25px;">
-                Cuartos
-            </h3>
-			<div class="pred-section-divider"></div>
+            <h3 class="group-mini-title" style="margin-top:25px;">Cuartos</h3>
+            <div class="pred-section-divider"></div>
             <div class="knockout-grid">
-
                 ${Array.from({ length: 8 }, (_, i) => `
-
-                    <div class="knockout-team">
+                    <div class="top8-card">
                         ${getBandera(p[`Cuartos ${i + 1}`])}
                         ${p[`Cuartos ${i + 1}`] || "-"}
                     </div>
-
                 `).join("")}
-
             </div>
 
-            <h3 class="group-mini-title" style="margin-top:25px;">
-                Semifinales
-            </h3>
-<div class="pred-section-divider"></div>
+            <h3 class="group-mini-title" style="margin-top:25px;">Semifinales</h3>
+            <div class="pred-section-divider"></div>
             <div class="knockout-grid">
-
                 ${Array.from({ length: 4 }, (_, i) => `
-
-                    <div class="knockout-team">
+                    <div class="top8-card">
                         ${getBandera(p[`Semifinal ${i + 1}`])}
                         ${p[`Semifinal ${i + 1}`] || "-"}
                     </div>
-
                 `).join("")}
-
             </div>
 
-            <h3 class="group-mini-title" style="margin-top:25px;">
-                Final
-            </h3>
-<div class="pred-section-divider"></div>
+            <h3 class="group-mini-title" style="margin-top:25px;">Final</h3>
+            <div class="pred-section-divider"></div>
             <div class="knockout-grid">
-
                 ${Array.from({ length: 2 }, (_, i) => `
-
-                    <div class="knockout-team">
+                    <div class="top8-card">
                         ${getBandera(p[`Final ${i + 1}`])}
                         ${p[`Final ${i + 1}`] || "-"}
                     </div>
-
                 `).join("")}
-
             </div>
-
         </div>
-
-        <!-- PODIO -->
 
         <div class="prediction-card">
-
-            <div class="prediction-section-title">
-                🏆 PODIO FINAL
-            </div>
-
+            <div class="prediction-section-title">🏆 PODIO FINAL</div>
             <div class="podium-grid">
-
-                <div class="podium-card gold">
-                    🥇
-                    ${getBandera(p["Campeón"])}
-                    ${p["Campeón"] || "-"}
-                </div>
-
-                <div class="podium-card silver">
-                    🥈
-                    ${getBandera(p["Subcampeón"])}
-                    ${p["Subcampeón"] || "-"}
-                </div>
-
-                <div class="podium-card bronze">
-                    🥉
-                    ${getBandera(p["Tercero"])}
-                    ${p["Tercero"] || "-"}
-                </div>
-
+                <div class="podium-card gold">🥇 ${getBandera(p["Campeón"])} ${p["Campeón"] || "-"}</div>
+                <div class="podium-card silver">🥈 ${getBandera(p["Subcampeón"])} ${p["Subcampeón"] || "-"}</div>
+                <div class="podium-card bronze">🥉 ${getBandera(p["Tercero"])} ${p["Tercero"] || "-"}</div>
             </div>
-
         </div>
-
     </div>
-
     `;
 }
 
