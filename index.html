@@ -4658,14 +4658,17 @@ document.getElementById("registrationForm").onsubmit = async (e) => {
         
         // 2. SCROLL DIRECTO A LA SECCIÓN DE TERCEROS (EL CAMBIO PRO)
         const seccionTerceros = document.getElementById("section-terceros");
-    if (seccionTerceros) {
-        seccionTerceros.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        seccionTerceros.style.border = "2px solid #c62828"; // Borde rojo permanente
-        seccionTerceros.style.borderRadius = "15px"; // Para mantener la estética
+        if (seccionTerceros) {
+            seccionTerceros.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            
+            // Opcional: efecto visual de "atención" en la sección
+            seccionTerceros.style.border = "2px solid #c62828";
+            setTimeout(() => { seccionTerceros.style.border = "1px solid #eee"; }, 2000);
+        }
+        
+        return; // Detiene el envío
     }
-    return;
-}
-
+	
     // ========================================================
 
     // 1. INTEGRACIÓN DE TU NUEVA BARRA DE PROGRESO ELEGANTE
@@ -5147,28 +5150,6 @@ function ejecutarLlenadoAutomatico() {
             });
         }
     });
-
-//COMPROBACIÓN SELECCION 8 MEJORES TERCEROS
-document.querySelectorAll('select[name^="grupo_tercero"]').forEach(select => {
-    select.addEventListener('change', () => {
-        const selectTerceros = document.querySelectorAll('select[name^="grupo_tercero"]');
-        let conteo = 0;
-        selectTerceros.forEach(s => { if (s.value !== "") conteo++; });
-
-        // Si el usuario llega a 8, quitamos el error
-        if (conteo === 8) {
-            const seccionTerceros = document.getElementById("section-terceros");
-            const errorDiv = document.getElementById("error-terceros");
-            
-            if (seccionTerceros) {
-                seccionTerceros.style.border = "none"; // Quitamos el borde rojo
-            }
-            if (errorDiv) {
-                errorDiv.remove(); // Quitamos el mensaje de aviso
-            }
-        }
-    });
-});
 
 </script>
 
