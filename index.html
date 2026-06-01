@@ -2787,35 +2787,6 @@ body{
     .btn-registro-modern { width: 100%; }
 }
 
-/* 1. Contenedor para scroll horizontal */
-.table-responsive {
-    width: 100%;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch; /* Suaviza el scroll en iOS */
-}
-
-/* 2. Ajustes de la tabla */
-table {
-    width: 100%;
-    table-layout: fixed; /* Esto es clave para que no se estire de forma loca */
-    border-collapse: collapse;
-}
-
-/* 3. Ajuste específico para la columna de equipo */
-/* Le damos un poco más de ancho a la columna EQUIPO y menos a las de números */
-td:nth-child(2), th:nth-child(2) {
-    width: 40%; /* La columna de nombre ocupa más espacio */
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis; /* Esto pondrá "..." si el nombre es larguísimo */
-}
-
-/* 4. Asegurar que las columnas de números no se achiquen demasiado */
-td:not(:nth-child(2)), th:not(:nth-child(2)) {
-    width: 12%;
-    text-align: center;
-}
-
 	
 
     </style>
