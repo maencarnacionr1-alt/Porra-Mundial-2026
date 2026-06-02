@@ -1866,19 +1866,28 @@ body{
 
 .group-mini-card {
     display: grid;
-    /* Define 3 columnas: Letra, Bandera, Nombre */
-    grid-template-columns: 30px 30px 1fr;
+    grid-template-columns: 35px 35px 1fr;
     align-items: center;
-    padding: 8px;
-    background: #f8f9fa;
-    border-radius: 6px;
-    border: 1px solid #eee;
+    padding: 10px;
+    background: #ffffff; /* Fondo blanco puro */
+    border: 1px solid #e0e0e0; /* Borde visible pero gris suave */
+    border-radius: 10px; /* Bordes un poco más redondeados */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.06); /* Sombra muy sutil para dar profundidad */
+    transition: all 0.2s ease;
+}
+
+.group-mini-card:hover {
+    border-color: #007bff; /* El borde se ilumina al pasar el ratón */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
 .group-mini-title {
-    font-weight:800;
-    color:var(--pitch-green);
-    margin-bottom:10px;
+    font-weight: 700;
+    color: #333;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    margin-bottom: 12px;
 }
 
 .group-team-line {
@@ -1895,6 +1904,11 @@ body{
 
 .group-team-line strong {
     text-align: center;
+	color: #444;
+    font-size: 0.95rem;
+    padding-right: 8px;
+    border-right: 1px solid #eee; /* Línea divisoria muy fina entre letra y bandera */
+    margin-right: 8px;
 }
 
 /* Espacio extra para la bandera */
