@@ -3780,49 +3780,68 @@ window.openPlayerFromRanking = function(i){
 
 function renderPredictionsByPlayer(p) {
     const c = document.getElementById("predictionsGlobalView");
+    if (!c) return;
     const grupos = ["A","B","C","D","E","F","G","H","I","J","K","L"];
 
     c.innerHTML = `
     <div class="predictions-app">
+        
+        <div class="prediction-card">
+            <div class="prediction-section-title">🏆 TOP 8 FAVORITOS</div>
+            <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top:15px;">
+                ${Array.from({ length: 8 }, (_, i) => `
+                    <div class="top8-card" style="flex: 1 1 140px; text-align: center;">
+                        <small><b>${i + 1}º</b></small><br>
+                        ${getBandera(p[`equipo ${i + 1}`])} ${p[`equipo ${i + 1}`] || "-"}
+                    </div>
+                `).join("")}
+            </div>
+        </div>
+
         <div class="prediction-card">
             <div class="prediction-section-title">⚽ FASE DE GRUPOS</div>
-
-            ${["Primeros", "Segundos", "Terceros"].map(tipo => `
-                <div class="group-mini-title" style="margin:20px 0 15px 0;">${tipo === "Primeros" ? "🥇" : tipo === "Segundos" ? "🥈" : "🥉"} ${tipo} de Grupo</div>
-                <div class="pred-section-divider"></div>
-                <div style="display: flex; flex-wrap: wrap; gap: 15px;">
+            ${["Primero", "Segundo", "Tercero"].map(tipo => `
+                <div class="group-mini-title" style="margin:20px 0 10px 0;">${tipo}s de Grupo</div>
+                <div style="display: flex; flex-wrap: wrap; gap: 10px;">
                     ${grupos.map(g => {
-                        const valor = tipo === "Terceros" ? p[`Tercero Grupo ${g}`] : p[`${tipo === "Primeros" ? "Primero" : "Segundo"} Grupo ${g}`];
+                        const valor = p[`${tipo} Grupo ${g}`];
                         if (!valor) return "";
-                        return `
-                            <div class="top8-card" style="flex: 1 1 200px;">
-                                <strong>${g}</strong>
-                                ${getBandera(valor)}
-                                ${valor}
-                            </div>
-                        `;
+                        return `<div class="top8-card" style="flex: 1 1 180px;"><strong>${g}</strong> ${getBandera(valor)} ${valor}</div>`;
                     }).join("")}
                 </div>
             `).join("")}
         </div>
 
         <div class="prediction-card">
+            <div class="prediction-section-title">🔥 PREMIOS ESPECIALES</div>
+            <div class="top8-card" style="margin-bottom:10px;">⚽ Goleador: ${p["Maxímo Goleador"] || "-"}</div>
+            <div class="top8-card">🧤 Menos Goleado: ${p["Menos Goleado"] || "-"}</div>
+        </div>
+
+        <div class="prediction-card">
             <div class="prediction-section-title">🏁 ELIMINATORIAS</div>
-            ${['Octavos','Cuartos','Semifinales','Final'].map((fase, i) => {
+            ${['Octavos','Cuartos','Semifinal','Final'].map((fase, i) => {
                 const cantidades = [16, 8, 4, 2];
                 return `
-                    <h3 class="group-mini-title" style="margin-top:25px;">${fase}</h3>
-                    <div class="pred-section-divider"></div>
-                    <div style="display: flex; flex-wrap: wrap; gap: 15px;">
+                    <h3 class="group-mini-title">${fase}</h3>
+                    <div style="display: flex; flex-wrap: wrap; gap: 10px;">
                         ${Array.from({ length: cantidades[i] }, (_, j) => `
-                            <div class="top8-card" style="flex: 1 1 150px;">
-                                ${getBandera(p[`${fase} ${j + 1}`])}
-                                ${p[`${fase} ${j + 1}`] || "-"}
+                            <div class="top8-card" style="flex: 1 1 140px;">
+                                ${getBandera(p[`${fase} ${j + 1}`])} ${p[`${fase} ${j + 1}`] || "-"}
                             </div>
                         `).join("")}
                     </div>
                 `;
             }).join("")}
+        </div>
+
+        <div class="prediction-card">
+            <div class="prediction-section-title">🏆 PODIO FINAL</div>
+            <div style="display: flex; justify-content: space-around; padding: 20px;">
+                <div class="top8-card">🥇 ${p["Campeón"] || "-"}</div>
+                <div class="top8-card">🥈 ${p["Subcampeón"] || "-"}</div>
+                <div class="top8-card">🥉 ${p["Tercero"] || "-"}</div>
+            </div>
         </div>
     </div>
     `;
