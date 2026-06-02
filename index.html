@@ -2787,6 +2787,54 @@ body{
     .btn-registro-modern { width: 100%; }
 }
 
+/* Contenedor principal que da aire a todo */
+.predictions-app {
+    padding: 20px;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+/* Tarjeta contenedora de sección (la "caja" blanca) */
+.prediction-card {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    border: 1px solid #eee;
+}
+
+/* Título con estilo */
+.prediction-section-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 10px;
+}
+
+/* Grid inteligente: se ajusta solo */
+.grid-responsive {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 12px;
+}
+
+/* La tarjeta del equipo (tu "top8-card" mejorada) */
+.top8-card {
+    background: #f9f9f9;
+    padding: 10px;
+    border-radius: 8px;
+    text-align: center;
+    border: 1px solid #eef;
+    transition: transform 0.2s;
+}
+
+.top8-card:hover {
+    transform: translateY(-2px);
+    border-color: #007bff;
+}
 	
 
     </style>
