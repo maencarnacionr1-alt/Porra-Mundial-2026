@@ -1858,16 +1858,21 @@ body{
 }
 
 .groups-grid-predictions {
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:14px;
+    display: grid;
+    /* Ajusta el minmax según lo que necesites, pero mantiene el orden */
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 10px;
 }
 
 .group-mini-card {
-    background:#fafafa;
-    border-radius:16px;
-    padding:14px;
-    border:1px solid #ececec;
+    display: grid;
+    /* Define 3 columnas: Letra, Bandera, Nombre */
+    grid-template-columns: 30px 30px 1fr;
+    align-items: center;
+    padding: 8px;
+    background: #f8f9fa;
+    border-radius: 6px;
+    border: 1px solid #eee;
 }
 
 .group-mini-title {
@@ -1885,6 +1890,17 @@ body{
     min-width: 18px;
     display:inline-block;
     color: var(--pitch-green);
+	display: contents;
+}
+
+.group-team-line strong {
+    text-align: center;
+}
+
+/* Espacio extra para la bandera */
+.group-team-line img {
+    width: 20px;
+    margin-right: 5px;
 }
 
 .prediction-pill {
