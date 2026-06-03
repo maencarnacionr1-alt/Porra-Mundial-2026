@@ -2952,6 +2952,9 @@ body{
     text-transform: uppercase;
     text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
     margin: 0;
+
+	animation: titleEntrance 1.5s ease-out; /* La animación dura 1.5s */
+    display: inline-block;
 }
 
 /* La copa dorada con un pequeño brillo */
@@ -2972,10 +2975,17 @@ body{
 @keyframes bounce {
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-5px); }
+
+@keyframes titleEntrance {
+    0% { opacity: 0; transform: scale(0.8); filter: blur(10px); }
+    100% { opacity: 1; transform: scale(1); filter: blur(0); }
+}
+		
 }
 
 .leaderboard-header {
     transition: opacity 0.8s ease-out; /* Controla la velocidad de desaparición */
+	overflow: hidden;
 }
 
 .fade-out {
@@ -3721,7 +3731,7 @@ function renderRanking() {
 
     `;
 
-  // =========================
+ // =========================
     // PINTAR TODO
     // =========================
 
@@ -3732,25 +3742,22 @@ function renderRanking() {
         </div>
     `;
 
-    // --- NUEVO: Efecto Premium de transición del Header ---
+    // --- TRANSICIÓN PREMIUM CON TIEMPO AJUSTADO ---
     const header = document.querySelector('.leaderboard-header');
     if (header) {
-        // Añade la clase que tiene el 'opacity: 0' y 'transition' en tu CSS
-        header.classList.add('fade-out');
-
-        // Elimina el elemento del HTML tras la transición (800ms)
+        // Esperamos 3000ms (3 segundos) antes de que empiece la desaparición
         setTimeout(() => {
-            header.style.display = 'none';
-        }, 800);
+            header.classList.add('fade-out');
+            
+            // Eliminamos del DOM después de la animación de 0.8s
+            setTimeout(() => {
+                header.style.display = 'none';
+            }, 800);
+        }, 3000); 
     }
-    // ----------------------------------------------------
 
-    localStorage.setItem(
-        "rankingPrevio",
-        JSON.stringify(nuevoRanking)
-    );
+    localStorage.setItem("rankingPrevio", JSON.stringify(nuevoRanking));
 }
-
 const avatars = [];
 
 // BASE LOCAL (para visualizar en el grid)
