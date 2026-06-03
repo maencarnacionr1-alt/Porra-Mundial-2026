@@ -2930,6 +2930,43 @@ body{
     transform: scale(1.1);
 }
 
+/* Contenedor de carga premium */
+.leaderboard-header {
+    background: radial-gradient(circle at center, #1e1e1e 0%, #0a0a0a 100%);
+    padding: 40px 20px;
+    border-bottom: 3px solid #ffd700; /* Borde dorado premium */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    margin-bottom: 20px;
+}
+
+/* El título con estilo deportivo */
+.leaderboard-header h1 {
+    font-family: 'Black Ops One', cursive;
+    color: #fff;
+    font-size: 1.5rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+    margin: 0;
+}
+
+/* La copa dorada con un pequeño brillo */
+.leaderboard-header::before {
+    content: "🏆"; /* O tu icono de FontAwesome */
+    font-size: 2rem;
+    filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.6));
+    animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+}
+
 
     </style>
 
