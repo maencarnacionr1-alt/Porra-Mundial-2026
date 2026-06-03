@@ -2869,7 +2869,29 @@ body{
     transform: translateY(-2px);
     border-color: #007bff;
 }
-	
+
+#scrollToTopBtn {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    display: none; /* Oculto por defecto, aparecerá al hacer scroll */
+    background-color: #333;
+    color: white;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    z-index: 9999;
+    transition: opacity 0.3s, transform 0.3s;
+}
+
+#scrollToTopBtn:hover {
+    background-color: #000;
+    transform: scale(1.1);
+}
 
     </style>
 
@@ -5070,6 +5092,24 @@ if (contenedorPadre) {
     });
 }
 
+// Mostrar el botón cuando el usuario hace scroll hacia abajo
+window.onscroll = function() {
+    const btn = document.getElementById("scrollToTopBtn");
+    if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+        btn.style.display = "block";
+    } else {
+        btn.style.display = "none";
+    }
+};
+
+// Función para subir suavemente
+function scrollToTop() {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+}
+
 </script>
 
 <!-- MENÚ INFERIOR (ICONOS) -->
@@ -5121,5 +5161,9 @@ if (contenedorPadre) {
 
 </div>
 
+<button id="scrollToTopBtn" onclick="scrollToTop()" title="Ir al principio">
+    ▲
+</button>	
+	
 </body>
 </html>
