@@ -2967,6 +2967,12 @@ body{
     50% { transform: translateY(-5px); }
 }
 
+.fade-out {
+    opacity: 0;
+    transition: opacity 0.8s ease-out;
+    pointer-events: none;
+}
+
 
     </style>
 
@@ -3705,21 +3711,29 @@ function renderRanking() {
 
     `;
 
-    // =========================
+  // =========================
     // PINTAR TODO
     // =========================
 
     container.innerHTML = `
-
         <div class="ranking-modern-wrapper">
-
             ${top3HTML}
-
             ${restoHTML}
-
         </div>
-
     `;
+
+    // --- NUEVO: Efecto Premium de transición del Header ---
+    const header = document.querySelector('.leaderboard-header');
+    if (header) {
+        // Añade la clase que tiene el 'opacity: 0' y 'transition' en tu CSS
+        header.classList.add('fade-out');
+
+        // Elimina el elemento del HTML tras la transición (800ms)
+        setTimeout(() => {
+            header.style.display = 'none';
+        }, 800);
+    }
+    // ----------------------------------------------------
 
     localStorage.setItem(
         "rankingPrevio",
