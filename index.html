@@ -2961,16 +2961,26 @@ body{
     filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.6));
     animation: bounce 2s infinite;
 }
+.leaderboard-header::after {
+    content: "🏆"; /* O tu icono de FontAwesome */
+    font-size: 2rem;
+    filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.6));
+    animation: bounce 2s infinite;
+}
+	
 
 @keyframes bounce {
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-5px); }
 }
 
+.leaderboard-header {
+    transition: opacity 0.8s ease-out; /* Controla la velocidad de desaparición */
+}
+
 .fade-out {
     opacity: 0;
-    transition: opacity 0.8s ease-out;
-    pointer-events: none;
+    pointer-events: none; /* Evita que el usuario haga clic mientras se desvanece */
 }
 
 
@@ -3055,7 +3065,7 @@ body{
 
         <div class="leaderboard-header">
 
-            <h1>🏆 CLASIFICACIÓN GENERAL</h1>
+            <h1> CLASIFICACIÓN GENERAL</h1>
            
         </div>
 
