@@ -2930,44 +2930,6 @@ body{
     transform: scale(1.1);
 }
 
-.leaderboard-header {
-    text-align: center;
-    padding: 20px;
-    background: linear-gradient(180deg, #1b5e20 0%, #121212 100%);
-    border-radius: 20px 20px 0 0;
-    margin-bottom: 10px;
-    border-bottom: 4px solid var(--gold);
-}
-
-.leaderboard-header h1 {
-    color: var(--white);
-    font-family: 'Black Ops One', cursive;
-    font-size: 1.8rem;
-    margin: 0;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-    /* Animación de "respiración" mientras carga */
-    animation: pulse 2s infinite;
-}
-
-.loading-skeleton {
-    width: 100%;
-    padding: 20px;
-}
-
-.skeleton-line {
-    height: 50px;
-    background: #e0e0e0;
-    margin-bottom: 10px;
-    border-radius: 10px;
-    animation: loading-shimmer 1.5s infinite linear;
-}
-
-@keyframes loading-shimmer {
-    0% { opacity: 0.5; }
-    50% { opacity: 1; }
-    100% { opacity: 0.5; }
-}
-
 
     </style>
 
@@ -3057,11 +3019,6 @@ body{
         <!-- TOP 3 -->
 
         <div id="podiumContainer" class="podium-container">
-			<div id="loadingIndicator" class="loading-skeleton">
-    			<div class="skeleton-line"></div>
-    			<div class="skeleton-line"></div>
-    <			div class="skeleton-line"></div>
-			</div>
 
         </div>
 
@@ -3715,33 +3672,22 @@ function renderRanking() {
     // PINTAR TODO
     // =========================
 
-    const wrapperHTML = `
+    container.innerHTML = `
+
         <div class="ranking-modern-wrapper">
+
             ${top3HTML}
+
             ${restoHTML}
+
         </div>
+
     `;
 
-    // Buscamos el indicador de carga
-    const loader = document.getElementById('loadingIndicator');
-
-    if (loader) {
-        // Hacemos que el loader se desvanezca
-        loader.style.transition = 'opacity 0.3s';
-        loader.style.opacity = '0';
-
-        setTimeout(() => {
-            // Reemplazamos todo el contenido
-            container.innerHTML = wrapperHTML;
-            // Quitamos el opacity: 0 del nuevo contenido para que aparezca suave
-            container.style.opacity = '1';
-        }, 300);
-    } else {
-        // Si no hay loader (carga rápida o ya cargado), pintamos directo
-        container.innerHTML = wrapperHTML;
-    }
-
-    localStorage.setItem("rankingPrevio", JSON.stringify(nuevoRanking));
+    localStorage.setItem(
+        "rankingPrevio",
+        JSON.stringify(nuevoRanking)
+    );
 }
 
 const avatars = [];
