@@ -1459,84 +1459,41 @@ body{
     }
 }
 
-/* ESTILOS DEL SWITCH DESLIZANTE (VERSIÓN FLOTANTE) */
 .automation-switch-container {
-    /* Posicionamiento flotante */
+    /* Posicionamiento fijo */
     position: fixed;
+    z-index: 99999; /* Aumentamos el índice para ganar cualquier batalla de capas */
+    
+    /* Anclaje para PC y Móvil Horizontal */
     top: 20px;
     right: 20px;
-    z-index: 10000;
     
-    /* Diseño y Estilo */
+    /* Estilos base */
     display: flex;
     justify-content: center;
-    gap: 20px;
     align-items: center;
-    background: rgba(255, 255, 255, 0.95); /* Fondo blanco semitransparente para que se lea bien sobre cualquier fondo */
-    padding: 12px 20px;
-    border-radius: 50px; /* Forma de píldora más definida */
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.15); /* Sombra más notable para que flote */
-    
-    /* Eliminamos márgenes que antes lo centraban */
-    margin: 0;
-    width: auto;
-    max-width: 320px; /* Limitamos el ancho para que no sea gigante en PC */
+    background: #ffffff;
+    padding: 10px 18px;
+    border-radius: 50px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    border: 1px solid #ddd;
+    gap: 15px;
 }
 
-/* Ajuste para que en móviles sea más cómodo */
+/* REGLA DE ORO PARA MÓVIL VERTICAL */
 @media (max-width: 600px) {
     .automation-switch-container {
-        top: auto;
-        bottom: 20px;
-        right: 10px;
-        left: 10px;
-        max-width: none;
-        padding: 10px;
-        gap: 10px;
+        position: fixed;
+        /* Lo movemos a la parte inferior para que el pulgar lo alcance fácilmente */
+        bottom: 20px; 
+        top: auto;    /* Cancelamos el top para que no intente irse arriba */
+        right: 15px;
+        left: 15px;   /* Le damos un poco de aire a los lados */
+        width: calc(100% - 30px); /* Asegura que no se desborde */
+        box-sizing: border-box;
+        padding: 12px;
+        border-radius: 25px;
     }
-}
-
-.switch-label {
-    font-family: 'Inter', sans-serif;
-    font-weight: 600;
-    color: var(--pitch-green)!important;
-    font-size: 0.9rem;
-    white-space: nowrap; /* Evita que el texto salte de línea */
-}
-
-/* El cuerpo del switch (el óvalo) */
-.custom-switch {
-    width: 50px;
-    height: 26px;
-    background-color: #ccc;
-    border-radius: 50px;
-    position: relative;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    flex-shrink: 0; /* Evita que el switch se deforme si el contenedor es estrecho */
-}
-
-/* La bolita interna */
-.custom-switch-circle {
-    width: 20px;
-    height: 20px;
-    background-color: white;
-    border-radius: 50%;
-    position: absolute;
-    top: 3px;
-    left: 4px;
-    transition: transform 0.3s ease;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-}
-
-/* Estado encendido */
-.custom-switch.active {
-    background-color: var(--grass-vibrant);
-}
-
-.custom-switch.active .custom-switch-circle {
-    transform: translateX(22px);
 }
 
 /* =======================================
