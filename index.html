@@ -4853,30 +4853,31 @@ function iniciarContador() {
     setInterval(actualizar, 1000);
 }
 
-
 // ================= MENU =================
 
 function toggleMenu(){
-
-    document
-        .getElementById("sideMenu")
-        .classList.toggle("active");
-
-    document
-        .getElementById("menuOverlay")
-        .classList.toggle("active");
+    document.getElementById("sideMenu").classList.toggle("active");
+    document.getElementById("menuOverlay").classList.toggle("active");
 }
 
 function closeMenu(){
-
-    document
-        .getElementById("sideMenu")
-        .classList.remove("active");
-
-    document
-        .getElementById("menuOverlay")
-        .classList.remove("active");
+    document.getElementById("sideMenu").classList.remove("active");
+    document.getElementById("menuOverlay").classList.remove("active");
 }
+
+// NUEVO: Escucha clics en todo el documento
+document.addEventListener('click', function(event) {
+    const sideMenu = document.getElementById("sideMenu");
+    const menuToggle = document.querySelector(".menu-toggle"); // El botón de hamburguesa
+    
+    // Si el menú está activo...
+    if (sideMenu.classList.contains("active")) {
+        // ...y el clic NO fue dentro del menú NI en el botón de abrir/cerrar
+        if (!sideMenu.contains(event.target) && !menuToggle.contains(event.target)) {
+            closeMenu();
+        }
+    }
+});
 
 function updateHistory(section){
 
