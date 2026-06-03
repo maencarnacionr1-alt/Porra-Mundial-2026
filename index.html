@@ -2872,27 +2872,44 @@ body{
 
 #scrollToTopBtn {
     position: fixed;
-    bottom: 25px;
-    right: 25px;
-    display: none; /* Oculto por defecto, aparecerá al hacer scroll */
+    /* Ajuste para escritorio */
+    bottom: 30px;
+    right: 30px;
+    
+    display: none;
     background-color: #333;
     color: white;
-    width: 45px;
-    height: 45px;
+    
+    /* Botón más pequeño y elegante */
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
     border: none;
     cursor: pointer;
-    font-size: 20px;
+    font-size: 16px; /* Texto un poco más pequeño */
     box-shadow: 0 4px 10px rgba(0,0,0,0.3);
     z-index: 9999;
     transition: opacity 0.3s, transform 0.3s;
+}
+
+/* AJUSTE PARA MÓVIL */
+@media (max-width: 600px) {
+    #scrollToTopBtn {
+        /* Lo subimos más para que no choque con el menú inferior */
+        bottom: 80px; 
+        right: 20px;
+        
+        /* Un poco más pequeño aún para que no estorbe */
+        width: 35px;
+        height: 35px;
+        font-size: 14px;
+    }
 }
 
 #scrollToTopBtn:hover {
     background-color: #000;
     transform: scale(1.1);
 }
-
     </style>
 
 </head>
