@@ -4103,8 +4103,6 @@ window.showPredictions = function () {
 
   document.getElementById("countdownBox").style.display = "none";
 
-
-  resetPredictionsView();
   renderPlayerDropdown();
   updateHistory("predictions");
 };
@@ -4539,9 +4537,7 @@ function mostrarConfirmacion() {
 
 
 function renderPlayerDropdown() {
-
-    const select =
-        document.getElementById("playerSelect");
+    const select = document.getElementById("playerSelect");
 
     // reset
     select.innerHTML = `
@@ -4558,30 +4554,14 @@ function renderPlayerDropdown() {
                 .filter(Boolean)
         )
     ]
-
     // ordenar alfabéticamente
-    .sort((a, b) =>
-        a.localeCompare(b, "es")
-    );
+    .sort((a, b) => a.localeCompare(b, "es"));
 
-    // primera letra mayúscula
-   const capitalizar = (texto) => {
-    return texto
-        .toLowerCase()
-        .replace(
-            /(?<=^|\s)[\p{L}]/gu,
-            letra => letra.toUpperCase()
-        );
-};
-
-
-    // pintar opciones
+    // pintar opciones (sin capitalizar)
     select.innerHTML += nombres.map(nombre => `
-
         <option value="${nombre}">
-            ${capitalizar(nombre)}
+            ${nombre}
         </option>
-
     `).join("");
 
     // reset visual
@@ -4589,11 +4569,7 @@ function renderPlayerDropdown() {
 }
 
 function renderRankingPlayersDropdown(){
-
-    const select =
-        document.getElementById(
-            "rankingPlayerSelect"
-        );
+    const select = document.getElementById("rankingPlayerSelect");
 
     if(!select) return;
 
@@ -4603,34 +4579,21 @@ function renderRankingPlayersDropdown(){
         </option>
     `;
 
-    const nombres = [...new Set(
+    const nombres = [
+        ...new Set(
+            data.map(p => p.name?.trim()).filter(Boolean)
+        )
+    ]
+    .sort((a, b) => a.localeCompare(b, "es"));
 
-        data.map(p => p.name?.trim())
-            .filter(Boolean)
-
-    )]
-
-    .sort((a,b)=>
-        a.localeCompare(b,"es")
-    );
-
-    const capitalizar = texto =>
-
-        texto
-            .toLowerCase()
-            .replace(
-                /\b\w/g,
-                l => l.toUpperCase()
-            );
-
+    // pintar opciones (sin capitalizar)
     select.innerHTML += nombres.map(nombre => `
-    
         <option value="${nombre}">
-            ${capitalizar(nombre)}
+            ${nombre}
         </option>
-
     `).join("");
 }
+
 
 document.getElementById("registrationForm").onsubmit = async (e) => {
     e.preventDefault();
