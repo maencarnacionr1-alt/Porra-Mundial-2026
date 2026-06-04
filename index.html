@@ -4563,12 +4563,23 @@ function renderPlayerDropdown() {
     .sort((a, b) =>
         a.localeCompare(b, "es")
     );
-	
+
+    // primera letra mayúscula
+   const capitalizar = (texto) => {
+    return texto
+        .toLowerCase()
+        .replace(
+            /(?<=^|\s)[\p{L}]/gu,
+            letra => letra.toUpperCase()
+        );
+};
+
+
     // pintar opciones
     select.innerHTML += nombres.map(nombre => `
 
         <option value="${nombre}">
-    
+            ${capitalizar(nombre)}
         </option>
 
     `).join("");
