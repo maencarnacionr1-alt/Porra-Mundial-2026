@@ -4564,14 +4564,6 @@ function renderPlayerDropdown() {
         a.localeCompare(b, "es")
     );
 
-    const capitalizar = (texto) => {
-    return texto
-        .toLowerCase()
-        .replace(
-            /\b\p{L}/gu,
-            letra => letra.toUpperCase()
-        );
-};
     // pintar opciones
     select.innerHTML += nombres.map(nombre => `
 
