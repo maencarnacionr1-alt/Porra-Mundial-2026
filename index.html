@@ -140,6 +140,21 @@ html,body{
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
+		
+	.nombre-jugador-grande {
+			  font-family: 'Black Ops One', cursive;
+            font-size: 1.6rem;
+	    	font-weight:900;
+            color:var(--soccer-dark);
+            text-align: center;
+            margin: 10px 0 0px 0;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            background: linear-gradient(to bottom, var(--pitch-green), var(--grass-vibrant));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+		
+	}	
 
 .stats-row{
     display:grid;
@@ -3890,27 +3905,17 @@ window.showRegister = function () {
 };
 
 window.loadPlayerPredictions = function () {
-
-    const name =
-        document.getElementById("playerSelect").value;
+    const name = document.getElementById("playerSelect").value;
 
     if (!name) {
-
-        document.getElementById(
-            "predictionsGlobalView"
-        ).innerHTML = "";
-
+        document.getElementById("predictionsGlobalView").innerHTML = "";
         return;
     }
 
     const firstRow = pronosticosData[0] || {};
-
-    const nombreKey =
-        Object.keys(firstRow).find(
-            k =>
-                k.toLowerCase().includes("nombre") ||
-                k.toLowerCase().includes("jugador")
-        );
+    const nombreKey = Object.keys(firstRow).find(
+        k => k.toLowerCase().includes("nombre") || k.toLowerCase().includes("jugador")
+    );
 
     if (!nombreKey) return;
 
@@ -3920,8 +3925,10 @@ window.loadPlayerPredictions = function () {
 
     if (!player) return;
 
-    renderPredictionsByPlayer(player);
+    // 🆕 PASAMOS "name" COMO SEGUNDO ARGUMENTO
+    renderPredictionsByPlayer(player, name); 
 };
+
 
 // ========================================================
 // REEMPLAZO LOGICA DE JUGADORES (CORREGIDO Y OPTIMIZADO)
@@ -4000,7 +4007,8 @@ window.openPlayerFromRanking = function(i){
     loadRankingPlayer();
 };
 
-function renderPredictionsByPlayer(p) {
+// 🆕 AÑADIMOS EL PARÁMETRO "name" AQUÍ
+function renderPredictionsByPlayer(p, name) { 
     const c = document.getElementById("predictionsGlobalView");
     if (!c) return;
     const grupos = ["A","B","C","D","E","F","G","H","I","J","K","L"];
@@ -4010,6 +4018,10 @@ function renderPredictionsByPlayer(p) {
         
         <div class="prediction-card">
             <div class="prediction-section-title">🏆 TOP 8 FAVORITOS</div>
+            
+            <!-- 🆕 INYECTAMOS EL NOMBRE DIRECTAMENTE AQUÍ -->
+			<div id="selectedPlayerTitle" class="nombre-jugador-grande">${name}</div>
+            
             <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top:15px;">
                 ${Array.from({ length: 8 }, (_, i) => `
                     <div class="top8-card" style="flex: 1 1 140px; text-align: center;">
