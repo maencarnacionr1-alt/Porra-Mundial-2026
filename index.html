@@ -4564,17 +4564,14 @@ function renderPlayerDropdown() {
         a.localeCompare(b, "es")
     );
 
-    // primera letra mayúscula
-   const capitalizar = (texto) => {
+    const capitalizar = (texto) => {
     return texto
         .toLowerCase()
         .replace(
-            /(?<=^|\s)[\p{L}]/gu,
+            /\b\p{L}/gu,
             letra => letra.toUpperCase()
         );
 };
-
-
     // pintar opciones
     select.innerHTML += nombres.map(nombre => `
 
