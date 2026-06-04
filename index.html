@@ -3912,7 +3912,8 @@ window.loadPlayerPredictions = function () {
         return;
     }
 
-    const firstRow = pronosticosData[0] || {};
+    const firstRow = pronosticosData[0] || {}; // Mantenemos tu validación de primera fila
+
     const nombreKey = Object.keys(firstRow).find(
         k => k.toLowerCase().includes("nombre") || k.toLowerCase().includes("jugador")
     );
@@ -3925,9 +3926,21 @@ window.loadPlayerPredictions = function () {
 
     if (!player) return;
 
-    // 🆕 PASAMOS "name" COMO SEGUNDO ARGUMENTO
-    renderPredictionsByPlayer(player, name); 
+    // 1. Limpiamos la vista general
+    const contenedorGlobal = document.getElementById("predictionsGlobalView");
+    contenedorGlobal.innerHTML = "";
+
+    // 2. Creamos e inyectamos el nombre AQUÍ (en medio del selector y la tarjeta)
+    const nombreDiv = document.createElement("div");
+    nombreDiv.id = "selectedPlayerTitle";
+    nombreDiv.className = "nombre-jugador-grande";
+    nombreDiv.innerHTML = name;
+    contenedorGlobal.appendChild(nombreDiv);
+
+    // 3. Renderizamos el resto de componentes (Top 8, grupos, etc.) debajo del nombre
+    renderPredictionsByPlayer(player);
 };
+
 
 
 // ========================================================
@@ -4007,20 +4020,19 @@ window.openPlayerFromRanking = function(i){
     loadRankingPlayer();
 };
 
-// 🆕 AÑADIMOS EL PARÁMETRO "name" AQUÍ
-function renderPredictionsByPlayer(p, name) { 
+function renderPredictionsByPlayer(p) {
     const c = document.getElementById("predictionsGlobalView");
     if (!c) return;
     const grupos = ["A","B","C","D","E","F","G","H","I","J","K","L"];
 
-    c.innerHTML = `
+    // IMPORTANTE: Cambiado a += para respetar el div del nombre creado anteriormente
+    c.innerHTML += `
     <div class="predictions-app">
         
         <div class="prediction-card">
             <div class="prediction-section-title">🏆 TOP 8 FAVORITOS</div>
             
-            <!-- 🆕 INYECTAMOS EL NOMBRE DIRECTAMENTE AQUÍ -->
-			<div id="selectedPlayerTitle" class="nombre-jugador-grande">${name}</div>
+            <!-- El div #selectedPlayerTitle ha sido eliminado de aquí dentro -->
             
             <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top:15px;">
                 ${Array.from({ length: 8 }, (_, i) => `
