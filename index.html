@@ -3934,7 +3934,17 @@ window.loadPlayerPredictions = function () {
     const nombreDiv = document.createElement("div");
     nombreDiv.id = "selectedPlayerTitle";
     nombreDiv.className = "nombre-jugador-grande";
-    nombreDiv.innerHTML = name;
+	
+    const rankingPlayer = data.find(
+    p => p.name === name
+);
+    nombreDiv.innerHTML = `
+    <img
+        src="${rankingPlayer?.avatar || ''}"
+        class="player-avatar-inline"
+    >
+    <span>${name}</span>
+`;
     contenedorGlobal.appendChild(nombreDiv);
 
     // 3. Renderizamos el resto de componentes (Top 8, grupos, etc.) debajo del nombre
