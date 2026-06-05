@@ -2489,10 +2489,10 @@ body{
 
 /* 2. LA IMAGEN (Se estira para llenar el contenedor sin salirse) */
 .avatar-preview-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover; /* Recorta y ajusta la imagen automáticamente */
-    object-position: center; /* Centra el contenido del avatar */
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;   /* Evita que se deforme o achate */
+    object-position: center;        /* Mantiene el rostro centrado */
     display: block;
 }
 
