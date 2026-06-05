@@ -2581,7 +2581,7 @@ body{
     margin-bottom: 20px;
 }
 
-/* 1. EL CONTENEDOR (Ahora es el verdadero marco circular que no se deforma) */
+/* 1. EL CONTENEDOR (Mantiene el tamaño rígido sin deformarse) */
 .avatar-preview-wrapper {
     width: 95px;
     height: 95px;
@@ -2591,43 +2591,43 @@ body{
     max-height: 95px;
 
     border-radius: 50%;
-    overflow: hidden; /* Corta cualquier exceso de forma estricta */
+    overflow: hidden; 
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
 
-    /* 🌟 Margen interno para "alejar" el avatar y que no se corte */
-    padding: 8px; 
-    box-sizing: border-box; /* Evita que el padding altere los 95px */
-
-    /* Estilos visuales del marco (Corregido el espacio en var(--pitch-green)) */
+    /* Estilos visuales del marco */
     border: 2px solid var(--pitch-green);
     background: #f1f5f9;
     box-shadow: 0 0 20px rgba(34, 197, 94, 0.18);
 
-    /* Animaciones suaves */
     transition:
         transform 0.25s ease,
         box-shadow 0.25s ease,
         border-color 0.25s ease;
 }
 
-/* 2. LA IMAGEN (Se adapta al 100% del espacio interno disponible) */
+/* 2. LA IMAGEN (Volvemos a COVER pero con un truco de escalado) */
 .avatar-preview-img {
     width: 100%;
     height: 100%;
-    object-fit: contain; /* Ajusta la imagen completa sin deformarla ni aplastarla */
+    object-fit: cover; /* 🌟 Rellena todo el círculo eliminando las franjas feas */
     display: block;
+    
+    /* 🌟 TRUCO: Si sientes que el avatar está muy "encima", puedes alejarlo reduciendo su escala aquí.
+       Prueba con 0.85 (85% del tamaño). Si lo quieres más alejado, baja a 0.80. */
+    transform: scale(0.85); 
 }
 
-/* 3. ESTADO SELECCIONADO (Se mantiene igual, pero optimizado) */
+/* 3. ESTADO SELECCIONADO */
 .avatar-selected {
     border: 4px solid #22c55e !important;
     box-shadow:
         0 0 0 6px rgba(34, 197, 94, 0.12),
         0 10px 24px rgba(34, 197, 94, 0.28),
         0 0 18px rgba(34, 197, 94, 0.35);
+    /* 🌟 Mantiene la escala del pulso combinada con el tamaño del avatar */
     transform: scale(1.04);
     animation: avatarPulse 1.8s infinite;
 }
