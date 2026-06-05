@@ -3370,7 +3370,17 @@ body{
 
     <div id="playerCardContainer" class="player-card-container" style="display:none;">
 
-        <h2 id="playerNameBig">NOMBRE</h2>
+       <div class="player-header">
+
+    <img
+        id="playerAvatarBig"
+        class="player-avatar-inline"
+        src=""
+        alt="Avatar">
+
+    <h2 id="playerNameBig">NOMBRE</h2>
+
+		</div>
 
         <div class="stats-row">
 
@@ -3995,6 +4005,7 @@ window.loadRankingPlayer = function(){
     const posicionReal = rankingOrdenado.findIndex(p => p.name === player.name) + 1;
     
     // 3. Tarjetas estadísticas superiores
+	document.getElementById("playerAvatarBig").src = player.avatar || "";
     document.getElementById("playerNameBig").textContent = player.name;
     document.getElementById("statTotal").textContent = player.total || "0";
     document.getElementById("statPreguntas").textContent = player.preguntas || "-";
