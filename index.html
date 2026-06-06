@@ -4014,12 +4014,15 @@ window.loadRankingPlayer = function(){
     const nameSelected = document.getElementById("rankingPlayerSelect").value;
     const container = document.getElementById("playerCardContainer");
     
+    // 1. Leemos qué jornada seleccionó el usuario en la web
+    const jornadaSelected = document.getElementById("rankingJornadaSelect") ? document.getElementById("rankingJornadaSelect").value : "Total";
+    
     if(!nameSelected){
         container.style.display = "none";
         return;
     }
     
-    // 1. Encontrar al jugador en el array global
+    // 2. Encontrar al jugador en el array global
     const player = data.find(p => p.name && p.name.trim().toLowerCase() === nameSelected.trim().toLowerCase());
     
     if(!player) {
@@ -4029,7 +4032,7 @@ window.loadRankingPlayer = function(){
     
     container.style.display = "block";
     
-    // 2. CALCULAR EL RANKING REAL (Ordenando por puntos como en la tabla principal)
+    // 3. CALCULAR EL RANKING REAL (Ordenando por puntos como en la tabla principal)
     const rankingOrdenado = [...data].sort((a, b) => {
         const aTotal = parseFloat(String(a.total).replace(",", ".").trim()) || 0;
         const bTotal = parseFloat(String(b.total).replace(",", ".").trim()) || 0;
@@ -4038,32 +4041,64 @@ window.loadRankingPlayer = function(){
     
     const posicionReal = rankingOrdenado.findIndex(p => p.name === player.name) + 1;
     
-    // 3. Tarjetas estadísticas superiores
+    // 4. Tarjetas estadísticas superiores
     document.getElementById("playerNameBig").textContent = player.name;
-	document.getElementById("playerAvatarBig").src = player.avatar || "";
+    document.getElementById("playerAvatarBig").src = player.avatar || "";
     document.getElementById("statTotal").textContent = player.total || "0";
     document.getElementById("statPreguntas").textContent = player.preguntas || "-";
     
     // AQUÍ APLICAMOS LA POSICIÓN REAL
     document.getElementById("statPos").textContent = posicionReal + "º";
     
-    // 4. Pintar la tabla
-    document.getElementById("teamsBody").innerHTML = player.teams.map((t, idx) => `
+    // 5. Pintar la tabla filtrando dinámicamente la columna '1ª F' y 'TOTAL'
+    document.getElementById("teamsBody").innerHTML = player.teams.map((t, idx) => {
+        
+        // --- PROCESAMIENTO DINÁMICO DE JORNADAS EN LA WEB ---
+        let puntosFaseVisual = t.fase || "0";
+        let puntosTotalFilaVisual = t.puntos || "0";
+
+        // Si el usuario elige J1, J2 o J3, calculamos el parcial en caliente
+        if (jornadaSelected !== "Total") {
+            // Buscamos si tu objeto del equipo ya tiene las propiedades de jornada (t.J1, t.J2, etc.)
+            // Si aún no existen en tu JSON, por defecto el parcial será 0 hasta que se jueguen
+            const puntosJornadaBase = parseFloat(String(t[jornadaSelected]).replace(",", ".")) || 0;
+            const coef = parseFloat(String(t.coeficiente || t.coef).replace(",", ".")) || 1;
+            
+            // Calculamos los puntos de la primera fase para esta jornada con su coeficiente
+            puntosFaseVisual = (puntosJornadaBase * coef).toFixed(1).replace(".", ",");
+            
+            // Extraemos el resto de fases eliminatorias fijas de la fila
+            const el16 = parseFloat(String(t.dieciseisavos).replace(",", ".")) || 0;
+            const el8  = parseFloat(String(t.octavos).replace(",", ".")) || 0;
+            const el4  = parseFloat(String(t.cuartos).replace(",", ".")) || 0;
+            const semi = parseFloat(String(t.semis).replace(",", ".")) || 0;
+            const fin  = parseFloat(String(t.final).replace(",", ".")) || 0;
+            const terc = parseFloat(String(t.terceros).replace(",", ".")) || 0;
+            
+            // Sumamos el parcial de la jornada elegida + las fases finales fijas
+            const nuevoTotalFila = (puntosJornadaBase * coef) + el16 + el8 + el4 + semi + fin + terc;
+            puntosTotalFilaVisual = nuevoTotalFila.toFixed(1).replace(".", ",");
+        }
+        // ----------------------------------------------------
+
+        return `
         <tr>
             <td style="color: #666; font-weight:700;">${idx + 1}º</td>
             <td style="text-align:left; font-weight:700; color: var(--soccer-dark);">
                 ${getBandera(t.team)} ${t.team || "-"}
             </td>
-            <td>${t.fase || "0"}</td>
+            <!-- Columna 1ª F dinámica -->
+            <td style="font-weight:700;">${puntosFaseVisual}</td>
             <td>${t.dieciseisavos || "0"}</td>
             <td>${t.octavos || "0"}</td>
             <td>${t.cuartos || "0"}</td>
             <td>${t.semis || "0"}</td>
             <td>${t.final || "0"}</td>
             <td>${t.terceros || "0"}</td>
-            <td class="points-final">${t.puntos || "0"}</td>
+            <!-- Columna TOTAL dinámica -->
+            <td class="points-final">${puntosTotalFilaVisual}</td>
         </tr>
-    `).join("");
+    `}).join("");
 };
 
 window.openPlayerFromRanking = function(i){
