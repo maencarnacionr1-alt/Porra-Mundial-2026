@@ -4046,8 +4046,6 @@ window.loadRankingPlayer = function(){
     document.getElementById("playerAvatarBig").src = player.avatar || "";
     document.getElementById("statTotal").textContent = player.total || "0";
     document.getElementById("statPreguntas").textContent = player.preguntas || "-";
-    
-    // AQUÍ APLICAMOS LA POSICIÓN REAL
     document.getElementById("statPos").textContent = posicionReal + "º";
     
     // 5. Pintar la tabla filtrando dinámicamente la columna '1ª F' y 'TOTAL'
@@ -4059,47 +4057,75 @@ window.loadRankingPlayer = function(){
 
         // Si el usuario elige J1, J2 o J3, calculamos el parcial en caliente
         if (jornadaSelected !== "Total") {
-            // Buscamos si tu objeto del equipo ya tiene las propiedades de jornada (t.J1, t.J2, etc.)
-            // Si aún no existen en tu JSON, por defecto el parcial será 0 hasta que se jueguen
-            const puntosJornadaBase = parseFloat(String(t[jornadaSelected]).replace(",", ".")) || 0;
-            const coef = parseFloat(String(t.coeficiente || t.coef).replace(",", ".")) || 1;
             
-            // Calculamos los puntos de la primera fase para esta jornada con su coeficiente
-            puntosFaseVisual = (puntosJornadaBase * coef).toFixed(1).replace(".", ",");
-            
-            // Extraemos el resto de fases eliminatorias fijas de la fila
-            const el16 = parseFloat(String(t.dieciseisavos).replace(",", ".")) || 0;
-            const el8  = parseFloat(String(t.octavos).replace(",", ".")) || 0;
-            const el4  = parseFloat(String(t.cuartos).replace(",", ".")) || 0;
-            const semi = parseFloat(String(t.semis).replace(",", ".")) || 0;
-            const fin  = parseFloat(String(t.final).replace(",", ".")) || 0;
-            const terc = parseFloat(String(t.terceros).replace(",", ".")) || 0;
-            
-            // Sumamos el parcial de la jornada elegida + las fases finales fijas
-            const nuevoTotalFila = (puntosJornadaBase * coef) + el16 + el8 + el4 + semi + fin + terc;
-            puntosTotalFilaVisual = nuevoTotalFila.toFixed(1).replace(".", ",");
+            // MAPEO MÁGICO: Si 't' es un array por posición de columnas (A=0, B=1, C=2...)
+            // Columna N (J1) = Índice 13 | Columna O (J2) = Índice 14 | Columna P (J3) = Índice 15 | Columna Q (Coef) = Índice 16
+            let puntosJornadaBase = 0;
+            let coef = 1;
+
+            if (Array.isArray(t)) {
+                // Si los datos de tus equipos vienen como listas de celdas puras de la hoja:
+                if (jornadaSelected === "J1") puntosJornadaBase = parseFloat(String(t[13]).replace(",", ".")) || 0;
+                if (jornadaSelected === "J2") puntosJornadaBase = parseFloat(String(t[14]).replace(",", ".")) || 0;
+                if (jornadaSelected === "J3") puntosJornadaBase = parseFloat(String(t[15]).replace(",", ".")) || 0;
+                coef = parseFloat(String(t[16]).replace(",", ".")) || 1;
+                
+                puntosFaseVisual = (puntosJornadaBase * coef).toFixed(1).replace(".", ",");
+                
+                const el16 = parseFloat(String(t[6]).replace(",", ".")) || 0;
+                const el8  = parseFloat(String(t[7]).replace(",", ".")) || 0;
+                const el4  = parseFloat(String(t[8]).replace(",", ".")) || 0;
+                const semi = parseFloat(String(t[9]).replace(",", ".")) || 0;
+                const fin  = parseFloat(String(t[10]).replace(",", ".")) || 0;
+                const terc = parseFloat(String(t[11]).replace(",", ".")) || 0;
+                
+                const nuevoTotalFila = (puntosJornadaBase * coef) + el16 + el8 + el4 + semi + fin + terc;
+                puntosTotalFilaVisual = nuevoTotalFila.toFixed(1).replace(".", ",");
+            } else {
+                // Si los datos vienen como objetos con nombres de propiedades estructurados:
+                // Intentamos leer t.J1 o t.j1 (Mayúsculas/Minúsculas) y el coeficiente
+                const propiedadJornada = t[jornadaSelected] || t[jornadaSelected.toLowerCase()] || t["columna_" + jornadaSelected];
+                puntosJornadaBase = parseFloat(String(propiedadJornada).replace(",", ".")) || 0;
+                coef = parseFloat(String(t.coeficiente || t.coef || t.coef_limpio || t.coefCelda).replace(",", ".")) || 1;
+                
+                puntosFaseVisual = (puntosJornadaBase * coef).toFixed(1).replace(".", ",");
+                
+                const el16 = parseFloat(String(t.dieciseisavos || t.fase2 || 0).replace(",", ".")) || 0;
+                const el8  = parseFloat(String(t.octavos || 0).replace(",", ".")) || 0;
+                const el4  = parseFloat(String(t.cuartos || 0).replace(",", ".")) || 0;
+                const semi = parseFloat(String(t.semis || t.semifinal || 0).replace(",", ".")) || 0;
+                const fin  = parseFloat(String(t.final || 0).replace(",", ".")) || 0;
+                const terc = parseFloat(String(t.terceros || t.tercero || 0).replace(",", ".")) || 0;
+                
+                const nuevoTotalFila = (puntosJornadaBase * coef) + el16 + el8 + el4 + semi + fin + terc;
+                puntosTotalFilaVisual = nuevoTotalFila.toFixed(1).replace(".", ",");
+            }
         }
         // ----------------------------------------------------
+
+        // Identificamos el nombre del equipo dinámicamente si viene en t.team o es la posición 3 del array
+        const nombreEquipoVisual = Array.isArray(t) ? t[3] : (t.team || t.equipo || "-");
 
         return `
         <tr>
             <td style="color: #666; font-weight:700;">${idx + 1}º</td>
             <td style="text-align:left; font-weight:700; color: var(--soccer-dark);">
-                ${getBandera(t.team)} ${t.team || "-"}
+                ${typeof getBandera === 'function' ? getBandera(nombreEquipoVisual) : ''} ${nombreEquipoVisual}
             </td>
             <!-- Columna 1ª F dinámica -->
             <td style="font-weight:700;">${puntosFaseVisual}</td>
-            <td>${t.dieciseisavos || "0"}</td>
-            <td>${t.octavos || "0"}</td>
-            <td>${t.cuartos || "0"}</td>
-            <td>${t.semis || "0"}</td>
-            <td>${t.final || "0"}</td>
-            <td>${t.terceros || "0"}</td>
+            <td>${Array.isArray(t) ? t[6] : (t.dieciseisavos || "0")}</td>
+            <td>${Array.isArray(t) ? t[7] : (t.octavos || "0")}</td>
+            <td>${Array.isArray(t) ? t[8] : (t.cuartos || "0")}</td>
+            <td>${Array.isArray(t) ? t[9] : (t.semis || t.semifinal || "0")}</td>
+            <td>${Array.isArray(t) ? t[10] : (t.final || "0")}</td>
+            <td>${Array.isArray(t) ? t[11] : (t.terceros || t.tercero || "0")}</td>
             <!-- Columna TOTAL dinámica -->
             <td class="points-final">${puntosTotalFilaVisual}</td>
         </tr>
     `}).join("");
 };
+
 
 window.openPlayerFromRanking = function(i){
     showPlayer();
