@@ -3341,39 +3341,57 @@ body{
 
 <div id="playerSection" class="view-section hidden">
 
-    <!-- SELECTOR JUGADOR -->
-
+        <!-- SELECTORES: JUGADOR Y JORNADA -->
     <div class="fase-container">
 
         <div class="fase-title">
             DETALLE DE PUNTOS
         </div>
 
-        <div style="margin-bottom:20px;">
+        <!-- Contenedor flexible para alinear los dos selectores -->
+        <div style="display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 20px;">
 
-            <label class="preg-label">
-                Selecciona un jugador
-            </label>
+            <!-- Selector de Jugador (Más grande) -->
+            <div style="flex: 2; min-width: 250px;">
+                <label class="preg-label">
+                    Selecciona un jugador
+                </label>
+                <div class="select-wrapper">
+                    <select
+                        id="rankingPlayerSelect"
+                        class="equipo-select-simple"
+                        onchange="loadRankingPlayer()"
+                    >
+                        <option value="">
+                            Elegir jugador...
+                        </option>
+                    </select>
+                </div>
+            </div>
 
-            <div class="select-wrapper">
-
-                <select
-                    id="rankingPlayerSelect"
-                    class="equipo-select-simple"
-                    onchange="loadRankingPlayer()"
-                >
-
-                    <option value="">
-                        Elegir jugador...
-                    </option>
-
-                </select>
-
+            <!-- Selector de Jornada (Más pequeño) -->
+            <div style="flex: 1; min-width: 150px;">
+                <label class="preg-label">
+                    Jornada
+                </label>
+                <div class="select-wrapper">
+                    <select
+                        id="rankingJornadaSelect"
+                        class="equipo-select-simple"
+                        onchange="loadRankingPlayer()"
+                    >
+                        <option value="Total" selected>Total</option>
+                        <option value="J1">Jornada 1</option>
+                        <option value="J2">Jornada 2</option>
+                        <option value="J3">Jornada 3</option>
+                    </select>
+                </div>
             </div>
 
         </div>
 
     </div>
+
 
     <!-- CONTENIDO -->
 
