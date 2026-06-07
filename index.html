@@ -4032,7 +4032,9 @@ window.loadRankingPlayer = function(){
     if(!player) {
         console.warn("No se encontró el jugador en los datos:", nameSelected);
         return;
-    }
+    }console.log("PLAYER:", player);
+console.log("PRIMER TEAM:", player.teams[0]);
+console.log("CLAVES TEAM:", Object.keys(player.teams[0]));
     
     container.style.display = "block";
     
