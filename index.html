@@ -4172,18 +4172,41 @@ if (jornadaSelected === "Total") {
 
     const sumaJornada = player.teams.reduce((total, t) => {
 
-        const valor = parseFloat(
-            String(t[claveJornada] || 0).replace(",", ".")
-        ) || 0;
+        const jornada =
+            parseFloat(String(t[claveJornada] || 0).replace(",", ".")) || 0;
 
-        return total + valor;
+        const el16 =
+            parseFloat(String(t.dieciseisavos || 0).replace(",", ".")) || 0;
+
+        const el8 =
+            parseFloat(String(t.octavos || 0).replace(",", ".")) || 0;
+
+        const el4 =
+            parseFloat(String(t.cuartos || 0).replace(",", ".")) || 0;
+
+        const semi =
+            parseFloat(String(t.semis || 0).replace(",", ".")) || 0;
+
+        const fin =
+            parseFloat(String(t.final || 0).replace(",", ".")) || 0;
+
+        const terc =
+            parseFloat(String(t.terceros || 0).replace(",", ".")) || 0;
+
+        return total + jornada + el16 + el8 + el4 + semi + fin + terc;
 
     }, 0);
 
-    totalVisual = sumaJornada.toFixed(2).replace(".", ",");
+    const preguntas =
+        parseFloat(String(player.preguntas || 0).replace(",", ".")) || 0;
+
+    totalVisual = (sumaJornada + preguntas)
+        .toFixed(2)
+        .replace(".", ",");
 }
 
 document.getElementById("statTotal").textContent = totalVisual;
+	
 document.getElementById("statPreguntas").textContent = player.preguntas || "-";
 document.getElementById("statPos").textContent = posicionReal + "º";
 
