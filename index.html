@@ -4065,10 +4065,11 @@ window.loadRankingPlayer = function(){
         if (jornadaSelected !== "Total") {
             
             // CORRECCIÓN DE MAYÚSCULAS/MINÚSCULAS: convertimos 'J1' a 'j1' para que coincida con tu JSON
-            const claveJornadaLimpia = jornadaSelected.toLowerCase(); 
-            
-            // Leemos los puntos base del partido y el coeficiente puro (Columna Q de tu teams)
-            const puntosJornadaBase = parseFloat(String(t[claveJornadaLimpia]).replace(",", ".")) || 0;
+            const claveJornadaLimpia = jornadaSelected.toLowerCase();
+
+		const valorJornada = t[claveJornadaLimpia]?? t[jornadaSelected]?? t[jornadaSelected.toUpperCase()]?? 0;
+
+		const puntosJornadaBase = parseFloat(String(valorJornada).replace(",", ".")) || 0;
             const coef = parseFloat(String(t.coeficiente || t.coef || 1).replace(",", ".")) || 1;
             
             // Calculamos los puntos de la primera fase para esta jornada con su coeficiente
