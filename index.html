@@ -4076,38 +4076,90 @@ console.log("CLAVES TEAM:", Object.keys(player.teams[0]));
         let puntosFaseVisual = t.fase || "0";
         let puntosTotalFilaVisual = t.puntos || "0";
 
-        // Si el usuario elige J1, J2 o J3, calculamos el parcial en caliente
+window.loadRankingPlayer = function () {
+    const nameSelected = document.getElementById("rankingPlayerSelect").value;
+    const container = document.getElementById("playerCardContainer");
+
+    const jornadaSelected = document.getElementById("rankingJornadaSelect")
+        ? document.getElementById("rankingJornadaSelect").value
+        : "Total";
+
+    if (!nameSelected) {
+        container.style.display = "none";
+        return;
+    }
+
+    const player = data.find(p =>
+        p.name &&
+        p.name.trim().toLowerCase() === nameSelected.trim().toLowerCase()
+    );
+
+    if (!player) {
+        console.warn("No se encontró el jugador en los datos:", nameSelected);
+        return;
+    }
+
+    console.log("PLAYER:", player);
+    console.log("PRIMER TEAM:", player.teams[0]);
+    console.log("CLAVES TEAM:", Object.keys(player.teams[0]));
+
+    container.style.display = "block";
+
+    // Ranking real
+    const rankingOrdenado = [...data].sort((a, b) => {
+        const aTotal = parseFloat(String(a.total).replace(",", ".").trim()) || 0;
+        const bTotal = parseFloat(String(b.total).replace(",", ".").trim()) || 0;
+        return bTotal - aTotal;
+    });
+
+    const posicionReal = rankingOrdenado.findIndex(p => p.name === player.name) + 1;
+
+    // Cabecera jugador
+    document.getElementById("playerNameBig").textContent = player.name;
+    document.getElementById("playerAvatarBig").src = player.avatar || "";
+    document.getElementById("statTotal").textContent = player.total || "0";
+    document.getElementById("statPreguntas").textContent = player.preguntas || "-";
+    document.getElementById("statPos").textContent = posicionReal + "º";
+
+    // Tabla equipos
+    document.getElementById("teamsBody").innerHTML = player.teams.map((t, idx) => {
+
+        let puntosFaseVisual = t.fase || "0";
+        let puntosTotalFilaVisual = t.puntos || "0";
+
         if (jornadaSelected !== "Total") {
-            
-            // CORRECCIÓN DE MAYÚSCULAS/MINÚSCULAS: convertimos 'J1' a 'j1' para que coincida con tu JSON
-            const claveJornadaLimpia = jornadaSelected.toLowerCase();
 
-		const valorJornada = t[claveJornadaLimpia]?? t[jornadaSelected]?? t[jornadaSelected.toUpperCase()]?? 0;
+            const claveJornada = jornadaSelected.toLowerCase();
 
-			console.log("Jornada seleccionada:", jornadaSelected);
-			console.log("Clave buscada:", claveJornadaLimpia);
-			console.log("Valor encontrado:", t[claveJornadaLimpia]);
-			console.log("Equipo:", t.team);
+            const valorJornada =
+                t[claveJornada] ??
+                t[jornadaSelected] ??
+                t[jornadaSelected.toUpperCase()] ??
+                0;
 
-			const puntosJornada = parseFloat(String(valorJornada).replace(",", ".")) || 0;
+            console.log("Jornada:", jornadaSelected);
+            console.log("Valor:", valorJornada);
+            console.log("Equipo:", t.team);
 
-// Mostrar directamente la jornada seleccionada (YA VIENE CON COEFICIENTE)
-puntosFaseVisual = puntosJornada.toFixed(1).replace(".", ",");
+            const puntosJornada = parseFloat(String(valorJornada).replace(",", ".")) || 0;
 
-// Extraemos el resto de fases eliminatorias fijas de la fila
-const el16 = parseFloat(String(t.dieciseisavos || 0).replace(",", ".")) || 0;
-const el8  = parseFloat(String(t.octavos || 0).replace(",", ".")) || 0;
-const el4  = parseFloat(String(t.cuartos || 0).replace(",", ".")) || 0;
-const semi = parseFloat(String(t.semis || 0).replace(",", ".")) || 0;
-const fin  = parseFloat(String(t.final || 0).replace(",", ".")) || 0;
-const terc = parseFloat(String(t.terceros || 0).replace(",", ".")) || 0;
+            // Mostrar jornada seleccionada
+            puntosFaseVisual = puntosJornada.toFixed(1).replace(".", ",");
 
-// Total fila = jornada seleccionada + fases finales
-const nuevoTotalFila =
-    puntosJornada + el16 + el8 + el4 + semi + fin + terc;
+            // Eliminatorias
+            const el16 = parseFloat(String(t.dieciseisavos || 0).replace(",", ".")) || 0;
+            const el8  = parseFloat(String(t.octavos || 0).replace(",", ".")) || 0;
+            const el4  = parseFloat(String(t.cuartos || 0).replace(",", ".")) || 0;
+            const semi = parseFloat(String(t.semis || 0).replace(",", ".")) || 0;
+            const fin  = parseFloat(String(t.final || 0).replace(",", ".")) || 0;
+            const terc = parseFloat(String(t.terceros || 0).replace(",", ".")) || 0;
 
-puntosTotalFilaVisual = nuevoTotalFila.toFixed(1).replace(".", ",");
-        // ----------------------------------------------------
+            const nuevoTotalFila =
+                puntosJornada + el16 + el8 + el4 + semi + fin + terc;
+
+            puntosTotalFilaVisual = nuevoTotalFila.toFixed(1).replace(".", ",");
+
+        }
 
         return `
         <tr>
@@ -4115,18 +4167,20 @@ puntosTotalFilaVisual = nuevoTotalFila.toFixed(1).replace(".", ",");
             <td style="text-align:left; font-weight:700; color: var(--soccer-dark);">
                 ${getBandera(t.team)} ${t.team || "-"}
             </td>
-            <!-- Columna 1ª F dinámica -->
+
             <td style="font-weight:700;">${puntosFaseVisual}</td>
+
             <td>${t.dieciseisavos || "0"}</td>
             <td>${t.octavos || "0"}</td>
             <td>${t.cuartos || "0"}</td>
             <td>${t.semis || "0"}</td>
             <td>${t.final || "0"}</td>
             <td>${t.terceros || "0"}</td>
-            <!-- Columna TOTAL dinámica -->
+
             <td class="points-final">${puntosTotalFilaVisual}</td>
         </tr>
-    `}).join("");
+        `;
+    }).join("");
 };
 
 
