@@ -3112,6 +3112,19 @@ body{
     }
 }
 
+/* --- Ajuste específico para la sección de Premios Especiales --- */
+.prediction-grid-premios {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.prediction-grid-premios .prediction-row {
+    flex: 0 0 auto !important; /* Evita que la tarjeta intente estirarse para rellenar espacio */
+    padding: 12px 15px !important; /* Mantiene un espaciado interno compacto idéntico al Top 8 */
+    height: auto !important; /* Se ajusta estrictamente al tamaño del texto */
+}
 
     </style>
 
@@ -4304,22 +4317,23 @@ function renderPredictionsByPlayer(p) {
             `).join("")}
         </div>
 
-        <!-- 3. PREMIOS ESPECIALES -->
+                <!-- 3. PREMIOS ESPECIALES -->
         <div class="prediction-card">
             <div class="prediction-section-title">🔥 PREMIOS ESPECIALES</div>
-            <div class="top8-grid-container" style="flex-direction: column;">
-                <div class="top8-item-row">
-                    <div class="top8-team-info">
-                        ⚽ <span class="top8-team-name"><b>Goleador:</b> ${p["Maxímo Goleador"] || "-"}</span>
+            <div class="prediction-grid-premios">
+                <div class="prediction-row">
+                    <div class="prediction-team-info">
+                        ⚽ &nbsp; <span class="prediction-team-name"><b>Goleador:</b> ${p["Maxímo Goleador"] || "-"}</span>
                     </div>
                 </div>
-                <div class="top8-item-row">
-                    <div class="top8-team-info">
-                        🧤 <span class="top8-team-name"><b>Menos Goleado:</b> ${p["Menos Goleado"] || "-"}</div></span>
+                <div class="prediction-row">
+                    <div class="prediction-team-info">
+                        🧤 &nbsp; <span class="prediction-team-name"><b>Menos Goleado:</b> ${p["Menos Goleado"] || "-"}</span>
                     </div>
                 </div>
             </div>
         </div>
+
 
         <!-- 4. ELIMINATORIAS -->
         <div class="prediction-card">
