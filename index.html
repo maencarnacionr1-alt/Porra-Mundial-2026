@@ -3034,6 +3034,65 @@ body{
     pointer-events: none; /* Evita que el usuario haga clic mientras se desvanece */
 }
 
+/* --- Estilos base para el contenedor Top 8 (Desktop y Landscape) --- */
+.top8-grid-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.top8-item-row {
+    flex: 1 1 140px;
+    background-color: #f9f9f9; /* Cambia al fondo que uses en tus tarjetas */
+    border: 1px solid #eee;     /* Ajusta según tu diseño */
+    border-radius: 12px;
+    padding: 12px 15px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.top8-number {
+    font-size: 14px;
+    min-width: 24px;
+    color: #333;
+}
+
+.top8-team-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Opcional: Asegura que si tus banderas son etiquetas <img> tengan un tamaño controlado */
+.top8-team-info img {
+    width: 24px;
+    height: auto;
+    object-fit: contain;
+}
+
+/* --- Ajuste responsivo exclusivo para Móviles en Vertical (Portrait) --- */
+@media screen and (max-width: 480px) and (orientation: portrait) {
+    .top8-grid-container {
+        flex-direction: column; /* Cambia a lista de arriba a abajo */
+        gap: 8px;
+    }
+
+    .top8-item-row {
+        flex: 1 1 auto;        /* Ocupa el 100% del ancho del contenedor */
+        justify-content: flex-start; /* Alinea los elementos al inicio */
+        padding: 14px 20px;    /* Tarjetas un poco más altas y cómodas para pulsar */
+    }
+    
+    .top8-number {
+        font-size: 16px;       /* Ajuste de lectura cómodo */
+    }
+
+    .top8-team-name {
+        font-size: 16px;
+    }
+}
 
     </style>
 
@@ -4193,11 +4252,14 @@ function renderPredictionsByPlayer(p) {
             
             <!-- El div #selectedPlayerTitle ha sido eliminado de aquí dentro -->
             
-            <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top:15px;">
+            <div class="top8-grid-container">
                 ${Array.from({ length: 8 }, (_, i) => `
-                    <div class="top8-card" style="flex: 1 1 140px; text-align: center;">
-                        <small><b>${i + 1}º</b></small><br>
-                        ${getBandera(p[`equipo ${i + 1}`])} ${p[`equipo ${i + 1}`] || "-"}
+                    <div class="top8-item-row">
+                        <span class="top8-number"><b>${i + 1}º</b></span>
+                        <div class="top8-team-info">
+                            ${getBandera(p[`equipo ${i + 1}`])} 
+                            <span class="top8-team-name">${p[`equipo ${i + 1}`] || "-"}</span>
+                        </div>
                     </div>
                 `).join("")}
             </div>
@@ -4251,6 +4313,7 @@ function renderPredictionsByPlayer(p) {
     </div>
     `;
 }
+
 	
 window.showPlayer = function () {
 
