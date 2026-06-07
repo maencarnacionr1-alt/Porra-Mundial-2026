@@ -4058,11 +4058,36 @@ window.loadRankingPlayer = function () {
         rankingOrdenado.findIndex(p => p.name === player.name) + 1;
 
     // Cabecera
-    document.getElementById("playerNameBig").textContent = player.name;
-    document.getElementById("playerAvatarBig").src = player.avatar || "";
-    document.getElementById("statTotal").textContent = player.total || "0";
-    document.getElementById("statPreguntas").textContent = player.preguntas || "-";
-    document.getElementById("statPos").textContent = posicionReal + "º";
+   document.getElementById("playerNameBig").textContent = player.name;
+document.getElementById("playerAvatarBig").src = player.avatar || "";
+
+// TOTAL DINÁMICO SEGÚN JORNADA
+let totalVisual;
+
+if (jornadaSelected === "Total") {
+
+    totalVisual = player.total || "0";
+
+} else {
+
+    const claveJornada = jornadaSelected.toLowerCase();
+
+    const sumaJornada = player.teams.reduce((total, t) => {
+
+        const valor = parseFloat(
+            String(t[claveJornada] || 0).replace(",", ".")
+        ) || 0;
+
+        return total + valor;
+
+    }, 0);
+
+    totalVisual = sumaJornada.toFixed(2).replace(".", ",");
+}
+
+document.getElementById("statTotal").textContent = totalVisual;
+document.getElementById("statPreguntas").textContent = player.preguntas || "-";
+document.getElementById("statPos").textContent = posicionReal + "º";
 
     // Tabla de equipos
     document.getElementById("teamsBody").innerHTML = player.teams.map((t, idx) => {
