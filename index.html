@@ -3033,8 +3033,7 @@ body{
     opacity: 0;
     pointer-events: none; /* Evita que el usuario haga clic mientras se desvanece */
 }
-
-/* --- Estilos base para el contenedor Top 8 (Desktop y Landscape) --- */
+/* --- Estilos base (Desktop y pantallas horizontales) --- */
 .top8-grid-container {
     display: flex;
     flex-wrap: wrap;
@@ -3043,14 +3042,16 @@ body{
 }
 
 .top8-item-row {
-    flex: 1 1 140px;
-    background-color: #f9f9f9; /* Cambia al fondo que uses en tus tarjetas */
-    border: 1px solid #eee;     /* Ajusta según tu diseño */
+    /* En pantallas grandes calcula un tamaño base y se expande uniformemente */
+    flex: 1 1 160px; 
+    background-color: #f9f9f9; 
+    border: 1px solid #f0f0f0;     
     border-radius: 12px;
     padding: 12px 15px;
     display: flex;
     align-items: center;
     gap: 12px;
+    box-sizing: border-box;
 }
 
 .top8-number {
@@ -3063,36 +3064,54 @@ body{
     display: flex;
     align-items: center;
     gap: 10px;
+    width: 100%;
 }
 
-/* Opcional: Asegura que si tus banderas son etiquetas <img> tengan un tamaño controlado */
+/* Control estricto de banderas para que nunca rompan el layout */
 .top8-team-info img {
-    width: 24px;
-    height: auto;
+    width: 24px !important;
+    height: auto !important;
     object-fit: contain;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.top8-team-name {
+    font-size: 15px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; /* Si el nombre es muy largo, añade "..." en vez de romperse */
+}
+
+/* Contenedor específico para el podio en pantallas grandes */
+.podio-container {
+    justify-content: space-around;
 }
 
 /* --- Ajuste responsivo exclusivo para Móviles en Vertical (Portrait) --- */
 @media screen and (max-width: 480px) and (orientation: portrait) {
     .top8-grid-container {
-        flex-direction: column; /* Cambia a lista de arriba a abajo */
+        flex-direction: column !important; /* Forzamos lista vertical limpia */
         gap: 8px;
     }
 
     .top8-item-row {
-        flex: 1 1 auto;        /* Ocupa el 100% del ancho del contenedor */
-        justify-content: flex-start; /* Alinea los elementos al inicio */
-        padding: 14px 20px;    /* Tarjetas un poco más altas y cómodas para pulsar */
+        flex: 1 1 auto !important; /* Ocupa el 100% de la anchura disponible */
+        width: 100%;
+        justify-content: flex-start; 
+        padding: 14px 18px;    
     }
     
     .top8-number {
-        font-size: 16px;       /* Ajuste de lectura cómodo */
+        font-size: 16px;       
     }
 
     .top8-team-name {
         font-size: 16px;
+        white-space: normal; /* Permite que baje de línea si el nombre fuese extremadamente largo */
     }
 }
+
 
     </style>
 
@@ -4247,11 +4266,9 @@ function renderPredictionsByPlayer(p) {
     c.innerHTML += `
     <div class="predictions-app">
         
+        <!-- 1. TOP 8 FAVORITOS -->
         <div class="prediction-card">
             <div class="prediction-section-title">🏆 TOP 8 FAVORITOS</div>
-            
-            <!-- El div #selectedPlayerTitle ha sido eliminado de aquí dentro -->
-            
             <div class="top8-grid-container">
                 ${Array.from({ length: 8 }, (_, i) => `
                     <div class="top8-item-row">
@@ -4265,36 +4282,59 @@ function renderPredictionsByPlayer(p) {
             </div>
         </div>
 
+        <!-- 2. FASE DE GRUPOS -->
         <div class="prediction-card">
             <div class="prediction-section-title">⚽ FASE DE GRUPOS</div>
             ${["Primero", "Segundo", "Tercero"].map(tipo => `
                 <div class="group-mini-title" style="margin:20px 0 10px 0;">${tipo}s de Grupo</div>
-                <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+                <div class="top8-grid-container">
                     ${grupos.map(g => {
                         const valor = p[`${tipo} Grupo ${g}`];
                         if (!valor) return "";
-                        return `<div class="top8-card" style="flex: 1 1 180px;"><strong>${g}</strong> ${getBandera(valor)} ${valor}</div>`;
+                        return `
+                            <div class="top8-item-row">
+                                <span class="top8-number"><b>${g}</b></span>
+                                <div class="top8-team-info">
+                                    ${getBandera(valor)} 
+                                    <span class="top8-team-name">${valor}</span>
+                                </div>
+                            </div>`;
                     }).join("")}
                 </div>
             `).join("")}
         </div>
 
+        <!-- 3. PREMIOS ESPECIALES -->
         <div class="prediction-card">
             <div class="prediction-section-title">🔥 PREMIOS ESPECIALES</div>
-            <div class="top8-card" style="margin-bottom:10px;">⚽ Goleador: ${p["Maxímo Goleador"] || "-"}</div>
-            <div class="top8-card">🧤 Menos Goleado: ${p["Menos Goleado"] || "-"}</div>
+            <div class="top8-grid-container" style="flex-direction: column;">
+                <div class="top8-item-row">
+                    <div class="top8-team-info">
+                        ⚽ <span class="top8-team-name"><b>Goleador:</b> ${p["Maxímo Goleador"] || "-"}</span>
+                    </div>
+                </div>
+                <div class="top8-item-row">
+                    <div class="top8-team-info">
+                        🧤 <span class="top8-team-name"><b>Menos Goleado:</b> ${p["Menos Goleado"] || "-"}</div></span>
+                    </div>
+                </div>
+            </div>
         </div>
 
+        <!-- 4. ELIMINATORIAS -->
         <div class="prediction-card">
             <div class="prediction-section-title">🏁 ELIMINATORIAS</div>
             ${['Octavos','Cuartos','Semifinal','Final'].map((fase, i) => {
                 const cantidades = [16, 8, 4, 2];
                 return `
                     <h3 class="group-mini-title">${fase}</h3>
-                    <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+                    <div class="top8-grid-container">
                         ${Array.from({ length: cantidades[i] }, (_, j) => `
-                            <div class="top8-card" style="flex: 1 1 140px;">
-                                ${getBandera(p[`${fase} ${j + 1}`])} ${p[`${fase} ${j + 1}`] || "-"}
+                            <div class="top8-item-row">
+                                <div class="top8-team-info">
+                                    ${getBandera(p[`${fase} ${j + 1}`])} 
+                                    <span class="top8-team-name">${p[`${fase} ${j + 1}`] || "-"}</span>
+                                </div>
                             </div>
                         `).join("")}
                     </div>
@@ -4302,12 +4342,25 @@ function renderPredictionsByPlayer(p) {
             }).join("")}
         </div>
 
+        <!-- 5. PODIO FINAL -->
         <div class="prediction-card">
             <div class="prediction-section-title">🏆 PODIO FINAL</div>
-            <div style="display: flex; justify-content: space-around; padding: 20px;">
-                <div class="top8-card">🥇 ${p["Campeón"] || "-"}</div>
-                <div class="top8-card">🥈 ${p["Subcampeón"] || "-"}</div>
-                <div class="top8-card">🥉 ${p["Tercero"] || "-"}</div>
+            <div class="top8-grid-container podio-container">
+                <div class="top8-item-row">
+                    <div class="top8-team-info">
+                        🥇 <span class="top8-team-name">${p["Campeón"] || "-"}</span>
+                    </div>
+                </div>
+                <div class="top8-item-row">
+                    <div class="top8-team-info">
+                        🥈 <span class="top8-team-name">${p["Subcampeón"] || "-"}</span>
+                    </div>
+                </div>
+                <div class="top8-item-row">
+                    <div class="top8-team-info">
+                        🥉 <span class="top8-team-name">${p["Tercero"] || "-"}</span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
