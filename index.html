@@ -1583,7 +1583,14 @@ body{
     width: 100%;
     border-collapse: separate;
     border-spacing: 0;
+	table-layout: auto;
 }
+		
+.teams-table th:nth-child(2),
+.teams-table td:nth-child(2) {
+    min-width: 140px;
+}
+
 
 .teams-table th {
     background: linear-gradient(135deg, var(--soccer-dark) 0%, #242424 100%);
