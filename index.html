@@ -4084,6 +4084,11 @@ console.log("CLAVES TEAM:", Object.keys(player.teams[0]));
 
 		const valorJornada = t[claveJornadaLimpia]?? t[jornadaSelected]?? t[jornadaSelected.toUpperCase()]?? 0;
 
+			console.log("Jornada seleccionada:", jornadaSelected);
+			console.log("Clave buscada:", claveJornadaLimpia);
+			console.log("Valor encontrado:", t[claveJornadaLimpia]);
+			console.log("Equipo:", t.team);
+
 		const puntosJornadaBase = parseFloat(String(valorJornada).replace(",", ".")) || 0;
             const coef = parseFloat(String(t.coeficiente || t.coef || 1).replace(",", ".")) || 1;
             
