@@ -3590,6 +3590,15 @@ equiposRows.forEach(r => {
         terceros: t.terceros || "",
         final: t.final || "",
         puntos: t.puntos || ""
+
+	// NUEVAS COLUMNAS PARA EL FILTRO DE JORNADAS
+    	j1: t.J1 || t.j1 || "0",
+    	j2: t.J2 || t.j2 || "0",
+    	j3: t.J3 || t.j3 || "0",
+
+    // coeficiente numérico puro de la columna Q
+   	 	coeficiente: t.coeficiente || t.Coeficiente || t.coef || "1"  
+		 
       }))
   }));
 
