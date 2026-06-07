@@ -5517,6 +5517,15 @@ function scrollToTop() {
     });
 }
 
+function formatearPuntos(valor) {
+    const num = parseFloat(String(valor).replace(",", ".")) || 0;
+
+    return num.toLocaleString("es-ES", {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2
+    });
+}
+
 </script>
 
 <!-- MENÚ INFERIOR (ICONOS) -->
