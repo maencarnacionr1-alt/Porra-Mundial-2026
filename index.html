@@ -4260,18 +4260,14 @@ document.getElementById("statPos").textContent = posicionReal + "º";
                      ${formatearPuntos(puntosFaseVisual)}
                 </td>
 
-                <td>${t.dieciseisavos || "0"}</td>
-                <td>${t.octavos || "0"}</td>
-                <td>${t.cuartos || "0"}</td>
-                <td>${t.semis || "0"}</td>
-                <td>${t.final || "0"}</td>
-                <td>${t.terceros || "0"}</td>
-
-                <td class="points-final">
-                    ${formatearPuntos(puntosTotalFilaVisual)}
-                </td>
-            </tr>
-        `;
+                <td>${formatPuntos(t.octavos)}</td>
+    <td>${formatPuntos(t.cuartos)}</td>
+    <td>${formatPuntos(t.semis)}</td>
+    <td>${formatPuntos(t.final)}</td>
+    <td>${formatPuntos(t.terceros)}</td>
+    <td class="points-final">${formatPuntos(puntosTotalFilaVisual)}</td>
+</tr>
+`;
     }).join("");
 };
 
