@@ -4132,9 +4132,9 @@ window.loadRankingPlayer = function () {
             const claveJornada = jornadaSelected.toLowerCase();
 
             const valorJornada =
-                t[claveJornada] ??
-                t[jornadaSelected] ??
-                t[jornadaSelected.toUpperCase()] ??
+                t[claveJornada] ||
+                t[jornadaSelected] ||
+                t[jornadaSelected.toUpperCase()] ||
                 0;
 
             console.log("Jornada:", jornadaSelected);
