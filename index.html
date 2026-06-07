@@ -4257,7 +4257,7 @@ document.getElementById("statPos").textContent = posicionReal + "º";
                 </td>
 
                 <td style="font-weight:700;">
-                    ${puntosFaseVisual}
+                     ${formatearPuntos(puntosFaseVisual)}
                 </td>
 
                 <td>${t.dieciseisavos || "0"}</td>
@@ -4268,7 +4268,7 @@ document.getElementById("statPos").textContent = posicionReal + "º";
                 <td>${t.terceros || "0"}</td>
 
                 <td class="points-final">
-                    ${puntosTotalFilaVisual}
+                    ${formatearPuntos(puntosTotalFilaVisual)}
                 </td>
             </tr>
         `;
