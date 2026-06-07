@@ -3514,7 +3514,7 @@ const URL_MAESTRA =
 	  "https://docs.google.com/spreadsheets/d/e/2PACX-1vSYe1nqTFOllYViQLj9x7NZ0buss9J-pqmIqeSziINNRDL5-a0m-sWcCg_48_zY5iAEhpHvzNYKuqbQ/pub?gid=390514000&single=true&output=csv";
 
         const GOOGLE_SCRIPT_URL =
-          "https://script.google.com/macros/s/AKfycbyOJ6Bky07E46E0XHHM9naCi7gxT4zpLPqhQtLkdnRpohZhKHZDNgoMswT1lIYUxYQtSw/exec";
+          "https://script.google.com/macros/s/AKfycbwa2HKZDDe0uZxk48CVqsNL5IPcSSb6h0AGpmIAUkbC804XNKmHPiLvAGif3EhwoZ7cQg/exec";
 
 let dropdownListenerAttached = false;
 let pronosticosData = [];
@@ -4089,24 +4089,24 @@ console.log("CLAVES TEAM:", Object.keys(player.teams[0]));
 			console.log("Valor encontrado:", t[claveJornadaLimpia]);
 			console.log("Equipo:", t.team);
 
-		const puntosJornadaBase = parseFloat(String(valorJornada).replace(",", ".")) || 0;
-            const coef = parseFloat(String(t.coeficiente || t.coef || 1).replace(",", ".")) || 1;
-            
-            // Calculamos los puntos de la primera fase para esta jornada con su coeficiente
-            puntosFaseVisual = (puntosJornadaBase * coef).toFixed(1).replace(".", ",");
-            
-            // Extraemos el resto de fases eliminatorias fijas de la fila
-            const el16 = parseFloat(String(t.dieciseisavos || 0).replace(",", ".")) || 0;
-            const el8  = parseFloat(String(t.octavos || 0).replace(",", ".")) || 0;
-            const el4  = parseFloat(String(t.cuartos || 0).replace(",", ".")) || 0;
-            const semi = parseFloat(String(t.semis || 0).replace(",", ".")) || 0;
-            const fin  = parseFloat(String(t.final || 0).replace(",", ".")) || 0;
-            const terc = parseFloat(String(t.terceros || 0).replace(",", ".")) || 0;
-            
-            // Sumamos el parcial de la jornada elegida + las fases finales fijas
-            const nuevoTotalFila = (puntosJornadaBase * coef) + el16 + el8 + el4 + semi + fin + terc;
-            puntosTotalFilaVisual = nuevoTotalFila.toFixed(1).replace(".", ",");
-        }
+			const puntosJornada = parseFloat(String(valorJornada).replace(",", ".")) || 0;
+
+// Mostrar directamente la jornada seleccionada (YA VIENE CON COEFICIENTE)
+puntosFaseVisual = puntosJornada.toFixed(1).replace(".", ",");
+
+// Extraemos el resto de fases eliminatorias fijas de la fila
+const el16 = parseFloat(String(t.dieciseisavos || 0).replace(",", ".")) || 0;
+const el8  = parseFloat(String(t.octavos || 0).replace(",", ".")) || 0;
+const el4  = parseFloat(String(t.cuartos || 0).replace(",", ".")) || 0;
+const semi = parseFloat(String(t.semis || 0).replace(",", ".")) || 0;
+const fin  = parseFloat(String(t.final || 0).replace(",", ".")) || 0;
+const terc = parseFloat(String(t.terceros || 0).replace(",", ".")) || 0;
+
+// Total fila = jornada seleccionada + fases finales
+const nuevoTotalFila =
+    puntosJornada + el16 + el8 + el4 + semi + fin + terc;
+
+puntosTotalFilaVisual = nuevoTotalFila.toFixed(1).replace(".", ",");
         // ----------------------------------------------------
 
         return `
