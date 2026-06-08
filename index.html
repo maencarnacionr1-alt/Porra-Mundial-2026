@@ -3761,18 +3761,22 @@ function renderRanking() {
 
     const rankingOrdenado = [...data].sort((a, b) => {
 
-        const aTotal =
-            parseFloat(String(a.total).replace(",", ".")) || 0;
+    const aTotal =
+        parseFloat(String(a.total).replace(",", ".")) || 0;
 
-        const bTotal =
-            parseFloat(String(b.total).replace(",", ".")) || 0;
+    const bTotal =
+        parseFloat(String(b.total).replace(",", ".")) || 0;
 
+    // Primero ordenar por puntos
+    if (bTotal !== aTotal) {
         return bTotal - aTotal;
-    });
+    }
 
-    const rankingPrevio = JSON.parse(
-        localStorage.getItem("rankingPrevio") || "{}"
-    );
+    // Si tienen los mismos puntos, ordenar alfabéticamente
+    return a.name.localeCompare(b.name, 'es', {
+        sensitivity: 'base'
+    });
+});
 
     const nuevoRanking = {};
 
