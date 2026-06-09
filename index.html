@@ -4132,6 +4132,11 @@ window.loadPlayerPredictions = function () {
         p => p[nombreKey] === name
     );
 
+	const playerPuntos = pronosticosPuntosData.find(
+    p => p.Nombre === name
+		
+	);
+
     if (!player) return;
 
     // 1. Limpiamos la vista general
@@ -4156,7 +4161,7 @@ window.loadPlayerPredictions = function () {
     contenedorGlobal.appendChild(nombreDiv);
 
     // 3. Renderizamos el resto de componentes (Top 8, grupos, etc.) debajo del nombre
-    renderPredictionsByPlayer(player);
+    renderPredictionsByPlayer(player, playerPuntos);
 };
 
 // ========================================================
@@ -4337,7 +4342,8 @@ window.openPlayerFromRanking = function(i){
     loadRankingPlayer();
 };
 
-function renderPredictionsByPlayer(p) {
+function renderPredictionsByPlayer(p, puntos) {
+	
     const c = document.getElementById("predictionsGlobalView");
     if (!c) return;
     const grupos = ["A","B","C","D","E","F","G","H","I","J","K","L"];
