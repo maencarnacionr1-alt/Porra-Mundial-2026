@@ -3127,6 +3127,35 @@ body{
     height: auto !important; /* Se ajusta estrictamente al tamaño del texto */
 }
 
+.top8-item-row{
+    position:relative;
+}
+
+.estado-badge{
+    position:absolute;
+    top:4px;
+    right:4px;
+    width:18px;
+    height:18px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:11px;
+    font-weight:700;
+    z-index:10;
+}
+
+.estado-ok{
+    background:#16a34a;
+    color:#fff;
+}
+
+.estado-ko{
+    background:#dc2626;
+    color:#fff;
+}
+
     </style>
 
 </head>
@@ -3607,7 +3636,7 @@ const URL_MAESTRA =
           "https://docs.google.com/spreadsheets/d/e/2PACX-1vSYe1nqTFOllYViQLj9x7NZ0buss9J-pqmIqeSziINNRDL5-a0m-sWcCg_48_zY5iAEhpHvzNYKuqbQ/pub?gid=1191151777&single=true&output=csv";
 
         const URL_PRONOSTICOS =
-          "https://docs.google.com/spreadsheets/d/e/2PACX-1vSYe1nqTFOllYViQLj9x7NZ0buss9J-pqmIqeSziINNRDL5-a0m-sWcCg_48_zY5iAEhpHvzNYKuqbQ/pub?gid=1434944956&single=true&output=csv";
+          "https://docs.google.com/spreadsheets/d/e/2PACX-1vSYe1nqTFOllYViQLj9x7NZ0buss9J-pqmIqeSziINNRDL5-a0m-sWcCg_48_zY5iAEhpHvzNYKuqbQ/pub?gid=427198704&single=true&output=csv";
 	
 	const URL_GROUPS =
 	  "https://docs.google.com/spreadsheets/d/e/2PACX-1vSYe1nqTFOllYViQLj9x7NZ0buss9J-pqmIqeSziINNRDL5-a0m-sWcCg_48_zY5iAEhpHvzNYKuqbQ/pub?gid=390514000&single=true&output=csv";
@@ -4884,7 +4913,7 @@ function renderPlayerDropdown() {
     // reset
     select.innerHTML = `
         <option value="">
-            Selecciona un jugador...
+            Elegir jugador...
         </option>
     `;
 
@@ -5529,6 +5558,21 @@ function formatearPuntos(valor) {
         minimumFractionDigits: 0,
         maximumFractionDigits: 2
     });
+}
+
+function getBadge(valor){
+
+    if(
+        valor === "" ||
+        valor === null ||
+        valor === undefined
+    ){
+        return "";
+    }
+
+    return Number(valor) > 0
+        ? '<div class="estado-badge estado-ok">✓</div>'
+        : '<div class="estado-badge estado-ko">✕</div>';
 }
 
 </script>
