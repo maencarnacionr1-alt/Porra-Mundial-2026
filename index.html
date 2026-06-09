@@ -3673,7 +3673,10 @@ async function initApp() {
 
  const pronos = await fetch(URL_PRONOSTICOS).then(r => r.text());
  pronosticosData = parseCSV(pronos);
-
+	
+console.log(pronosticosData);
+console.log(pronosticosData[0]);
+	
  renderPlayerDropdown();
 
   const equiposRows = parseCSV(eq);
