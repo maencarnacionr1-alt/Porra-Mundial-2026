@@ -3636,14 +3636,17 @@ const URL_MAESTRA =
           "https://docs.google.com/spreadsheets/d/e/2PACX-1vSYe1nqTFOllYViQLj9x7NZ0buss9J-pqmIqeSziINNRDL5-a0m-sWcCg_48_zY5iAEhpHvzNYKuqbQ/pub?gid=1191151777&single=true&output=csv";
 
         const URL_PRONOSTICOS =
-          "https://docs.google.com/spreadsheets/d/e/2PACX-1vSYe1nqTFOllYViQLj9x7NZ0buss9J-pqmIqeSziINNRDL5-a0m-sWcCg_48_zY5iAEhpHvzNYKuqbQ/pub?gid=427198704&single=true&output=csv";
+          "https://docs.google.com/spreadsheets/d/e/2PACX-1vSYe1nqTFOllYViQLj9x7NZ0buss9J-pqmIqeSziINNRDL5-a0m-sWcCg_48_zY5iAEhpHvzNYKuqbQ/pub?gid=1434944956&single=true&output=csv";
+
+		const URL_PRONOSTICOS_WEB =
+			"https://docs.google.com/spreadsheets/d/e/2PACX-1vSYe1nqTFOllYViQLj9x7NZ0buss9J-pqmIqeSziINNRDL5-a0m-sWcCg_48_zY5iAEhpHvzNYKuqbQ/pub?gid=1191151777&single=true&output=csv";
 	
-	const URL_GROUPS =
+		const URL_GROUPS =
 	  "https://docs.google.com/spreadsheets/d/e/2PACX-1vSYe1nqTFOllYViQLj9x7NZ0buss9J-pqmIqeSziINNRDL5-a0m-sWcCg_48_zY5iAEhpHvzNYKuqbQ/pub?gid=390514000&single=true&output=csv";
 
         const GOOGLE_SCRIPT_URL =
           "https://script.google.com/macros/s/AKfycbxpViCFw2wLJ7CR6CLVeIzQqFoPYWZTZwJWULRoni91EwyrBnaJn31xwxupNknv4qnzYg/exec";
-
+let pronosticosWebData = [];
 let dropdownListenerAttached = false;
 let pronosticosData = [];
 let currentPlayerIndex = null;
@@ -3673,6 +3676,9 @@ async function initApp() {
 
  const pronos = await fetch(URL_PRONOSTICOS).then(r => r.text());
  pronosticosData = parseCSV(pronos);
+
+const pronosPuntos = await fetch(URL_PRONOSTICOS_PUNTOS).then(r => r.text());
+pronosticosPuntosData = parseCSV(pronosPuntos);
 	
 console.log(pronosticosData);
 console.log(pronosticosData[0]);
