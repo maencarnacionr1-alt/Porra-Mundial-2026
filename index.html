@@ -3721,14 +3721,50 @@ equiposRows.forEach(r => {
 	console.log("GROUPS DATA:");
 	console.log(groupsData.slice(0,5));
 
-	const filasGrupos = groupsData.filter(r => r.grupo);
+  // CORREGIDO: Filtramos solo las filas que tengan grupo y selección real para evitar celdas vacías del CSV
+  const filasGrupos = groupsData.filter(r => r.grupo && r.grupo.trim() !== "" && r.seleccion && r.seleccion.trim() !== "");
 
-faseGruposTerminada =
-    filasGrupos.length > 0 &&
-    filasGrupos.every(r => Number(r.j) >= 3);
+  faseGruposTerminada =
+      filasGrupos.length > 0 &&
+      filasGrupos.every(r => Number(r.j) >= 3);
 
-	console.log("Fase grupos terminada:", faseGruposTerminada);
+  console.log("Fase grupos terminada:", faseGruposTerminada);
 	
+  // === NUEVO BLOQUE: CÁLCULO DE EQUIPOS ELIMINADOS ===
+  if (faseGruposTerminada) {
+      // Los que quedan en 4ta posición están eliminados al 100%
+      const cuartosLugares = filasGrupos
+          .filter(r => r.pos === "4")
+          .map(r => r.seleccion);
+
+      // Obtenemos todos los terceros lugares
+      const tercerosLugares = filasGrupos.filter(r => r.pos === "3");
+
+      // Ordenamos los terceros por puntos (pts) y diferencia de goles (dg) de mayor a menor para hallar los 8 mejores
+      const tercerosOrdenados = [...tercerosLugares].sort((a, b) => {
+          const ptsA = Number(a.pts) || 0;
+          const ptsB = Number(b.pts) || 0;
+          if (ptsB !== ptsA) return ptsB - ptsA;
+
+          const dgA = Number(a.dg) || 0;
+          const dgB = Number(b.dg) || 0;
+          return dgB - dgA;
+      });
+
+      // Los 8 primeros pasan de fase. Del puesto 9 en adelante (índice 8) quedan eliminados
+      const tercerosEliminados = tercerosOrdenados
+          .slice(8)
+          .map(r => r.seleccion);
+
+      // Fusionamos los cuartos lugares y los peores terceros en la variable global
+      equiposEliminados = cuartosLugares.concat(tercerosEliminados);
+  } else {
+      equiposEliminados = []; // Si no ha terminado, nadie está eliminado formalmente aún
+  }
+
+  console.log("Equipos eliminados calculados:", equiposEliminados);
+  // === FIN DEL NUEVO BLOQUE ===
+
   data = rankingRows.map(p => ({
     name: p.name,
     preguntas: p.preguntas,
@@ -3767,6 +3803,7 @@ faseGruposTerminada =
   enableAutoFillOctavos();
   renderPlayerDropdown();
 }
+
 
 // ================= CSV =================
 
