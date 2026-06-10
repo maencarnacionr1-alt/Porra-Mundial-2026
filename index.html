@@ -3652,7 +3652,10 @@ const codigosBanderas = {
 
         const GOOGLE_SCRIPT_URL =
           "https://script.google.com/macros/s/AKfycbxtJd7b5_INe28kjzGnRB9_Udy6IrBiANALXkVCdF0d3HmwGtpMYJvTE-3h_KBsUz4pBA/exec";
-	
+
+
+let equiposEliminados = [];
+let faseGruposTerminada = false;
 let pronosticosPuntosData = [];
 let dropdownListenerAttached = false;
 let pronosticosData = [];
@@ -3718,6 +3721,12 @@ equiposRows.forEach(r => {
 	console.log("GROUPS DATA:");
 	console.log(groupsData.slice(0,5));
 
+	const filasGrupos = groupsData.filter(r => r.grupo);
+
+faseGruposTerminada =
+    filasGrupos.length > 0 &&
+    filasGrupos.every(r => Number(r.j) >= 3);
+	
   data = rankingRows.map(p => ({
     name: p.name,
     preguntas: p.preguntas,
