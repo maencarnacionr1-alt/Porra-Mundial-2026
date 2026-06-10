@@ -3645,7 +3645,7 @@ const codigosBanderas = {
 	  "https://docs.google.com/spreadsheets/d/e/2PACX-1vSYe1nqTFOllYViQLj9x7NZ0buss9J-pqmIqeSziINNRDL5-a0m-sWcCg_48_zY5iAEhpHvzNYKuqbQ/pub?gid=390514000&single=true&output=csv";
 
         const GOOGLE_SCRIPT_URL =
-          "https://script.google.com/macros/s/AKfycbyAWudGT0QYogREM4lwtTBnTBOB4LbjVMPQQgK7DJiPWAdaQR-GxgUHqs4IsLg9qW-DcA/exec";
+          "https://script.google.com/macros/s/AKfycbxtJd7b5_INe28kjzGnRB9_Udy6IrBiANALXkVCdF0d3HmwGtpMYJvTE-3h_KBsUz4pBA/exec";
 	
 let pronosticosPuntosData = [];
 let dropdownListenerAttached = false;
@@ -4387,6 +4387,13 @@ function renderPredictionsByPlayer(p, puntos) {
   							  if (tipo === "Primero") {
         						badge = getBadge(puntos?.[`PTS_${idx + 2}`]);
    							 }
+
+					   else if (tipo === "Segundo") {
+    							badge = getBadge(puntos?.[`PTS_${idx + 14}`]);
+							}
+						else if (tipo === "Tercero") {
+   								 badge = getBadge(puntos?.[`PTS_${idx + 26}`]);
+							}
 						
                         return `
                             <div class="top8-item-row">
@@ -4409,11 +4416,13 @@ function renderPredictionsByPlayer(p, puntos) {
                 <div class="prediction-row">
                     <div class="prediction-team-info">
                         ⚽ &nbsp; <span class="prediction-team-name"><b>Goleador:</b> ${p["Maxímo Goleador"] || "-"}</span>
+						${getBadge(puntos?.PTS_34)}
                     </div>
                 </div>
                 <div class="prediction-row">
                     <div class="prediction-team-info">
                         🧤 &nbsp; <span class="prediction-team-name"><b>Menos Goleado:</b> ${p["Menos Goleado"] || "-"}</span>
+						${getBadge(puntos?.PTS_35)}
                     </div>
                 </div>
             </div>
@@ -4433,6 +4442,14 @@ function renderPredictionsByPlayer(p, puntos) {
                                 <div class="top8-team-info">
                                     ${getBandera(p[`${fase} ${j + 1}`])} 
                                     <span class="top8-team-name">${p[`${fase} ${j + 1}`] || "-"}</span>
+									${fase === "Octavos"
+            							? getBadge(puntos?.[`PTS_${j + 36}`])
+        								: fase === "Cuartos"
+            							? getBadge(puntos?.[`PTS_${j + 52}`])
+        								: fase === "Semifinal"
+            							? getBadge(puntos?.[`PTS_${j + 60}`])
+        								: getBadge(puntos?.[`PTS_${j + 64}`])
+   									 }
                                 </div>
                             </div>
                         `).join("")}
@@ -4448,16 +4465,19 @@ function renderPredictionsByPlayer(p, puntos) {
                 <div class="top8-item-row">
                     <div class="top8-team-info">
                         🥇 <span class="top8-team-name">${p["Campeón"] || "-"}</span>
+						${getBadge(puntos?.PTS_66)}
                     </div>
                 </div>
                 <div class="top8-item-row">
                     <div class="top8-team-info">
                         🥈 <span class="top8-team-name">${p["Subcampeón"] || "-"}</span>
+						${getBadge(puntos?.PTS_67)}
                     </div>
                 </div>
                 <div class="top8-item-row">
                     <div class="top8-team-info">
                         🥉 <span class="top8-team-name">${p["Tercero"] || "-"}</span>
+						${getBadge(puntos?.PTS_68)}
                     </div>
                 </div>
             </div>
