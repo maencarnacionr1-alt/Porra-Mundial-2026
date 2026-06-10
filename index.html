@@ -4366,6 +4366,7 @@ function renderPredictionsByPlayer(p, puntos) {
                         <div class="top8-team-info">
                             ${getBandera(p[`equipo ${i + 1}`])} 
                             <span class="top8-team-name">${p[`equipo ${i + 1}`] || "-"}</span>
+							${getTop8Status(p[`equipo ${i + 1}`])}
                         </div>
                     </div>
                 `).join("")}
@@ -5621,6 +5622,21 @@ function getBadge(valor){
     return Number(valor) > 0
         ? '<div class="estado-badge estado-ok">✓</div>'
         : '<div class="estado-badge estado-ko">✕</div>';
+}
+
+function getTop8Status(teamName) {
+
+    const equiposEliminados = [
+        "Curazao",
+        "Escocia",
+        "Bosnia y Herzegovina"
+    ];
+
+    if (equiposEliminados.includes(teamName)) {
+        return " 🔴";
+    }
+
+    return " 🟢";
 }
 
 </script>
