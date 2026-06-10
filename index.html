@@ -4378,7 +4378,7 @@ function renderPredictionsByPlayer(p, puntos) {
             ${["Primero", "Segundo", "Tercero"].map(tipo => `
                 <div class="group-mini-title" style="margin:20px 0 10px 0;">${tipo}s de Grupo</div>
                 <div class="top8-grid-container">
-                    ${grupos.map(g => {
+                   ${grupos.map((g, idx) => {
                         const valor = p[`${tipo} Grupo ${g}`];
                         if (!valor) return "";
 
