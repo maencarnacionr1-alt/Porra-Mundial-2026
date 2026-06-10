@@ -4377,12 +4377,20 @@ function renderPredictionsByPlayer(p, puntos) {
                     ${grupos.map(g => {
                         const valor = p[`${tipo} Grupo ${g}`];
                         if (!valor) return "";
+
+						let badge = "";
+
+  							  if (tipo === "Primero") {
+        						badge = getBadge(puntos?.[`PTS_${idx + 2}`]);
+   							 }
+						
                         return `
                             <div class="top8-item-row">
                                 <span class="top8-number"><b>${g}</b></span>
                                 <div class="top8-team-info">
                                     ${getBandera(valor)} 
                                     <span class="top8-team-name">${valor}</span>
+									 ${badge}
                                 </div>
                             </div>`;
                     }).join("")}
