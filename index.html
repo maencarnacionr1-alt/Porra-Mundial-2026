@@ -3726,6 +3726,8 @@ equiposRows.forEach(r => {
 faseGruposTerminada =
     filasGrupos.length > 0 &&
     filasGrupos.every(r => Number(r.j) >= 3);
+
+	console.log("Fase grupos terminada:", faseGruposTerminada);
 	
   data = rankingRows.map(p => ({
     name: p.name,
@@ -5643,17 +5645,15 @@ function getBadge(valor){
 
 function getTop8Status(teamName) {
 
-    const equiposEliminados = [
-        "Curazao",
-        "Escocia",
-        "Bosnia y Herzegovina"
-    ];
-
-    if (equiposEliminados.includes(teamName)) {
-        return " 🔴";
+    if (!torneoIniciado) {
+        return "";
     }
 
-    return " 🟢";
+    if (equiposEliminados.includes(teamName)) {
+        return '<span class="top8-status">🔴</span>';
+    }
+
+    return '<span class="top8-status">🟢</span>';
 }
 
 </script>
