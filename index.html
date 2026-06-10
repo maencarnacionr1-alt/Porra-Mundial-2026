@@ -3715,6 +3715,8 @@ equiposRows.forEach(r => {
   const teamRows = parseCSV(teams);
 	console.log(teamRows[0]);
   groupsData = parseCSV(groupsCsv);
+	console.log("GROUPS DATA:");
+	console.log(groupsData.slice(0,5));
 
   data = rankingRows.map(p => ({
     name: p.name,
