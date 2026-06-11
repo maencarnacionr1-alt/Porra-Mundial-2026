@@ -3914,7 +3914,12 @@ function renderRanking() {
                 </div>
 
                 <div class="podium-points">
-                    ${(parseFloat(p.total) || 0).toFixed(2)}
+                     ${p.total === 0
+        ? "0"
+        : p.total.toLocaleString('es-ES', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        })}
                 </div>
 
                 <div class="podium-rank">
@@ -3994,8 +3999,13 @@ function renderRanking() {
                 </div>
 
                 <div class="ranking-points-modern">
-				
-                    ${(parseFloat(p.total) || 0).toFixed(2)}
+				 ${p.total === 0
+        ? "0"
+        : p.total.toLocaleString('es-ES', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        })}
+                
                 </div>
 
             </div>
