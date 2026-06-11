@@ -5257,61 +5257,46 @@ function iniciarContador() {
 
     const box = document.getElementById("countdownBox");
     const boton = document.getElementById("btnRegistro");
+    const botonSubmit = document.getElementById("btnSubmitPronosticos");
 
     // Estructura HTML inicial
     box.innerHTML = `
-        
         <div class="flip-clock">
-
             <div class="flip-group">
                 <div class="flip" id="flipDias">00</div>
                 <div class="flip-label">Días</div>
             </div>
-
             <div class="flip-group">
                 <div class="flip" id="flipHoras">00</div>
                 <div class="flip-label">Horas</div>
             </div>
-
             <div class="flip-group">
                 <div class="flip" id="flipMin">00</div>
                 <div class="flip-label">Min</div>
             </div>
-
             <div class="flip-group">
                 <div class="flip" id="flipSeg">00</div>
                 <div class="flip-label">Seg</div>
             </div>
-
         </div>
     `;
 
     function animarFlip(id, valor) {
-
         const el = document.getElementById(id);
-
-        if (el.textContent !== valor) {
-
+        if (el && el.textContent !== valor) {
             el.textContent = valor;
-
             el.classList.remove("flip-anim");
-
             void el.offsetWidth;
-
             el.classList.add("flip-anim");
         }
     }
 
     function actualizar() {
-
         const ahora = new Date();
-
         const diferencia = FECHA_MUNDIAL - ahora;
 
         if (diferencia <= 0) {
-
             box.innerHTML = "🔒 Pronósticos cerrados";
-
             box.classList.add("countdown-finished");
 
             if (boton) {
@@ -5319,44 +5304,28 @@ function iniciarContador() {
                 boton.style.opacity = "0.5";
             }
 
+            if (botonSubmit) {
+                botonSubmit.disabled = true;
+                botonSubmit.style.pointerEvents = "none";
+                botonSubmit.style.opacity = "0.5";
+                botonSubmit.innerHTML = "🔒 PRONÓSTICOS CERRADOS";
+            }
+
             return;
         }
 
-        const dias =
-            Math.floor(diferencia / (1000 * 60 * 60 * 24));
+        const dias = Math.floor(diferencia / (1000 * 60 * 60 * 24));
+        const horas = Math.floor((diferencia / (1000 * 60 * 60)) % 24);
+        const minutos = Math.floor((diferencia / (1000 * 60)) % 60);
+        const segundos = Math.floor((diferencia / 1000) % 60);
 
-        const horas =
-            Math.floor((diferencia / (1000 * 60 * 60)) % 24);
-
-        const minutos =
-            Math.floor((diferencia / (1000 * 60)) % 60);
-
-        const segundos =
-            Math.floor((diferencia / 1000) % 60);
-
-        animarFlip(
-            "flipDias",
-            String(dias).padStart(2, "0")
-        );
-
-        animarFlip(
-            "flipHoras",
-            String(horas).padStart(2, "0")
-        );
-
-        animarFlip(
-            "flipMin",
-            String(minutos).padStart(2, "0")
-        );
-
-        animarFlip(
-            "flipSeg",
-            String(segundos).padStart(2, "0")
-        );
+        animarFlip("flipDias", String(dias).padStart(2, "0"));
+        animarFlip("flipHoras", String(horas).padStart(2, "0"));
+        animarFlip("flipMin", String(minutos).padStart(2, "0"));
+        animarFlip("flipSeg", String(segundos).padStart(2, "0"));
     }
 
     actualizar();
-
     setInterval(actualizar, 1000);
 }
 
