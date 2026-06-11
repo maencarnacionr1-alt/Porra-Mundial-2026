@@ -3768,7 +3768,9 @@ equiposRows.forEach(r => {
   data = rankingRows.map(p => ({
     name: p.name,
     preguntas: p.preguntas,
-    total: p.total,
+    total: parseFloat(
+        String(p.total).replace(",", ".")
+    ) || 0,
 	avatar: p.avatar || 'assets/avatares-futbolistas/avatar_001.png',
     teams: teamRows
       .filter(t => t.name === p.name)
