@@ -3912,7 +3912,7 @@ function renderRanking() {
                 </div>
 
                 <div class="podium-points">
-                    ${Number(parseFloat(p.total) || 0)}
+                    ${(parseFloat(p.total) || 0).toFixed(2)}
                 </div>
 
                 <div class="podium-rank">
@@ -3993,7 +3993,7 @@ function renderRanking() {
 
                 <div class="ranking-points-modern">
 				
-                    ${formatearPuntos(p.total) || 0)}
+                    ${(parseFloat(p.total) || 0).toFixed(2)}
                 </div>
 
             </div>
