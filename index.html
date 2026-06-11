@@ -5296,7 +5296,7 @@ function iniciarContador() {
         const diferencia = FECHA_MUNDIAL - ahora;
 
         if (diferencia <= 0) {
-            box.innerHTML = "🔒 Pronósticos cerrados";
+            box.innerHTML = "";
             box.classList.add("countdown-finished");
 
             if (boton) {
