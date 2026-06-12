@@ -3687,7 +3687,7 @@ const codigosBanderas = {
 	  "https://docs.google.com/spreadsheets/d/e/2PACX-1vSYe1nqTFOllYViQLj9x7NZ0buss9J-pqmIqeSziINNRDL5-a0m-sWcCg_48_zY5iAEhpHvzNYKuqbQ/pub?gid=390514000&single=true&output=csv";
 
 	const URL_MATCHES = 
-	  "https://docs.google.com/spreadsheets/d/e/2PACX-1vSYe1nqTFOllYViQLj9x7NZ0buss9J-pqmIqeSziINNRDL5-a0m-sWcCg_48_zY5iAEhpHvzNYKuqbQ/pub?gid=390514000 &single=true&output=csv"
+	  "https://docs.google.com/spreadsheets/d/e/2PACX-1vSYe1nqTFOllYViQLj9x7NZ0buss9J-pqmIqeSziINNRDL5-a0m-sWcCg_48_zY5iAEhpHvzNYKuqbQ/pub?gid=390514000&single=true&output=csv"
 
         const GOOGLE_SCRIPT_URL =
           "https://script.google.com/macros/s/AKfycbxtJd7b5_INe28kjzGnRB9_Udy6IrBiANALXkVCdF0d3HmwGtpMYJvTE-3h_KBsUz4pBA/exec";
@@ -3712,7 +3712,7 @@ const GRUPOS = 12;
 // ================= INIT =================
 async function initApp() {
 
-  const [eq, rank, teams, groupsCsv, matchesCsv] = await Promise.all([
+  const [eq, rank, teams, groupsCsv] = await Promise.all([
 
     fetch(URL_MAESTRA).then(r => r.text()),
 
@@ -4863,43 +4863,30 @@ function parsearCalendarioOficial(csv) {
     const lineas = csv.split(/\r?\n/);
     const resultado = [];
     
-    if (lineas.length < 3) return [];
-
-    // Buscamos la fila de cabeceras de clasificación (Fila 3, índice 2) para mapear los índices nativos
-    const cabecerasClasificacion = lineas[2].split(",").map(c => c.trim().toLowerCase());
-    
-    // Encontramos en qué posición exacta del array arranca la tabla de clasificación
-    const indicePos = cabecerasClasificacion.indexOf("pos");
-    const indiceGrupo = cabecerasClasificacion.indexOf("grupo");
-
-    // Si tu parseador no encuentra la cabecera exacta por minúsculas, usamos índices fijos seguros basados en tu captura
-    const refClasificacion = indicePos !== -1 ? indicePos : 1; 
-
-    // Recorremos las filas de partidos (Arrancan en la fila 4, índice 3)
+    // Tu Excel de partidos empieza con datos útiles en la fila 4 (índice 3 del array)
     for (let i = 3; i < lineas.length; i++) {
         if (!lineas[i]) continue;
         
+        // Separamos las celdas por comas eliminando comillas de formato
         const columnas = lineas[i].split(",").map(c => c.trim().replace(/"/g, ""));
         
-        // El grupo real siempre vendrá en la columna de clasificación (usualmente columna 0 o 1)
-        const grupoActual = columnas[indiceGrupo !== -1 ? indiceGrupo : 0] || "";
+        // El identificador del grupo para la clasificación está en la primera columna visible (Índice 0)
+        const grupoActual = columnas[0] || "";
         
-        // Si la fila está vacía o es una cabecera repetida, la saltamos por completo
         if (grupoActual === "" || grupoActual.toLowerCase() === "grupo") continue;
 
-        // Basándonos en tu captura de pantalla exacta de la hoja "Worldcup":
-        // Las columnas del partido están exactamente alineadas a la izquierda del inicio de la Clasificación (POS)
-        // Restamos posiciones hacia atrás desde el índice de "POS" para sincronizar sin desvíos:
-        const fuera       = columnas[refClasificacion - 1]; // Justo antes de POS (Columna AD)
-        const golVisita   = columnas[refClasificacion - 2]; // Columna AC
-        const golLocal    = columnas[refClasificacion - 3]; // Columna AB
-        const casa        = columnas[refClasificacion - 4]; // Columna AA
-        const jor         = columnas[refClasificacion - 5]; // Columna Z
-        const hora        = columnas[refClasificacion - 6]; // Columna Y
-        const fecha       = columnas[refClasificacion - 7]; // Columna X
+        // MAPEO INDEXADO DIRECTO (Alineación exacta con tu captura de pantalla de la hoja 'Worldcup'):
+        // Contamos las columnas de izquierda a derecha empezando desde el índice 0:
+        const fecha      = columnas[23]; // Columna X (Índice 23)
+        const hora       = columnas[24]; // Columna Y (Índice 24)
+        const jor        = columnas[25]; // Columna Z (Índice 25)
+        const casa       = columnas[26]; // Columna AA (Índice 26)
+        const golLocal   = columnas[27]; // Columna AB (Índice 27)
+        const golVisita  = columnas[28]; // Columna AC (Índice 28)
+        const fuera      = columnas[29]; // Columna AD (Índice 29)
 
-        // VALIDACIÓN ESTRICTA: Solo guardamos si hay un partido real tabulado en esa línea
-        if (casa && casa !== "" && casa.toLowerCase() !== "casa" && jor && jor.toLowerCase() !== "jor.") {
+        // Verificamos de manera estricta que la línea tenga un partido programado real
+        if (casa && casa !== "" && casa.toLowerCase() !== "casa" && casa.toLowerCase() !== "pais") {
             resultado.push({
                 grupo: grupoActual,
                 fecha: fecha || "",
@@ -4914,7 +4901,6 @@ function parsearCalendarioOficial(csv) {
     }
     return resultado;
 }
-
 
 // ================= DROPDOWNS =================
 
