@@ -3687,7 +3687,7 @@ const codigosBanderas = {
 	  "https://docs.google.com/spreadsheets/d/e/2PACX-1vSYe1nqTFOllYViQLj9x7NZ0buss9J-pqmIqeSziINNRDL5-a0m-sWcCg_48_zY5iAEhpHvzNYKuqbQ/pub?gid=390514000&single=true&output=csv";
 
 	const URL_MATCHES = 
-	  "https://docs.google.com/spreadsheets/d/e/2PACX-1vSYe1nqTFOllYViQLj9x7NZ0buss9J-pqmIqeSziINNRDL5-a0m-sWcCg_48_zY5iAEhpHvzNYKuqbQ/pub?gid=1452212570&single=true&output=csv"
+	  "https://docs.google.com/spreadsheets/d/e/2PACX-1vSYe1nqTFOllYViQLj9x7NZ0buss9J-pqmIqeSziINNRDL5-a0m-sWcCg_48_zY5iAEhpHvzNYKuqbQ/pub?gid=105574510&single=true&output=csv"
 
         const GOOGLE_SCRIPT_URL =
           "https://script.google.com/macros/s/AKfycbxtJd7b5_INe28kjzGnRB9_Udy6IrBiANALXkVCdF0d3HmwGtpMYJvTE-3h_KBsUz4pBA/exec";
@@ -4776,10 +4776,12 @@ window.renderAllMatches = function () {
         "G","H","I","J","K","L"
     ];
 
-    if (typeof matchesData === "undefined" || !matchesData) return;
+    // Evitamos ejecutar si los datos aún no se han terminado de descargar
+    if (typeof matchesData === "undefined" || !matchesData || matchesData.length === 0) return;
 
     container.innerHTML = letras.map(grupo => {
 
+        // Filtramos buscando por la columna exacta de tu Excel ("Grupo")
         const partidos =
             matchesData.filter(r => (r.Grupo || r.grupo) === grupo);
 
@@ -4792,12 +4794,11 @@ window.renderAllMatches = function () {
                 <table class="group-table">
                     <thead>
                         <tr>
-                            <!-- 1. Reducimos el ancho quitando la palabra / HORA -->
-                            <th style="text-align:left; padding: 10px;">FECHA</th>
+                            <th style="text-align:left; padding: 15px;">FECHA / HORA</th>
                             <th>JOR</th>
-                            <th style="text-align:right; padding: 10px;">LOCAL</th>
+                            <th style="text-align:left; padding: 15px;">LOCAL</th>
                             <th>RES</th>
-                            <th style="text-align:left; padding: 10px;">VISITANTE</th>
+                            <th style="text-align:left; padding: 15px;">VISITANTE</th>
                         </tr>
                     </thead>
 
@@ -4807,30 +4808,33 @@ window.renderAllMatches = function () {
 
                             <tr>
 
-                                <td style="text-align:left; padding: 10px; font-size: 0.8rem; line-height: 1.1;">
-                                    <div>${r.Fecha || r.fecha || ""}</div>
-                                    <!-- Colocamos la hora en formato pequeño abajo -->
-                                    <small style="color: #666; font-weight: bold;">${r.Hora || r.hora || ""}</small>
+                                <!-- Mapeo exacto de las columnas "Fecha" y "Hora" -->
+                                <td style="text-align:left; padding: 15px; font-size: 0.85rem; line-height: 1.2;">
+                                    <div>${r.Fecha || ""}</div>
+                                    <div style="font-weight: bold; color: #555;">${r.Hora || ""}</div>
                                 </td>
 
-                                <td>${r.Jornada || r.jornada || r.Jor || r.jor || "J1"}</td>
+                                <!-- Mapeo de "Jornada" -->
+                                <td>${r.Jornada || "J1"}</td>
 
-                                <td class="group-team" style="text-align:right; padding: 10px;">
+                                <!-- Mapeo de "Local" usando tu getBandera original -->
+                                <td class="group-team" style="text-align:left; padding: 15px;">
                                     <a href="javascript:void(0)" onclick="filtrarIrAGrupo('${grupo}')" style="color: inherit; text-decoration: none;">
-                                        <!-- En el local, para ahorrar espacio en móvil, dejamos el texto normal -->
-                                        ${r.Local || r.local || r.Casa || r.casa || ""}
-                                        ${getBandera(r.Local || r.local || r.Casa || r.casa || "")}
+                                        ${getBandera(r.Local || "")}
+                                        ${r.Local || ""}
                                     </a>
                                 </td>
 
-                                <td style="font-weight: bold; font-size: 0.95rem;">
-                                    ${(r['Gol Local'] !== undefined && r['Gol Local'] !== "") ? r['Gol Local'] : (r.golLocal || "-")} - ${(r['Gol Visitante'] !== undefined && r['Gol Visitante'] !== "") ? r['Gol Visitante'] : (r.golVisita || "-")}
+                                <!-- Mapeo interactivo para mostrar el Marcador Vivo o guion si no se ha jugado -->
+                                <td style="font-weight: bold;">
+                                    ${(r['Gol Local'] !== undefined && r['Gol Local'] !== "") ? r['Gol Local'] : "-"} - ${(r['Gol Visitante'] !== undefined && r['Gol Visitante'] !== "") ? r['Gol Visitante'] : "-"}
                                 </td>
 
-                                <td class="group-team" style="text-align:left; padding: 10px;">
+                                <!-- Mapeo de "Visitante" -->
+                                <td class="group-team" style="text-align:left; padding: 15px;">
                                     <a href="javascript:void(0)" onclick="filtrarIrAGrupo('${grupo}')" style="color: inherit; text-decoration: none;">
-                                        ${getBandera(r.Visitante || r.visitante || r.Fuera || r.fuera || "")}
-                                        ${r.Visitante || r.visitante || r.Fuera || r.fuera || ""}
+                                        ${getBandera(r.Visitante || "")}
+                                        ${r.Visitante || ""}
                                     </a>
                                 </td>
 
@@ -4847,6 +4851,18 @@ window.renderAllMatches = function () {
         `;
     }).join("");
 }
+
+// Función para enlazar la tabla de partidos con tu sección de clasificación al hacer clic
+window.filtrarIrAGrupo = function (grupo) {
+    if (typeof goToSection === "function") {
+        goToSection("groups");
+    }
+    const selectorWeb = document.getElementById("selectFiltroGrupos") || document.querySelector(".selector-grupos") || document.getElementById("filtroGrupos");
+    if (selectorWeb) {
+        selectorWeb.value = grupo;
+        selectorWeb.dispatchEvent(new Event("change"));
+    }
+};
 
 // ================= DROPDOWNS =================
 
