@@ -4763,22 +4763,27 @@ function renderAllGroups(){
 
 window.renderAllMatches = function () {
 
-    const container = document.getElementById("calendarGrid");
+    const container =
+        document.getElementById("calendarGrid");
+
     if(!container) return;
 
-    const letras = ["A","B","C","D","E","F","G","H","I","J","K","L"];
+    const letras = [
+        "A","B","C","D","E","F",
+        "G","H","I","J","K","L"
+    ];
 
-    // Si los partidos no se han cargado aún, detenemos la ejecución
     if (typeof matchesData === "undefined" || !matchesData || matchesData.length === 0) return;
 
     container.innerHTML = letras.map(grupo => {
 
-        // Filtramos buscando la propiedad 'grupo' que inyectamos en el Paso 1
-        const partidos = matchesData.filter(r => r.grupo === grupo);
+        const partidos =
+            matchesData.filter(r => r.grupo === grupo);
 
         if (partidos.length === 0) return "";
 
         return `
+
             <div class="group-card">
                 <div class="group-title">GRUPO ${grupo}</div>
                 <table class="group-table">
@@ -4786,43 +4791,58 @@ window.renderAllMatches = function () {
                         <tr>
                             <th style="text-align:left; padding: 15px;">FECHA / HORA</th>
                             <th>JOR</th>
-                            <th style="text-align:left; padding: 15px;">LOCAL</th>
+                            <th style="text-align:right; padding-right: 15px; width: 30%;">LOCAL</th>
                             <th>RES</th>
-                            <th style="text-align:left; padding: 15px;">VISITANTE</th>
+                            <th style="text-align:left; padding-left: 15px; width: 30%;">VISITANTE</th>
                         </tr>
                     </thead>
+
                     <tbody>
+
                         ${partidos.map((r)=>`
+
                             <tr>
+
+                                <!-- 1. Fecha y Hora alineadas a la izquierda -->
                                 <td style="text-align:left; padding: 15px; font-size: 0.85rem; line-height: 1.2;">
                                     <div>${r.fecha}</div>
-                                    <div style="font-weight: bold; color: #333;">${r.hora}</div>
+                                    <div style="font-weight: bold; color: #555;">${r.hora}</div>
                                 </td>
 
-                                <td>${r.jornada || "J1"}</td>
+                                <!-- 2. Jornada centrada -->
+                                <td>${r.jornada}</td>
 
-                                <td class="group-team" style="text-align:left; padding: 15px;">
-                                    <a href="javascript:void(0)" onclick="filtrarIrAGrupo('${grupo}')" style="color: inherit; text-decoration: none;">
+                                <!-- 3. Local: Texto seguido de su Bandera a la derecha -->
+                                <td class="group-team" style="text-align:right; padding-right: 15px; font-weight: 500;">
+                                    <a href="javascript:void(0)" onclick="filtrarIrAGrupo('${grupo}')" style="color: inherit; text-decoration: none; display: inline-flex; align-items: center; justify-content: flex-end; gap: 8px; width: 100%;">
+                                        <span>${r.local}</span>
                                         ${getBandera(r.local)}
-                                        ${r.local}
                                     </a>
                                 </td>
 
-                                <td style="font-weight: bold;">
+                                <!-- 4. Marcador / Resultados de goles -->
+                                <td style="font-weight: bold; font-size: 0.95rem; white-space: nowrap;">
                                     ${r.golLocal !== "" ? r.golLocal : "-"} - ${r.golVisita !== "" ? r.golVisita : "-"}
                                 </td>
 
-                                <td class="group-team" style="text-align:left; padding: 15px;">
-                                    <a href="javascript:void(0)" onclick="filtrarIrAGrupo('${grupo}')" style="color: inherit; text-decoration: none;">
+                                <!-- 5. Visitante: Bandera a la izquierda seguida de su Texto -->
+                                <td class="group-team" style="text-align:left; padding: 15px; font-weight: 500;">
+                                    <a href="javascript:void(0)" onclick="filtrarIrAGrupo('${grupo}')" style="color: inherit; text-decoration: none; display: inline-flex; align-items: center; justify-content: flex-start; gap: 8px; width: 100%;">
                                         ${getBandera(r.visita)}
-                                        ${r.visita}
+                                        <span>${r.visita}</span>
                                     </a>
                                 </td>
+
                             </tr>
+
                         `).join("")}
+
                     </tbody>
+
                 </table>
+
             </div>
+
         `;
     }).join("");
 };
@@ -4839,43 +4859,55 @@ window.filtrarIrAGrupo = function (grupo) {
     }
 };
 
-
 function parsearCalendarioOficial(csv) {
     const lineas = csv.split(/\r?\n/);
     const resultado = [];
-    let grupoActual = "A"; // Por defecto iniciamos en el Grupo A
+    
+    if (lineas.length < 3) return [];
 
-    // Tu Excel de partidos empieza realmente con datos útiles a partir de la fila 4 (índice 3)
+    // Buscamos la fila de cabeceras de clasificación (Fila 3, índice 2) para mapear los índices nativos
+    const cabecerasClasificacion = lineas[2].split(",").map(c => c.trim().toLowerCase());
+    
+    // Encontramos en qué posición exacta del array arranca la tabla de clasificación
+    const indicePos = cabecerasClasificacion.indexOf("pos");
+    const indiceGrupo = cabecerasClasificacion.indexOf("grupo");
+
+    // Si tu parseador no encuentra la cabecera exacta por minúsculas, usamos índices fijos seguros basados en tu captura
+    const refClasificacion = indicePos !== -1 ? indicePos : 1; 
+
+    // Recorremos las filas de partidos (Arrancan en la fila 4, índice 3)
     for (let i = 3; i < lineas.length; i++) {
         if (!lineas[i]) continue;
         
-        // Separamos las columnas por coma de forma limpia
         const columnas = lineas[i].split(",").map(c => c.trim().replace(/"/g, ""));
         
-        // Identificar dinámicamente el bloque del Grupo si la celda de la izquierda contiene la letra flotante (Columna W)
-        if (columnas[0] && columnas[0].length === 1 && "ABCDEFGHIJKL".includes(columnas[0])) {
-            grupoActual = columnas[0];
-        }
+        // El grupo real siempre vendrá en la columna de clasificación (usualmente columna 0 o 1)
+        const grupoActual = columnas[indiceGrupo !== -1 ? indiceGrupo : 0] || "";
+        
+        // Si la fila está vacía o es una cabecera repetida, la saltamos por completo
+        if (grupoActual === "" || grupoActual.toLowerCase() === "grupo") continue;
 
-        // Extraemos los datos basándonos en la posición fija de la imagen de tu Google Sheet
-        const fecha = columnas[1];  // Columna X
-        const hora = columnas[2];   // Columna Y
-        const jor = columnas[3];    // Columna Z
-        const casa = columnas[4];   // Columna AA
-        const golL = columnas[5];   // Columna AB
-        const golV = columnas[6];   // Columna AC
-        const fuera = columnas[7];  // Columna AD
+        // Basándonos en tu captura de pantalla exacta de la hoja "Worldcup":
+        // Las columnas del partido están exactamente alineadas a la izquierda del inicio de la Clasificación (POS)
+        // Restamos posiciones hacia atrás desde el índice de "POS" para sincronizar sin desvíos:
+        const fuera       = columnas[refClasificacion - 1]; // Justo antes de POS (Columna AD)
+        const golVisita   = columnas[refClasificacion - 2]; // Columna AC
+        const golLocal    = columnas[refClasificacion - 3]; // Columna AB
+        const casa        = columnas[refClasificacion - 4]; // Columna AA
+        const jor         = columnas[refClasificacion - 5]; // Columna Z
+        const hora        = columnas[refClasificacion - 6]; // Columna Y
+        const fecha       = columnas[refClasificacion - 7]; // Columna X
 
-        // Validamos que sea una fila de partido real (debe tener equipo Local y no ser la cabecera repetida)
-        if (casa && casa !== "" && casa !== "Casa" && casa !== "PAIS") {
+        // VALIDACIÓN ESTRICTA: Solo guardamos si hay un partido real tabulado en esa línea
+        if (casa && casa !== "" && casa.toLowerCase() !== "casa" && jor && jor.toLowerCase() !== "jor.") {
             resultado.push({
                 grupo: grupoActual,
-                fecha: fecha,
-                hora: hora,
-                jornada: jor,
+                fecha: fecha || "",
+                hora: hora || "",
+                jornada: jor || "J1",
                 local: casa,
-                golLocal: golL,
-                golVisita: golV,
+                golLocal: golLocal,
+                golVisita: golVisita,
                 visita: fuera
             });
         }
