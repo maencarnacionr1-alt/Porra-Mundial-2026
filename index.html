@@ -3221,6 +3221,13 @@ body{
         <span class="menu-text">Clasificación</span>
     </a>
 
+    <a href="javascript:void(0)" onclick="goToSection('calendar')">
+        <span class="menu-icon">
+             <i class="fa-solid fa-calendar-days"></i>
+        </span>
+        <span class="menu-text">Calendario</span>
+    </a>
+
 </nav>
 
 <!-- OVERLAY -->
@@ -3608,6 +3615,35 @@ body{
 
 </div>
 
+
+<!-- ================= SECCIÓN CALENDARIO ================= -->
+
+<div id="calendarSection" class="view-section hidden">
+
+    <!-- 1. Abrimos el contenedor de ajuste de desplazamiento -->
+    <div class="seccion-ajuste-scroll" style="padding-top: 100px !important; margin-top: 0 !important; clear: both; display: block; width: 100%;">
+
+        <!-- 2. Abrimos el contenedor fase -->
+        <div class="fase-container">
+
+            <!-- Título oficial alineado -->
+            <div class="fase-title">
+                CALENDARIO Y RESULTADOS
+            </div>
+
+            <!-- 3. Abrimos el grid elástico -->
+            <div id="calendarGrid" class="groups-grid">
+                <p style="text-align: center; color: var(--text-color, #666); font-weight: 500; grid-column: 1/-1; padding: 20px;">
+                    ⌛ Cargando partidos y horarios en tiempo real...
+                </p>
+            </div> <!-- CIERRA EL GRID (3) -->
+
+        </div> <!-- CIERRA EL FASE-CONTAINER (2) -->
+
+    </div> <!-- CIERRA EL AJUSTE-SCROLL (1) -->
+
+</div> <!-- CIERRA DEFINITIVAMENTE LA SECCIÓN CALENDARIO (AQUÍ TERMINA) -->
+
 <script>
 
 const codigosBanderas = {
@@ -3632,7 +3668,7 @@ const codigosBanderas = {
             : "⚽";
 	}
 	
-		const URL_MAESTRA =
+	const URL_MAESTRA =
           "https://docs.google.com/spreadsheets/d/e/2PACX-1vSYe1nqTFOllYViQLj9x7NZ0buss9J-pqmIqeSziINNRDL5-a0m-sWcCg_48_zY5iAEhpHvzNYKuqbQ/pub?gid=1968191103&single=true&output=csv";
 
         const URL_RANKING =
@@ -3644,16 +3680,20 @@ const codigosBanderas = {
         const URL_PRONOSTICOS =
           "https://docs.google.com/spreadsheets/d/e/2PACX-1vSYe1nqTFOllYViQLj9x7NZ0buss9J-pqmIqeSziINNRDL5-a0m-sWcCg_48_zY5iAEhpHvzNYKuqbQ/pub?gid=1434944956&single=true&output=csv";
 
-		const URL_PRONOSTICOS_PUNTOS =
+	const URL_PRONOSTICOS_PUNTOS =
 			"https://docs.google.com/spreadsheets/d/e/2PACX-1vSYe1nqTFOllYViQLj9x7NZ0buss9J-pqmIqeSziINNRDL5-a0m-sWcCg_48_zY5iAEhpHvzNYKuqbQ/pub?gid=427198704&single=true&output=csv";
 	
-		const URL_GROUPS =
+	const URL_GROUPS =
 	  "https://docs.google.com/spreadsheets/d/e/2PACX-1vSYe1nqTFOllYViQLj9x7NZ0buss9J-pqmIqeSziINNRDL5-a0m-sWcCg_48_zY5iAEhpHvzNYKuqbQ/pub?gid=390514000&single=true&output=csv";
+
+	const URL_MATCHES = 
+	  "https://docs.google.com/spreadsheets/d/e/2PACX-1vSYe1nqTFOllYViQLj9x7NZ0buss9J-pqmIqeSziINNRDL5-a0m-sWcCg_48_zY5iAEhpHvzNYKuqbQ/pub?gid=1452212570&single=true&output=csv"
 
         const GOOGLE_SCRIPT_URL =
           "https://script.google.com/macros/s/AKfycbxtJd7b5_INe28kjzGnRB9_Udy6IrBiANALXkVCdF0d3HmwGtpMYJvTE-3h_KBsUz4pBA/exec";
 
 
+let matchesData = [];
 let equiposEliminados = [];
 let faseGruposTerminada = false;
 let pronosticosPuntosData = [];
@@ -3672,7 +3712,7 @@ const GRUPOS = 12;
 // ================= INIT =================
 async function initApp() {
 
-  const [eq, rank, teams, groupsCsv] = await Promise.all([
+  const [eq, rank, teams, groupsCsv, matchesCsv] = await Promise.all([
 
     fetch(URL_MAESTRA).then(r => r.text()),
 
@@ -3680,7 +3720,9 @@ async function initApp() {
 
     fetch(URL_TEAMS).then(r => r.text()),
 
-    fetch(URL_GROUPS).then(r => r.text())
+    fetch(URL_GROUPS).then(r => r.text()),
+
+    fetch(URL_MATCHES).then(r => r.text())
 
 ]);
 
@@ -3720,6 +3762,10 @@ equiposRows.forEach(r => {
   groupsData = parseCSV(groupsCsv);
 	console.log("GROUPS DATA:");
 	console.log(groupsData.slice(0,5));
+
+  matchesData = parseCSV(matchesCsv);
+  console.log("MATCHES DATA:");
+  console.log(matchesData.slice(0,5));
 
   // CORREGIDO: Filtramos solo las filas que tengan grupo y selección real para evitar celdas vacías del CSV
   const filasGrupos = groupsData.filter(r => r.grupo && r.grupo.trim() !== "" && r.seleccion && r.seleccion.trim() !== "");
@@ -3999,13 +4045,12 @@ function renderRanking() {
                 </div>
 
                 <div class="ranking-points-modern">
-				 ${p.total === 0
+                     ${p.total === 0
         ? "0"
         : p.total.toLocaleString('es-ES', {
             minimumFractionDigits: 2,
             maximumFractionDigits: 2
         })}
-                
                 </div>
 
             </div>
@@ -4612,6 +4657,30 @@ window.showGroups = function () {
     updateHistory("groups");
 };
 
+window.showCalendar = function () {
+
+    // 1. Oculta de forma masiva todas las secciones de la página
+    document.querySelectorAll(".view-section")
+        .forEach(s => s.classList.add("hidden"));
+
+    // 2. Muestra exclusivamente la sección del calendario
+    document.getElementById("calendarSection")
+        .classList.remove("hidden");
+
+    // 3. Mantiene oculto el contador de tiempo flotante como en tus otras secciones
+    document.getElementById("countdownBox")
+        .style.display = "none";
+
+    // 4. Lógica para descargar y pintar los partidos desde Google Sheets
+    if (typeof renderAllMatches === "function") {
+        renderAllMatches();
+    }
+
+    // 5. Actualiza el historial de navegación nativo de tu app
+    updateHistory("calendar");
+};
+
+
 function renderAllGroups(){
 
     const container =
@@ -4694,6 +4763,90 @@ function renderAllGroups(){
     }).join("");
 }
 
+
+window.renderAllMatches = function () {
+
+    const container =
+        document.getElementById("calendarGrid");
+
+    if(!container) return;
+
+    const letras = [
+        "A","B","C","D","E","F",
+        "G","H","I","J","K","L"
+    ];
+
+    if (typeof matchesData === "undefined" || !matchesData) return;
+
+    container.innerHTML = letras.map(grupo => {
+
+        const partidos =
+            matchesData.filter(r => (r.Grupo || r.grupo) === grupo);
+
+        if (partidos.length === 0) return "";
+
+        return `
+
+            <div class="group-card">
+                <div class="group-title">GRUPO ${grupo}</div>
+                <table class="group-table">
+                    <thead>
+                        <tr>
+                            <!-- 1. Reducimos el ancho quitando la palabra / HORA -->
+                            <th style="text-align:left; padding: 10px;">FECHA</th>
+                            <th>JOR</th>
+                            <th style="text-align:right; padding: 10px;">LOCAL</th>
+                            <th>RES</th>
+                            <th style="text-align:left; padding: 10px;">VISITANTE</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        ${partidos.map((r)=>`
+
+                            <tr>
+
+                                <td style="text-align:left; padding: 10px; font-size: 0.8rem; line-height: 1.1;">
+                                    <div>${r.Fecha || r.fecha || ""}</div>
+                                    <!-- Colocamos la hora en formato pequeño abajo -->
+                                    <small style="color: #666; font-weight: bold;">${r.Hora || r.hora || ""}</small>
+                                </td>
+
+                                <td>${r.Jornada || r.jornada || r.Jor || r.jor || "J1"}</td>
+
+                                <td class="group-team" style="text-align:right; padding: 10px;">
+                                    <a href="javascript:void(0)" onclick="filtrarIrAGrupo('${grupo}')" style="color: inherit; text-decoration: none;">
+                                        <!-- En el local, para ahorrar espacio en móvil, dejamos el texto normal -->
+                                        ${r.Local || r.local || r.Casa || r.casa || ""}
+                                        ${getBandera(r.Local || r.local || r.Casa || r.casa || "")}
+                                    </a>
+                                </td>
+
+                                <td style="font-weight: bold; font-size: 0.95rem;">
+                                    ${(r['Gol Local'] !== undefined && r['Gol Local'] !== "") ? r['Gol Local'] : (r.golLocal || "-")} - ${(r['Gol Visitante'] !== undefined && r['Gol Visitante'] !== "") ? r['Gol Visitante'] : (r.golVisita || "-")}
+                                </td>
+
+                                <td class="group-team" style="text-align:left; padding: 10px;">
+                                    <a href="javascript:void(0)" onclick="filtrarIrAGrupo('${grupo}')" style="color: inherit; text-decoration: none;">
+                                        ${getBandera(r.Visitante || r.visitante || r.Fuera || r.fuera || "")}
+                                        ${r.Visitante || r.visitante || r.Fuera || r.fuera || ""}
+                                    </a>
+                                </td>
+
+                            </tr>
+
+                        `).join("")}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        `;
+    }).join("");
+}
 
 // ================= DROPDOWNS =================
 
@@ -5402,6 +5555,11 @@ function goToSection(section){
 	case "groups":
     		showGroups();
 	   break;
+
+	case "calendar":
+		showCalendar();
+	  break;
+	
     }
 }
 
@@ -5434,8 +5592,13 @@ window.addEventListener("popstate", (e) => {
 	case "groups":
 	    showGroups();
 	    break;
+
+	case "calendar":
+	    showCalendar();
+	    break;
     }
 });
+
 // ================= START =================
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -5699,6 +5862,10 @@ function getTop8Status(teamName) {
 
     <button onclick="goToSection('groups')" title="Clasificación">
     	<i class="fa-solid fa-table"></i>
+    </button>
+
+    <button onclick="goToSection('calendar')" title="Calendario">
+    	<i class="fa-solid fa-calendar-days"></i>
     </button>
 
 </nav>
