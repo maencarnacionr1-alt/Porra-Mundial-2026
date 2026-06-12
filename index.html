@@ -3221,6 +3221,13 @@ body{
         <span class="menu-text">Clasificación</span>
     </a>
 
+    <a href="javascript:void(0)" onclick="goToSection('calendar')">
+        <span class="menu-icon">
+             <i class="fa-solid fa-calendar-days"></i>
+        </span>
+        <span class="menu-text">Calendario</span>
+    </a>
+
 </nav>
 
 <!-- OVERLAY -->
@@ -3608,6 +3615,26 @@ body{
 
 </div>
 
+
+<!-- ================= SECCIÓN CALENDARIO ================= -->
+
+<div id="calendarSection" class="view-section hidden">
+   <div class="seccion-ajuste-scroll" style="padding-top: 100px !important; margin-top: 0 !important; clear: both; display: block; width: 100%;">
+
+    <div class="fase-container">
+
+        <div class="fase-title">
+            CALENDARIO Y RESULTADOS
+        </div>
+
+        <div id="calendarGrid" class="groups-grid">
+           
+        </div>
+
+    </div>
+
+</div>
+
 <script>
 
 const codigosBanderas = {
@@ -3632,7 +3659,7 @@ const codigosBanderas = {
             : "⚽";
 	}
 	
-		const URL_MAESTRA =
+	const URL_MAESTRA =
           "https://docs.google.com/spreadsheets/d/e/2PACX-1vSYe1nqTFOllYViQLj9x7NZ0buss9J-pqmIqeSziINNRDL5-a0m-sWcCg_48_zY5iAEhpHvzNYKuqbQ/pub?gid=1968191103&single=true&output=csv";
 
         const URL_RANKING =
@@ -3644,16 +3671,20 @@ const codigosBanderas = {
         const URL_PRONOSTICOS =
           "https://docs.google.com/spreadsheets/d/e/2PACX-1vSYe1nqTFOllYViQLj9x7NZ0buss9J-pqmIqeSziINNRDL5-a0m-sWcCg_48_zY5iAEhpHvzNYKuqbQ/pub?gid=1434944956&single=true&output=csv";
 
-		const URL_PRONOSTICOS_PUNTOS =
+	const URL_PRONOSTICOS_PUNTOS =
 			"https://docs.google.com/spreadsheets/d/e/2PACX-1vSYe1nqTFOllYViQLj9x7NZ0buss9J-pqmIqeSziINNRDL5-a0m-sWcCg_48_zY5iAEhpHvzNYKuqbQ/pub?gid=427198704&single=true&output=csv";
 	
-		const URL_GROUPS =
+	const URL_GROUPS =
 	  "https://docs.google.com/spreadsheets/d/e/2PACX-1vSYe1nqTFOllYViQLj9x7NZ0buss9J-pqmIqeSziINNRDL5-a0m-sWcCg_48_zY5iAEhpHvzNYKuqbQ/pub?gid=390514000&single=true&output=csv";
+
+	const URL_MATCHES = 
+	  "https://docs.google.com/spreadsheets/d/e/2PACX-1vSYe1nqTFOllYViQLj9x7NZ0buss9J-pqmIqeSziINNRDL5-a0m-sWcCg_48_zY5iAEhpHvzNYKuqbQ/pub?gid=1452212570&single=true&output=csv"
 
         const GOOGLE_SCRIPT_URL =
           "https://script.google.com/macros/s/AKfycbxtJd7b5_INe28kjzGnRB9_Udy6IrBiANALXkVCdF0d3HmwGtpMYJvTE-3h_KBsUz4pBA/exec";
 
 
+let matchesData = [];
 let equiposEliminados = [];
 let faseGruposTerminada = false;
 let pronosticosPuntosData = [];
@@ -3672,7 +3703,7 @@ const GRUPOS = 12;
 // ================= INIT =================
 async function initApp() {
 
-  const [eq, rank, teams, groupsCsv] = await Promise.all([
+  const [eq, rank, teams, groupsCsv, matchesCsv] = await Promise.all([
 
     fetch(URL_MAESTRA).then(r => r.text()),
 
@@ -3680,7 +3711,9 @@ async function initApp() {
 
     fetch(URL_TEAMS).then(r => r.text()),
 
-    fetch(URL_GROUPS).then(r => r.text())
+    fetch(URL_GROUPS).then(r => r.text()),
+
+    fetch(URL_MATCHES).then(r => r.text())
 
 ]);
 
@@ -3720,6 +3753,10 @@ equiposRows.forEach(r => {
   groupsData = parseCSV(groupsCsv);
 	console.log("GROUPS DATA:");
 	console.log(groupsData.slice(0,5));
+
+  matchesData = parseCSV(matchesCsv);
+  console.log("MATCHES DATA:");
+  console.log(matchesData.slice(0,5));
 
   // CORREGIDO: Filtramos solo las filas que tengan grupo y selección real para evitar celdas vacías del CSV
   const filasGrupos = groupsData.filter(r => r.grupo && r.grupo.trim() !== "" && r.seleccion && r.seleccion.trim() !== "");
@@ -3768,9 +3805,7 @@ equiposRows.forEach(r => {
   data = rankingRows.map(p => ({
     name: p.name,
     preguntas: p.preguntas,
-    total: parseFloat(
-        String(p.total).replace(",", ".")
-    ) || 0,
+    total: p.total,
 	avatar: p.avatar || 'assets/avatares-futbolistas/avatar_001.png',
     teams: teamRows
       .filter(t => t.name === p.name)
@@ -3914,12 +3949,7 @@ function renderRanking() {
                 </div>
 
                 <div class="podium-points">
-                     ${p.total === 0
-        ? "0"
-        : p.total.toLocaleString('es-ES', {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2
-        })}
+                    ${Number(parseFloat(p.total) || 0)}
                 </div>
 
                 <div class="podium-rank">
@@ -3999,13 +4029,7 @@ function renderRanking() {
                 </div>
 
                 <div class="ranking-points-modern">
-				 ${p.total === 0
-        ? "0"
-        : p.total.toLocaleString('es-ES', {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2
-        })}
-                
+                    ${Number(parseFloat(p.total) || 0)}
                 </div>
 
             </div>
@@ -4612,6 +4636,30 @@ window.showGroups = function () {
     updateHistory("groups");
 };
 
+window.showCalendar = function () {
+
+    // 1. Oculta de forma masiva todas las secciones de la página
+    document.querySelectorAll(".view-section")
+        .forEach(s => s.classList.add("hidden"));
+
+    // 2. Muestra exclusivamente la sección del calendario
+    document.getElementById("calendarSection")
+        .classList.remove("hidden");
+
+    // 3. Mantiene oculto el contador de tiempo flotante como en tus otras secciones
+    document.getElementById("countdownBox")
+        .style.display = "none";
+
+    // 4. Lógica para descargar y pintar los partidos desde Google Sheets
+    if (typeof renderAllMatches === "function") {
+        renderAllMatches();
+    }
+
+    // 5. Actualiza el historial de navegación nativo de tu app
+    updateHistory("calendar");
+};
+
+
 function renderAllGroups(){
 
     const container =
@@ -4679,6 +4727,90 @@ function renderAllGroups(){
                                 <td>${r.gf}</td>
 
                                 <td>${r.gc}</td>   
+
+                            </tr>
+
+                        `).join("")}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        `;
+    }).join("");
+}
+
+
+window.renderAllMatches = function () {
+
+    const container =
+        document.getElementById("calendarGrid");
+
+    if(!container) return;
+
+    const letras = [
+        "A","B","C","D","E","F",
+        "G","H","I","J","K","L"
+    ];
+
+    // Si los datos de Google Sheets aún no están cargados, nos salimos
+    if (typeof matchesData === "undefined" || !matchesData || matchesData.length === 0) return;
+
+    container.innerHTML = letras.map(grupo => {
+
+        // Filtramos por la columna "grupo" de tu Excel de partidos
+        const partidos =
+            matchesData.filter(r => r.grupo === grupo);
+
+        if (partidos.length === 0) return "";
+
+        return `
+
+            <div class="group-card">
+                <div class="group-title">GRUPO ${grupo}</div>
+                <table class="group-table">
+                    <thead>
+                        <tr>
+                            <th style="text-align:left; padding: 15px;">FECHA / HORA</th>
+                            <th>JOR</th>
+                            <th style="text-align:left; padding: 15px;">LOCAL</th>
+                            <th>RES</th>
+                            <th style="text-align:left; padding: 15px;">VISITANTE</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        ${partidos.map((r)=>`
+
+                            <tr>
+
+                                <td style="text-align:left; padding: 15px; font-size: 0.85rem; line-height: 1.2;">
+                                    <div>${r.fecha || ""}</div>
+                                    <div style="font-weight: bold; color: #333;">${r.hora || ""}</div>
+                                </td>
+
+                                <td>${r.jornada || "J1"}</td>
+
+                                <td class="group-team" style="text-align:left; padding: 15px;">
+                                    <a href="javascript:void(0)" onclick="filtrarIrAGrupo('${grupo}')" style="color: inherit; text-decoration: none;">
+                                        ${getBandera(r.local || r.casa)}
+                                        ${r.local || r.casa || ""}
+                                    </a>
+                                </td>
+
+                                <td style="font-weight: bold;">
+                                    ${(r.golLocal !== undefined && r.golLocal !== "") ? r.golLocal : "-"} - ${(r.golVisita !== undefined && r.golVisita !== "") ? r.golVisita : "-"}
+                                </td>
+
+                                <td class="group-team" style="text-align:left; padding: 15px;">
+                                    <a href="javascript:void(0)" onclick="filtrarIrAGrupo('${grupo}')" style="color: inherit; text-decoration: none;">
+                                        ${getBandera(r.visita || r.fuera)}
+                                        ${r.visita || r.fuera || ""}
+                                    </a>
+                                </td>
 
                             </tr>
 
@@ -5309,7 +5441,7 @@ function iniciarContador() {
         const diferencia = FECHA_MUNDIAL - ahora;
 
         if (diferencia <= 0) {
-            box.innerHTML = "";
+            box.innerHTML = "🔒 Pronósticos cerrados";
             box.classList.add("countdown-finished");
 
             if (boton) {
@@ -5402,6 +5534,11 @@ function goToSection(section){
 	case "groups":
     		showGroups();
 	   break;
+
+	case "calendar":
+		showCalendar();
+	  break;
+	
     }
 }
 
@@ -5434,8 +5571,13 @@ window.addEventListener("popstate", (e) => {
 	case "groups":
 	    showGroups();
 	    break;
+
+	case "calendar":
+	    showCalendar();
+	    break;
     }
 });
+
 // ================= START =================
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -5699,6 +5841,10 @@ function getTop8Status(teamName) {
 
     <button onclick="goToSection('groups')" title="Clasificación">
     	<i class="fa-solid fa-table"></i>
+    </button>
+
+    <button onclick="goToSection('calendar')" title="Calendario">
+    	<i class="fa-solid fa-calendar-days"></i>
     </button>
 
 </nav>
