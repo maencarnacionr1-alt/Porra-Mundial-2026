@@ -4771,19 +4771,25 @@ window.renderAllMatches = function () {
 
     if(!container) return;
 
+    // Listado de los 12 grupos oficiales del Mundial
     const letras = [
         "A","B","C","D","E","F",
         "G","H","I","J","K","L"
     ];
 
-    // Evitamos ejecutar si los datos aún no se han terminado de descargar
-    if (typeof matchesData === "undefined" || !matchesData || matchesData.length === 0) return;
+    // Si los datos globales de la hoja 'Worldcup' no se han cargado, nos salimos
+    if (typeof groupsData === "undefined" || !groupsData || groupsData.length === 0) return;
 
     container.innerHTML = letras.map(grupo => {
 
-        // Filtramos buscando por la columna exacta de tu Excel ("Grupo")
-        const partidos =
-            matchesData.filter(r => (r.Grupo || r.grupo) === grupo);
+        // Filtramos las filas de groupsData donde el campo 'grupo' coincida,
+        // y aseguramos que contenga un partido real validando que 'Casa' o 'Fuera' no estén vacíos.
+        // Nota: Ajustamos r.grupo o r.Grupo según cómo venga indexado por tu parseCSV
+        const partidos = groupsData.filter(r => {
+            const g = (r.grupo || r.Grupo || "").trim();
+            const equipoCasa = r.Casa || r.casa || "";
+            return g === grupo && equipoCasa !== "" && equipoCasa !== "Casa";
+        });
 
         if (partidos.length === 0) return "";
 
@@ -4808,33 +4814,33 @@ window.renderAllMatches = function () {
 
                             <tr>
 
-                                <!-- Mapeo exacto de las columnas "Fecha" y "Hora" -->
+                                <!-- Extraemos Fecha y Hora de la parte izquierda de tu hoja -->
                                 <td style="text-align:left; padding: 15px; font-size: 0.85rem; line-height: 1.2;">
-                                    <div>${r.Fecha || ""}</div>
-                                    <div style="font-weight: bold; color: #555;">${r.Hora || ""}</div>
+                                    <div>${r.Fecha || r.fecha || ""}</div>
+                                    <div style="font-weight: bold; color: #333;">${r.Hora || r.hora || ""}</div>
                                 </td>
 
-                                <!-- Mapeo de "Jornada" -->
-                                <td>${r.Jornada || "J1"}</td>
+                                <!-- Extraemos la Jornada (columna Jor.) -->
+                                <td>${r["Jor."] || r.Jor || r.jornada || "J1"}</td>
 
-                                <!-- Mapeo de "Local" usando tu getBandera original -->
+                                <!-- Selección Local (Columna 'Casa') con tu función de banderas -->
                                 <td class="group-team" style="text-align:left; padding: 15px;">
                                     <a href="javascript:void(0)" onclick="filtrarIrAGrupo('${grupo}')" style="color: inherit; text-decoration: none;">
-                                        ${getBandera(r.Local || "")}
-                                        ${r.Local || ""}
+                                        ${getBandera(r.Casa || "")}
+                                        ${r.Casa || ""}
                                     </a>
                                 </td>
 
-                                <!-- Mapeo interactivo para mostrar el Marcador Vivo o guion si no se ha jugado -->
+                                <!-- Marcador Deportivo extraído de las columnas de Goles -->
                                 <td style="font-weight: bold;">
-                                    ${(r['Gol Local'] !== undefined && r['Gol Local'] !== "") ? r['Gol Local'] : "-"} - ${(r['Gol Visitante'] !== undefined && r['Gol Visitante'] !== "") ? r['Gol Visitante'] : "-"}
+                                    ${(r.Gol !== undefined && r.Gol !== "") ? r.Gol : "-"} - ${(r.FueraGol !== undefined && r.FueraGol !== "" ? r.FueraGol : (r.Gol_1 || "-"))}
                                 </td>
 
-                                <!-- Mapeo de "Visitante" -->
+                                <!-- Selección Visitante (Columna 'Fuera') -->
                                 <td class="group-team" style="text-align:left; padding: 15px;">
                                     <a href="javascript:void(0)" onclick="filtrarIrAGrupo('${grupo}')" style="color: inherit; text-decoration: none;">
-                                        ${getBandera(r.Visitante || "")}
-                                        ${r.Visitante || ""}
+                                        ${getBandera(r.Fuera || "")}
+                                        ${r.Fuera || ""}
                                     </a>
                                 </td>
 
@@ -4852,7 +4858,7 @@ window.renderAllMatches = function () {
     }).join("");
 }
 
-// Función para enlazar la tabla de partidos con tu sección de clasificación al hacer clic
+// Función interactiva para saltar al grupo correspondiente al hacer clic en el partido
 window.filtrarIrAGrupo = function (grupo) {
     if (typeof goToSection === "function") {
         goToSection("groups");
@@ -4863,6 +4869,7 @@ window.filtrarIrAGrupo = function (grupo) {
         selectorWeb.dispatchEvent(new Event("change"));
     }
 };
+
 
 // ================= DROPDOWNS =================
 
