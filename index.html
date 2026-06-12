@@ -4803,16 +4803,16 @@ window.renderAllMatches = function () {
 
                             <tr>
 
-                                <!-- 1. Fecha y Hora compactas a la izquierda -->
+                                <!-- 1. Fecha y Hora limpias a la izquierda -->
                                 <td style="text-align:left; padding: 15px; font-size: 0.85rem; line-height: 1.2;">
                                     <div>${r.fecha}</div>
                                     <div style="font-weight: bold; color: #555;">${r.hora}</div>
                                 </td>
 
                                 <!-- 2. Jornada -->
-                                <td>${r.jornada}</td>
+                                <td>${r.jornand || r.jornada}</td>
 
-                                <!-- 3. Local con su Bandera circular nativa a la izquierda -->
+                                <!-- 3. Local con su Bandera circular a la izquierda (Igual que tus Grupos) -->
                                 <td class="group-team" style="text-align:left; padding: 15px;">
                                     <a href="javascript:void(0)" onclick="filtrarIrAGrupo('${grupo}')" style="color: inherit; text-decoration: none;">
                                         ${getBandera(r.local)}
@@ -4820,12 +4820,12 @@ window.renderAllMatches = function () {
                                     </a>
                                 </td>
 
-                                <!-- 4. Marcador / Resultados de goles -->
+                                <!-- 4. Marcador Oficial -->
                                 <td style="font-weight: bold; font-size: 0.95rem;">
-                                    ${r.golLocal} - ${r.golVisita}
+                                    ${r.golLocal !== "" ? r.golLocal : "-"} - ${r.golVisita !== "" ? r.golVisita : "-"}
                                 </td>
 
-                                <!-- 5. Visitante con su Bandera circular nativa a la izquierda -->
+                                <!-- 5. Visitante con su Bandera circular a la izquierda -->
                                 <td class="group-team" style="text-align:left; padding: 15px;">
                                     <a href="javascript:void(0)" onclick="filtrarIrAGrupo('${grupo}')" style="color: inherit; text-decoration: none;">
                                         ${getBandera(r.visita)}
@@ -4847,6 +4847,7 @@ window.renderAllMatches = function () {
     }).join("");
 }
 
+
 // Función de viaje entre secciones
 window.filtrarIrAGrupo = function (grupo) {
     if (typeof goToSection === "function") {
@@ -4860,84 +4861,48 @@ window.filtrarIrAGrupo = function (grupo) {
 };
 
 function parsearCalendarioOficial(csv) {
-    // 1. Obtenemos las filas crudas parseadas de forma nativa por tu propia función original
-    const filasBrutas = parseCSV(csv);
+    const lineas = csv.split(/\r?\n/);
     const resultado = [];
+    let grupoActual = "A"; // Empezamos en el Grupo A por defecto
 
-    // Lista oficial de selecciones válidas en tu diccionario para limpiar textos basura o fórmulas
-    const seleccionesValidas = new Set([
-        "México", "Sudáfrica", "Corea del Sur", "República Checa",
-        "Canadá", "Bosnia y Herzegovina", "Catar", "Suiza",
-        "Brasil", "Marruecos", "Haití", "Escocia",
-        "Estados Unidos", "Paraguay", "Australia", "Turquía",
-        "Alemania", "Arabia Saudita", "Argelia", "Argentina", 
-        "Austria", "Bélgica", "Cabo Verde", "Colombia", 
-        "Costa de Marfil", "Croacia", "Curazao", "Ecuador", 
-        "Egipto", "España", "Francia", "Ghana", "Inglaterra", 
-        "Irak", "Irán", "Japón", "Jordania", "Noruega", 
-        "Nueva Zelanda", "Países Bajos", "Panamá", "Portugal", 
-        "RD Congo", "Senegal", "Suecia", "Túnez", "Uruguay", "Uzbekistán"
-    ]);
+    // Tu Excel de partidos empieza con datos reales a partir de la fila 4 (índice 3)
+    for (let i = 3; i < lineas.length; i++) {
+        if (!lineas[i]) continue;
 
-    filasBrutas.forEach(r => {
-        // En las filas de partidos de tu CSV, debido al desvío por celdas vacías:
-        // - El grupo del partido suele quedar guardado en la columna 'pts_fase' o en 'grupo'
-        // - Los goles y los equipos se desplazan hacia propiedades contiguas o vacías
-        let grupoPart = (r.grupo || "").trim().toUpperCase();
-        
-        // Buscamos los nombres de los equipos en las propiedades según el desfase de tu objeto
-        let localCandidate = r.g || r.e || r.pts_fase || "";
-        let visitaCandidate = r.gf || r.gc || r.dg || "";
-        
-        // Si no se encuentran ahí, buscamos en los campos alternativos del objeto
-        if (!seleccionesValidas.has(localCandidate)) {
-            // Recorremos las propiedades del objeto para cazar los nombres reales de los países
-            for (const clave in r) {
-                if (seleccionesValidas.has(r[clave])) {
-                    if (!localCandidate || !seleccionesValidas.has(localCandidate)) {
-                        localCandidate = r[clave];
-                    } else if (localCandidate !== r[clave]) {
-                        visitaCandidate = r[clave];
-                    }
-                }
-            }
+        // Cortamos la línea por comas eliminando las comillas de formato
+        const columnas = lineas[i].split(",").map(c => c.trim().replace(/"/g, ""));
+
+        // 1. DETECCIÓN DE GRUPO: Si la columna 0 (W en Excel) tiene una letra sola, actualizamos el grupo activo
+        if (columnas[0] && columnas[0].length === 1 && "ABCDEFGHIJKL".includes(columnas[0].toUpperCase())) {
+            grupoActual = columnas[0].toUpperCase();
         }
 
-        // Si logramos cazar una selección local válida que esté en tu diccionario de banderas
-        if (localCandidate && seleccionesValidas.has(localCandidate)) {
-            
-            // Si el grupo venía vacío por celdas combinadas, lo deducimos buscando el grupo del equipo en tu clasificación
-            if (!grupoPart || !"ABCDEFGHIJKL".includes(grupoPart)) {
-                const celdaGrupo = filasBrutas.find(f => f.seleccion === localCandidate);
-                if (celdaGrupo && celdaGrupo.grupo) {
-                    grupoPart = celdaGrupo.grupo.trim().toUpperCase();
-                }
-            }
+        // 2. EXTRACCIÓN POR INDICE FÍSICO (Alineación exacta con la parte izquierda de tu imagen):
+        const fecha   = columnas[1]; // Columna X en Excel
+        const hora    = columnas[2]; // Columna Y en Excel
+        const jor     = columnas[3]; // Columna Z en Excel
+        const casa    = columnas[4]; // Columna AA en Excel
+        const golL    = columnas[5]; // Columna AB en Excel
+        const golV    = columnas[6]; // Columna AC en Excel
+        const fuera   = columnas[7]; // Columna AD en Excel
 
-            // Mapeamos los horarios y jornadas simulando la estructura limpia de tu hoja
-            let jornadaPart = r.j || r.pos || "J1";
-            if (!jornadaPart.startsWith("J")) jornadaPart = "J" + jornadaPart;
-            if (jornadaPart !== "J1" && jornadaPart !== "J2" && jornadaPart !== "J3") jornadaPart = "J1";
-
-            // Sincronizamos las propiedades del partido limpio
+        // 3. VALIDACIÓN: Solo guardamos si la celda 'casa' tiene un equipo real y no textos de cabecera
+        if (casa && casa !== "" && casa !== "Casa" && casa !== "PAIS" && jor && jor.startsWith("J")) {
             resultado.push({
-                grupo: grupoPart || "A",
-                fecha: r.pts ? (r.pts + "/06/2026") : "17/06/2026",
-                hora: r.j ? (r.j + ":00") : "22:00",
-                jornada: jornadaPart,
-                local: localCandidate,
-                golLocal: (r.g && !isNaN(r.g) && r.g !== "") ? r.g : "0",
-                golVisita: (r.e && !isNaN(r.e) && r.e !== "") ? r.e : "0",
-                visita: visitaCandidate || "Panamá" // Valor de respaldo si venía vacío
+                grupo: grupoActual,
+                fecha: fecha || "",
+                hora: hora || "",
+                jornada: jor || "J1",
+                local: casa,
+                golLocal: golL !== undefined ? golL : "",
+                golVisita: golV !== undefined ? golV : "",
+                visita: fuera || ""
             });
         }
-    });
-
-    // Filtramos duplicados y ordenamos para que los partidos queden perfectamente limpios
-    return resultado.filter((partido, index, self) =>
-        index === self.findIndex((p) => p.local === partido.local && p.visita === partido.visita && p.jornada === partido.jornada)
-    );
+    }
+    return resultado;
 }
+
 
 // ================= DROPDOWNS =================
 
