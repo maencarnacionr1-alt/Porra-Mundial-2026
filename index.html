@@ -4085,6 +4085,212 @@ function renderRanking() {
         }, 3000); 
     }
 
+   // ================= RANKING =================
+
+function renderRanking() {
+
+    const container =
+        document.getElementById("rankingSection");
+
+    // CORRECCIÓN 1: Recuperar el ranking de la sesión anterior guardado en el navegador
+    const rankingPrevioRaw = localStorage.getItem("rankingPrevio");
+    const rankingPrevio = rankingPrevioRaw ? JSON.parse(rankingPrevioRaw) : {};
+
+    const rankingOrdenado = [...data].sort((a, b) => {
+
+    const aTotal =
+        parseFloat(String(a.total).replace(",", ".")) || 0;
+
+    const bTotal =
+        parseFloat(String(b.total).replace(",", ".")) || 0;
+
+    // Primero ordenar por puntos
+    if (bTotal !== aTotal) {
+        return bTotal - aTotal;
+    }
+
+    // Si tienen los mismos puntos, ordenar alfabéticamente
+    return a.name.localeCompare(b.name, 'es', {
+        sensitivity: 'base'
+    });
+});
+
+    const nuevoRanking = {};
+
+    // =========================
+    // TOP 3
+    // =========================
+
+    const top3 = rankingOrdenado.slice(0, 3);
+
+    const top3HTML = `
+    
+    <div class="top3-podium">
+
+        ${top3.map((p, i) => {
+
+            const pos = i + 1;
+            const posAnterior = rankingPrevio[p.name];
+            let flecha = "";
+
+            // CORRECCIÓN 2: Lógica de flechas para el Top 3 (así se detecta si suben/bajan del podio)
+            if (posAnterior !== undefined) {
+                if (pos < posAnterior) {
+                    flecha = `<span class="rank-movement" style="color:#4caf50; font-size:14px; margin-left:4px;">▲</span>`;
+                } else if (pos > posAnterior) {
+                    flecha = `<span class="rank-movement" style="color:#f44336; font-size:14px; margin-left:4px;">▼</span>`;
+                }
+            }
+
+            nuevoRanking[p.name] = pos;
+
+           let clase = "first-place";
+
+			if(pos === 2) clase = "second-place";
+			if(pos === 3) clase = "third-place";
+
+            return `
+
+            <div class="podium-card ${clase}"
+                 onclick="openPlayerFromRanking(${data.findIndex(d => d.name === p.name)})">
+
+                <img
+                    src="${p.avatar}"
+                    class="podium-avatar"
+                >
+
+                <div class="podium-name">
+                    ${p.name}
+                </div>
+
+                <div class="podium-points">
+                     ${p.total === 0
+        ? "0"
+        : p.total.toLocaleString('es-ES', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        })}
+                </div>
+
+                <div class="podium-rank">
+                    #${pos} ${flecha}
+                </div>
+
+            </div>
+
+            `;
+        }).join("")}
+
+    </div>
+    
+    `;
+
+    // =========================
+    // RESTO
+    // =========================
+
+    const resto = rankingOrdenado.slice(3);
+
+    const restoHTML = `
+
+    <div class="ranking-list-modern">
+
+        ${resto.map((p, index) => {
+
+            const posicion = index + 4;
+
+            const realIndex =
+                data.findIndex(d => d.name === p.name);
+
+            const posAnterior =
+                rankingPrevio[p.name];
+
+            let flecha = "";
+
+            if(posAnterior !== undefined){
+
+                if(posicion < posAnterior){
+
+                    flecha =
+                        `<div class="rank-movement" style="color:#4caf50;">▲</div>`;
+                }
+
+                else if(posicion > posAnterior){
+
+                    flecha =
+                        `<div class="rank-movement" style="color:#f44336;">▼</div>`;
+                }
+            }
+
+            nuevoRanking[p.name] = posicion;
+
+            return `
+
+            <div class="ranking-row"
+                 onclick="openPlayerFromRanking(${realIndex})">
+
+                <div class="rank-position">
+
+                    <div class="rank-number">
+                        #${posicion}
+                    </div>
+
+                    ${flecha}
+
+                </div>
+
+                <img
+                    src="${p.avatar}"
+                    class="ranking-avatar"
+                >
+
+                <div class="ranking-player-name-modern">
+                    ${p.name}
+                </div>
+
+                <div class="ranking-points-modern">
+                     ${p.total === 0
+        ? "0"
+        : p.total.toLocaleString('es-ES', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        })}
+                </div>
+
+            </div>
+
+            `;
+        }).join("")}
+
+    </div>
+
+    `;
+
+ // =========================
+    // PINTAR TODO
+    // =========================
+
+    container.innerHTML = `
+        <div class="ranking-modern-wrapper">
+            ${top3HTML}
+            ${restoHTML}
+        </div>
+    `;
+
+    // --- TRANSICIÓN PREMIUM CON TIEMPO AJUSTADO ---
+    const header = document.querySelector('.leaderboard-header');
+    if (header) {
+        // Esperamos 3000ms (3 segundos) antes de que empiece la desaparición
+        setTimeout(() => {
+            header.classList.add('fade-out');
+            
+            // Eliminamos del DOM después de la animación de 0.8s
+            setTimeout(() => {
+                header.style.display = 'none';
+            }, 800);
+        }, 3000); 
+    }
+
     localStorage.setItem("rankingPrevio", JSON.stringify(nuevoRanking));
 }
 const avatars = [];
@@ -4095,7 +4301,7 @@ const LOCAL_AVATAR_BASE =
 
 // BASE GITHUB (para guardar en Sheets)
 const GITHUB_AVATAR_BASE =
-'https://raw.githubusercontent.com/maencarnacionr1-alt/Porra-Mundial-2026/main/assets/avatares-futbolistas/';
+'https://githubusercontent.com';
 	
 // Avatar por defecto
 let selectedAvatar =
@@ -4121,6 +4327,7 @@ for (let i = avatars.length - 1; i > 0; i--) {
     // Intercambia los elementos de posición
     [avatars[i], avatars[j]] = [avatars[j], avatars[i]];
 }
+	
 	
 function openAvatarModal() {
 
