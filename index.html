@@ -3630,10 +3630,14 @@ body{
             </div>
 
             <!-- 3. Abrimos el contenedor del widget -->
-            <div id="calendarGrid" style="display: block; width: 100%; padding: 10px 0; overflow-x: auto;">
+            <div id="calendarGrid" style="display: block; width: 100%; padding: 10px 0;">
                 
-                <!-- Tu widget oficial fijo -->
-                </div>
+                <!-- IFRAME DIRECTO: Carga de forma garantizada sin importar si la sección está oculta -->
+                <iframe 
+                    src="https://365scores.com" 
+                    style="width: 100%; height: 600px; border: none; overflow: hidden; display: block;"
+                    scrolling="auto">
+                </iframe>
                 
                 <!-- Créditos del proveedor -->
                 <div id="powered-by" style="font-size: 11px; color: var(--text-color, #888); text-align: right; margin-top: 12px; font-family: sans-serif;">
@@ -3647,18 +3651,6 @@ body{
     </div> <!-- CIERRA EL AJUSTE-SCROLL (1) -->
 
 </div> <!-- CIERRA DEFINITIVAMENTE LA SECCIÓN CALENDARIO -->
-
-
-<!-- UN SOLO SCRIPT: Carga el archivo oficial y activa el refresco al hacer clic -->
-<script src="https://365scores.com" onload="
-  document.addEventListener('click', function() {
-    setTimeout(function() {
-      if (window.Scores365Widget && typeof window.Scores365Widget.init === 'function') {
-        window.Scores365Widget.init();
-      }
-    }, 150);
-  });
-"></script>
 
 <script>
 
