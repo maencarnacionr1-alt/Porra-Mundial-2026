@@ -3609,25 +3609,11 @@ body{
             CLASIFICACIÓN FASE DE GRUPOS
         </div>
 
-        <!-- Widget 365Scores (oculto por ahora) -->
-        <div id="standingsWidget" style="display:none;">
-            <div
-                data-widget-type="entityStandings"
-                data-entity-type="league"
-                data-entity-id="5930"
-                data-lang="es-es"
-                data-widget-id="d922ce1b-8e0f-4b4b-8a34-644033c1511d">
-            </div>
-        </div>
-
-        <!-- Tu sistema actual sigue activo -->
-        <div id="groupsGrid"></div>
+        <div id="groupsGrid" class="groups-grid"></div>
 
     </div>
 
 </div>
-
-<script src="https://widgets.365scores.com/main.js" async></script>
 
 
 <!-- ================= SECCIÓN CALENDARIO ================= -->
@@ -3645,17 +3631,12 @@ body{
                 CALENDARIO Y RESULTADOS
             </div>
 
-<div id="calendarGrid" class="groups-grid">
-
-    <div
-        data-widget-type="entityScores"
-        data-entity-type="league"
-        data-entity-id="5930"
-        data-lang="es-es"
-        data-widget-id="64c782c6-e073-4764-98c6-e96263e55f5b">
-    </div>
-
-</div>
+            <!-- 3. Abrimos el grid elástico -->
+            <div id="calendarGrid" class="groups-grid">
+                <p style="text-align: center; color: var(--text-color, #666); font-weight: 500; grid-column: 1/-1; padding: 20px;">
+                    ⌛ Los datos se moestran aquí en breve...
+                </p>
+            </div> <!-- CIERRA EL GRID (3) -->
 
         </div> <!-- CIERRA EL FASE-CONTAINER (2) -->
 
@@ -4711,30 +4692,10 @@ function renderAllGroups(){
 
     if(!container) return;
 
-    // 🟢 MODO OFICIAL 365SCORES
-    if (USE_OFFICIAL_STANDINGS) {
-
-        container.innerHTML = `
-            <div class="standings-wrapper">
-                <div
-                    data-widget-type="entityStandings"
-                    data-entity-type="league"
-                    data-entity-id="5930"
-                    data-lang="es-es"
-                    data-widget-id="d922ce1b-8e0f-4b4b-8a34-644033c1511d">
-                </div>
-            </div>
-        `;
-
-        load365Widget();
-        return;
-    }
-
-    // 🔵 TU SISTEMA ACTUAL (FALLBACK)
     const letras = [
-        "A","B","C","D","E","F",
-        "G","H","I","J","K","L"
-    ];
+    "A","B","C","D","E","F",
+    "G","H","I","J","K","L"
+];
 
     container.innerHTML = letras.map(grupo => {
 
@@ -4742,12 +4703,13 @@ function renderAllGroups(){
             groupsData.filter(r => r.grupo === grupo);
 
         return `
+
             <div class="group-card">
-                <div class="group-title">GRUPO ${grupo}</div>
-                <table class="group-table">
-                    <thead>
-                        <tr>
-                            <th>POS</th>
+        	<div class="group-title">GRUPO ${grupo}</div>
+        	<table class="group-table">
+            	    <thead>
+                	<tr>
+			    <th>POS</th>
                             <th style="text-align:left; padding: 15px;">SELECCIÓN</th>
                             <th>PTS</th>
                             <th>J</th>
@@ -4758,50 +4720,53 @@ function renderAllGroups(){
                             <th>GC</th>
                         </tr>
                     </thead>
+
                     <tbody>
+
                         ${equipos.map((r,index)=>`
+
                             <tr class="
                                 ${index===0 ? "group-first" : ""}
                                 ${index===1 ? "group-second" : ""}
                                 ${index===2 ? "group-third" : ""}
                                 ${index===3 ? "group-fourth" : ""}
                             ">
+
                                 <td>${r.pos}</td>
+
                                 <td class="group-team">
                                     ${getBandera(r.seleccion)}
                                     ${r.seleccion}
                                 </td>
+
                                 <td>${r.pts}</td>
+
                                 <td>${r.j}</td>
+
                                 <td>${r.g}</td>
+
                                 <td>${r.e}</td>
+
                                 <td>${r.p}</td>
+
                                 <td>${r.gf}</td>
-                                <td>${r.gc}</td>
+
+                                <td>${r.gc}</td>   
+
                             </tr>
+
                         `).join("")}
+
                     </tbody>
+
                 </table>
+
             </div>
+
         `;
     }).join("");
 }
 
-function load365Widget() {
-
-    if (
-        document.querySelector(
-            'script[src="https://widgets.365scores.com/main.js"]'
-        )
-    ) return;
-
-    const script = document.createElement("script");
-    script.src = "https://widgets.365scores.com/main.js";
-    script.async = true;
-
-    document.body.appendChild(script);
-}
-	
 window.renderAllMatches = function () {
 
     const container =
@@ -5993,6 +5958,6 @@ function getTop8Status(teamName) {
 <button id="scrollToTopBtn" onclick="scrollToTop()" title="Ir al principio">
     ▲
 </button>	
-<script src="https://widgets.365scores.com/main.js"></script>
+	
 </body>
 </html>
