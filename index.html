@@ -3634,76 +3634,13 @@ body{
 <div id="calendarGrid" class="groups-grid">
 
     <div
-    data-widget-type="entityScores"
-    data-entity-type="league"
-    data-entity-id="5930"
-    data-lang="es-es"
-    data-widget-id="64c782c6-e073-4764-98c6-e96263e55f5b">
-</div>
+        data-widget-type="entityScores"
+        data-entity-type="league"
+        data-entity-id="5930"
+        data-lang="es-es"
+        data-widget-id="64c782c6-e073-4764-98c6-e96263e55f5b">
+    </div>
 
-<script src="https://widgets.365scores.com/main.js"></script>
-
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-
-    let startX = 0;
-    let currentTab = 1;
-
-    const tabs = [
-        "navigation-tabs_recent",
-        "navigation-tabs_fixtures",
-        "navigation-tabs_results"
-    ];
-
-    function activateTab(index) {
-        const tab = document.getElementById(tabs[index]);
-
-        if (tab) {
-            tab.click();
-            currentTab = index;
-        }
-    }
-
-    function initSwipe() {
-
-        const widget = document.querySelector('[data-widget-type="entityScores"]');
-
-        if (!widget) return false;
-
-        widget.addEventListener("touchstart", (e) => {
-            startX = e.touches[0].clientX;
-        });
-
-        widget.addEventListener("touchend", (e) => {
-
-            const endX = e.changedTouches[0].clientX;
-            const deltaX = endX - startX;
-
-            if (Math.abs(deltaX) < 60) return;
-
-            if (deltaX < 0 && currentTab < 2) {
-                activateTab(currentTab + 1);
-            }
-
-            if (deltaX > 0 && currentTab > 0) {
-                activateTab(currentTab - 1);
-            }
-
-        });
-
-        return true;
-    }
-
-    const waitWidget = setInterval(() => {
-
-        if (initSwipe()) {
-            clearInterval(waitWidget);
-        }
-
-    }, 500);
-
-});
-</script>
 </div>
 
         </div> <!-- CIERRA EL FASE-CONTAINER (2) -->
