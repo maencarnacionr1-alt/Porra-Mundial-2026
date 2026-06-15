@@ -3615,9 +3615,7 @@ body{
 
 </div>
 
-
 <!-- ================= SECCIÓN CALENDARIO ================= -->
-
 <div id="calendarSection" class="view-section hidden">
 
     <!-- 1. Abrimos el contenedor de ajuste de desplazamiento -->
@@ -3631,18 +3629,36 @@ body{
                 CALENDARIO Y RESULTADOS
             </div>
 
-            <!-- 3. Abrimos el grid elástico -->
-            <div id="calendarGrid" class="groups-grid">
-                <p style="text-align: center; color: var(--text-color, #666); font-weight: 500; grid-column: 1/-1; padding: 20px;">
-                    ⌛ Los datos se moestran aquí en breve...
-                </p>
-            </div> <!-- CIERRA EL GRID (3) -->
+            <!-- 3. Abrimos el contenedor del widget -->
+            <div id="calendarGrid" style="display: block; width: 100%; padding: 10px 0; overflow-x: auto;">
+                
+                <!-- Tu widget oficial fijo -->
+                </div>
+                
+                <!-- Créditos del proveedor -->
+                <div id="powered-by" style="font-size: 11px; color: var(--text-color, #888); text-align: right; margin-top: 12px; font-family: sans-serif;">
+                    Provisto por <a id="powered-by-link" href="https://365scores.com" target="_blank" style="color: inherit; text-decoration: none; font-weight: bold;">365Scores.com</a>
+                </div>
+
+            </div> <!-- CIERRA EL CONTENEDOR DEL WIDGET (3) -->
 
         </div> <!-- CIERRA EL FASE-CONTAINER (2) -->
 
     </div> <!-- CIERRA EL AJUSTE-SCROLL (1) -->
 
-</div> <!-- CIERRA DEFINITIVAMENTE LA SECCIÓN CALENDARIO (AQUÍ TERMINA) -->
+</div> <!-- CIERRA DEFINITIVAMENTE LA SECCIÓN CALENDARIO -->
+
+
+<!-- UN SOLO SCRIPT: Carga el archivo oficial y activa el refresco al hacer clic -->
+<script src="https://365scores.com" onload="
+  document.addEventListener('click', function() {
+    setTimeout(function() {
+      if (window.Scores365Widget && typeof window.Scores365Widget.init === 'function') {
+        window.Scores365Widget.init();
+      }
+    }, 150);
+  });
+"></script>
 
 <script>
 
