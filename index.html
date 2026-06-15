@@ -3701,6 +3701,12 @@ let dropdownListenerAttached = false;
 let pronosticosData = [];
 let currentPlayerIndex = null;
 let rankingPrevio = {};
+
+try {
+    rankingPrevio = JSON.parse(localStorage.getItem("rankingPrevio")) || {};
+} catch(e) {
+    rankingPrevio = {};
+}
 let selectsGlobalesGrupos = [];
 let equiposDisponibles = [];
 let equiposPorGrupo = {};
