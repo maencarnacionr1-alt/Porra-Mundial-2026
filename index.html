@@ -3896,6 +3896,9 @@ function parseCSV(csv) {
 }
 // ================= RANKING =================
 
+let rankingPrevio =
+JSON.parse(localStorage.getItem("rankingPrevio")) || {};
+	
 function renderRanking() {
 
     const container =
@@ -4084,7 +4087,7 @@ function renderRanking() {
             }, 800);
         }, 3000); 
     }
-
+rankingPrevio = nuevoRanking;
     localStorage.setItem("rankingPrevio", JSON.stringify(nuevoRanking));
 }
 const avatars = [];
