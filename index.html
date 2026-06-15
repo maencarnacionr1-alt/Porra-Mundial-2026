@@ -3616,7 +3616,8 @@ body{
 </div>
 
 <!-- ================= SECCIÓN CALENDARIO ================= -->
-<div id="calendarSection" class="view-section hidden">
+<!-- Eliminamos la clase hidden quirúrgicamente para que el script calcule el tamaño real desde el inicio -->
+<div id="calendarSection" class="view-section">
 
     <!-- 1. Abrimos el contenedor de ajuste de desplazamiento -->
     <div class="seccion-ajuste-scroll" style="padding-top: 100px !important; margin-top: 0 !important; clear: both; display: block; width: 100%;">
@@ -3629,17 +3630,13 @@ body{
                 CALENDARIO Y RESULTADOS
             </div>
 
-            <!-- 3. Abrimos el contenedor del widget -->
+            <!-- 3. Abrimos el contenedor del widget con ancho fluido -->
             <div id="calendarGrid" style="display: block; width: 100%; padding: 10px 0;">
                 
-                <!-- IFRAME DIRECTO: Carga de forma garantizada sin importar si la sección está oculta -->
-                <iframe 
-                    src="https://365scores.com" 
-                    style="width: 100%; height: 600px; border: none; overflow: hidden; display: block;"
-                    scrolling="auto">
-                </iframe>
+                <!-- Tu widget oficial original limpio, sin tocar nada -->
+                </div>
                 
-                <!-- Créditos del proveedor -->
+                <!-- Créditos oficiales del proveedor -->
                 <div id="powered-by" style="font-size: 11px; color: var(--text-color, #888); text-align: right; margin-top: 12px; font-family: sans-serif;">
                     Provisto por <a id="powered-by-link" href="https://365scores.com" target="_blank" style="color: inherit; text-decoration: none; font-weight: bold;">365Scores.com</a>
                 </div>
@@ -3651,6 +3648,10 @@ body{
     </div> <!-- CIERRA EL AJUSTE-SCROLL (1) -->
 
 </div> <!-- CIERRA DEFINITIVAMENTE LA SECCIÓN CALENDARIO -->
+
+<!-- Un solo script cargado de forma natural al final de la estructura HTML -->
+<script src="https://365scores.com"></script>
+
 
 <script>
 
