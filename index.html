@@ -4766,7 +4766,7 @@ function renderAllGroups(){
 ];
 
 const terceros = groupsData
-    .filter(r => r.pos === "3")
+    .filter(r => String(r.pos).trim() === "3")
     .sort((a, b) => {
         const ptsA = Number(a.pts) || 0;
         const ptsB = Number(b.pts) || 0;
@@ -4779,7 +4779,6 @@ const terceros = groupsData
         return dgB - dgA;
     })
     .slice(0, 8);
-);
 	
    const gruposHTML = letras.map(grupo => {
 
