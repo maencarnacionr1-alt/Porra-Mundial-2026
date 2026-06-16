@@ -3786,20 +3786,19 @@ const GRUPOS = 12;
 // ================= INIT =================
 async function initApp() {
 
-  const [eq, rank, teams, groupsCsv, bracket] = await Promise.all([
+ const [eq, rank, teams, groupsCsv, bracketCsv] = await Promise.all([
 
     fetch(URL_MAESTRA).then(r => r.text()),
-
     fetch(URL_RANKING).then(r => r.text()),
-
     fetch(URL_TEAMS).then(r => r.text()),
-
     fetch(URL_GROUPS).then(r => r.text()),
+    fetch(URL_BRACKET).then(r => r.text())
 
 ]);
 
-const bracketCsv = await fetch(URL_BRACKET).then(r => r.text());
-bracketData = parseBracket(bracketCsv);
+bracketData = parseBracket(bracketCsv);,
+
+]);
 
  const pronos = await fetch(URL_PRONOSTICOS).then(r => r.text());
  pronosticosData = parseCSV(pronos);
