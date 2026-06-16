@@ -3754,7 +3754,7 @@ const codigosBanderas = {
 	const URL_GROUPS =
 	  "https://docs.google.com/spreadsheets/d/e/2PACX-1vSYe1nqTFOllYViQLj9x7NZ0buss9J-pqmIqeSziINNRDL5-a0m-sWcCg_48_zY5iAEhpHvzNYKuqbQ/pub?gid=390514000&single=true&output=csv";
 
-	const URL_BRACKETS = 
+	const URL_BRACKET = 
 	  "https://docs.google.com/spreadsheets/d/e/2PACX-1vSYe1nqTFOllYViQLj9x7NZ0buss9J-pqmIqeSziINNRDL5-a0m-sWcCg_48_zY5iAEhpHvzNYKuqbQ/pub?gid=1142598566&single=true&output=csv"
 
         const GOOGLE_SCRIPT_URL =
@@ -3786,7 +3786,7 @@ const GRUPOS = 12;
 // ================= INIT =================
 async function initApp() {
 
-  const [eq, rank, teams, groupsCsv] = await Promise.all([
+  const [eq, rank, teams, groupsCsv, bracket] = await Promise.all([
 
     fetch(URL_MAESTRA).then(r => r.text()),
 
