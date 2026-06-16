@@ -4760,19 +4760,14 @@ function renderAllGroups() {
     const letras = ["A","B","C","D","E","F","G","H","I","J","K","L"];
 
     // ===== MEJORES TERCEROS (TOP 8) =====
-    const terceros = groupsData
-        .filter(r => r.pos === "3")
-        .sort((a, b) => {
 
-            const ptsA = Number(a.pts) || 0;
-            const ptsB = Number(b.pts) || 0;
-            if (ptsB !== ptsA) return ptsB - ptsA;
-
-            const dgA = Number(a.dg) || 0;
-            const dgB = Number(b.dg) || 0;
-            return dgB - dgA;
-        })
-        .slice(0, 8);
+	const terceros = groupsData.filter(r =>
+    r.pos &&
+    Number(r.pos) >= 1 &&
+    Number(r.pos) <= 8 &&
+    r.seleccion &&
+    r.seleccion.startsWith("3")
+);
 
     // ===== GRUPOS =====
     const gruposHTML = letras.map(grupo => {
@@ -4831,7 +4826,7 @@ function renderAllGroups() {
     // ===== MEJORES TERCEROS TABLA =====
     const tercerosHTML = `
         <div class="group-card">
-            <div class="group-title">MEJORES TERCEROS (CLASIFICADOS)</div>
+            <div class="group-title">8 MEJORES TERCEROS (CLASIFICADOS)</div>
 
             <table class="group-table">
                 <thead>
