@@ -4861,7 +4861,12 @@ const terceros = groupsData
                 <th>POS</th>
                 <th style="text-align:left; padding: 15px;">SELECCIÓN</th>
                 <th>PTS</th>
-                <th>DG</th>
+                <th>J</th>
+                <th>G</th>
+                <th>E</th>
+                <th>P</th>
+                <th>GF</th>
+                <th>GC</th>
             </tr>
         </thead>
 
@@ -4871,7 +4876,7 @@ const terceros = groupsData
 
                 <tr class="${index < 8 ? 'group-third' : ''}">
 
-                    <td>${r.pos}</td>
+                    <td>${index + 1}</td>
 
                     <td class="group-team">
                         ${getBandera(r.seleccion)}
@@ -4879,8 +4884,12 @@ const terceros = groupsData
                     </td>
 
                     <td>${r.pts}</td>
-
-                    <td>${r.dg}</td>
+                    <td>${r.j}</td>
+                    <td>${r.g}</td>
+                    <td>${r.e}</td>
+                    <td>${r.p}</td>
+                    <td>${r.gf}</td>
+                    <td>${r.gc}</td>
 
                 </tr>
 
@@ -4893,7 +4902,6 @@ const terceros = groupsData
 </div>
 
 `;
-
 container.innerHTML =
     gruposHTML +
     tercerosHTML;	
