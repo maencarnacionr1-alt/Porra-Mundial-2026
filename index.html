@@ -4765,7 +4765,16 @@ function renderAllGroups(){
     "G","H","I","J","K","L"
 ];
 
-    container.innerHTML = letras.map(grupo => {
+const terceros = groupsData.filter(r =>
+    r.pos &&
+    !isNaN(r.pos) &&
+    Number(r.pos) >= 1 &&
+    Number(r.pos) <= 12 &&
+    r.seleccion &&
+    r.seleccion.startsWith("3")
+);
+	
+   const gruposHTML = letras.map(grupo => {
 
         const equipos =
             groupsData.filter(r => r.grupo === grupo);
@@ -4833,6 +4842,54 @@ function renderAllGroups(){
 
         `;
     }).join("");
+
+	const tercerosHTML = `
+
+<div class="group-card">
+    <div class="group-title">
+        MEJORES TERCEROS
+    </div>
+
+    <table class="group-table">
+
+        <thead>
+            <tr>
+                <th>POS</th>
+                <th style="text-align:left; padding:15px;">
+                    SELECCIÓN
+                </th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            ${terceros.map(r => `
+
+                <tr>
+
+                    <td>${r.pos}</td>
+
+                    <td class="group-team">
+                        ${getBandera(r.seleccion)}
+                        ${r.seleccion}
+                    </td>
+
+                </tr>
+
+            `).join("")}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+`;
+
+container.innerHTML =
+    gruposHTML +
+    tercerosHTML;	
+	
 }
 
 window.renderAllMatches = function () {
