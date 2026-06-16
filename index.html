@@ -4765,13 +4765,20 @@ function renderAllGroups(){
     "G","H","I","J","K","L"
 ];
 
-const terceros = groupsData.filter(r =>
-    r.pos &&
-    !isNaN(r.pos) &&
-    Number(r.pos) >= 1 &&
-    Number(r.pos) <= 12 &&
-    r.seleccion &&
-    r.seleccion.startsWith("3")
+const terceros = groupsData
+    .filter(r => r.pos === "3")
+    .sort((a, b) => {
+        const ptsA = Number(a.pts) || 0;
+        const ptsB = Number(b.pts) || 0;
+
+        if (ptsB !== ptsA) return ptsB - ptsA;
+
+        const dgA = Number(a.dg) || 0;
+        const dgB = Number(b.dg) || 0;
+
+        return dgB - dgA;
+    })
+    .slice(0, 8);
 );
 	
    const gruposHTML = letras.map(grupo => {
@@ -4846,26 +4853,24 @@ const terceros = groupsData.filter(r =>
 	const tercerosHTML = `
 
 <div class="group-card">
-    <div class="group-title">
-        MEJORES TERCEROS
-    </div>
+    <div class="group-title">MEJORES TERCEROS (CLASIFICADOS)</div>
 
     <table class="group-table">
 
         <thead>
             <tr>
                 <th>POS</th>
-                <th style="text-align:left; padding:15px;">
-                    SELECCIÓN
-                </th>
+                <th style="text-align:left; padding: 15px;">SELECCIÓN</th>
+                <th>PTS</th>
+                <th>DG</th>
             </tr>
         </thead>
 
         <tbody>
 
-            ${terceros.map(r => `
+            ${terceros.map((r, index) => `
 
-                <tr>
+                <tr class="${index < 8 ? 'group-third' : ''}">
 
                     <td>${r.pos}</td>
 
@@ -4873,6 +4878,10 @@ const terceros = groupsData.filter(r =>
                         ${getBandera(r.seleccion)}
                         ${r.seleccion}
                     </td>
+
+                    <td>${r.pts}</td>
+
+                    <td>${r.dg}</td>
 
                 </tr>
 
