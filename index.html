@@ -3983,7 +3983,7 @@ equiposRows.forEach(r => {
   renderRanking();
   enableAutoFillOctavos();
   renderPlayerDropdown();
-  renderBracket();
+  renderBracket(bracketData);
 }
 
 
@@ -6153,7 +6153,7 @@ function detectRound(id) {
     return "";
 }
 
-function renderBracket(){
+function renderBracket(partidos){
 
     const rondas = {
         "1/16": [],
