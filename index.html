@@ -3267,13 +3267,28 @@ body{
 
 /* --- CONECTORES DE ENTRADA REPARADOS (IZQUIERDA) --- */
 
-/* Creamos una pequeña línea horizontal usando sombras falsas limpias para no pisar el before */
+/* --- CONECTORES DE ENTRADA REPARADOS (IZQUIERDA) --- */
+
 .round:not(:first-child) .match {
+    /* Añadimos la línea horizontal fija aquí usando un degradado de fondo que sobresale a la izquierda */
+    background-image: linear-gradient(to right, #ccc 20px, transparent 20px), linear-gradient(to bottom, #fff, #fff);
+    background-size: 20px 2px, 100% 100%;
+    background-position: -20px 44px, 0 0; /* Centrada a los 44px de altura de la tarjeta */
+    background-repeat: no-repeat;
+    
+    /* Mantenemos tu sombra intacta */
     box-shadow: 0 2px 8px rgba(0,0,0,.12);
 }
 	
 .round:not(:first-child) .match:hover {
-    box-shadow: -20px 0 0 -19px #ccc, 0 6px 18px rgba(0,0,0,.18);
+    /* Tu hover original pero manteniendo la línea visible */
+    background-image: linear-gradient(to right, #ccc 20px, transparent 20px), linear-gradient(to bottom, #fff, #fff);
+    background-size: 20px 2px, 100% 100%;
+    background-position: -20px 44px, 0 0;
+    background-repeat: no-repeat;
+    
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(0,0,0,.18);
 }
 
 
