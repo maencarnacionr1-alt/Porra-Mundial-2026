@@ -3187,10 +3187,10 @@ body{
 
 /* Contenedor que estira verticalmente los partidos para alinearse con la siguiente ronda */
 .matches-container {
-    display: flex;
+   display: flex;
     flex-direction: column;
-    justify-content: center; /* Juntamos los bloques al centro */
-    gap: 40px; /* Separación base fija entre parejas */
+    justify-content: space-between; /* Forzar a que se estire de arriba a abajo */
+    height: 100%; /* Obligatorio para que use todo el alto disponible */
     flex-grow: 1;
 }
 
@@ -3221,7 +3221,8 @@ body{
     content: "";
     position: absolute;
     left: -20px;
-    top: 50%;
+    top: 50%; /* Lo posiciona en la mitad exacta de la tarjeta */
+    transform: translateY(-50%); /* Corrección matemática perfecta del eje Y */
     width: 20px;
     border-top: 2px solid #ccc;
     z-index: 1;
