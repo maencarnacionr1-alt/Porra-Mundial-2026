@@ -3952,6 +3952,7 @@ function parseBracket(csv) {
         const cols = lines[i]
             .split(",")
             .map(c => c.trim().replace(/"/g, ""));
+		console.log(cols.slice(26, 54));
 
         const casa = cols[3];
         const visitante = cols[5];
@@ -3969,7 +3970,7 @@ function parseBracket(csv) {
             golCasa: cols[4] || "",
             golVisita: cols[6] || ""
         });
-		console.log(cols.slice(26, 54));
+	
     }
 
     return result;
