@@ -3269,8 +3269,20 @@ body{
 
 /* Creamos una pequeña línea horizontal usando sombras falsas limpias para no pisar el before */
 .round:not(:first-child) .match {
-    box-shadow: -20px 0 0 -19px #ccc, 0 2px 8px rgba(0,0,0,.12);
+    box-shadow: 0 2px 8px rgba(0,0,0,.12);
 }
+		
+/* Forzamos una pequeña línea horizontal física real que sobresale a la izquierda */
+.round:not(:first-child) .match::before {
+    content: "";
+    position: absolute;
+    left: -20px; /* Sobresale hacia la izquierda ocupando el hueco */
+    top: 50%;
+    width: 20px; /* Longitud de la línea de unión */
+    border-top: 2px solid #ccc; /* El color gris del conector */
+    z-index: 1;
+}
+	
 .round:not(:first-child) .match:hover {
     box-shadow: -20px 0 0 -19px #ccc, 0 6px 18px rgba(0,0,0,.18);
 }
