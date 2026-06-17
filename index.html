@@ -3754,14 +3754,14 @@ const codigosBanderas = {
 	const URL_GROUPS =
 	  "https://docs.google.com/spreadsheets/d/e/2PACX-1vSYe1nqTFOllYViQLj9x7NZ0buss9J-pqmIqeSziINNRDL5-a0m-sWcCg_48_zY5iAEhpHvzNYKuqbQ/pub?gid=390514000&single=true&output=csv";
 
-	const URL_MATCHES = 
-	  "https://docs.google.com/spreadsheets/d/e/2PACX-1vSYe1nqTFOllYViQLj9x7NZ0buss9J-pqmIqeSziINNRDL5-a0m-sWcCg_48_zY5iAEhpHvzNYKuqbQ/pub?gid=390514000&single=true&output=csv"
+	const URL_BRACKET = 
+	  "https://docs.google.com/spreadsheets/d/e/2PACX-1vSYe1nqTFOllYViQLj9x7NZ0buss9J-pqmIqeSziINNRDL5-a0m-sWcCg_48_zY5iAEhpHvzNYKuqbQ/pub?gid=1142598566&single=true&output=csv"
 
         const GOOGLE_SCRIPT_URL =
           "https://script.google.com/macros/s/AKfycbxtJd7b5_INe28kjzGnRB9_Udy6IrBiANALXkVCdF0d3HmwGtpMYJvTE-3h_KBsUz4pBA/exec";
 
 
-let matchesData = [];
+let bracketData = [];
 let equiposEliminados = [];
 let faseGruposTerminada = false;
 let pronosticosPuntosData = [];
@@ -3786,17 +3786,17 @@ const GRUPOS = 12;
 // ================= INIT =================
 async function initApp() {
 
-  const [eq, rank, teams, groupsCsv] = await Promise.all([
+ const [eq, rank, teams, groupsCsv, bracketCsv] = await Promise.all([
 
     fetch(URL_MAESTRA).then(r => r.text()),
-
     fetch(URL_RANKING).then(r => r.text()),
-
     fetch(URL_TEAMS).then(r => r.text()),
-
     fetch(URL_GROUPS).then(r => r.text()),
+    fetch(URL_BRACKET).then(r => r.text())
 
 ]);
+
+bracketData = parseBracket(bracketCsv);
 
  const pronos = await fetch(URL_PRONOSTICOS).then(r => r.text());
  pronosticosData = parseCSV(pronos);
@@ -3926,6 +3926,40 @@ equiposRows.forEach(r => {
 
 
 // ================= CSV =================
+
+function parseBracket(csv) {
+
+    const lines = csv.split(/\r?\n/);
+    const result = [];
+
+    for (let i = 0; i < lines.length; i++) {
+
+        if (!lines[i]) continue;
+
+        const cols = lines[i]
+            .split(",")
+            .map(c => c.trim().replace(/"/g, ""));
+
+        const casa = cols[3];
+        const visitante = cols[5];
+        const id = cols[2]; // W73, W74...
+
+        if (!id || (!casa && !visitante)) continue;
+
+        result.push({
+            ronda: detectRound(id),
+            id,
+            casa,
+            visitante,
+            fecha: cols[0],
+            hora: cols[1],
+            golCasa: cols[4] || "",
+            golVisita: cols[6] || ""
+        });
+    }
+
+    return result;
+}
 
 function parseCSV(csv) {
     const lines = csv.trim().split("\n");
@@ -6008,6 +6042,75 @@ function getTop8Status(teamName) {
     }
 
     return '<span class="top8-status">🟢</span>';
+}
+
+function detectRound(id) {
+
+    const n = Number(id.replace(/\D/g, ""));
+
+    if (n >= 73 && n <= 88) return "1/16";
+    if (n >= 89 && n <= 96) return "Octavos";
+    if (n >= 97 && n <= 100) return "Cuartos";
+    if (n >= 101 && n <= 102) return "Semifinal";
+    if (n === 103) return "3º puesto";
+    if (n === 104) return "Final";
+
+    return "";
+}
+
+function renderBracket() {
+
+    const container = document.getElementById("bracketGrid");
+    if (!container) return;
+
+    const rondas = [
+        "1/16",
+        "Octavos",
+        "Cuartos",
+        "Semifinal",
+        "3º puesto",
+        "Final"
+    ];
+
+    container.innerHTML = rondas.map(ronda => {
+
+        const partidos = bracketData.filter(p => p.ronda === ronda);
+
+        return `
+            <div class="group-card">
+                <div class="group-title">${ronda}</div>
+
+                <table class="group-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>CASA</th>
+                            <th>RES</th>
+                            <th>FUERA</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        ${partidos.map(p => `
+                            <tr>
+                                <td>${p.id}</td>
+
+                                <td>${getBandera(p.casa)} ${p.casa}</td>
+
+                                <td>
+                                    ${p.golCasa !== "" ? p.golCasa : "-"}
+                                    -
+                                    ${p.golVisita !== "" ? p.golVisita : "-"}
+                                </td>
+
+                                <td>${getBandera(p.visitante)} ${p.visitante}</td>
+                            </tr>
+                        `).join("")}
+                    </tbody>
+                </table>
+            </div>
+        `;
+    }).join("");
 }
 
 </script>
