@@ -3964,6 +3964,18 @@ function parseBracket(csv) {
             const cols = line
                 .split(",")
                 .map(c => c.trim().replace(/"/g, ""));
+
+			// <-- SABER LAS FILAS EXACTAS
+    if (fila === 101) {
+        console.log("Fila 101:");
+        console.log(cols.slice(20, 33));
+
+        cols.forEach((valor, indice) => {
+            if (indice >= 20 && indice <= 32) {
+                console.log(indice, "=", valor);
+            }
+        });
+    }
 			
 			const fecha = cols [23];
 			const hora = cols [24];
