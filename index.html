@@ -3267,15 +3267,17 @@ body{
 
 /* --- CONECTORES DE ENTRADA REPARADOS (IZQUIERDA) --- */
 
-/* Conector horizontal izquierdo */
-.round:not(:first-child) .match::before {
-    content: "";
-    position: absolute;
-    left: -20px;
-    top: 50%;
-    width: 20px;
-    border-top: 2px solid #ccc;
-    z-index: 1;
+/* --- CONECTORES DE ENTRADA REPARADOS (IZQUIERDA) --- */
+
+.round:not(:first-child) .match {
+    /* Añadimos la línea horizontal fija aquí usando un degradado de fondo que sobresale a la izquierda */
+    background-image: linear-gradient(to right, #ccc 20px, transparent 20px), linear-gradient(to bottom, #fff, #fff);
+    background-size: 20px 2px, 100% 100%;
+    background-position: -20px 44px, 0 0; /* Centrada a los 44px de altura de la tarjeta */
+    background-repeat: no-repeat;
+    
+    /* Mantenemos tu sombra intacta */
+    box-shadow: 0 2px 8px rgba(0,0,0,.12);
 }
 	
 .round:not(:first-child) .match:hover {
@@ -3326,31 +3328,6 @@ body{
     text-align: center;
 }
 
-.podium-container {
-    display: flex;
-    flex-direction: column;
-    width: 200px;
-    padding-top: 50px;
-}
-
-.podium {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.p-item {
-    padding: 15px;
-    background: #fff;
-    border-radius: 8px;
-    text-align: center;
-    font-weight: bold;
-    border: 1px solid #ddd;
-}
-
-.gold { border-left: 5px solid #FFD700; }
-.silver { border-left: 5px solid #C0C0C0; }
-.bronze { border-left: 5px solid #CD7F32; }		
 
 
     </style>
@@ -6368,19 +6345,6 @@ function renderBracket(partidos){
 
         columna.appendChild(matchesContainer);
         bracket.appendChild(columna);
-
-	// ... al final de la función renderBracket, después de añadir el último round
-const podium = document.createElement("div");
-podium.className = "podium-container";
-podium.innerHTML = `
-    <h3 class="round-title">Podium</h3>
-    <div class="podium">
-        <div class="p-item gold">🏆 Campeón</div>
-        <div class="p-item silver">🥈 Subcampeón</div>
-        <div class="p-item bronze">🥉 3º Puesto</div>
-    </div>
-`;
-bracket.appendChild(podium);
     });
 }
 
