@@ -3218,7 +3218,7 @@ body{
 
 /* --- CONECTORES DE SALIDA (DERECHA) --- */
 
-/* Línea horizontal que sale hacia la derecha de cada tarjeta */
+/* Línea horizontal que sale hacia la derecha */
 .round:not(:last-child):not(:nth-last-child(2)) .match::after {
     content: "";
     position: absolute;
@@ -3229,7 +3229,7 @@ body{
     z-index: 1;
 }
 
-/* Extensión de la línea vertical que BAJA desde los partidos de ARRIBA */
+/* Conector vertical hacia ABAJO para los partidos superiores */
 .round:not(:last-child):not(:nth-last-child(2)) .match.match-top::before {
     content: "";
     position: absolute;
@@ -3240,7 +3240,7 @@ body{
     z-index: 1;
 }
 
-/* Extensión de la línea vertical que SUBE desde los partidos de ABAJO */
+/* Conector vertical hacia ARRIBA para los partidos inferiores */
 .round:not(:last-child):not(:nth-last-child(2)) .match.match-bottom::before {
     content: "";
     position: absolute;
@@ -3265,21 +3265,14 @@ body{
 .round:nth-child(4) .match.match-bottom::before { height: 440px; }
 
 
-/* --- CONECTORES DE ENTRADA CORREGIDOS (IZQUIERDA) --- */
+/* --- CONECTORES DE ENTRADA REPARADOS (IZQUIERDA) --- */
 
-/* Creamos un contenedor falso mediante un elemento de fondo para la línea de entrada */
-.round:not(:first-child) .match::shadow-line { /* Usamos un truco limpio de borde exterior */ }
-
-/* Línea horizontal izquierda que se conecta físicamente al centro de los corchetes anteriores */
-.round:not(:first-child) .match::before {
-    content: "";
-    position: absolute;
-    left: -20px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 20px;
-    border-top: 2px solid #ccc;
-    z-index: 1;
+/* Creamos una pequeña línea horizontal usando sombras falsas limpias para no pisar el before */
+.round:not(:first-child) .match {
+    box-shadow: -20px 0 0 -19px #ccc, 0 2px 8px rgba(0,0,0,.12);
+}
+.round:not(:first-child) .match:hover {
+    box-shadow: -20px 0 0 -19px #ccc, 0 6px 18px rgba(0,0,0,.18);
 }
 
 
@@ -3318,6 +3311,7 @@ body{
     min-width: 20px;
     text-align: center;
 }
+
 
 
     </style>
@@ -6270,8 +6264,8 @@ function renderBracket(partidos){
         "Octavos": [],
         "Cuartos": [],
         "Semifinal": [],
-        "3º puesto": [],
-        "Final": []
+        "Final": [],
+        "3º puesto": []
     };
 
     partidos.forEach(p => {
@@ -6303,10 +6297,10 @@ function renderBracket(partidos){
                 rowStyle = `style="--match-row: ${index * 8 + 4}"`;
             } else if (nombre === "Semifinal") {
                 rowStyle = `style="--match-row: ${index * 16 + 8}"`;
-            } else if (nombre === "3º puesto") {
-                rowStyle = `style="--match-row: 24"`;
             } else if (nombre === "Final") {
-                rowStyle = `style="--match-row: 16"`;
+                rowStyle = `style="--match-row: 12"`;
+            } else if (nombre === "3º puesto") {
+                rowStyle = `style="--match-row: 20"`;
             }
 
             matchesContainer.innerHTML += `
@@ -6337,6 +6331,7 @@ function renderBracket(partidos){
         bracket.appendChild(columna);
     });
 }
+
 
 
 </script>
