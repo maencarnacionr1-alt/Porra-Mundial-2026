@@ -3976,21 +3976,21 @@ function parseBracket(csv) {
             }
         });
     }
-			
-			const fecha = cols [23];
-			const hora = cols [24];
-            const id = cols[25];
-            const casa = cols[26];
-            const penCasa = cols[27];
-            const golCasa = cols[28];
-            const golVisita = cols[29];
-            const penVisita = cols[30];
-            const visitante = cols[31];
+			const ronda = cols [23]
+			const fecha = cols [24];
+			const hora = cols [25];
+            const id = cols[26];
+            const casa = cols[27];
+            const penCasa = cols[28];
+            const golCasa = cols[29];
+            const golVisita = cols[30];
+            const penVisita = cols[31];
+            const visitante = cols[32];
 
             if (!id) continue;
 
             result.push({
-                ronda: bloque.ronda,
+                ronda,
                 id,
                 fecha,
                 hora,
