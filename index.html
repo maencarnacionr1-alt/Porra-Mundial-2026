@@ -3165,10 +3165,10 @@ body{
 .bracket {
     display: flex;
     gap: 40px;
-    align-items: stretch; /* Cambiado para que las columnas midan lo mismo */
+    align-items: stretch;
     overflow-x: auto;
     padding: 20px;
-    background-color: #fcfcfc; /* Un fondo sutil resalta más las tarjetas */
+    background-color: #fcfcfc;
 }
 
 .round {
@@ -3185,11 +3185,11 @@ body{
     margin-bottom: 20px;
 }
 
-/* Contenedor que estira verticalmente los partidos para alinearse con la siguiente ronda */
+/* Contenedor sin estiramientos forzados */
 .matches-container {
-   display: flex;
+    display: flex;
     flex-direction: column;
-    justify-content: flex-start; /* Alineados arriba de forma natural */
+    justify-content: flex-start;
     position: relative;
 }
 
@@ -3201,16 +3201,53 @@ body{
     padding-right: 20px;
 }
 
-/* Línea que sale en forma de "corchete" de cada pareja de partidos hacia la derecha */
+/* Tus estilos de tarjetas intactos con su tamaño fijo */
+.match {
+    background: #fff;
+    border-radius: 12px;
+    padding: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,.12);
+    position: relative;
+    transition: .25s;
+    height: 90px;
+    box-sizing: border-box;
+    z-index: 2;
+    margin-bottom: 20px; /* Separación interna por defecto entre los dos partidos de una pareja */
+}
+
+/* Evitamos que el segundo partido de la pareja tenga margen inferior excesivo */
+.match:last-child {
+    margin-bottom: 0;
+}
+
+/* 
+   LA SEPARACIÓN PERFECTA: 
+   Aplicamos los márgenes y empujones sobre el contenedor del par (.match-pair) 
+   para que los corchetes mantengan su tamaño idéntico en todo el árbol.
+*/
+.round:nth-child(1) .match-pair { margin-bottom: 20px; }   /* 1/16 */
+.round:nth-child(2) .match-pair { margin-bottom: 130px; }  /* Octavos */
+.round:nth-child(3) .match-pair { margin-bottom: 350px; }  /* Cuartos */
+.round:nth-child(4) .match-pair { margin-bottom: 790px; }  /* Semifinal */
+
+/* Ajuste inicial superior para clavar el centro con la columna previa */
+.round:nth-child(2) .match-pair:first-child { margin-top: 55px; }  /* Octavos */
+.round:nth-child(3) .match-pair:first-child { margin-top: 165px; } /* Cuartos */
+.round:nth-child(4) .match-pair:first-child { margin-top: 385px; } /* Semifinal */
+
+
+/* --- DIBUJO DE LÍNEAS CORREGIDO Y LIMPIO --- */
+
+/* Conector que sale en forma de corchete "[ " desde la pareja hacia adelante */
 .round:not(:last-child) .match-pair::after {
     content: "";
     position: absolute;
     right: 0;
-    top: 25%;
-    bottom: 25%;
+    top: 45px;    /* Se clava en la mitad exacta de la primera tarjeta */
+    bottom: 45px; /* Se clava en la mitad exacta de la segunda tarjeta */
     width: 20px;
     border: 2px solid #ccc;
-    border-left: none; /* Dejamos abierto el lado izquierdo */
+    border-left: none; /* Deja abierto el lado pegado a las tarjetas */
     z-index: 1;
 }
 
@@ -3225,49 +3262,8 @@ body{
     z-index: 1;
 }
 
-/* Tus estilos de tarjetas intactos */
-.match {
-    background: #fff;
-    border-radius: 12px;
-    padding: 10px;
-    box-shadow: 0 2px 8px rgba(0,0,0,.12);
-    position: relative;
-    transition: .25s;
-    height: 90px; /* Altura fija obligatoria para precisión */
-    box-sizing: border-box;
-    z-index: 2;
-}
 
-/* 2. La clave: Cada ronda duplica la separación de la anterior para mantener la simetría */
-
-.round:nth-child(1) .match { margin-bottom: 20px; }  /* 1/16 */
-.round:nth-child(2) .match { margin-bottom: 130px; } /* Octavos */
-.round:nth-child(3) .match { margin-bottom: 350px; } /* Cuartos */
-.round:nth-child(4) .match { margin-bottom: 790px; } /* Semifinal */
-
-/* El primer partido de Octavos, Cuartos, etc., necesita un empujón inicial 
-   para centrarse con la primera pareja de la columna anterior */
-.round:nth-child(2) .match:first-child { margin-top: 55px; }  /* Octavos */
-.round:nth-child(3) .match:first-child { margin-top: 165px; } /* Cuartos */
-.round:nth-child(4) .match:first-child { margin-top: 385px; } /* Semifinal */
-
-
-/* --- DIBUJO DE LÍNEAS IMPECABLES --- */
-
-/* Conector que sale en forma de "corchete" de cada PAREJA de partidos */
-.round:not(:last-child) .match-pair::after {
-    content: "";
-    position: absolute;
-    right: 0;
-    /* Nace en la mitad de la primera tarjeta y muere en la mitad de la segunda */
-    top: 45px;    
-    bottom: 65px; 
-    width: 20px;
-    border: 2px solid #ccc;
-    border-left: none;
-    z-index: 1;
-}
-
+/* --- Estilos internos de la tarjeta de partido --- */
 .match:hover {
     transform: translateY(-2px);
     box-shadow: 0 6px 18px rgba(0,0,0,.18);
@@ -3308,7 +3304,6 @@ body{
     min-width: 20px;
     text-align: center;
 }
-
 		
     </style>
 
