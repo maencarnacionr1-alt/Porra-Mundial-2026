@@ -3162,6 +3162,54 @@ body{
     vertical-align: middle;
 }
 
+.bracket{
+
+    display:flex;
+    gap:40px;
+    align-items:flex-start;
+    overflow-x:auto;
+    padding:20px;
+
+}
+
+.round{
+
+    width:240px;
+    flex-shrink:0;
+
+}
+
+.match{
+
+    background:#fff;
+
+    border:1px solid #ddd;
+
+    border-radius:8px;
+
+    margin-bottom:18px;
+
+    padding:10px;
+
+}
+
+.team{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    padding:6px 0;
+
+}
+
+.team:first-child{
+
+    border-bottom:1px solid #eee;
+
+}
+
+		
     </style>
 
 </head>
@@ -3619,7 +3667,7 @@ body{
             ELIMINATORIAS
         </div>
 
-        <div id="bracketGrid" class="groups-grid"></div>
+        <div id="bracket" class="bracket"></div>
 
     </div>
 
@@ -6105,63 +6153,54 @@ function detectRound(id) {
     return "";
 }
 
-function renderBracket() {
+function renderBracket(partidos){
 
-    const container = document.getElementById("bracketGrid");
-    if (!container) return;
+    const rondas = {
+        "1/16": [],
+        "Octavos": [],
+        "Cuartos": [],
+        "Semifinal": [],
+        "3º puesto": [],
+        "Final": []
+    };
 
-    const rondas = [
-        "1/16",
-        "Octavos",
-        "Cuartos",
-        "Semifinal",
-        "3º puesto",
-        "Final"
-    ];
+    partidos.forEach(p => rondas[p.ronda].push(p));
 
-    container.innerHTML = rondas.map(ronda => {
+    const bracket = document.getElementById("bracket");
 
-        const partidos = bracketData.filter(p => p.ronda === ronda);
+    bracket.innerHTML = "";
 
-        return `
-            <div class="group-card">
-                <div class="group-title">${ronda}</div>
+    Object.entries(rondas).forEach(([nombre, lista])=>{
 
-                <table class="group-table">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>CASA</th>
-                            <th>RES</th>
-                            <th>FUERA</th>
-                        </tr>
-                    </thead>
+        const columna = document.createElement("div");
+        columna.className = "round";
 
-                    <tbody>
-                        ${partidos.map(p => `
-                            <tr>
-                                <td>${p.id}</td>
+        columna.innerHTML = `<h3>${nombre}</h3>`;
 
-                                <td>${getBandera(p.casa)} ${p.casa}</td>
+        lista.forEach(partido=>{
 
-                                <td>
-   							 		${p.golCasa || "-"} - ${p.golVisita || "-"}
+            columna.innerHTML += `
+                <div class="match">
 
-    							${
-       							 	p.penCasa || p.penVisita
-            							? `<br><small>(${p.penCasa || 0}-${p.penVisita || 0})</small>`
-            							: ""
-   								 }
-								</td>
+                    <div class="team">
+                        <span>${partido.casa}</span>
+                        <span>${partido.golCasa}</span>
+                    </div>
 
-                                <td>${getBandera(p.visitante)} ${p.visitante}</td>
-                            </tr>
-                        `).join("")}
-                    </tbody>
-                </table>
-            </div>
-        `;
-    }).join("");
+                    <div class="team">
+                        <span>${partido.visitante}</span>
+                        <span>${partido.golVisita}</span>
+                    </div>
+
+                </div>
+            `;
+
+        });
+
+        bracket.appendChild(columna);
+
+    });
+
 }
 
 </script>
