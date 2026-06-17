@@ -3162,75 +3162,122 @@ body{
     vertical-align: middle;
 }
 
-.bracket{
-
-    display:flex;
-    gap:40px;
-    align-items:flex-start;
-    overflow-x:auto;
-    padding:20px;
-
+.bracket {
+    display: flex;
+    gap: 40px;
+    align-items: stretch; /* Cambiado para que las columnas midan lo mismo */
+    overflow-x: auto;
+    padding: 20px;
+    background-color: #fcfcfc; /* Un fondo sutil resalta más las tarjetas */
 }
 
-.round{
-
-    width:240px;
-    flex-shrink:0;
-
+.round {
+    width: 240px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
 }
 
-.match{
-    background:#fff;
-    border-radius:12px;
-    padding:10px;
-    margin:18px 0;
-    box-shadow:0 2px 8px rgba(0,0,0,.12);
-    position:relative;
-    transition:.25s;
+.round h3 {
+    text-align: center;
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 20px;
 }
 
-.match:hover{
-    transform:translateY(-2px);
-    box-shadow:0 6px 18px rgba(0,0,0,.18);
+/* Contenedor que estira verticalmente los partidos para alinearse con la siguiente ronda */
+.matches-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    flex-grow: 1;
 }
 
-.match-header{
-    display:flex;
-    justify-content:space-between;
-    font-size:11px;
-    color:#777;
-    margin-bottom:8px;
-    padding-bottom:6px;
-    border-bottom:1px solid #ececec;
+/* Agrupador de parejas de partidos */
+.match-pair {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    padding-right: 20px; /* Espacio reservado para la línea derecha */
 }
 
-.team{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:6px 0;
+/* Línea que sale en forma de "corchete" de cada pareja de partidos hacia la derecha */
+.round:not(:last-child) .match-pair::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    top: 25%;
+    bottom: 25%;
+    width: 20px;
+    border: 2px solid #ccc;
+    border-left: none; /* Dejamos abierto el lado izquierdo */
+    z-index: 1;
 }
 
-.team-left{
-    display:flex;
-    align-items:center;
-    gap:8px;
+/* Línea recta horizontal que entra por la izquierda a cada partido de las siguientes rondas */
+.round:not(:first-child) .match::before {
+    content: "";
+    position: absolute;
+    left: -20px;
+    top: 50%;
+    width: 20px;
+    border-top: 2px solid #ccc;
+    z-index: 1;
 }
 
-.team-logo{
-    width:24px;
-    height:24px;
-    object-fit:contain;
+/* Tus estilos de tarjetas intactos */
+.match {
+    background: #fff;
+    border-radius: 12px;
+    padding: 10px;
+    margin: 18px 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,.12);
+    position: relative;
+    transition: .25s;
+    z-index: 2; /* Por encima de las líneas */
 }
 
-.score{
-    font-weight:bold;
-    font-size:18px;
-    min-width:20px;
-    text-align:center;
+.match:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(0,0,0,.18);
 }
 
+.match-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: #777;
+    margin-bottom: 8px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid #ececec;
+}
 
+.team {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 0;
+}
+
+.team-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.team-logo {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+}
+
+.score {
+    font-weight: bold;
+    font-size: 18px;
+    min-width: 20px;
+    text-align: center;
+}
 
 		
     </style>
@@ -6190,51 +6237,69 @@ function renderBracket(partidos){
     partidos.forEach(p => rondas[p.ronda].push(p));
 
     const bracket = document.getElementById("bracket");
-
     bracket.innerHTML = "";
 
     Object.entries(rondas).forEach(([nombre, lista])=>{
+        // Si la ronda está vacía en tus datos, no la renderizamos
+        if(lista.length === 0) return;
 
         const columna = document.createElement("div");
         columna.className = "round";
 
         columna.innerHTML = `<h3>${nombre}</h3>`;
 
-        lista.forEach(partido=>{
+        // Creamos un contenedor interno para aplicar Flexbox a los partidos
+        const matchesContainer = document.createElement("div");
+        matchesContainer.className = "matches-container";
 
-            columna.innerHTML += `
-<div class="match">
+        // Iteramos los partidos de 2 en 2 para agruparlos en parejas de juego
+        for (let i = 0; i < lista.length; i += 2) {
+            const partido1 = lista[i];
+            const partido2 = lista[i + 1];
 
-    <div class="match-header">
-        <span>${partido.fecha}</span>
-        <span>${partido.hora}</span>
-    </div>
+            const pairDiv = document.createElement("div");
+            pairDiv.className = "match-pair";
 
-    <div class="team">
-        <div class="team-left">
-           ${getBandera(partido.casa)}
-            <span>${partido.casa}</span>
-        </div>
-        <span class="score">${partido.golCasa}</span>
-    </div>
+            // Insertamos el primer partido
+            pairDiv.innerHTML += HTMLPartido(partido1);
 
-    <div class="team">
-        <div class="team-left">
-            ${getBandera(partido.visitante)}
-            <span>${partido.visitante}</span>
-        </div>
-        <span class="score">${partido.golVisita}</span>
-    </div>
+            // Si existe el segundo partido de la pareja, lo insertamos
+            if (partido2) {
+                pairDiv.innerHTML += HTMLPartido(partido2);
+            }
 
-</div>
-`;
+            matchesContainer.appendChild(pairDiv);
+        }
 
-        });
-
+        columna.appendChild(matchesContainer);
         bracket.appendChild(columna);
-
     });
+}
 
+// Función auxiliar para no repetir el HTML del partido
+function HTMLPartido(partido) {
+    return `
+    <div class="match">
+        <div class="match-header">
+            <span>${partido.fecha}</span>
+            <span>${partido.hora}</span>
+        </div>
+        <div class="team">
+            <div class="team-left">
+               ${getBandera(partido.casa)}
+                <span>${partido.casa}</span>
+            </div>
+            <span class="score">${partido.golCasa}</span>
+        </div>
+        <div class="team">
+            <div class="team-left">
+                ${getBandera(partido.visitante)}
+                <span>${partido.visitante}</span>
+            </div>
+            <span class="score">${partido.golVisita}</span>
+        </div>
+    </div>
+    `;
 }
 
 </script>
