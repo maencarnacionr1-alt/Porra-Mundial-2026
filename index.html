@@ -3180,34 +3180,57 @@ body{
 }
 
 .match{
-
     background:#fff;
-
-    border:1px solid #ddd;
-
-    border-radius:8px;
-
-    margin-bottom:18px;
-
+    border-radius:12px;
     padding:10px;
+    margin:18px 0;
+    box-shadow:0 2px 8px rgba(0,0,0,.12);
+    position:relative;
+    transition:.25s;
+}
 
+.match:hover{
+    transform:translateY(-2px);
+    box-shadow:0 6px 18px rgba(0,0,0,.18);
+}
+
+.match-header{
+    display:flex;
+    justify-content:space-between;
+    font-size:11px;
+    color:#777;
+    margin-bottom:8px;
+    padding-bottom:6px;
+    border-bottom:1px solid #ececec;
 }
 
 .team{
-
     display:flex;
-
     justify-content:space-between;
-
+    align-items:center;
     padding:6px 0;
-
 }
 
-.team:first-child{
-
-    border-bottom:1px solid #eee;
-
+.team-left{
+    display:flex;
+    align-items:center;
+    gap:8px;
 }
+
+.team-logo{
+    width:24px;
+    height:24px;
+    object-fit:contain;
+}
+
+.score{
+    font-weight:bold;
+    font-size:18px;
+    min-width:20px;
+    text-align:center;
+}
+
+
 
 		
     </style>
@@ -6180,20 +6203,31 @@ function renderBracket(partidos){
         lista.forEach(partido=>{
 
             columna.innerHTML += `
-                <div class="match">
+<div class="match">
 
-                    <div class="team">
-                        <span>${partido.casa}</span>
-                        <span>${partido.golCasa}</span>
-                    </div>
+    <div class="match-header">
+        <span>${partido.fecha}</span>
+        <span>${partido.hora}</span>
+    </div>
 
-                    <div class="team">
-                        <span>${partido.visitante}</span>
-                        <span>${partido.golVisita}</span>
-                    </div>
+    <div class="team">
+        <div class="team-left">
+            <img class="team-logo" src="assets/escudos/${partido.casa}.png" onerror="this.src='assets/escudos/default.png'">
+            <span>${partido.casa}</span>
+        </div>
+        <span class="score">${partido.golCasa}</span>
+    </div>
 
-                </div>
-            `;
+    <div class="team">
+        <div class="team-left">
+            <img class="team-logo" src="assets/escudos/${partido.visitante}.png" onerror="this.src='assets/escudos/default.png'">
+            <span>${partido.visitante}</span>
+        </div>
+        <span class="score">${partido.golVisita}</span>
+    </div>
+
+</div>
+`;
 
         });
 
