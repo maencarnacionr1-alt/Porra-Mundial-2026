@@ -3807,6 +3807,9 @@ async function initApp() {
 ]);
 
 bracketData = parseBracket(bracketCsv);
+console.log("Bracket:", bracketData);
+console.log("Total partidos:", bracketData.length);
+	
 
  const pronos = await fetch(URL_PRONOSTICOS).then(r => r.text());
  pronosticosData = parseCSV(pronos);
