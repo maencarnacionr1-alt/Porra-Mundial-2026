@@ -3187,7 +3187,7 @@ body{
     line-height: 30px;
 }
 
-/* El motor del sistema: Grid con filas fijas de 55px */
+/* Red de cuadrícula virtual */
 .matches-container {
     display: grid;
     grid-template-columns: 1fr;
@@ -3196,7 +3196,7 @@ body{
     position: relative;
 }
 
-/* Estructura fija de la tarjeta */
+/* Tarjeta base */
 .match {
     grid-row: var(--match-row);
     background: #fff;
@@ -3216,10 +3216,10 @@ body{
     box-shadow: 0 6px 18px rgba(0,0,0,.18);
 }
 
-/* --- SISTEMA DE CONECTORES REVISADO --- */
+/* --- CONECTORES DE SALIDA (DERECHA) --- */
 
-/* Línea horizontal fija que sale de todos los partidos hacia la derecha */
-.round:not(:last-child) .match::after {
+/* Línea horizontal que sale hacia la derecha de cada tarjeta */
+.round:not(:last-child):not(:nth-last-child(2)) .match::after {
     content: "";
     position: absolute;
     right: -20px;
@@ -3229,8 +3229,8 @@ body{
     z-index: 1;
 }
 
-/* Conector vertical que baja desde los partidos de ARRIBA */
-.round:not(:last-child) .match.match-top::before {
+/* Extensión de la línea vertical que BAJA desde los partidos de ARRIBA */
+.round:not(:last-child):not(:nth-last-child(2)) .match.match-top::before {
     content: "";
     position: absolute;
     right: -20px;
@@ -3240,8 +3240,8 @@ body{
     z-index: 1;
 }
 
-/* Conector vertical que sube desde los partidos de ABAJO */
-.round:not(:last-child) .match.match-bottom::before {
+/* Extensión de la línea vertical que SUBE desde los partidos de ABAJO */
+.round:not(:last-child):not(:nth-last-child(2)) .match.match-bottom::before {
     content: "";
     position: absolute;
     right: -20px;
@@ -3251,30 +3251,35 @@ body{
     z-index: 1;
 }
 
-/* ALTURAS MATEMÁTICAS EXACTAS DE LAS LÍNEAS VERTICALES POR RONDA */
+/* Alturas exactas de las líneas verticales según la escala de cada ronda */
 .round:nth-child(1) .match.match-top::before,
-.round:nth-child(1) .match.match-bottom::before { height: 55px; } /* 1/16 */
+.round:nth-child(1) .match.match-bottom::before { height: 55px; }
 
 .round:nth-child(2) .match.match-top::before,
-.round:nth-child(2) .match.match-bottom::before { height: 110px; } /* Octavos */
+.round:nth-child(2) .match.match-bottom::before { height: 110px; }
 
 .round:nth-child(3) .match.match-top::before,
-.round:nth-child(3) .match.match-bottom::before { height: 220px; } /* Cuartos */
+.round:nth-child(3) .match.match-bottom::before { height: 220px; }
 
 .round:nth-child(4) .match.match-top::before,
-.round:nth-child(4) .match.match-bottom::before { height: 440px; } /* Semifinal */
+.round:nth-child(4) .match.match-bottom::before { height: 440px; }
 
 
-/* Línea horizontal fija de entrada que recibe a las tarjetas por la izquierda */
-.round:not(:first-child) .match::after {
-    /* Mantenemos el ::after original de salida y añadimos el conector de entrada como fondo o sombra sutil si es necesario */
-}
-/* Para la entrada limpia por la izquierda usamos un elemento interno o duplicamos el selector de forma segura */
-.round:not(:first-child) .match {
-    box-shadow: -20px 0 0 -19px #ccc, 0 2px 8px rgba(0,0,0,.12); /* Crea la pequeña línea de entrada izquierda de forma limpia */
-}
-.round:not(:first-child) .match:hover {
-    box-shadow: -20px 0 0 -19px #ccc, 0 6px 18px rgba(0,0,0,.18);
+/* --- CONECTORES DE ENTRADA CORREGIDOS (IZQUIERDA) --- */
+
+/* Creamos un contenedor falso mediante un elemento de fondo para la línea de entrada */
+.round:not(:first-child) .match::shadow-line { /* Usamos un truco limpio de borde exterior */ }
+
+/* Línea horizontal izquierda que se conecta físicamente al centro de los corchetes anteriores */
+.round:not(:first-child) .match::before {
+    content: "";
+    position: absolute;
+    left: -20px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    border-top: 2px solid #ccc;
+    z-index: 1;
 }
 
 
@@ -6265,8 +6270,8 @@ function renderBracket(partidos){
         "Octavos": [],
         "Cuartos": [],
         "Semifinal": [],
-        "Final": [],
-		"Tercero & Cuarto": []
+        "3º puesto": [],
+        "Final": []
     };
 
     partidos.forEach(p => {
@@ -6287,7 +6292,6 @@ function renderBracket(partidos){
         matchesContainer.className = "matches-container";
 
         lista.forEach((partido, index) => {
-            // CLASE DINÁMICA: Determina si el partido es el de arriba o el de abajo de su llave
             const positionClass = (index % 2 === 0) ? "match-top" : "match-bottom";
 
             let rowStyle = "";
@@ -6299,8 +6303,10 @@ function renderBracket(partidos){
                 rowStyle = `style="--match-row: ${index * 8 + 4}"`;
             } else if (nombre === "Semifinal") {
                 rowStyle = `style="--match-row: ${index * 16 + 8}"`;
+            } else if (nombre === "3º puesto") {
+                rowStyle = `style="--match-row: 24"`;
             } else if (nombre === "Final") {
-                rowStyle = `style="--match-row: ${index * 32 + 16}"`;
+                rowStyle = `style="--match-row: 16"`;
             }
 
             matchesContainer.innerHTML += `
