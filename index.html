@@ -6212,7 +6212,7 @@ function renderBracket(partidos){
 
     <div class="team">
         <div class="team-left">
-            <img class="team-logo" src="assets/escudos/${partido.casa}.png" onerror="this.src='assets/escudos/default.png'">
+           ${getBandera(partido.casa)}
             <span>${partido.casa}</span>
         </div>
         <span class="score">${partido.golCasa}</span>
@@ -6220,7 +6220,7 @@ function renderBracket(partidos){
 
     <div class="team">
         <div class="team-left">
-            <img class="team-logo" src="assets/escudos/${partido.visitante}.png" onerror="this.src='assets/escudos/default.png'">
+            ${getBandera(partido.visitante)}
             <span>${partido.visitante}</span>
         </div>
         <span class="score">${partido.golVisita}</span>
