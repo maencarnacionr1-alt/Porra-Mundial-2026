@@ -3945,37 +3945,54 @@ function parseBracket(csv) {
     const lines = csv.split(/\r?\n/);
     const result = [];
 
-    for (let i = 0; i < lines.length; i++) {
+    const bloques = [
+        { inicio: 101, fin: 116, ronda: "1/16" },
+        { inicio: 120, fin: 127, ronda: "Octavos" },
+        { inicio: 131, fin: 134, ronda: "Cuartos" },
+        { inicio: 138, fin: 139, ronda: "Semifinal" },
+        { inicio: 143, fin: 143, ronda: "3º puesto" },
+        { inicio: 147, fin: 147, ronda: "Final" }
+    ];
 
-        if (!lines[i]) continue;
+    bloques.forEach(bloque => {
 
-        const cols = lines[i]
-            .split(",")
-            .map(c => c.trim().replace(/"/g, ""));
-		console.log(cols.slice(26, 54));
+        for (let fila = bloque.inicio; fila <= bloque.fin; fila++) {
 
-        const casa = cols[3];
-        const visitante = cols[5];
-        const id = cols[2]; // W73, W74...
+            const line = lines[fila - 1];
+            if (!line) continue;
 
-        if (!id || (!casa && !visitante)) continue;
+            const cols = line
+                .split(",")
+                .map(c => c.trim().replace(/"/g, ""));
 
-        result.push({
-            ronda: detectRound(id),
-            id,
-            casa,
-            visitante,
-            fecha: cols[0],
-            hora: cols[1],
-            golCasa: cols[4] || "",
-            golVisita: cols[6] || ""
-        });
-	
-    }
+            const id = cols[25];
+            const casa = cols[26];
+            const penCasa = cols[27];
+            const golCasa = cols[28];
+            const golVisita = cols[29];
+            const penVisita = cols[30];
+            const visitante = cols[31];
+
+            if (!id) continue;
+
+            result.push({
+                ronda: bloque.ronda,
+                id,
+                fecha: cols[23],
+                hora: cols[24],
+                casa,
+                visitante,
+                golCasa,
+                golVisita,
+                penCasa,
+                penVisita
+            });
+        }
+
+    });
 
     return result;
 }
-
 function parseCSV(csv) {
     const lines = csv.trim().split("\n");
     const sep = lines[0].includes(";") ? ";" : ",";
@@ -6113,10 +6130,14 @@ function renderBracket() {
                                 <td>${getBandera(p.casa)} ${p.casa}</td>
 
                                 <td>
-                                    ${p.golCasa !== "" ? p.golCasa : "-"}
-                                    -
-                                    ${p.golVisita !== "" ? p.golVisita : "-"}
-                                </td>
+   							 		${p.golCasa || "-"} - ${p.golVisita || "-"}
+
+    							${
+       							 	p.penCasa || p.penVisita
+            							? `<br><small>(${p.penCasa || 0}-${p.penVisita || 0})</small>`
+            							: ""
+   								 }
+								</td>
 
                                 <td>${getBandera(p.visitante)} ${p.visitante}</td>
                             </tr>
