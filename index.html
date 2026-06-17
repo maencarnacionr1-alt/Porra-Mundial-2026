@@ -3189,7 +3189,8 @@ body{
 .matches-container {
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
+    justify-content: center; /* Juntamos los bloques al centro */
+    gap: 40px; /* Separación base fija entre parejas */
     flex-grow: 1;
 }
 
@@ -3236,6 +3237,25 @@ body{
     position: relative;
     transition: .25s;
     z-index: 2; /* Por encima de las líneas */
+}
+
+/* 2. La clave: Cada ronda duplica la separación de la anterior para mantener la simetría */
+.round:nth-child(1) .matches-container { gap: 40px; }   /* 1/16 */
+.round:nth-child(2) .matches-container { gap: 160px; }  /* Octavos (Ajusta este número si tus tarjetas son más altas) */
+.round:nth-child(3) .matches-container { gap: 400px; }  /* Cuartos */
+
+/* 3. Cambiamos los porcentajes por píxeles fijos en el conector de parejas */
+.round:not(:last-child) .match-pair::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    /* En vez de top/bottom 25%, usamos el centro exacto del primer y último partido */
+    top: 55px;    /* Centrado en el primer partido de la pareja */
+    bottom: 55px; /* Centrado en el segundo partido de la pareja */
+    width: 20px;
+    border: 2px solid #ccc;
+    border-left: none;
+    z-index: 1;
 }
 
 .match:hover {
