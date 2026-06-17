@@ -3165,10 +3165,10 @@ body{
 .bracket {
     display: flex;
     gap: 40px;
-    align-items: stretch;
+    align-items: stretch; /* Cambiado para que las columnas midan lo mismo */
     overflow-x: auto;
     padding: 20px;
-    background-color: #fcfcfc;
+    background-color: #fcfcfc; /* Un fondo sutil resalta más las tarjetas */
 }
 
 .round {
@@ -3178,87 +3178,45 @@ body{
     flex-direction: column;
 }
 
-.round-title {
+.round h3 {
     text-align: center;
     font-size: 16px;
     color: #333;
-    margin: 0 0 20px 0;
-    height: 30px; /* Altura fija para que todas las columnas empiecen igual */
-    line-height: 30px;
+    margin-bottom: 20px;
 }
 
-/* El secreto: space-around distribuye los elementos garantizando simetría visual */
+/* Contenedor que estira verticalmente los partidos para alinearse con la siguiente ronda */
 .matches-container {
     display: flex;
     flex-direction: column;
     justify-content: space-around;
     flex-grow: 1;
+}
+
+/* Agrupador de parejas de partidos */
+.match-pair {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     position: relative;
+    padding-right: 20px; /* Espacio reservado para la línea derecha */
 }
 
-/* Forzamos una altura exacta a la tarjeta para que el punto medio nunca varíe */
-.match {
-    background: #fff;
-    border-radius: 12px;
-    padding: 10px;
-    box-shadow: 0 2px 8px rgba(0,0,0,.12);
-    position: relative;
-    transition: .25s;
-    height: 90px; /* Altura fija obligatoria para precisión de líneas */
-    box-sizing: border-box;
-    z-index: 2;
-}
-
-.match:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 18px rgba(0,0,0,.18);
-}
-
-/* --- CONECTORES DE LÍNEAS PERFECTAS --- */
-
-/* Línea horizontal que sale de TODOS los partidos hacia la derecha (excepto última ronda) */
-.round:not(:last-child) .match::after {
+/* Línea que sale en forma de "corchete" de cada pareja de partidos hacia la derecha */
+.round:not(:last-child) .match-pair::after {
     content: "";
     position: absolute;
-    right: -20px;
-    top: 50%;
+    right: 0;
+    top: 25%;
+    bottom: 25%;
     width: 20px;
-    border-top: 2px solid #ccc;
+    border: 2px solid #ccc;
+    border-left: none; /* Dejamos abierto el lado izquierdo */
     z-index: 1;
 }
 
-/* El partido IMPAR (el de arriba de la llave) dibuja la línea vertical hacia ABAJO */
-.round:not(:last-child) .match:nth-child(odd)::before {
-    content: "";
-    position: absolute;
-    right: -20px;
-    top: 50%;
-    height: calc(50% + 25vh); /* Dinámico: busca el punto medio */
-    max-height: calc(100% + 150px); /* Ajuste de seguridad por CSS según escala */
-    border-right: 2px solid #ccc;
-    z-index: 1;
-}
-
-/* El partido PAR (el de abajo de la llave) dibuja la línea vertical hacia ARRIBA */
-.round:not(:last-child) .match:nth-child(even)::before {
-    content: "";
-    position: absolute;
-    right: -20px;
-    bottom: 50%;
-    height: calc(50% + 25vh); 
-    max-height: calc(100% + 150px);
-    border-right: 2px solid #ccc;
-    z-index: 1;
-}
-
-/* Para afinar la altura de las líneas verticales en cada ronda de forma exponencial */
-.round:nth-child(1) .match::before { height: 45px; max-height: 45px; }   /* 1/16 */
-.round:nth-child(2) .match::before { height: 90px; max-height: 90px; }   /* Octavos */
-.round:nth-child(3) .match::before { height: 180px; max-height: 180px; } /* Cuartos */
-.round:nth-child(4) .match::before { height: 360px; max-height: 360px; } /* Semifinal */
-
-/* Línea horizontal de entrada por la izquierda para las rondas siguientes */
-.round:not(:first-child) .matches-container .match::before {
+/* Línea recta horizontal que entra por la izquierda a cada partido de las siguientes rondas */
+.round:not(:first-child) .match::before {
     content: "";
     position: absolute;
     left: -20px;
@@ -3268,20 +3226,58 @@ body{
     z-index: 1;
 }
 
-/* --- Tus estilos de contenido interno se mantienen igual --- */
+/* Tus estilos de tarjetas intactos */
+.match {
+    background: #fff;
+    border-radius: 12px;
+    padding: 10px;
+    margin: 18px 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,.12);
+    position: relative;
+    transition: .25s;
+    z-index: 2; /* Por encima de las líneas */
+}
+
+.match:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(0,0,0,.18);
+}
+
 .match-header {
     display: flex;
     justify-content: space-between;
     font-size: 11px;
     color: #777;
-    margin-bottom: 4px;
-    padding-bottom: 4px;
+    margin-bottom: 8px;
+    padding-bottom: 6px;
     border-bottom: 1px solid #ececec;
 }
-.team { display: flex; justify-content: space-between; align-items: center; padding: 2px 0; }
-.team-left { display: flex; align-items: center; gap: 8px; font-size: 13px; }
-.score { font-weight: bold; font-size: 16px; min-width: 20px; text-align: center; }
 
+.team {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 0;
+}
+
+.team-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.team-logo {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+}
+
+.score {
+    font-weight: bold;
+    font-size: 18px;
+    min-width: 20px;
+    text-align: center;
+}
 
 		
     </style>
@@ -6234,57 +6230,76 @@ function renderBracket(partidos){
         "Octavos": [],
         "Cuartos": [],
         "Semifinal": [],
-        "Final": [] // Nota: He quitado 3º puesto temporalmente ya que rompe la simetría de las líneas del árbol principal
+        "3º puesto": [],
+        "Final": []
     };
 
-    partidos.forEach(p => {
-        if(rondas[p.ronda]) rondas[p.ronda].push(p);
-    });
+    partidos.forEach(p => rondas[p.ronda].push(p));
 
     const bracket = document.getElementById("bracket");
     bracket.innerHTML = "";
 
     Object.entries(rondas).forEach(([nombre, lista])=>{
+        // Si la ronda está vacía en tus datos, no la renderizamos
         if(lista.length === 0) return;
 
         const columna = document.createElement("div");
         columna.className = "round";
 
-        // El título se queda arriba, independiente del contenedor de partidos
-        columna.innerHTML = `<h3 class="round-title">${nombre}</h3>`;
+        columna.innerHTML = `<h3>${nombre}</h3>`;
 
+        // Creamos un contenedor interno para aplicar Flexbox a los partidos
         const matchesContainer = document.createElement("div");
         matchesContainer.className = "matches-container";
 
-        // Renderizamos los partidos uno tras otro de forma secuencial
-        lista.forEach(partido => {
-            matchesContainer.innerHTML += `
-            <div class="match">
-                <div class="match-header">
-                    <span>${partido.fecha}</span>
-                    <span>${partido.hora}</span>
-                </div>
-                <div class="team">
-                    <div class="team-left">
-                       ${getBandera(partido.casa)}
-                        <span>${partido.casa}</span>
-                    </div>
-                    <span class="score">${partido.golCasa}</span>
-                </div>
-                <div class="team">
-                    <div class="team-left">
-                        ${getBandera(partido.visitante)}
-                        <span>${partido.visitante}</span>
-                    </div>
-                    <span class="score">${partido.golVisita}</span>
-                </div>
-            </div>
-            `;
-        });
+        // Iteramos los partidos de 2 en 2 para agruparlos en parejas de juego
+        for (let i = 0; i < lista.length; i += 2) {
+            const partido1 = lista[i];
+            const partido2 = lista[i + 1];
+
+            const pairDiv = document.createElement("div");
+            pairDiv.className = "match-pair";
+
+            // Insertamos el primer partido
+            pairDiv.innerHTML += HTMLPartido(partido1);
+
+            // Si existe el segundo partido de la pareja, lo insertamos
+            if (partido2) {
+                pairDiv.innerHTML += HTMLPartido(partido2);
+            }
+
+            matchesContainer.appendChild(pairDiv);
+        }
 
         columna.appendChild(matchesContainer);
         bracket.appendChild(columna);
     });
+}
+
+// Función auxiliar para no repetir el HTML del partido
+function HTMLPartido(partido) {
+    return `
+    <div class="match">
+        <div class="match-header">
+            <span>${partido.fecha}</span>
+            <span>${partido.hora}</span>
+        </div>
+        <div class="team">
+            <div class="team-left">
+               ${getBandera(partido.casa)}
+                <span>${partido.casa}</span>
+            </div>
+            <span class="score">${partido.golCasa}</span>
+        </div>
+        <div class="team">
+            <div class="team-left">
+                ${getBandera(partido.visitante)}
+                <span>${partido.visitante}</span>
+            </div>
+            <span class="score">${partido.golVisita}</span>
+        </div>
+    </div>
+    `;
 }
 
 </script>
