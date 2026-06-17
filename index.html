@@ -3964,7 +3964,9 @@ function parseBracket(csv) {
             const cols = line
                 .split(",")
                 .map(c => c.trim().replace(/"/g, ""));
-
+			
+			const fecha = cols [23];
+			const hora = cols [24];
             const id = cols[25];
             const casa = cols[26];
             const penCasa = cols[27];
@@ -3978,8 +3980,8 @@ function parseBracket(csv) {
             result.push({
                 ronda: bloque.ronda,
                 id,
-                fecha: cols[23],
-                hora: cols[24],
+                fecha,
+                hora,
                 casa,
                 visitante,
                 golCasa,
