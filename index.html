@@ -5003,20 +5003,17 @@ window.showCalendar = function () {
 
 function renderAllGroups() {
 
-    const container = document.getElementById("groupsGrid");
+onst container = document.getElementById("groupsGrid");
     if (!container) return;
 
     const letras = ["A","B","C","D","E","F","G","H","I","J","K","L"];
 
     // ===== MEJORES TERCEROS (TOP 8) =====
-
-	const terceros = groupsData.filter(r =>
-    r.pos &&
-    Number(r.pos) >= 1 &&
-    Number(r.pos) <= 8 &&
-    r.seleccion &&
-    r.seleccion.startsWith("3")
-);
+    const terceros = groupsData.filter(r => 
+        r.seleccion && 
+        r.seleccion.trim() !== "" && 
+        ["1","2","3","4","5","6","7","8"].includes(String(r.pos).trim())
+    );
 
     // ===== GRUPOS =====
     const gruposHTML = letras.map(grupo => {
