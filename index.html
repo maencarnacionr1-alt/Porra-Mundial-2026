@@ -5095,8 +5095,7 @@ const tercerosHTML = `
 
             <tbody>
                 ${terceros
-                    .filter(r => r.seleccion && r.seleccion.trim() !== "" && isNaN(r.pos) === false)
-                    .slice(0, 8)
+                    .filter(r => r.seleccion && r.seleccion.trim() !== "" && ["1","2","3","4","5","6","7","8"].includes(String(r.pos).trim()))
                     .map((r, index) => `
                         <tr class="
                             ${index === 0 ? "group-first" :
@@ -5106,7 +5105,7 @@ const tercerosHTML = `
                             <td>${index + 1}</td>
 
                             <td class="group-team">
-                                ${getBandera(r.seleccion)}
+                                ${getBandera ? getBandera(r.seleccion) : ""}
                                 ${r.seleccion}
                             </td>
 
@@ -5124,7 +5123,6 @@ const tercerosHTML = `
         </table>
     </div>
 `;
-
 
     // ===== RENDER FINAL =====
     container.innerHTML = gruposHTML + tercerosHTML;
