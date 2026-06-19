@@ -3328,6 +3328,67 @@ body{
     text-align: center;
 }
 
+		/* 1. ANIMACIÓN DE ENTRADA EN CASCADA */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Aplicar la animación a las tarjetas de los grupos */
+.group-card {
+    animation: fadeInUp 0.5s ease-out both;
+}
+
+/* Retraso escalonado para que las tablas no aparezcan todas de golpe */
+.group-card:nth-child(1) { animation-delay: 0.1s; }
+.group-card:nth-child(2) { animation-delay: 0.2s; }
+.group-card:nth-child(3) { animation-delay: 0.3s; }
+.group-card:nth-child(4) { animation-delay: 0.4s; }
+/* La tabla de mejores terceros (última) aparecerá al final de la secuencia */
+.group-card:last-child { animation-delay: 0.6s; }
+
+
+/* 2. INTERACCIÓN DINÁMICA AL PASAR EL MOUSE */
+.group-table tbody tr {
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+}
+
+.group-table tbody tr:hover {
+    background-color: rgba(255, 255, 255, 0.08) !important; /* Ilumina el fondo */
+    transform: scale(1.01) translateX(5px); /* Desplaza y agranda sutilmente */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Añade sombra de relieve */
+}
+
+
+/* 3. ANIMACIÓN DE PULSO PARA LOS MEJORES CLASIFICADOS */
+@keyframes pulseGreen {
+    0% { background-color: rgba(46, 204, 113, 0.15); }
+    50% { background-color: rgba(46, 204, 113, 0.3); }
+    100% { background-color: rgba(46, 204, 113, 0.15); }
+}
+
+/* Aplica el pulso suave a las filas destacadas del top 3 de terceros */
+.group-first, .group-second, .group-third {
+    position: relative;
+    animation: pulseGreen 3s infinite ease-in-out;
+}
+
+/* Pequeña transición para las banderas cuando te posicionas sobre el equipo */
+.group-team img {
+    transition: transform 0.2s ease;
+}
+.group-table tbody tr:hover .group-team img {
+    transform: scale(1.2) rotate(3deg); /* Agranda y rota la bandera ligeramente */
+}
+
+
 
 
     </style>
