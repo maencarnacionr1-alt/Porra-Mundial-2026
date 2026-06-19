@@ -5094,8 +5094,8 @@ const tercerosHTML = `
             </thead>
 
             <tbody>
-                ${terceros
-                    .filter(r => r.seleccion && r.seleccion.trim() !== "" && ["1","2","3","4","5","6","7","8"].includes(String(r.pos).trim()))
+                ${terceros && terceros.length > 0 ? terceros
+                    .filter(r => r && r.seleccion && r.seleccion.trim() !== "" && !["Dieciseisavos", "Local", "Visitante"].includes(r.pos))
                     .map((r, index) => `
                         <tr class="
                             ${index === 0 ? "group-first" :
@@ -5105,20 +5105,20 @@ const tercerosHTML = `
                             <td>${index + 1}</td>
 
                             <td class="group-team">
-                                ${getBandera ? getBandera(r.seleccion) : ""}
+                                ${typeof getBandera === "function" ? getBandera(r.seleccion) : ""}
                                 ${r.seleccion}
                             </td>
 
-                            <td>${r.pts || 0}</td>
-                            <td>${r.j || 0}</td>
-                            <td>${r.g || 0}</td>
-                            <td>${r.e || 0}</td>
-                            <td>${r.p || 0}</td>
-                            <td>${r.gf || 0}</td>
-                            <td>${r.gc || 0}</td>
-                            <td>${r.dg || 0}</td>
+                            <td>${r.pts !== undefined && r.pts !== "" ? r.pts : 0}</td>
+                            <td>${r.j !== undefined && r.j !== "" ? r.j : 0}</td>
+                            <td>${r.g !== undefined && r.g !== "" ? r.g : 0}</td>
+                            <td>${r.e !== undefined && r.e !== "" ? r.e : 0}</td>
+                            <td>${r.p !== undefined && r.p !== "" ? r.p : 0}</td>
+                            <td>${r.gf !== undefined && r.gf !== "" ? r.gf : 0}</td>
+                            <td>${r.gc !== undefined && r.gc !== "" ? r.gc : 0}</td>
+                            <td>${r.dg !== undefined && r.dg !== "" ? r.dg : 0}</td>
                         </tr>
-                    `).join("")}
+                    `).join("") : `<tr><td colspan="10" style="text-align:center; padding: 20px;">Esperando datos de la fase de grupos...</td></tr>`}
             </tbody>
         </table>
     </div>
