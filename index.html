@@ -5094,33 +5094,37 @@ const tercerosHTML = `
             </thead>
 
             <tbody>
-                ${tercerosValidos.map((r, index) => `
-                    <tr class="
-                        ${index === 0 ? "group-first" :
-                          index === 1 ? "group-second" :
-                          index === 2 ? "group-third" : ""}
-                    ">
-                        <td>${index + 1}</td>
+                ${terceros
+                    .filter(r => r.seleccion && r.seleccion.trim() !== "" && isNaN(r.pos) === false)
+                    .slice(0, 8)
+                    .map((r, index) => `
+                        <tr class="
+                            ${index === 0 ? "group-first" :
+                              index === 1 ? "group-second" :
+                              index === 2 ? "group-third" : ""}
+                        ">
+                            <td>${index + 1}</td>
 
-                        <td class="group-team">
-                            ${getBandera(r.seleccion)}
-                            ${r.seleccion}
-                        </td>
+                            <td class="group-team">
+                                ${getBandera(r.seleccion)}
+                                ${r.seleccion}
+                            </td>
 
-                        <td>${r.pts || 0}</td>
-                        <td>${r.j || 0}</td>
-                        <td>${r.g || 0}</td>
-                        <td>${r.e || 0}</td>
-                        <td>${r.p || 0}</td>
-                        <td>${r.gf || 0}</td>
-                        <td>${r.gc || 0}</td>
-                        <td>${r.dg || 0}</td>
-                    </tr>
-                `).join("")}
+                            <td>${r.pts || 0}</td>
+                            <td>${r.j || 0}</td>
+                            <td>${r.g || 0}</td>
+                            <td>${r.e || 0}</td>
+                            <td>${r.p || 0}</td>
+                            <td>${r.gf || 0}</td>
+                            <td>${r.gc || 0}</td>
+                            <td>${r.dg || 0}</td>
+                        </tr>
+                    `).join("")}
             </tbody>
         </table>
     </div>
 `;
+
 
     // ===== RENDER FINAL =====
     container.innerHTML = gruposHTML + tercerosHTML;
