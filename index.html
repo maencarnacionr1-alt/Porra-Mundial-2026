@@ -5073,54 +5073,54 @@ function renderAllGroups() {
     }).join("");
 
     // ===== MEJORES TERCEROS TABLA =====
-    const tercerosHTML = `
-        <div class="group-card">
-            <div class="group-title">8 MEJORES TERCEROS (CLASIFICADOS)</div>
+const tercerosHTML = `
+    <div class="group-card">
+        <div class="group-title">8 MEJORES TERCEROS (CLASIFICADOS)</div>
 
-            <table class="group-table">
-                <thead>
-                    <tr>
-                        <th>POS</th>
-                        <th style="text-align:left; padding: 15px;">SELECCIÓN</th>
-                        <th>PTS</th>
-                        <th>J</th>
-                        <th>G</th>
-                        <th>E</th>
-                        <th>P</th>
-                        <th>GF</th>
-                        <th>GC</th>
-                        <th>DG</th>
+        <table class="group-table">
+            <thead>
+                <tr>
+                    <th>POS</th>
+                    <th style="text-align:left; padding: 15px;">SELECCIÓN</th>
+                    <th>PTS</th>
+                    <th>J</th>
+                    <th>G</th>
+                    <th>E</th>
+                    <th>P</th>
+                    <th>GF</th>
+                    <th>GC</th>
+                    <th>DG</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                ${tercerosValidos.map((r, index) => `
+                    <tr class="
+                        ${index === 0 ? "group-first" :
+                          index === 1 ? "group-second" :
+                          index === 2 ? "group-third" : ""}
+                    ">
+                        <td>${index + 1}</td>
+
+                        <td class="group-team">
+                            ${getBandera(r.seleccion)}
+                            ${r.seleccion}
+                        </td>
+
+                        <td>${r.pts || 0}</td>
+                        <td>${r.j || 0}</td>
+                        <td>${r.g || 0}</td>
+                        <td>${r.e || 0}</td>
+                        <td>${r.p || 0}</td>
+                        <td>${r.gf || 0}</td>
+                        <td>${r.gc || 0}</td>
+                        <td>${r.dg || 0}</td>
                     </tr>
-                </thead>
-
-                <tbody>
-                    ${terceros.map((r, index) => `
-                        <tr class="
-                            ${index === 0 ? "group-first" :
-                              index === 1 ? "group-second" :
-                              index === 2 ? "group-third" : ""}
-                        ">
-                            <td>${index + 1}</td>
-
-                            <td class="group-team">
-                                ${getBandera(r.seleccion)}
-                                ${r.seleccion}
-                            </td>
-
-                            <td>${r.pts}</td>
-                            <td>${r.j}</td>
-                            <td>${r.g}</td>
-                            <td>${r.e}</td>
-                            <td>${r.p}</td>
-                            <td>${r.gf}</td>
-                            <td>${r.gc}</td>
-                            <td>${r.dg}</td>
-                        </tr>
-                    `).join("")}
-                </tbody>
-            </table>
-        </div>
-    `;
+                `).join("")}
+            </tbody>
+        </table>
+    </div>
+`;
 
     // ===== RENDER FINAL =====
     container.innerHTML = gruposHTML + tercerosHTML;
