@@ -1562,114 +1562,116 @@ body{
     transform: translateX(22px);
 }
 
-Actualmente tengo estos estilos de la sección que te paso en la imagen, y me gustaría darle animación sin romper nada.
-
 /* =======================================
-   NUEVO LOOK PREMIUM PARA LA TABLA DETALLE PUNTOS
+   NUEVO LOOK PREMIUM PARA LA TABLA DETALLE PUNTOS
 ======================================= */
 .teams-table-wrapper {
-    background: #ffffff;
-    border: 1px solid rgba(0, 0, 0, 0.08);
-    border-radius: 16px;
-    
-    /* CAMBIO CLAVE: Permite deslizar horizontalmente ocultando el desbordamiento vertical */
-    overflow-x: auto;
-    overflow-y: hidden;
-    -webkit-overflow-scrolling: touch; /* Scroll muy suave en iPhone/Android */
-    
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.05);
-    margin-top: 20px;
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 16px;
+    
+    /* CAMBIO CLAVE: Permite deslizar horizontalmente ocultando el desbordamiento vertical */
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch; /* Scroll muy suave en iPhone/Android */
+    
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.05);
+    margin-top: 20px;
 }
+
+.animar-entrada {
+    animation: fadeInUp 0.6s ease-out forwards;
+}		
 
 .teams-table {
-    width: 100%;
-    border-collapse: separate;
-    border-spacing: 0;
-	table-layout: auto;
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    table-layout: auto;
 }
-		
+        
 .teams-table th:nth-child(2),
 .teams-table td:nth-child(2) {
-    min-width: 140px;
+    min-width: 140px;
 }
-
 
 .teams-table th {
-    background: linear-gradient(135deg, var(--soccer-dark) 0%, #242424 100%);
-    color: var(--white) !important;
-    font-weight: 700;
-    text-transform: uppercase;
-    font-size: 0.78rem;
-    letter-spacing: 0.5px;
-    padding: 14px 10px;
-    border-bottom: 3px solid var(--gold);
+    background: linear-gradient(135deg, var(--soccer-dark) 0%, #242424 100%);
+    color: var(--white) !important;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.78rem;
+    letter-spacing: 0.5px;
+    padding: 14px 10px;
+    border-bottom: 3px solid var(--gold);
 }
 
-.teams-table th, 
+.teams-table th, 
 .teams-table td {
-    white-space: nowrap; /* Impide que el texto se divida en varias líneas */
-	padding: 12px 8px;
+    white-space: nowrap; /* Impide que el texto se divida en varias líneas */
+    padding: 12px 8px;
 }
-
 
 .teams-table tbody tr {
-    transition: all 0.2s ease;
-	text-align: center;
+    /* Mantenemos tu transición pero agregamos transform para que el hover sea más fluido */
+    transition: all 0.25s ease;
+    text-align: center;
 }
 
 .teams-table tbody tr:nth-child(even) {
-    background-color: #f9fbf9;
+    background-color: #f9fbf9;
 }
 
 .teams-table tbody tr:hover {
-    background-color: rgba(46, 125, 50, 0.07) !important;
+    background-color: rgba(46, 125, 50, 0.07) !important;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
 }
 
 .teams-table td {
-    padding: 14px 10px;
-    font-size: 0.9rem;
-    color: #333;
-    font-weight: 600;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    padding: 14px 10px;
+    font-size: 0.9rem;
+    color: #333;
+    font-weight: 600;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .teams-table td.points-final {
-    color: var(--pitch-green);
-    font-weight: 800;
-    background-color: rgba(46, 125, 50, 0.03);
+    color: var(--pitch-green);
+    font-weight: 800;
+    background-color: rgba(46, 125, 50, 0.03);
+    transition: all 0.25s ease;
 }
 
 .teams-table tbody tr:hover td.points-final {
-    color: var(--grass-vibrant);
-    font-weight: 900;
+    color: var(--grass-vibrant);
+    font-weight: 900;
+    /* Un ligero destello o escala en la puntuación final al hacer hover */
+    transform: scale(1.03);
 }
 
-	/* Contenedor de cada grupo */
+/* Contenedor de cada grupo */
 .grupo-card {
-    background: white;
-    padding: 15px;
-    border-radius: 20px;
-    border: 1px solid #eee;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    background: white;
+    padding: 15px;
+    border-radius: 20px;
+    border: 1px solid #eee;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
 }
 
 .grupo-card h3 {
-    margin: 0 0 10px 0;
-    color: var(--pitch-green);
-    font-family: 'Black Ops One', cursive;
-    font-size: 1rem;
+    margin: 0 0 10px 0;
+    color: var(--pitch-green);
+    font-family: 'Black Ops One', cursive;
+    font-size: 1rem;
 }
 
-		
-
-.animar-entrada {
-    animation: fadeInUp 0.5s ease-out forwards;
-}
-
+/* =======================================
+   KEYFRAMES (EFECTOS DE ANIMACIÓN)
+======================================= */
 @keyframes fadeInUp {
     from {
         opacity: 0;
-        transform: translateY(12px);
+        transform: translateY(15px);
     }
     to {
         opacity: 1;
