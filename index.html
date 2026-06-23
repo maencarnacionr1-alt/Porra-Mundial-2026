@@ -1577,20 +1577,22 @@ body{
     
     box-shadow: 0 12px 30px rgba(0, 0, 0, 0.05);
     margin-top: 20px;
+
+    /* ANIMACIÓN DE ENTRADA: Aparece de forma suave al cargar */
+    animation: fadeInUp 0.6s ease-out forwards;
 }
 
 .teams-table {
     width: 100%;
     border-collapse: separate;
     border-spacing: 0;
-	table-layout: auto;
+    table-layout: auto;
 }
-		
+        
 .teams-table th:nth-child(2),
 .teams-table td:nth-child(2) {
     min-width: 140px;
 }
-
 
 .teams-table th {
     background: linear-gradient(135deg, var(--soccer-dark) 0%, #242424 100%);
@@ -1606,13 +1608,13 @@ body{
 .teams-table th, 
 .teams-table td {
     white-space: nowrap; /* Impide que el texto se divida en varias líneas */
-	padding: 12px 8px;
+    padding: 12px 8px;
 }
 
-
 .teams-table tbody tr {
-    transition: all 0.2s ease;
-	text-align: center;
+    /* Mantenemos tu transición pero agregamos transform para que el hover sea más fluido */
+    transition: all 0.25s ease;
+    text-align: center;
 }
 
 .teams-table tbody tr:nth-child(even) {
@@ -1621,6 +1623,9 @@ body{
 
 .teams-table tbody tr:hover {
     background-color: rgba(46, 125, 50, 0.07) !important;
+    /* Efecto Premium: La fila se eleva sutilmente y gana una sombra ligera */
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
 }
 
 .teams-table td {
@@ -1635,14 +1640,17 @@ body{
     color: var(--pitch-green);
     font-weight: 800;
     background-color: rgba(46, 125, 50, 0.03);
+    transition: all 0.25s ease;
 }
 
 .teams-table tbody tr:hover td.points-final {
     color: var(--grass-vibrant);
     font-weight: 900;
+    /* Un ligero destello o escala en la puntuación final al hacer hover */
+    transform: scale(1.03);
 }
 
-	/* Contenedor de cada grupo */
+/* Contenedor de cada grupo */
 .grupo-card {
     background: white;
     padding: 15px;
@@ -1658,6 +1666,19 @@ body{
     font-size: 1rem;
 }
 
+/* =======================================
+   KEYFRAMES (EFECTOS DE ANIMACIÓN)
+======================================= */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
 /* ==================================
    PLAYER PREMIUM LAYOUT
 ================================== */
