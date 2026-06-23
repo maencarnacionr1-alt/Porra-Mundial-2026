@@ -1578,11 +1578,7 @@ body{
     box-shadow: 0 12px 30px rgba(0, 0, 0, 0.05);
     margin-top: 20px;
 }
-
-.animar-entrada {
-    animation: fadeInUp 0.6s ease-out forwards;
-}		
-
+		
 .teams-table {
     width: 100%;
     border-collapse: separate;
@@ -1665,13 +1661,16 @@ body{
     font-size: 1rem;
 }
 
-/* =======================================
-   KEYFRAMES (EFECTOS DE ANIMACIÓN)
-======================================= */
+.animar-entrada {
+    /* Añadimos 'both' para que mantenga los estados iniciales y finales de forma estricta */
+    animation: fadeInUp 0.4s cubic-bezier(0.25, 1, 0.5, 1) both;
+    will-change: transform, opacity; /* Le dice al navegador que optimice esta animación mediante tarjeta gráfica */
+}
+
 @keyframes fadeInUp {
     from {
         opacity: 0;
-        transform: translateY(15px);
+        transform: translateY(8px); /* Reducimos el salto de 12px a 8px para que sea menos brusco */
     }
     to {
         opacity: 1;
@@ -4837,16 +4836,21 @@ window.loadRankingPlayer = function () {
     }).join("");
 
     /* ========================================================
-       CÓDIGO AGREGADO: REINICIAR LA ANIMACIÓN DE ENTRADA
+       CÓDIGO OPTIMIZADO: EVITA EL PARPADEO (FLICKERING)
     ======================================================== */
-    // Removemos la clase de animación por si ya existía de un clic previo
+    // 1. Aseguramos que el contenedor esté visible
+    container.style.display = "block";
+
+    // 2. Quitamos la clase de animación inmediatamente
     container.classList.remove("animar-entrada");
 
-    // Forzamos un reflow en el navegador para que detecte la remoción de la clase
-    void container.offsetWidth;
-
-    // Volvemos a inyectar la clase para disparar el efecto CSS
-    container.classList.add("animar-entrada");
+    // 3. Usamos requestAnimationFrame para esperar a que el navegador 
+    // termine de renderizar el nuevo HTML antes de iniciar la animación
+    requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+            container.classList.add("animar-entrada");
+        });
+    });
 };
 window.openPlayerFromRanking = function(i){
     showPlayer();
