@@ -1578,18 +1578,19 @@ body{
     box-shadow: 0 12px 30px rgba(0, 0, 0, 0.05);
     margin-top: 20px;
 }
-		
+
 .teams-table {
     width: 100%;
     border-collapse: separate;
     border-spacing: 0;
-    table-layout: auto;
+	table-layout: auto;
 }
-        
+		
 .teams-table th:nth-child(2),
 .teams-table td:nth-child(2) {
     min-width: 140px;
 }
+
 
 .teams-table th {
     background: linear-gradient(135deg, var(--soccer-dark) 0%, #242424 100%);
@@ -1605,13 +1606,13 @@ body{
 .teams-table th, 
 .teams-table td {
     white-space: nowrap; /* Impide que el texto se divida en varias líneas */
-    padding: 12px 8px;
+	padding: 12px 8px;
 }
 
+
 .teams-table tbody tr {
-    /* Mantenemos tu transición pero agregamos transform para que el hover sea más fluido */
-    transition: all 0.25s ease;
-    text-align: center;
+    transition: all 0.2s ease;
+	text-align: center;
 }
 
 .teams-table tbody tr:nth-child(even) {
@@ -1620,7 +1621,6 @@ body{
 
 .teams-table tbody tr:hover {
     background-color: rgba(46, 125, 50, 0.07) !important;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
 }
 
 .teams-table td {
@@ -1635,17 +1635,14 @@ body{
     color: var(--pitch-green);
     font-weight: 800;
     background-color: rgba(46, 125, 50, 0.03);
-    transition: all 0.25s ease;
 }
 
 .teams-table tbody tr:hover td.points-final {
     color: var(--grass-vibrant);
     font-weight: 900;
-    /* Un ligero destello o escala en la puntuación final al hacer hover */
-    transform: scale(1.03);
 }
 
-/* Contenedor de cada grupo */
+	/* Contenedor de cada grupo */
 .grupo-card {
     background: white;
     padding: 15px;
@@ -1661,22 +1658,6 @@ body{
     font-size: 1rem;
 }
 
-.animar-entrada {
-    /* Añadimos 'both' para que mantenga los estados iniciales y finales de forma estricta */
-    animation: fadeInUp 0.4s cubic-bezier(0.25, 1, 0.5, 1) both;
-    will-change: transform, opacity; /* Le dice al navegador que optimice esta animación mediante tarjeta gráfica */
-}
-
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(8px); /* Reducimos el salto de 12px a 8px para que sea menos brusco */
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
 /* ==================================
    PLAYER PREMIUM LAYOUT
 ================================== */
@@ -4724,54 +4705,59 @@ window.loadRankingPlayer = function () {
         rankingOrdenado.findIndex(p => p.name === player.name) + 1;
 
     // Cabecera
-    document.getElementById("playerNameBig").textContent = player.name;
-    document.getElementById("playerAvatarBig").src = player.avatar || "";
+   document.getElementById("playerNameBig").textContent = player.name;
+document.getElementById("playerAvatarBig").src = player.avatar || "";
 
-    // TOTAL DINÁMICO SEGÚN JORNADA
-    let totalVisual;
+// TOTAL DINÁMICO SEGÚN JORNADA
+let totalVisual;
 
-    if (jornadaSelected === "Total") {
-        totalVisual = player.total || "0";
-    } else {
-        const claveJornada = jornadaSelected.toLowerCase();
+if (jornadaSelected === "Total") {
 
-        const sumaJornada = player.teams.reduce((total, t) => {
-            const jornada =
-                parseFloat(String(t[claveJornada] || 0).replace(",", ".")) || 0;
+    totalVisual = player.total || "0";
 
-            const el16 =
-                parseFloat(String(t.dieciseisavos || 0).replace(",", ".")) || 0;
+} else {
 
-            const el8 =
-                parseFloat(String(t.octavos || 0).replace(",", ".")) || 0;
+    const claveJornada = jornadaSelected.toLowerCase();
 
-            const el4 =
-                parseFloat(String(t.cuartos || 0).replace(",", ".")) || 0;
+    const sumaJornada = player.teams.reduce((total, t) => {
 
-            const semi =
-                parseFloat(String(t.semis || 0).replace(",", ".")) || 0;
+        const jornada =
+            parseFloat(String(t[claveJornada] || 0).replace(",", ".")) || 0;
 
-            const fin =
-                parseFloat(String(t.final || 0).replace(",", ".")) || 0;
+        const el16 =
+            parseFloat(String(t.dieciseisavos || 0).replace(",", ".")) || 0;
 
-            const terc =
-                parseFloat(String(t.terceros || 0).replace(",", ".")) || 0;
+        const el8 =
+            parseFloat(String(t.octavos || 0).replace(",", ".")) || 0;
 
-            return total + jornada + el16 + el8 + el4 + semi + fin + terc;
-        }, 0);
+        const el4 =
+            parseFloat(String(t.cuartos || 0).replace(",", ".")) || 0;
 
-        const preguntas =
-            parseFloat(String(player.preguntas || 0).replace(",", ".")) || 0;
+        const semi =
+            parseFloat(String(t.semis || 0).replace(",", ".")) || 0;
 
-        totalVisual = (sumaJornada + preguntas)
-            .toFixed(2)
-            .replace(".", ",");
-    }
+        const fin =
+            parseFloat(String(t.final || 0).replace(",", ".")) || 0;
 
-    document.getElementById("statTotal").textContent = formatearPuntos(totalVisual);
-        
-    document.getElementById("statPreguntas").textContent = player.preguntas || "-";
-    document.getElementById("statPos").textContent = posicionReal + "º";
+        const terc =
+            parseFloat(String(t.terceros || 0).replace(",", ".")) || 0;
+
+        return total + jornada + el16 + el8 + el4 + semi + fin + terc;
+
+    }, 0);
+
+    const preguntas =
+        parseFloat(String(player.preguntas || 0).replace(",", ".")) || 0;
+
+    totalVisual = (sumaJornada + preguntas)
+        .toFixed(2)
+        .replace(".", ",");
+}
+
+document.getElementById("statTotal").textContent = formatearPuntos(totalVisual);
+	
+document.getElementById("statPreguntas").textContent = player.preguntas || "-";
+document.getElementById("statPos").textContent = posicionReal + "º";
 
     // Tabla de equipos
     document.getElementById("teamsBody").innerHTML = player.teams.map((t, idx) => {
@@ -4782,7 +4768,9 @@ window.loadRankingPlayer = function () {
         if (jornadaSelected !== "Total") {
 
             const claveJornada = jornadaSelected.toLowerCase();
+
             const valorJornada = t[claveJornada] || 0;
+
             const puntosJornada =
                 parseFloat(String(valorJornada).replace(",", ".")) || 0;
 
@@ -4829,29 +4817,13 @@ window.loadRankingPlayer = function () {
                 <td>${formatearPuntos(t.terceros)}</td>
 
                 <td class="points-final">
-                   ${formatearPuntos(puntosTotalFilaVisual)}
+               ${formatearPuntos(puntosTotalFilaVisual)}
               </td>
             </tr>
         `;
     }).join("");
-
-    /* ========================================================
-       CÓDIGO OPTIMIZADO: EVITA EL PARPADEO (FLICKERING)
-    ======================================================== */
-    // 1. Aseguramos que el contenedor esté visible
-    container.style.display = "block";
-
-    // 2. Quitamos la clase de animación inmediatamente
-    container.classList.remove("animar-entrada");
-
-    // 3. Usamos requestAnimationFrame para esperar a que el navegador 
-    // termine de renderizar el nuevo HTML antes de iniciar la animación
-    requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-            container.classList.add("animar-entrada");
-        });
-    });
 };
+
 window.openPlayerFromRanking = function(i){
     showPlayer();
     const player = data[i];
