@@ -4081,10 +4081,13 @@ equiposRows.forEach(r => {
   console.log("MATCHES DATA:");
   console.log(matchesData.slice(0,5));
 
-  // CORREGIDO: Filtramos solo las filas que tengan grupo y selección real para evitar celdas vacías del CSV
-  const filasGrupos = groupsData.filter(r => r.grupo && r.grupo.trim() !== "" && r.seleccion && r.seleccion.trim() !== "");
+  // CORREGIDO: Eliminamos celdas vacías Y TAMBIÉN las filas de cabecera repetidas ("seleccion")
+  const filasGrupos = groupsData.filter(r => 
+      r.grupo && r.grupo.trim() !== "" && 
+      r.seleccion && r.seleccion.trim() !== "" && 
+      r.seleccion.trim().toLowerCase() !== "seleccion"
+  );
 
-  
   console.log("--- Analizando partidos jugados por equipo ---");
   console.table(filasGrupos.map(r => ({ 
       Equipo: r.seleccion, 
