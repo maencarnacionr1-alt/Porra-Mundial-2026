@@ -4084,6 +4084,14 @@ equiposRows.forEach(r => {
   // CORREGIDO: Filtramos solo las filas que tengan grupo y selección real para evitar celdas vacías del CSV
   const filasGrupos = groupsData.filter(r => r.grupo && r.grupo.trim() !== "" && r.seleccion && r.seleccion.trim() !== "");
 
+  
+  console.log("--- Analizando partidos jugados por equipo ---");
+  console.table(filasGrupos.map(r => ({ 
+      Equipo: r.seleccion, 
+      PartidosJugados: r.j, 
+      Tiene3oMas: Number(r.j) >= 3 
+  })));
+
   faseGruposTerminada =
       filasGrupos.length > 0 &&
       filasGrupos.every(r => Number(r.j) >= 3);
