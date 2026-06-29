@@ -4854,6 +4854,14 @@ window.openPlayerFromRanking = function(i){
 };
 
 function renderPredictionsByPlayer(p, puntos) {
+
+	  // === NUEVO: DIAGNÓSTICO DE PUNTOS ===
+    console.log("--- Inspeccionando el objeto puntos ---");
+    console.log("Objeto puntos completo recibido:", puntos);
+    if (puntos) {
+        console.log("Ejemplo de claves esperadas en Grupos (PTS_2 a PTS_33):");
+        console.log("¿Existe PTS_2?:", puntos.PTS_2, "| ¿Existe PTS_14?:", puntos.PTS_14);
+    }
 	
     const c = document.getElementById("predictionsGlobalView");
     if (!c) return;
