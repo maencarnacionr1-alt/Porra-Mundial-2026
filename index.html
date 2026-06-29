@@ -4855,7 +4855,7 @@ window.openPlayerFromRanking = function(i){
 
 function renderPredictionsByPlayer(p, puntos) {
 
-	  // === NUEVO: DIAGNÓSTICO DE PUNTOS ===
+    // === DIAGNÓSTICO DE PUNTOS ===
     console.log("--- Inspeccionando el objeto puntos ---");
     console.log("Objeto puntos completo recibido:", puntos);
     if (puntos) {
@@ -4898,18 +4898,17 @@ function renderPredictionsByPlayer(p, puntos) {
                         const valor = p[`${tipo} Grupo ${g}`];
                         if (!valor) return "";
 
-						let badge = "";
+						let valorPuntos = "";
 
-  							  if (tipo === "Primero") {
-        						badge = getBadge(puntos?.[`PTS_${idx + 2}`]);
-   							 }
-
-					   else if (tipo === "Segundo") {
-    							badge = getBadge(puntos?.[`PTS_${idx + 14}`]);
-							}
+  						if (tipo === "Primero") {
+        					valorPuntos = puntos?.[`PTS_${idx + 2}`];
+   						}
+					    else if (tipo === "Segundo") {
+    						valorPuntos = puntos?.[`PTS_${idx + 14}`];
+						}
 						else if (tipo === "Tercero") {
-   								 badge = getBadge(puntos?.[`PTS_${idx + 26}`]);
-							}
+   							valorPuntos = puntos?.[`PTS_${idx + 26}`];
+						}
 						
                         return `
                             <div class="top8-item-row">
@@ -4917,7 +4916,7 @@ function renderPredictionsByPlayer(p, puntos) {
                                 <div class="top8-team-info">
                                     ${getBandera(valor)} 
                                     <span class="top8-team-name">${valor}</span>
-									 ${badge}
+									 ${getBadgeDinamico(valorPuntos, valor)}
                                 </div>
                             </div>`;
                     }).join("")}
@@ -4925,20 +4924,20 @@ function renderPredictionsByPlayer(p, puntos) {
             `).join("")}
         </div>
 
-                <!-- 3. PREMIOS ESPECIALES -->
+        <!-- 3. PREMIOS ESPECIALES -->
         <div class="prediction-card">
             <div class="prediction-section-title">🔥 PREMIOS ESPECIALES</div>
             <div class="prediction-grid-premios">
                 <div class="prediction-row">
                     <div class="prediction-team-info">
                         ⚽ &nbsp; <span class="prediction-team-name"><b>Goleador:</b> ${p["Maxímo Goleador"] || "-"}</span>
-						${getBadge(puntos?.PTS_34)}
+						${getBadgeDinamico(puntos?.PTS_34, p["Maxímo Goleador"])}
                     </div>
                 </div>
                 <div class="prediction-row">
                     <div class="prediction-team-info">
                         🧤 &nbsp; <span class="prediction-team-name"><b>Menos Goleado:</b> ${p["Menos Goleado"] || "-"}</span>
-						${getBadge(puntos?.PTS_35)}
+						${getBadgeDinamico(puntos?.PTS_35, p["Menos Goleado"])}
                     </div>
                 </div>
             </div>
@@ -4949,26 +4948,30 @@ function renderPredictionsByPlayer(p, puntos) {
         <div class="prediction-card">
             <div class="prediction-section-title">🏁 ELIMINATORIAS</div>
             ${['Octavos','Cuartos','Semifinal','Final'].map((fase, i) => {
-                const cantidades = [16, 8, 4, 2];
+                const cantidades =;
                 return `
                     <h3 class="group-mini-title">${fase}</h3>
                     <div class="top8-grid-container">
-                        ${Array.from({ length: cantidades[i] }, (_, j) => `
+                        ${Array.from({ length: cantidades[i] }, (_, j) => {
+                            const equipoPredicho = p[`${fase} ${j + 1}`];
+                            
+                            let valorPuntos = fase === "Octavos"
+            							? puntos?.[`PTS_${j + 36}`]
+        								: fase === "Cuartos"
+            							? puntos?.[`PTS_${j + 52}`]
+        								: fase === "Semifinal"
+            							? puntos?.[`PTS_${j + 60}`]
+        								: puntos?.[`PTS_${j + 64}`];
+
+                            return `
                             <div class="top8-item-row">
                                 <div class="top8-team-info">
-                                    ${getBandera(p[`${fase} ${j + 1}`])} 
-                                    <span class="top8-team-name">${p[`${fase} ${j + 1}`] || "-"}</span>
-									${fase === "Octavos"
-            							? getBadge(puntos?.[`PTS_${j + 36}`])
-        								: fase === "Cuartos"
-            							? getBadge(puntos?.[`PTS_${j + 52}`])
-        								: fase === "Semifinal"
-            							? getBadge(puntos?.[`PTS_${j + 60}`])
-        								: getBadge(puntos?.[`PTS_${j + 64}`])
-   									 }
+                                    ${getBandera(equipoPredicho)} 
+                                    <span class="top8-team-name">${equipoPredicho || "-"}</span>
+									${getBadgeDinamico(valorPuntos, equipoPredicho)}
                                 </div>
-                            </div>
-                        `).join("")}
+                            </div>`;
+                        }).join("")}
                     </div>
                 `;
             }).join("")}
@@ -4981,19 +4984,19 @@ function renderPredictionsByPlayer(p, puntos) {
                 <div class="top8-item-row">
                     <div class="top8-team-info">
                         🥇 <span class="top8-team-name">${p["Campeón"] || "-"}</span>
-						${getBadge(puntos?.PTS_66)}
+						${getBadgeDinamico(puntos?.PTS_66, p["Campeón"])}
                     </div>
                 </div>
                 <div class="top8-item-row">
                     <div class="top8-team-info">
                         🥈 <span class="top8-team-name">${p["Subcampeón"] || "-"}</span>
-						${getBadge(puntos?.PTS_67)}
+						${getBadgeDinamico(puntos?.PTS_67, p["Subcampeón"])}
                     </div>
                 </div>
                 <div class="top8-item-row">
                     <div class="top8-team-info">
                         🥉 <span class="top8-team-name">${p["Tercero"] || "-"}</span>
-						${getBadge(puntos?.PTS_68)}
+						${getBadgeDinamico(puntos?.PTS_68, p["Tercero"])}
                     </div>
                 </div>
             </div>
@@ -5002,6 +5005,30 @@ function renderPredictionsByPlayer(p, puntos) {
     `;
 }
 
+function getBadgeDinamico(valorPuntos, nombreEquipo) {
+    // 1. Si no hay un equipo válido seleccionado, no mostramos nada
+    if (!nombreEquipo || nombreEquipo === "-" || nombreEquipo.trim() === "") {
+        return "";
+    }
+
+    // 2. Si el sistema ya cargó y calculó puntos reales en el JSON (puntos > 0 o puntos === 0)
+    if (valorPuntos !== undefined && valorPuntos !== null && valorPuntos !== "") {
+        return Number(valorPuntos) > 0
+            ? '<div class="estado-badge estado-ok">✓</div>'
+            : '<div class="estado-badge estado-ko">✕</div>';
+    }
+
+    // 3. Si los puntos en el JSON están vacíos (""), recurrimos al validador en vivo por equipos
+    if (typeof faseGruposTerminada !== "undefined" && faseGruposTerminada) {
+        if (typeof equiposEliminados !== "undefined" && equiposEliminados.includes(nombreEquipo)) {
+            return '<div class="estado-badge estado-ko">✕</div>'; // Eliminado -> Rojo
+        }
+        return '<div class="estado-badge estado-ok">✓</div>'; // Sigue vivo -> Verde
+    }
+
+    // Si la fase de grupos no ha terminado y no hay puntos, no se muestra nada todavía
+    return "";
+}	
 	
 window.showPlayer = function () {
 
