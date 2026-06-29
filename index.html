@@ -4925,30 +4925,24 @@ function renderPredictionsByPlayer(p, puntos) {
             `).join("")}
         </div>
 
-                    <!-- 3. PREMIOS ESPECIALES -->
+                           <!-- 3. PREMIOS ESPECIALES -->
         <div class="prediction-card">
             <div class="prediction-section-title">🔥 PREMIOS ESPECIALES</div>
-            <div class="prediction-grid-premios">
+            <div class="top8-grid-container">
                 
                 <!-- Goleador -->
-                <div class="prediction-row">
-                    <div class="prediction-team-info">
-                        ⚽ &nbsp; 
-                        <span class="prediction-team-name">
-                            <b>Goleador:</b> ${p["Maxímo Goleador"] || "-"}
-                            &nbsp; ${getBadge(puntos?.PTS_34)}
-                        </span>
+                <div class="top8-item-row">
+                    <div class="top8-team-info">
+                        ⚽ &nbsp; <span class="top8-team-name"><b>Goleador:</b> ${p["Maxímo Goleador"] || "-"}</span>
+                        ${getBadge(puntos?.[`PTS_34`]) || getBadge(puntos?.[0]?.[`PTS_34`])}
                     </div>
                 </div>
                 
                 <!-- Menos Goleado -->
-                <div class="prediction-row">
-                    <div class="prediction-team-info">
-                        🧤 &nbsp; 
-                        <span class="prediction-team-name">
-                            <b>Menos Goleado:</b> ${p["Menos Goleado"] || "-"}
-                            &nbsp; ${getBadge(puntos?.PTS_35)}
-                        </span>
+                <div class="top8-item-row">
+                    <div class="top8-team-info">
+                        🧤 &nbsp; <span class="top8-team-name"><b>Menos Goleado:</b> ${p["Menos Goleado"] || "-"}</span>
+                        ${getBadge(puntos?.[`PTS_35`]) || getBadge(puntos?.[0]?.[`PTS_35`])}
                     </div>
                 </div>
 
