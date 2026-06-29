@@ -4930,26 +4930,19 @@ function renderPredictionsByPlayer(p, puntos) {
             <div class="prediction-section-title">🔥 PREMIOS ESPECIALES</div>
             <div class="prediction-grid-premios">
                 <div class="prediction-row">
-                    <div class="prediction-team-info" style="display: flex; align-items: center; gap: 8px;">
-                        ⚽ &nbsp; 
-                        <span class="prediction-team-name">
-                            <b>Goleador:</b> ${p["Maxímo Goleador"] || "-"}
-                        </span>
-						${getBadge(puntos?.[`PTS_34`])}
+                    <div class="prediction-team-info">
+                        ⚽ &nbsp; <span class="prediction-team-name"><b>Goleador:</b> ${p["Maxímo Goleador"] || "-"}</span>
+						${getBadgeDinamico(puntos?.PTS_34, p["Maxímo Goleador"])}
                     </div>
                 </div>
                 <div class="prediction-row">
-                    <div class="prediction-team-info" style="display: flex; align-items: center; gap: 8px;">
-                        🧤 &nbsp; 
-                        <span class="prediction-team-name">
-                            <b>Menos Goleado:</b> ${p["Menos Goleado"] || "-"}
-                        </span>
-						${getBadge(puntos?.[`PTS_35`])}
+                    <div class="prediction-team-info">
+                        🧤 &nbsp; <span class="prediction-team-name"><b>Menos Goleado:</b> ${p["Menos Goleado"] || "-"}</span>
+						${getBadgeDinamico(puntos?.PTS_35, p["Menos Goleado"])}
                     </div>
                 </div>
             </div>
         </div>
-
 
 
         <!-- 4. ELIMINATORIAS -->
