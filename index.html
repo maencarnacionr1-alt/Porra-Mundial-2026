@@ -4944,15 +4944,15 @@ function renderPredictionsByPlayer(p, puntos) {
         </div>
 
 
-               <!-- 4. ELIMINATORIAS -->
+        <!-- 4. ELIMINATORIAS -->
         <div class="prediction-card">
             <div class="prediction-section-title">🏁 ELIMINATORIAS</div>
             ${['Octavos','Cuartos','Semifinal','Final'].map((fase, i) => {
-                const totalItems = (fase === 'Octavos') ? 16 : (fase === 'Cuartos') ? 8 : (fase === 'Semifinal') ? 4 : 2;
+                const cantidades =;
                 return `
                     <h3 class="group-mini-title">${fase}</h3>
                     <div class="top8-grid-container">
-                        ${Array.from({ length: totalItems }, (_, j) => {
+                        ${Array.from({ length: cantidades[i] }, (_, j) => {
                             const equipoPredicho = p[`${fase} ${j + 1}`];
                             
                             let valorPuntos = fase === "Octavos"
@@ -4976,7 +4976,6 @@ function renderPredictionsByPlayer(p, puntos) {
                 `;
             }).join("")}
         </div>
-
 
         <!-- 5. PODIO FINAL -->
         <div class="prediction-card">
