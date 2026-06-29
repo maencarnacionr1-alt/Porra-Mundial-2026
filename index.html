@@ -4935,7 +4935,7 @@ function renderPredictionsByPlayer(p, puntos) {
                         <span class="prediction-team-name">
                             <b>Goleador:</b> ${p["Maxímo Goleador"] || "-"}
                         </span>
-						${getBadge(puntos?.PTS_34)}
+						${getBadge(puntos?.[`PTS_34`])}
                     </div>
                 </div>
                 <div class="prediction-row">
@@ -4944,7 +4944,7 @@ function renderPredictionsByPlayer(p, puntos) {
                         <span class="prediction-team-name">
                             <b>Menos Goleado:</b> ${p["Menos Goleado"] || "-"}
                         </span>
-						${getBadge(puntos?.PTS_35)}
+						${getBadge(puntos?.[`PTS_35`])}
                     </div>
                 </div>
             </div>
