@@ -4044,32 +4044,36 @@ function actualizarCintaPartidos(partidos) {
     let htmlPartidos = "";
 
     partidos.forEach(partido => {
-        // Mapeo basado en la estructura de tu array de 13 elementos:
-        const fase = partido[3];          // "1/16"
-        const hora = partido[5];          // "21:00"
-        const minutoEnvivo = partido[6];  // "73" (si está en juego)
-        const equipoLocal = partido[7];   // "Sudáfrica"
-        const golesLocal = partido[9];    // "0"
-        const golesVisitante = partido[10];// "1"
-        const equipoVisitante = partido[12];// "Canadá"
+        // Mapeo exacto con las claves reales de tu objeto de Google Sheets
+        const ronda = partido.ronda || "";
+        const hora = partido.hora || "--:--";
+        const equipoLocal = partido.casa || "LOC";
+        const equipoVisitante = partido.visitante || "VIS";
+        const golesLocal = partido.golCasa;
+        const golesVisitante = partido.golVisita;
 
-        // Forzar nombres cortos de 3 letras para que quepan bien en la cinta
-        const localCorto = equipoLocal ? equipoLocal.substring(0, 3).toUpperCase() : "LOC";
-        const visitanteCorto = equipoVisitante ? equipoVisitante.substring(0, 3).toUpperCase() : "VIS";
+        // Forzar nombres cortos de 3 letras (SUD, CAN, etc.) para que la cinta quede limpia
+        const localCorto = equipoLocal ? equipoLocal.toString().substring(0, 3).toUpperCase() : "LOC";
+        const visitanteCorto = equipoVisitante ? equipoVisitante.toString().substring(0, 3).toUpperCase() : "VIS";
 
-        // 1. PARTIDO EN VIVO: Tiene un minuto registrado y no está finalizado
-        if (minutoEnvivo && minutoEnvivo.trim() !== "" && fase !== "Finalizado") {
+        // Determinar el estado del partido basándonos en tus datos
+        const tieneGoles = golesLocal !== "" && golesVisitante !== "" && golesLocal !== null && golesVisitante !== null;
+        const esFinalizado = ronda.toLowerCase().includes("finalizado"); // Por si tu hijo escribe "Finalizado" en la ronda
+
+        // 1. PARTIDO EN VIVO (Tiene goles registrados pero la ronda no está marcada como finalizada)
+        // Nota: Si tu hijo implementa un campo 'minuto' o 'estado', puedes cambiar esta condición
+        if (tieneGoles && !esFinalizado) {
             htmlPartidos += `
                 <div class="ticker-match live">
-                    <span class="match-status">${minutoEnvivo}'</span>
+                    <span class="match-status">En Vivo</span>
                     <span class="match-team">⚽ ${localCorto}</span>
                     <span class="match-score">${golesLocal} - ${golesVisitante}</span>
                     <span class="match-team">⚽ ${visitanteCorto}</span>
                 </div>
             `;
         } 
-        // 2. PARTIDO FINALIZADO: Tiene goles y la fase o estado indica término
-        else if (golesLocal !== "" && golesVisitante !== "" && golesLocal !== null && golesVisitante !== null) {
+        // 2. PARTIDO FINALIZADO (Tiene goles y asumimos que terminó si es una fecha pasada)
+        else if (tieneGoles) {
             htmlPartidos += `
                 <div class="ticker-match">
                     <span class="match-time" style="color: #888;">Fin</span>
@@ -4079,11 +4083,11 @@ function actualizarCintaPartidos(partidos) {
                 </div>
             `;
         } 
-        // 3. PARTIDO PROGRAMADO: Aún no se ha jugado
+        // 3. PARTIDO PROGRAMADO (No hay goles en la hoja aún)
         else {
             htmlPartidos += `
                 <div class="ticker-match">
-                    <span class="match-time">${hora || "--:--"}</span>
+                    <span class="match-time">${hora}</span>
                     <span class="match-team">⚽ ${localCorto}</span>
                     <span class="match-score">-</span>
                     <span class="match-team">⚽ ${visitanteCorto}</span>
@@ -4092,7 +4096,7 @@ function actualizarCintaPartidos(partidos) {
         }
     });
 
-    // Inyectamos de forma idéntica en los bloques A y B para mantener la ilusión del bucle infinito
+    // Inyectamos de forma idéntica en los bloques A y B para mantener el bucle infinito
     const trackContainer = document.querySelector(".mundial-ticker-track");
     if (trackContainer && htmlPartidos !== "") {
         trackContainer.innerHTML = `
@@ -4101,7 +4105,6 @@ function actualizarCintaPartidos(partidos) {
         `;
     }
 }
-
 
 </script>
 </div>
