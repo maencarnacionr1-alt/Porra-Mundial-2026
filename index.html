@@ -3389,6 +3389,94 @@ body{
     transform: scale(1.2) rotate(3deg); /* Agranda y rota la bandera ligeramente */
 }
 
+/* --- CONTENEDOR PRINCIPAL DE LA CINTA --- */
+.mundial-ticker-container {
+    width: 100%;
+    background-color: #1A1A1A; /* Mismo negro de tu cabecera actual */
+    border-bottom: 2px solid #2a2a2a; /* Línea sutil de separación */
+    overflow: hidden;
+    position: relative;
+    box-sizing: border-box;
+    font-family: sans-serif; /* Cambia por la fuente de tu web si lo deseas */
+}
+
+/* El riel que contiene ambos bloques */
+.mundial-ticker-track {
+    display: flex;
+    width: max-content;
+    animation: ticker-move 25s linear infinite;
+}
+
+/* Pausar la animación cuando el usuario pasa el ratón por encima */
+.mundial-ticker-container:hover .mundial-ticker-track {
+    animation-play-state: paused;
+}
+
+/* --- GRUPOS DE PARTIDOS (BLOQUES GEMELOS) --- */
+.mundial-ticker-group {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 10px 7.5px;
+}
+
+/* --- ELEMENTOS DE LA CINTA --- */
+/* Bloque de fecha intermedia */
+.ticker-date {
+    color: #888;
+    font-weight: bold;
+    font-size: 0.85rem;
+    padding: 0 10px;
+}
+
+/* Cápsula de cada partido */
+.ticker-match {
+    display: flex;
+    align-items: center;
+    background-color: #262626;
+    color: #ffffff;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    gap: 8px;
+    border: 1px solid #333;
+}
+
+/* Estilo especial para partidos EN VIVO */
+.ticker-match.live {
+    background-color: #b31010; /* Rojo vivo */
+    border-color: #ff3333;
+}
+
+.match-status {
+    font-weight: bold;
+    color: #ffffff;
+}
+
+/* Hora del partido programado */
+.match-time {
+    color: #ffd645; /* Amarillo dorado de tu podio actual */
+    font-weight: bold;
+}
+
+/* Marcador o separador */
+.match-score {
+    font-weight: bold;
+    background-color: #1A1A1A;
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+/* --- ANIMACIÓN MATEMÁTICA DEL BUCLE --- */
+@keyframes ticker-move {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%); /* Se desplaza exactamente la mitad (el bloque A entero) */
+    }
+}
+
 
 
 
@@ -3471,6 +3559,70 @@ body{
             ⏳ Cargando contador...
         </div>	
     </div>
+<!-- CINTA DE PARTIDOS MUNDIAL (MARQUESINA INFINITA) -->
+<div class="mundial-ticker-container">
+    <div class="mundial-ticker-track">
+        
+        <!-- BLOQUE A (Original) -->
+        <div class="mundial-ticker-group">
+            <div class="ticker-match live">
+                <span class="match-status">44'</span>
+                <span class="match-team">🇧🇪 BEL</span>
+                <span class="match-score">0 - 1</span>
+                <span class="match-team">🇸🇳 SEN</span>
+            </div>
+            <div class="ticker-date">3 jul</div>
+            <div class="ticker-match">
+                <span class="match-time">1:00</span>
+                <span class="match-team">🇵🇹 POR</span>
+                <span class="match-score">-</span>
+                <span class="match-team">🇭🇷 CRO</span>
+            </div>
+            <div class="ticker-match">
+                <span class="match-time">5:00</span>
+                <span class="match-team">🇨🇭 SUI</span>
+                <span class="match-score">-</span>
+                <span class="match-team">🇲🇦 MAR</span>
+            </div>
+            <div class="ticker-match">
+                <span class="match-time">20:00</span>
+                <span class="match-team">🇦🇺 AUS</span>
+                <span class="match-score">-</span>
+                <span class="match-team">🇪🇬 EGY</span>
+            </div>
+        </div>
+
+        <!-- BLOQUE B (Copia idéntica para el bucle infinito) -->
+        <div class="mundial-ticker-group" aria-hidden="true">
+            <div class="ticker-match live">
+                <span class="match-status">44'</span>
+                <span class="match-team">🇧🇪 BEL</span>
+                <span class="match-score">0 - 1</span>
+                <span class="match-team">🇸🇳 SEN</span>
+            </div>
+            <div class="ticker-date">3 jul</div>
+            <div class="ticker-match">
+                <span class="match-time">1:00</span>
+                <span class="match-team">🇵🇹 POR</span>
+                <span class="match-score">-</span>
+                <span class="match-team">🇭🇷 CRO</span>
+            </div>
+            <div class="ticker-match">
+                <span class="match-time">5:00</span>
+                <span class="match-team">🇨🇭 SUI</span>
+                <span class="match-score">-</span>
+                <span class="match-team">🇲🇦 MAR</span>
+            </div>
+            <div class="ticker-match">
+                <span class="match-time">20:00</span>
+                <span class="match-team">🇦🇺 AUS</span>
+                <span class="match-score">-</span>
+                <span class="match-team">🇪🇬 EGY</span>
+            </div>
+        </div>
+
+    </div>
+</div>
 
    <div id="rankingSection" class="view-section">
 
