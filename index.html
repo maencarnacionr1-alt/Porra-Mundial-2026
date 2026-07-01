@@ -4051,7 +4051,8 @@ async function cargarPartidosMundial() {
     const fechaISO = `${año}-${mes}-${dia}`;
 
     // Endpoint oficial de Sofascore consultado por los navegadores
-    const url = `https://sofascore.com{fechaISO}`;
+   const url = "https://api.sofascore.com/api/v1/sport/football/scheduled-events/" + fechaISO;
+
     
     // Lista de IDs de torneos oficiales de clasificación de FIFA en Sofascore
     // (Abarca eliminatorias de CONMEBOL, UEFA, CAF, AFC, CONCACAF)
