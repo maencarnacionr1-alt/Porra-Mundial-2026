@@ -3554,7 +3554,7 @@ body{
   <h1>PORRA MUNDIAL 2026</h1>
     </header>
 <!-- CINTA DE PARTIDOS MUNDIAL (MARQUESINA INFINITA) -->
-<div class="mundial-ticker-container">
+<div id="mundialTicker" class="mundial-ticker-container view-section">
     <div class="mundial-ticker-track">
         <!-- El script rellenará esto automáticamente -->
     </div>
@@ -4753,7 +4753,9 @@ window.showRanking = function () {
   document.querySelectorAll(".view-section")
     .forEach(s => s.classList.add("hidden"));
 
+
   document.getElementById("rankingSection").classList.remove("hidden");
+  document.getElementById("mundialTicker").classList.remove("hidden");
   document.getElementById("countdownBox").style.display = "block";
 
 // MOSTRAR + CONTADOR
