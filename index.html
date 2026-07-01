@@ -4038,113 +4038,68 @@ document.addEventListener("DOMContentLoaded", () => {
 
 });
 
-document.addEventListener("DOMContentLoaded", () => {
-    cargarPartidosMundial();
-});
+function actualizarCintaPartidos(partidos) {
+    if (!partidos || partidos.length === 0) return;
 
-async function cargarPartidosMundial() {
-    // 1. Forzamos la fecha para tu prueba (puedes cambiarla por la de hoy más adelante)
-    const fechaISO = "2025-09-05"; 
-	const urlOriginal = "https://sofascore.com" + fechaISO;
-	const urlConProxy = "https://allorigins.win" + encodeURIComponent(urlOriginal);
+    let htmlPartidos = "";
 
-    
-    // IDs de las Eliminatorias del Mundial en Sofascore (Sudamérica, Europa, etc.)
-    const torneosMundialIds = [11, 52, 7, 238, 239, 649, 10793, 10794]; 
+    partidos.forEach(partido => {
+        // Mapeo basado en la estructura de tu array de 13 elementos:
+        const fase = partido[3];          // "1/16"
+        const hora = partido[5];          // "21:00"
+        const minutoEnvivo = partido[6];  // "73" (si está en juego)
+        const equipoLocal = partido[7];   // "Sudáfrica"
+        const golesLocal = partido[9];    // "0"
+        const golesVisitante = partido[10];// "1"
+        const equipoVisitante = partido[12];// "Canadá"
 
-    try {
-        const respuesta = await fetch(urlConProxy);
-        if (!respuesta.ok) throw new Error("Error en el puente del Proxy.");
+        // Forzar nombres cortos de 3 letras para que quepan bien en la cinta
+        const localCorto = equipoLocal ? equipoLocal.substring(0, 3).toUpperCase() : "LOC";
+        const visitanteCorto = equipoVisitante ? equipoVisitante.substring(0, 3).toUpperCase() : "VIS";
 
-        const datosProxy = await respuesta.json();
-        // Allorigins devuelve el JSON real dentro de un campo llamado 'contents' en formato texto
-        const datos = JSON.parse(datosProxy.contents);
-        const eventos = datos.events || [];
-
-        // 2. Filtramos los partidos de las Eliminatorias
-        const partidosFiltrados = eventos.filter(evento => {
-            const idTorneo = evento.tournament?.uniqueTournament?.id || evento.tournament?.id;
-            return torneosMundialIds.includes(idTorneo);
-        });
-
-        if (partidosFiltrados.length === 0) {
-            console.log("No se encontraron partidos de Eliminatorias en esta fecha.");
-            return;
-        }
-
-        // 3. Mapeamos los partidos a la estructura HTML de la cinta
-        let htmlPartidos = "";
-        
-        partidosFiltrados.forEach(partido => {
-            const estado = partido.status?.type; 
-            const local = partido.homeTeam?.nameCode || partido.homeTeam?.shortName || "LOC";
-            const visitante = partido.awayTeam?.nameCode || partido.awayTeam?.shortName || "VIS";
-            
-            const banderaLocal = obtenerEmojiBandera(partido.homeTeam?.category?.alpha2);
-            const banderaVisitante = obtenerEmojiBandera(partido.awayTeam?.category?.alpha2);
-
-            if (estado === "inprogress") {
-                const minutos = partido.status?.description || "1'";
-                const golesLocal = partido.homeScore?.current ?? 0;
-                const golesVisitante = partido.awayScore?.current ?? 0;
-                
-                htmlPartidos += `
-                    <div class="ticker-match live">
-                        <span class="match-status">${minutos}</span>
-                        <span class="match-team">${banderaLocal} ${local}</span>
-                        <span class="match-score">${golesLocal} - ${golesVisitante}</span>
-                        <span class="match-team">${banderaVisitante} ${visitante}</span>
-                    </div>
-                `;
-            } else if (estado === "finished") {
-                const golesLocal = partido.homeScore?.current ?? 0;
-                const golesVisitante = partido.awayScore?.current ?? 0;
-                
-                htmlPartidos += `
-                    <div class="ticker-match">
-                        <span class="match-time" style="color: #888;">Final</span>
-                        <span class="match-team">${banderaLocal} ${local}</span>
-                        <span class="match-score">${golesLocal} - ${golesVisitante}</span>
-                        <span class="match-team">${banderaVisitante} ${visitante}</span>
-                    </div>
-                `;
-            } else {
-                const timestamp = partido.startTimestamp;
-                const horaLocal = new Date(timestamp * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                
-                htmlPartidos += `
-                    <div class="ticker-match">
-                        <span class="match-time">${horaLocal}</span>
-                        <span class="match-team">${banderaLocal} ${local}</span>
-                        <span class="match-score">-</span>
-                        <span class="match-team">${banderaVisitante} ${visitante}</span>
-                    </div>
-                `;
-            }
-        });
-
-        // 4. Inyectamos la duplicidad en el Track para activar el bucle infinito
-        const trackContainer = document.querySelector(".mundial-ticker-track");
-        if (trackContainer) {
-            trackContainer.innerHTML = `
-                <div class="mundial-ticker-group">${htmlPartidos}</div>
-                <div class="mundial-ticker-group" aria-hidden="true">${htmlPartidos}</div>
+        // 1. PARTIDO EN VIVO: Tiene un minuto registrado y no está finalizado
+        if (minutoEnvivo && minutoEnvivo.trim() !== "" && fase !== "Finalizado") {
+            htmlPartidos += `
+                <div class="ticker-match live">
+                    <span class="match-status">${minutoEnvivo}'</span>
+                    <span class="match-team">⚽ ${localCorto}</span>
+                    <span class="match-score">${golesLocal} - ${golesVisitante}</span>
+                    <span class="match-team">⚽ ${visitanteCorto}</span>
+                </div>
             `;
-            console.log("¡Cinta alimentada con éxito desde Sofascore!");
+        } 
+        // 2. PARTIDO FINALIZADO: Tiene goles y la fase o estado indica término
+        else if (golesLocal !== "" && golesVisitante !== "" && golesLocal !== null && golesVisitante !== null) {
+            htmlPartidos += `
+                <div class="ticker-match">
+                    <span class="match-time" style="color: #888;">Fin</span>
+                    <span class="match-team">⚽ ${localCorto}</span>
+                    <span class="match-score">${golesLocal} - ${golesVisitante}</span>
+                    <span class="match-team">⚽ ${visitanteCorto}</span>
+                </div>
+            `;
+        } 
+        // 3. PARTIDO PROGRAMADO: Aún no se ha jugado
+        else {
+            htmlPartidos += `
+                <div class="ticker-match">
+                    <span class="match-time">${hora || "--:--"}</span>
+                    <span class="match-team">⚽ ${localCorto}</span>
+                    <span class="match-score">-</span>
+                    <span class="match-team">⚽ ${visitanteCorto}</span>
+                </div>
+            `;
         }
+    });
 
-    } catch (error) {
-        console.error("Error al burlar el bloqueo de Sofascore:", error);
+    // Inyectamos de forma idéntica en los bloques A y B para mantener la ilusión del bucle infinito
+    const trackContainer = document.querySelector(".mundial-ticker-track");
+    if (trackContainer && htmlPartidos !== "") {
+        trackContainer.innerHTML = `
+            <div class="mundial-ticker-group">${htmlPartidos}</div>
+            <div class="mundial-ticker-group" aria-hidden="true">${htmlPartidos}</div>
+        `;
     }
-}
-
-function obtenerEmojiBandera(codigoPais) {
-    if (!codigoPais || codigoPais.length !== 2) return "⚽";
-    const codePoints = codigoPais
-        .toUpperCase()
-        .split('')
-        .map(char => 127397 + char.charCodeAt(0));
-    return String.fromCodePoint(...codePoints);
 }
 
 
@@ -4242,6 +4197,7 @@ async function initApp() {
 ]);
 
 bracketData = parseBracket(bracketCsv);
+actualizarCintaPartidos(bracketData);
 console.log("Bracket:", bracketData);
 console.log("Total partidos:", bracketData.length);
 	
