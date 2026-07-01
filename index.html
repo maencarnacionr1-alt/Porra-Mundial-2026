@@ -4043,54 +4043,51 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 async function cargarPartidosMundial() {
-    // 1. Obtener la fecha de hoy en formato AAAA-MM-DD
-    const hoy = new Date();
-    const año = hoy.getFullYear();
-    const mes = String(hoy.getMonth() + 1).padStart(2, '0');
-    const dia = String(hoy.getDate()).padStart(2, '0');
-    const fechaISO = `${año}-${mes}-${dia}`;
+    // 1. Forzamos la fecha para tu prueba (puedes cambiarla por la de hoy más adelante)
+    const fechaISO = "2025-09-05"; 
 
-    // Endpoint oficial de Sofascore consultado por los navegadores
-   const url = "https://api.sofascore.com/api/v1/sport/football/scheduled-events/" + fechaISO;
-
+    // URL original de Sofascore
+    const urlOriginal = "https://sofascore.com" + fechaISO;
     
-    // Lista de IDs de torneos oficiales de clasificación de FIFA en Sofascore
-    // (Abarca eliminatorias de CONMEBOL, UEFA, CAF, AFC, CONCACAF)
-    const torneosMundialIds = [649, 10775, 1029, 1031, 1030, 240]; 
+    // USAMOS EL PROXY PARA EVITAR EL ERROR 403
+    // Allorigins envuelve la respuesta de Sofascore para que GitHub la acepte sin rechistar
+    const urlConProxy = "https://allorigins.win" + encodeURIComponent(urlOriginal);
+    
+    // IDs de las Eliminatorias del Mundial en Sofascore (Sudamérica, Europa, etc.)
+    const torneosMundialIds = [11, 52, 7, 238, 239, 649, 10793, 10794]; 
 
     try {
-        const respuesta = await fetch(url);
-        if (!respuesta.ok) throw new Error("Error al consultar la API de Sofascore");
+        const respuesta = await fetch(urlConProxy);
+        if (!respuesta.ok) throw new Error("Error en el puente del Proxy.");
 
-        const datos = await respuesta.json();
+        const datosProxy = await respuesta.json();
+        // Allorigins devuelve el JSON real dentro de un campo llamado 'contents' en formato texto
+        const datos = JSON.parse(datosProxy.contents);
         const eventos = datos.events || [];
 
-        // 2. Filtrar únicamente los partidos que correspondan a las Eliminatorias del Mundial
+        // 2. Filtramos los partidos de las Eliminatorias
         const partidosFiltrados = eventos.filter(evento => {
             const idTorneo = evento.tournament?.uniqueTournament?.id || evento.tournament?.id;
             return torneosMundialIds.includes(idTorneo);
         });
 
-        // Si no hay partidos de eliminatorias hoy, dejamos unos de muestra o limpiamos el contenedor
         if (partidosFiltrados.length === 0) {
-            console.log("No hay partidos de Eliminatorias programados para hoy.");
-            return; 
+            console.log("No se encontraron partidos de Eliminatorias en esta fecha.");
+            return;
         }
 
-        // 3. Generar la estructura de texto HTML para un bloque
+        // 3. Mapeamos los partidos a la estructura HTML de la cinta
         let htmlPartidos = "";
         
         partidosFiltrados.forEach(partido => {
-            const estado = partido.status?.type; // 'notstarted', 'inprogress', 'finished'
+            const estado = partido.status?.type; 
             const local = partido.homeTeam?.nameCode || partido.homeTeam?.shortName || "LOC";
             const visitante = partido.awayTeam?.nameCode || partido.awayTeam?.shortName || "VIS";
             
-            // Extraer las banderas basadas en el código del país (Alpha2) para emojis nativos
             const banderaLocal = obtenerEmojiBandera(partido.homeTeam?.category?.alpha2);
             const banderaVisitante = obtenerEmojiBandera(partido.awayTeam?.category?.alpha2);
 
             if (estado === "inprogress") {
-                // Partido EN VIVO
                 const minutos = partido.status?.description || "1'";
                 const golesLocal = partido.homeScore?.current ?? 0;
                 const golesVisitante = partido.awayScore?.current ?? 0;
@@ -4104,7 +4101,6 @@ async function cargarPartidosMundial() {
                     </div>
                 `;
             } else if (estado === "finished") {
-                // Partido Finalizado
                 const golesLocal = partido.homeScore?.current ?? 0;
                 const golesVisitante = partido.awayScore?.current ?? 0;
                 
@@ -4117,7 +4113,6 @@ async function cargarPartidosMundial() {
                     </div>
                 `;
             } else {
-                // Partido Programado (No empezado)
                 const timestamp = partido.startTimestamp;
                 const horaLocal = new Date(timestamp * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
                 
@@ -4132,33 +4127,27 @@ async function cargarPartidosMundial() {
             }
         });
 
-        // 4. Inyectar de forma gemela el contenido en el Track para activar la marquesina infinita
+        // 4. Inyectamos la duplicidad en el Track para activar el bucle infinito
         const trackContainer = document.querySelector(".mundial-ticker-track");
         if (trackContainer) {
             trackContainer.innerHTML = `
-                <!-- BLOQUE A (Dinámico) -->
-                <div class="mundial-ticker-group">
-                    ${htmlPartidos}
-                </div>
-                <!-- BLOQUE B (Copia idéntica dinámica) -->
-                <div class="mundial-ticker-group" aria-hidden="true">
-                    ${htmlPartidos}
-                </div>
+                <div class="mundial-ticker-group">${htmlPartidos}</div>
+                <div class="mundial-ticker-group" aria-hidden="true">${htmlPartidos}</div>
             `;
+            console.log("¡Cinta alimentada con éxito desde Sofascore!");
         }
 
     } catch (error) {
-        console.error("Error cargando los partidos en tiempo real:", error);
+        console.error("Error al burlar el bloqueo de Sofascore:", error);
     }
 }
 
-// Función auxiliar matemática que convierte códigos de país (como 'ES', 'BR') en banderas emoji nativas
 function obtenerEmojiBandera(codigoPais) {
     if (!codigoPais || codigoPais.length !== 2) return "⚽";
     const codePoints = codigoPais
         .toUpperCase()
         .split('')
-        .map(char =>  127397 + char.charCodeAt(0));
+        .map(char => 127397 + char.charCodeAt(0));
     return String.fromCodePoint(...codePoints);
 }
 
