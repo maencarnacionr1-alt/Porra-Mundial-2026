@@ -4044,59 +4044,60 @@ function actualizarCintaPartidos(partidos) {
     let htmlPartidos = "";
 
     partidos.forEach(partido => {
-        // Mapeo exacto con las claves reales de tu objeto de Google Sheets
         const ronda = partido.ronda || "";
         const hora = partido.hora || "--:--";
-        const equipoLocal = partido.casa || "LOC";
-        const equipoVisitante = partido.visitante || "VIS";
+        const equipoLocal = partido.casa || "";
+        const equipoVisitante = partido.visitante || "";
         const golesLocal = partido.golCasa;
         const golesVisitante = partido.golVisita;
 
-        // Forzar nombres cortos de 3 letras (SUD, CAN, etc.) para que la cinta quede limpia
+        // USA TU FUNCIÓN NATIVA: Extraemos las banderas usando tu lógica existente
+        const banderaLocal = typeof getBandera === "function" ? getBandera(equipoLocal) : "⚽";
+        const banderaVisitante = typeof getBandera === "function" ? getBandera(equipoVisitante) : "⚽";
+
+        // Forzar códigos limpios de 3 letras para la estética de la marquesina
         const localCorto = equipoLocal ? equipoLocal.toString().substring(0, 3).toUpperCase() : "LOC";
         const visitanteCorto = equipoVisitante ? equipoVisitante.toString().substring(0, 3).toUpperCase() : "VIS";
 
-        // Determinar el estado del partido basándonos en tus datos
         const tieneGoles = golesLocal !== "" && golesVisitante !== "" && golesLocal !== null && golesVisitante !== null;
-        const esFinalizado = ronda.toLowerCase().includes("finalizado"); // Por si tu hijo escribe "Finalizado" en la ronda
 
-        // 1. PARTIDO EN VIVO (Tiene goles registrados pero la ronda no está marcada como finalizada)
-        // Nota: Si tu hijo implementa un campo 'minuto' o 'estado', puedes cambiar esta condición
-        if (tieneGoles && !esFinalizado) {
+        // LÓGICA DE ESTADOS CORREGIDA:
+        // 1. EN VIVO: Si tiene goles y la ronda dice textualmente "vivo" o "directo"
+        if (tieneGoles && (ronda.toLowerCase().includes("vivo") || ronda.toLowerCase().includes("directo"))) {
             htmlPartidos += `
                 <div class="ticker-match live">
                     <span class="match-status">En Vivo</span>
-                    <span class="match-team">⚽ ${localCorto}</span>
+                    <span class="match-team">${banderaLocal} ${localCorto}</span>
                     <span class="match-score">${golesLocal} - ${golesVisitante}</span>
-                    <span class="match-team">⚽ ${visitanteCorto}</span>
+                    <span class="match-team">${banderaVisitante} ${visitanteCorto}</span>
                 </div>
             `;
         } 
-        // 2. PARTIDO FINALIZADO (Tiene goles y asumimos que terminó si es una fecha pasada)
+        // 2. FINALIZADO: Si tiene goles y no está marcado como vivo (partidos ya jugados)
         else if (tieneGoles) {
             htmlPartidos += `
                 <div class="ticker-match">
                     <span class="match-time" style="color: #888;">Fin</span>
-                    <span class="match-team">⚽ ${localCorto}</span>
+                    <span class="match-team">${banderaLocal} ${localCorto}</span>
                     <span class="match-score">${golesLocal} - ${golesVisitante}</span>
-                    <span class="match-team">⚽ ${visitanteCorto}</span>
+                    <span class="match-team">${banderaVisitante} ${visitanteCorto}</span>
                 </div>
             `;
         } 
-        // 3. PARTIDO PROGRAMADO (No hay goles en la hoja aún)
+        // 3. PROGRAMADO: No se ha jugado aún (sin goles)
         else {
             htmlPartidos += `
                 <div class="ticker-match">
                     <span class="match-time">${hora}</span>
-                    <span class="match-team">⚽ ${localCorto}</span>
+                    <span class="match-team">${banderaLocal} ${localCorto}</span>
                     <span class="match-score">-</span>
-                    <span class="match-team">⚽ ${visitanteCorto}</span>
+                    <span class="match-team">${banderaVisitante} ${visitanteCorto}</span>
                 </div>
             `;
         }
     });
 
-    // Inyectamos de forma idéntica en los bloques A y B para mantener el bucle infinito
+    // Inyectar bloques gemelos para el movimiento continuo
     const trackContainer = document.querySelector(".mundial-ticker-track");
     if (trackContainer && htmlPartidos !== "") {
         trackContainer.innerHTML = `
