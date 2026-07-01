@@ -4041,36 +4041,72 @@ document.addEventListener("DOMContentLoaded", () => {
 function actualizarCintaPartidos(partidos) {
     if (!partidos || partidos.length === 0) return;
 
-	// FILTRO: Nos quedamos única y exclusivamente con los partidos de 1/16
-    const partidosFiltrados = partidos.filter(partido => partido.ronda === "1/16");
+    // 1. OBTENER FECHAS DE REFERENCIA (HOY Y MAÑANA)
+    const hoyObj = new Date();
+    const mañanaObj = new Date();
+    mañanaObj.setDate(hoyObj.getDate() + 1);
+
+    const formatearFechaComparacion = (date) => {
+        return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+    };
+
+    const textoHoy = formatearFechaComparacion(hoyObj);     // Ej: "2/7/2026"
+    const textoMañana = formatearFechaComparacion(mañanaObj); // Ej: "3/7/2026"
+
+    // 2. FILTRAR ESTRICTAMENTE: Solo "1/16" Y que los equipos sean países reales (no códigos "W" o "L")
+    const partidosFiltrados = partidos.filter(partido => {
+        const esRondaCorrecta = partido.ronda === "1/16";
+        
+        // Verificamos que no contenga códigos de "Ganador" (W) o "Perdedor" (L) típicos de cuadros vacíos
+        const casaString = String(partido.casa || "");
+        const visitaString = String(partido.visitante || "");
+        const esEquipoReal = !casaString.startsWith("W") && !casaString.startsWith("L") &&
+                             !visitaString.startsWith("W") && !visitaString.startsWith("L");
+                             
+        return esRondaCorrecta && esEquipoReal;
+    });
 
     if (partidosFiltrados.length === 0) {
-        console.log("No hay partidos de 1/16 en el archivo de datos.");
+        console.log("No hay partidos válidos de 1/16 para mostrar.");
         return;
     }
 
     let htmlPartidos = "";
+    let ultimaFechaAgrupada = "";
 
-    partidos.forEach(partido => {
+    partidosFiltrados.forEach(partido => {
         const ronda = partido.ronda || "";
         const hora = partido.hora || "--:--";
+        const fechaPartido = (partido.fecha || "").toString().trim(); // Ej: "28/6/2026"
         const equipoLocal = partido.casa || "";
         const equipoVisitante = partido.visitante || "";
         const golesLocal = partido.golCasa;
         const golesVisitante = partido.golVisita;
 
-        // USA TU FUNCIÓN NATIVA: Extraemos las banderas usando tu lógica existente
+        // Banderas nativas
         const banderaLocal = typeof getBandera === "function" ? getBandera(equipoLocal) : "⚽";
         const banderaVisitante = typeof getBandera === "function" ? getBandera(equipoVisitante) : "⚽";
 
-        // Forzar códigos limpios de 3 letras para la estética de la marquesina
         const localCorto = equipoLocal ? equipoLocal.toString().substring(0, 3).toUpperCase() : "LOC";
         const visitanteCorto = equipoVisitante ? equipoVisitante.toString().substring(0, 3).toUpperCase() : "VIS";
 
+        // 3. LOGICA DE ETIQUETA DE FECHA (Hoy, Mañana, o Fecha corta)
+        if (fechaPartido !== ultimaFechaAgrupada) {
+            let etiquetaFecha = fechaPartido.substring(0, fechaPartido.lastIndexOf("/")); // Quita el año: "28/6"
+            
+            if (fechaPartido === textoHoy) {
+                etiquetaFecha = "Hoy";
+            } else if (fechaPartido === textoMañana) {
+                etiquetaFecha = "Mañana";
+            }
+            
+            htmlPartidos += `<div class="ticker-date">${etiquetaFecha}</div>`;
+            ultimaFechaAgrupada = fechaPartido;
+        }
+
         const tieneGoles = golesLocal !== "" && golesVisitante !== "" && golesLocal !== null && golesVisitante !== null;
 
-        // LÓGICA DE ESTADOS CORREGIDA:
-        // 1. EN VIVO: Si tiene goles y la ronda dice textualmente "vivo" o "directo"
+        // 4. ESTRUCTURA DE LOS PARTIDOS
         if (tieneGoles && (ronda.toLowerCase().includes("vivo") || ronda.toLowerCase().includes("directo"))) {
             htmlPartidos += `
                 <div class="ticker-match live">
@@ -4080,9 +4116,7 @@ function actualizarCintaPartidos(partidos) {
                     <span class="match-team">${banderaVisitante} ${visitanteCorto}</span>
                 </div>
             `;
-        } 
-        // 2. FINALIZADO: Si tiene goles y no está marcado como vivo (partidos ya jugados)
-        else if (tieneGoles) {
+        } else if (tieneGoles) {
             htmlPartidos += `
                 <div class="ticker-match">
                     <span class="match-time" style="color: #888;">Fin</span>
@@ -4091,9 +4125,7 @@ function actualizarCintaPartidos(partidos) {
                     <span class="match-team">${banderaVisitante} ${visitanteCorto}</span>
                 </div>
             `;
-        } 
-        // 3. PROGRAMADO: No se ha jugado aún (sin goles)
-        else {
+        } else {
             htmlPartidos += `
                 <div class="ticker-match">
                     <span class="match-time">${hora}</span>
@@ -4105,7 +4137,6 @@ function actualizarCintaPartidos(partidos) {
         }
     });
 
-    // Inyectar bloques gemelos para el movimiento continuo
     const trackContainer = document.querySelector(".mundial-ticker-track");
     if (trackContainer && htmlPartidos !== "") {
         trackContainer.innerHTML = `
