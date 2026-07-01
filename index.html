@@ -4045,13 +4045,9 @@ document.addEventListener("DOMContentLoaded", () => {
 async function cargarPartidosMundial() {
     // 1. Forzamos la fecha para tu prueba (puedes cambiarla por la de hoy más adelante)
     const fechaISO = "2025-09-05"; 
+	const urlOriginal = "https://sofascore.com" + fechaISO;
+	const urlConProxy = "https://allorigins.win" + encodeURIComponent(urlOriginal);
 
-    // URL original de Sofascore
-    const urlOriginal = "https://sofascore.com" + fechaISO;
-    
-    // USAMOS EL PROXY PARA EVITAR EL ERROR 403
-    // Allorigins envuelve la respuesta de Sofascore para que GitHub la acepte sin rechistar
-    const urlConProxy = "https://allorigins.win" + encodeURIComponent(urlOriginal);
     
     // IDs de las Eliminatorias del Mundial en Sofascore (Sudamérica, Europa, etc.)
     const torneosMundialIds = [11, 52, 7, 238, 239, 649, 10793, 10794]; 
