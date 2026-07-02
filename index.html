@@ -6663,25 +6663,33 @@ function renderBracket(partidos) {
     const rightSection = document.createElement("div");
     rightSection.className = "bracket-section section-right";
 
-        function generarHtmlMatch(partido) {
+function generarHtmlMatch(partido) {
         if (!partido) return "";
         
         const pCasa = (partido.penCasa !== undefined && partido.penCasa !== null && partido.penCasa !== "") ? `<span class="penalty-score"><small>P.</small>${partido.penCasa}</span>` : "";
         const pVisita = (partido.penVisita !== undefined && partido.penVisita !== null && partido.penVisita !== "") ? `<span class="penalty-score"><small>P.</small>${partido.penVisita}</span>` : "";
-                // 1. CAPTURA SEGURA: Asegura compatibilidad entre formatos de número y texto
-        let scoreCasa = (partido.golCasa !== undefined && partido.golCasa !== null) ? String(partido.golCasa).trim() : "";
-        let scoreVisita = (partido.golVisita !== undefined && partido.golVisita !== null) ? String(partido.golVisita).trim() : "";
+        
+        // 1. CAPTURA SEGURA MULTI-VARIABLE: Busca los goles usando todos los nombres posibles de tu base de datos
+        let valorCasa = partido.golCasa !== undefined ? partido.golCasa : 
+                        partido.golesLocal !== undefined ? partido.golesLocal : 
+                        partido.golesCasa !== undefined ? partido.golesCasa : "";
+                        
+        let valorVisita = partido.golVisita !== undefined ? partido.golVisita : 
+                          partido.golesVisitante !== undefined ? partido.golesVisitante : 
+                          partido.golesVisita !== undefined ? partido.golesVisita : "";
+
+        let scoreCasa = String(valorCasa).trim();
+        let scoreVisita = String(valorVisita).trim();
 
         // 2. LIMPIEZA: Si contiene guiones o está vacío, se limpia por completo
-        if (scoreCasa === "-" || scoreCasa === "") scoreCasa = "";
-        if (scoreVisita === "-" || scoreVisita === "") scoreVisita = "";
+        if (scoreCasa === "-" || scoreCasa === "" || scoreCasa === "null" || scoreCasa === "undefined") scoreCasa = "";
+        if (scoreVisita === "-" || scoreVisita === "" || scoreVisita === "null" || scoreVisita === "undefined") scoreVisita = "";
 
         const tieneFecha = partido.fecha && partido.fecha !== "-";
 
-        // 3. CONDICIÓN: Evalúa por contenido de texto en lugar de por longitud de caracteres
+        // 3. CONDICIÓN: Si ambos tienen contenido real, el partido finalizó
         const partidoFinalizado = scoreCasa !== "" && scoreVisita !== "";
 			
-
         let classCasa = "";
         let classVisita = "";
         if (partidoFinalizado) {
@@ -6694,7 +6702,7 @@ function renderBracket(partidos) {
         // Asignación del texto de la cabecera basado en la nueva comprobación limpia
         let textoCabecera = '&nbsp;';
         if (partidoFinalizado) {
-            textoCabecera = "Finalizado";
+            textoCabecera = "Fin";
         } else if (tieneFecha) {
             textoCabecera = `${partido.fecha} ${partido.hora || ''}`;
         }
@@ -6732,6 +6740,7 @@ function renderBracket(partidos) {
     </div>
 </div>`;
     }
+
 
     function renderColumnaPura(nombreRonda, listaPartidos, contenedorPadre, esBloqueCentral = false) {
         const column = document.createElement("div");
