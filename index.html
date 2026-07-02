@@ -6551,25 +6551,35 @@ function renderBracket(partidos) {
     const bracket = document.getElementById("bracket");
     if (!bracket) return;
     
-    // Limpiamos el contenedor por completo
     bracket.innerHTML = "";
 
     // 1. Agrupar partidos por ronda
     const rondas = { "1/16": [], "Octavos": [], "Cuartos": [], "Semifinal": [], "Final": [], "3º puesto": [] };
     partidos.forEach(p => { if (rondas[p.ronda]) rondas[p.ronda].push(p); });
 
-    // 2. Dividir las rondas clasificatorias en Lado Izquierdo y Lado Derecho (50% cada una)
+    // 2. Separar y ORDENAR para que las llaves queden perfectamente enfrentadas en espejo
     const ladoIzquierdo = { "1/16": [], "Octavos": [], "Cuartos": [], "Semifinal": [] };
     const ladoDerecho = { "Semifinal": [], "Cuartos": [], "Octavos": [], "1/16": [] };
+
+    // Función para ordenar los partidos del bloque derecho en espejo con el izquierdo
+    function ordenarLadoDerecho(lista) {
+        if (lista.length <= 1) return lista;
+        // Invertimos el orden o emparejamos por ID/índice para que el de arriba de la derecha 
+        // corresponda visualmente a la misma altura matemática del bloque izquierdo
+        return [...lista].reverse(); 
+    }
 
     ["1/16", "Octavos", "Cuartos", "Semifinal"].forEach(ronda => {
         const lista = rondas[ronda];
         const mitad = Math.ceil(lista.length / 2);
+        
         ladoIzquierdo[ronda] = lista.slice(0, mitad);
-        ladoDerecho[ronda] = lista.slice(mitad);
+        
+        // Aplicamos el ordenamiento en espejo para la parte derecha
+        ladoDerecho[ronda] = ordenarLadoDerecho(lista.slice(mitad));
     });
 
-    // 3. Crear los 3 bloques estructurales del layout simétrico
+    // 3. Crear contenedores estructurales
     const leftSection = document.createElement("div");
     leftSection.className = "bracket-section section-left";
 
@@ -6579,7 +6589,7 @@ function renderBracket(partidos) {
     const rightSection = document.createElement("div");
     rightSection.className = "bracket-section section-right";
 
-    // Función interna auxiliar para renderizar cada tarjeta con su marcador en caja negra
+    // Generador de tarjetas de partidos con marcador negro y penaltis
     function generarHtmlMatch(partido, index) {
         const pCasa = (partido.penaltisCasa !== undefined && partido.penaltisCasa !== null) ? `<span class="penalty-score">(${partido.penaltisCasa})</span>` : "";
         const pVisita = (partido.penaltisVisita !== undefined && partido.penaltisVisita !== null) ? `<span class="penalty-score">(${partido.penaltisVisita})</span>` : "";
@@ -6614,110 +6624,87 @@ function renderBracket(partidos) {
         </div>`;
     }
 
-    // Función interna para procesar y colgar las columnas con sus títulos integrados
-    function renderRondasLado(estructuraLado, contenedorPadre, esLadoDerecho) {
-        // Si es el lado derecho, invertimos el orden de las llaves para que pinte Semifinal -> Cuartos -> Octavos -> 1/16
-        const entradasRondas = esLadoDerecho ? Object.entries(estructuraLado).reverse() : Object.entries(estructuraLado);
+    // Renderizador de columnas individuales
+    function renderColumnaPura(nombreRonda, listaPartidos, contenedorPadre) {
+        const column = document.createElement("div");
+        column.className = `bracket-column round-${nombreRonda.replace("/", "-")}`;
+        
+        let tituloMostrar = nombreRonda;
+        if (nombreRonda === "1/16") tituloMostrar = "Dieciséisavos de final";
+        if (nombreRonda === "Octavos") tituloMostrar = "Octavos de final";
+        if (nombreRonda === "Cuartos") tituloMostrar = "Cuartos de final";
+        if (nombreRonda === "Semifinal") tituloMostrar = "Semifinal";
 
-        entradasRondas.forEach(([nombreRonda, listaPartidos]) => {
-            const column = document.createElement("div");
-            column.className = `bracket-column round-${nombreRonda.replace("/", "-")}`;
-            
-            // Títulos limpios e independientes por columna
-            let tituloMostrar = nombreRonda;
-            if (nombreRonda === "1/16") tituloMostrar = "Dieciséisavos";
-            if (nombreRonda === "Octavos") tituloMostrar = "Octavos de final";
-            if (nombreRonda === "Cuartos") tituloMostrar = "Cuartos de final";
-            if (nombreRonda === "Semifinal") tituloMostrar = "Semifinal";
+        column.innerHTML = `<h3 class="column-title">${tituloMostrar}</h3>`;
+        
+        const groupContainer = document.createElement("div");
+        groupContainer.className = "matches-flex-group";
 
-            column.innerHTML = `<h3 class="column-title">${tituloMostrar}</h3>`;
-            
-            const groupContainer = document.createElement("div");
-            groupContainer.className = "matches-flex-group";
-
-            listaPartidos.forEach((partido, idx) => {
-                groupContainer.innerHTML += generarHtmlMatch(partido, idx);
-            });
-
-            column.appendChild(groupContainer);
-            contenedorPadre.appendChild(column);
+        listaPartidos.forEach((partido, idx) => {
+            groupContainer.innerHTML += generarHtmlMatch(partido, idx);
         });
+
+        column.appendChild(groupContainer);
+        contenedorPadre.appendChild(column);
     }
 
-    // --- Ejecución del Renderizado por Secciones ---
+    // --- RENDERIZADO EN ORDEN DE IZQUIERDA A DERECHA ---
     
-    // Lado Izquierdo (Flujo natural: 1/16 -> Octavos -> Cuartos -> Semifinal)
-    renderRondasLado(ladoIzquierdo, leftSection, false);
+    // 1. Lado Izquierdo (1/16 -> Octavos -> Cuartos -> Semifinal)
+    Object.keys(ladoIzquierdo).forEach(ronda => {
+        renderColumnaPura(ronda, ladoIzquierdo[ronda], leftSection);
+    });
 
-    // Bloque Central: Columna de la Gran Final
-    const finalCol = document.createElement("div");
-    finalCol.className = "bracket-column round-Final";
-    let finalHtml = `<h3 class="column-title">Final</h3><div class="matches-flex-group">`;
-    if (rondas["Final"] && rondas["Final"].length > 0) {
-        finalHtml += generarHtmlMatch(rondas["Final"], 0);
-    }
-    finalHtml += `</div>`;
-    finalCol.innerHTML = finalHtml;
-    centerSection.appendChild(finalCol);
-
-    // Bloque Central: Columna del Tercer Puesto
+    // 2. Bloque Centro (Final y Tercer Puesto)
+    renderColumnaPura("Final", rondas["Final"] || [], centerSection);
     if (rondas["3º puesto"] && rondas["3º puesto"].length > 0) {
-        const tercerCol = document.createElement("div");
-        tercerCol.className = "bracket-column round-Tercer-puesto";
-        tercerCol.innerHTML = `
-            <h3 class="column-title">3º Puesto</h3>
-            <div class="matches-flex-group">
-                ${generarHtmlMatch(rondas["3º puesto"], 0)}
-            </div>`;
-        centerSection.appendChild(tercerCol);
+        renderColumnaPura("3º puesto", rondas["3º puesto"], centerSection);
     }
 
-    // Lado Derecho CORREGIDO (Flujo inverso de adentro hacia afuera: Semifinal -> Cuartos -> Octavos -> 1/16)
-    renderRondasLado(ladoDerecho, rightSection, true);
+    // 3. Lado Derecho Corregido (Flujo visual inverso: Semifinal -> Cuartos -> Octavos -> 1/16)
+    // Usamos reverse() sobre las llaves para que la columna de Semifinal quede al lado de la Final
+    Object.keys(ladoDerecho).reverse().forEach(ronda => {
+        renderColumnaPura(ronda, ladoDerecho[ronda], rightSection);
+    });
 
-    // Inyección limpia de bloques en el nodo HTML raíz
+    // Inyección en el DOM
     bracket.appendChild(leftSection);
     bracket.appendChild(centerSection);
     bracket.appendChild(rightSection);
 
-    // --- Navegación Interactiva: Clic en Títulos para Desplazamiento ---
-    const todasLasColumnas = bracket.querySelectorAll(".bracket-column");
-    
-    todasLasColumnas.forEach(columna => {
-        const titulo = columna.querySelector(".column-title");
-        if (titulo) {
+    // --- ENLACE DE CLICS EN ENCABEZADOS DE LA BARRA SUPERIOR ---
+    // Buscamos los elementos de la cabecera fija de tu HTML para asociarles el scroll
+    const contenedoresColumnas = bracket.querySelectorAll(".bracket-column");
+    const titulosCabeceraFija = document.querySelectorAll(".eliminatorias-header .header-title, .column-title");
+
+    titulosCabeceraFija.forEach((titulo, index) => {
+        if (contenedoresColumnas[index]) {
             titulo.style.cursor = "pointer";
             titulo.addEventListener("click", () => {
-                columna.scrollIntoView({
+                contenedoresColumnas[index].scrollIntoView({
                     behavior: "smooth",
                     block: "nearest",
-                    inline: "center" // Centra perfectamente la columna pulsada en el visor de la pantalla
+                    inline: "center"
                 });
             });
         }
     });
 
-    // --- IntersectionObserver: Monitor de Scroll para Encabezados Activos ---
-    const observerOptions = {
-        root: bracket,
-        rootMargin: "0px",
-        threshold: 0.5
-    };
-
+    // --- INTERSECTION OBSERVER (Actualizar clases activas al deslizar) ---
+    const observerOptions = { root: bracket, rootMargin: "0px", threshold: 0.5 };
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add("active-round");
+                // Opcional: Si tienes pestañas fijas arriba, puedes añadirles la clase activa aquí
             } else {
                 entry.target.classList.remove("active-round");
             }
         });
     }, observerOptions);
 
-    todasLasColumnas.forEach(columna => observer.observe(columna));
+    contenedoresColumnas.forEach(columna => observer.observe(columna));
 }
-
-
 
 </script>
 
