@@ -3259,16 +3259,16 @@ body{
 }
 
 .match-datetime {
-    position: absolute;
-    top: -18px; /* Coloca la fecha justo encima del borde superior */
-    left: 2px;
+    display: block;
     font-size: 10px;
     color: #94a3b8;
-    white-space: nowrap; /* Evita que la fecha se rompa en dos líneas */
     font-weight: 500;
-    pointer-events: none; /* Evita que interfiera con clics */
-    z-index: 1;
+    padding-bottom: 6px;
+    margin-bottom: 4px;
+    border-bottom: 1px solid #f1f5f9; /* Línea divisoria interna idéntica a tu diseño */
+    pointer-events: none;
 }
+
 
 /* IDs EN EL CENTRO LATERAL EXTREMO */
 .match-id-label {
@@ -6690,32 +6690,35 @@ function renderBracket(partidos) {
         const nombreVisita = partido.visitante || `W${partido.id_origen_visitante || ''}`;
 
         return `
-        <div class="match-wrapper">
-            <span class="match-id-label">P${partido.id}</span>
-            <div class="match-datetime">${tieneFecha ? `${partido.fecha} ${partido.hora || ''}` : '&nbsp;'}</div>
-            <div class="match-card">
-                <div class="team-row ${classCasa}">
-                    <div class="team-info">
-                        <div class="flag-container">${(partido.casa && typeof getBandera === 'function') ? getBandera(partido.casa) : ''}</div>
-                        <span class="team-name">${nombreCasa}</span>
-                    </div>
-                    <div class="score-container">
-                        ${pCasa}
-                        <span class="match-score">${scoreCasa}</span>
-                    </div>
-                </div>
-                <div class="team-row ${classVisita}">
-                    <div class="team-info">
-                        <div class="flag-container">${(partido.visitante && typeof getBandera === 'function') ? getBandera(partido.visitante) : ''}</div>
-                        <span class="team-name">${nombreVisita}</span>
-                    </div>
-                    <div class="score-container">
-                        ${pVisita}
-                        <span class="match-score">${scoreVisita}</span>
-                    </div>
-                </div>
+<div class="match-wrapper">
+    <span class="match-id-label">P${partido.id}</span>
+    <div class="match-card">
+        <!-- NUEVA UBICACIÓN: Ahora vive de forma nativa dentro de la tarjeta blanca -->
+        <div class="match-datetime">${tieneFecha ? `${partido.fecha} ${partido.hora || ''}` : '&nbsp;'}</div>
+        
+        <div class="team-row ${classCasa}">
+            <div class="team-info">
+                <div class="flag-container">${(partido.casa && typeof getBandera === 'function') ? getBandera(partido.casa) : ''}</div>
+                <span class="team-name">${nombreCasa}</span>
             </div>
-        </div>`;
+            <div class="score-container">
+                ${pCasa}
+                <span class="match-score">${scoreCasa}</span>
+            </div>
+        </div>
+        <div class="team-row ${classVisita}">
+            <div class="team-info">
+                <div class="flag-container">${(partido.visitante && typeof getBandera === 'function') ? getBandera(partido.visitante) : ''}</div>
+                <span class="team-name">${nombreVisita}</span>
+            </div>
+            <div class="score-container">
+                ${pVisita}
+                <span class="match-score">${scoreVisita}</span>
+            </div>
+        </div>
+    </div>
+</div>`;
+
     }
 
     function renderColumnaPura(nombreRonda, listaPartidos, contenedorPadre, esBloqueCentral = false) {
