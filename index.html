@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Mundial Adquira 2026</title>
     <link rel="preconnect" href="https://fonts.googFleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -3163,60 +3163,46 @@ body{
     vertical-align: middle;
 }
 
-/* --- CONTENEDOR RAÍZ MEJORADO PARA DISPOSITIVOS MÓVILES TÁCTILES --- */
+/* --- CONTENEDOR RAÍZ --- */
 #bracket {
     display: flex;
     justify-content: flex-start;
     align-items: stretch;
-    gap: 0;
-    padding: 20px 10px;
+    gap: 50px; /* Separación exacta para las líneas conectoras */
+    padding: 20px 40px;
     background-color: #f8fafc;
     font-family: system-ui, -apple-system, sans-serif;
     
-    /* Scroll fluido nativo e interactividad móvil */
+    /* SCROLL TÁCTIL (SIN BLOQUEAR ZOOM) */
     overflow-x: auto;
-    scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
-    touch-action: pan-x pan-y;
+    /* Eliminado touch-action y scroll-snap para permitir zoom nativo */
 }
 
-/* Control del zoom y escalado en pantallas táctiles a nivel de wrapper externo si se desea */
-#bracket::-webkit-scrollbar {
-    height: 6px;
-}
-#bracket::-webkit-scrollbar-thumb {
-    background: #cbd5e1;
-    border-radius: 4px;
-}
-
-/* Estructura de Secciones */
+/* Secciones */
 .bracket-section {
     display: flex;
+    gap: 50px; /* Espaciado estricto entre columnas para el dibujo geométrico */
 }
 .section-left { flex-direction: row; }
 .section-right { flex-direction: row-reverse; }
 
-/* El bloque central ahora se compacta verticalmente de forma independiente */
 .section-center {
     display: flex;
     flex-direction: column;
     justify-content: center; 
     align-items: center;
     width: 250px;
-    padding: 0 45px;
-    gap: 120px; /* Separación perfecta entre la final y el tercer puesto */
+    gap: 120px;
     flex-shrink: 0;
 }
 
-/* Columnas individuales */
+/* Columnas */
 .bracket-column {
     display: flex;
     flex-direction: column;
-    width: 220px;
+    width: 210px; /* Ancho fijo */
     flex-shrink: 0;
-    scroll-snap-align: center; /* Se ancla al centro en móviles al deslizar */
-    padding: 0 12px;
-    box-sizing: border-box;
 }
 
 .column-title {
@@ -3229,12 +3215,12 @@ body{
     letter-spacing: 0.5px;
 }
 
-/* --- CONTENEDORES GRID UNIFORMES --- */
+/* --- GRID MATEMÁTICO PURO (SIN CALC) --- */
 .matches-grid-container {
     display: grid;
     grid-template-rows: repeat(8, 1fr);
-    height: 820px; /* Altura fija para el control matemático exacto de las conexiones */
-    position: relative;
+    height: 840px; 
+    gap: 0; /* Obligatorio 0 para alinear líneas geométricamente */
 }
 
 .center-grid-container {
@@ -3243,51 +3229,79 @@ body{
     width: 100%;
 }
 
-/* Distribución proporcional por niveles */
-.round-1-16 .match-wrapper { grid-row: span 1; margin: auto 0; }
-.round-Octavos .match-wrapper { grid-row: span 2; margin: auto 0; }
-.round-Cuartos .match-wrapper { grid-row: span 4; margin: auto 0; }
-.round-Semifinal .match-wrapper { grid-row: span 8; margin: auto 0; }
+.round-1-16 .match-wrapper { grid-row: span 1; }
+.round-Octavos .match-wrapper { grid-row: span 2; }
+.round-Cuartos .match-wrapper { grid-row: span 4; }
+.round-Semifinal .match-wrapper { grid-row: span 8; }
 
+/* Contenedor centralizador para la tarjeta */
 .match-wrapper {
     display: flex;
     flex-direction: column;
+    justify-content: center; /* Centra la tarjeta perfectamente en su fila/s */
     position: relative;
     width: 100%;
+    height: 100%;
 }
 
-.match-datetime {
-    font-size: 10px;
-    color: #94a3b8;
-    margin-bottom: 4px;
-    text-align: left;
-    padding-left: 2px;
-}
-
-/* --- DISEÑO DE TARJETA LIMPIO --- */
+/* --- TARJETA --- */
 .match-card {
     background: #ffffff;
     border: 1px solid #cbd5e1;
-    border-radius: 12px;
-    padding: 6px 12px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.02);
+    border-radius: 10px;
+    padding: 6px 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.03);
     position: relative;
-    box-sizing: border-box;
     width: 100%;
+    box-sizing: border-box;
+    z-index: 2; /* Siempre por encima de las líneas */
 }
+
+.match-datetime {
+    position: absolute;
+    top: calc(50% - 40px); /* Flotante por encima de la tarjeta */
+    left: 2px;
+    font-size: 10px;
+    color: #94a3b8;
+    z-index: 3;
+}
+
+/* IDs EN EL CENTRO LATERAL EXTREMO */
+.match-id-label {
+    position: absolute;
+    font-size: 10px;
+    font-weight: bold;
+    color: #64748b;
+    text-decoration: underline;
+    z-index: 3;
+    top: 50%;
+    transform: translateY(-50%);
+}
+.section-left .match-id-label { left: -32px; }
+.section-right .match-id-label { right: -32px; }
+.section-center .match-id-label { bottom: -20px; left: 50%; transform: translateX(-50%); top: auto; text-decoration: none; }
 
 .team-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 5px 0;
-    min-height: 32px;
+    padding: 4px 6px;
+    min-height: 28px;
+    border-left: 3px solid transparent; /* Preparación para línea verde lateral */
 }
 .team-row:first-child {
     border-bottom: 1px solid #f1f5f9;
 }
+
+/* LÍNEA DIVISORIA VERDE SOLUCIONADA: Borde lateral izquierdo y texto verde */
 .team-row.winner-row {
-    border-bottom: 1.5px solid #22c55e; /* Subrayado verde de victoria */
+    border-bottom: none !important; /* Eliminamos el bug de entre/debajo */
+    border-left: 3px solid #22c55e;
+    background-color: #f0fdf4;
+    border-radius: 2px;
+}
+.team-row:first-child.winner-row {
+    border-bottom: 1px solid #f1f5f9 !important; /* Preservar divisor central interno si gana el de arriba */
 }
 
 .team-info {
@@ -3299,20 +3313,12 @@ body{
     font-weight: 600;
 }
 
-.flag-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-/* Contenedor del Score + Penaltis alineados a la derecha */
 .score-container {
     display: flex;
     align-items: center;
     gap: 6px;
 }
 
-/* Caja de Goles: Negra con Texto Blanco Legible */
 .match-score {
     background-color: #111111;
     color: #ffffff !important; 
@@ -3326,73 +3332,44 @@ body{
     justify-content: center;
 }
 
-/* P.X de Penaltis compacto y estilizado */
 .penalty-score {
     font-size: 11px;
     font-weight: bold;
-    color: #ef4444; /* Rojo suave para destacar los penaltis */
+    color: #ef4444; 
 }
 .penalty-score small {
     font-size: 8px;
     color: #94a3b8;
-    margin-right: 1px;
-    text-transform: uppercase;
 }
 
-/* Identificadores de partido inferiores */
-.match-id-label {
-    position: absolute;
-    bottom: -16px;
-    font-size: 9px;
-    font-weight: bold;
-    color: #64748b;
-    text-decoration: underline;
+/* ========================================================= */
+/* DIBUJO GEOMÉTRICO EXACTO DE LÍNEAS (MAGIA CSS)            */
+/* ========================================================= */
+
+/* 1. LÍNEAS SALIENTES (De los hijos hacia el centro) */
+.section-left .match-wrapper::after {
+    content: ""; position: absolute; right: -25px; top: 50%; width: 25px; border-top: 1.5px solid #cbd5e1; z-index: 1;
 }
-.section-left .match-id-label { left: 4px; }
-.section-right .match-id-label { right: 4px; }
-.section-center .match-id-label { bottom: 6px; right: 12px; text-decoration: none; }
-
-
-/* --- DIBUJO DE LÍNEAS DE CONEXIÓN DEL ÁRBOL --- */
-.bracket-column:not(.round-Semifinal):not(.round-Final):not(.round-3º-puesto) .match-wrapper::after {
-    content: "";
-    position: absolute;
-    top: 50%;
-    width: 15px;
-    border-top: 1.5px solid #cbd5e1;
-}
-.section-left .bracket-column:not(.round-Semifinal):not(.round-Final):not(.round-3º-puesto) .match-wrapper::after { right: -15px; }
-.section-right .bracket-column:not(.round-Semifinal):not(.round-Final):not(.round-3º-puesto) .match-wrapper::after { left: -15px; }
-
-.bracket-column:not(.round-Semifinal):not(.round-Final):not(.round-3º-puesto) .match-wrapper::before {
-    content: "";
-    position: absolute;
-    width: 15px;
-    border-color: #cbd5e1;
-    border-style: solid;
-    border-width: 0;
+.section-right .match-wrapper::after {
+    content: ""; position: absolute; left: -25px; top: 50%; width: 25px; border-top: 1.5px solid #cbd5e1; z-index: 1;
 }
 
-/* Uniones de las ramas de la izquierda */
-.section-left .match-top::before {
-    top: 50%; height: 50%; border-right-width: 1.5px; border-top-width: 1.5px; right: -15px;
+/* 2. LA HORQUILLA VERTICAL (En el Padre N+1, conecta a sus dos hijos) */
+/* Abarca exactamente del 25% al 75% del alto de la fila padre */
+.section-left .bracket-column:not(.round-1-16) .match-wrapper::before {
+    content: ""; position: absolute; left: -25px; top: 25%; height: 50%; border-left: 1.5px solid #cbd5e1; z-index: 1;
 }
-.section-left .match-bottom::before {
-    bottom: 50%; height: 50%; border-right-width: 1.5px; border-bottom-width: 1.5px; right: -15px;
-}
-
-/* Uniones de las ramas de la derecha */
-.section-right .match-top::before {
-    top: 50%; height: 50%; border-left-width: 1.5px; border-top-width: 1.5px; left: -15px;
-}
-.section-right .match-bottom::before {
-    bottom: 50%; height: 50%; border-left-width: 1.5px; border-bottom-width: 1.5px; left: -15px;
+.section-right .bracket-column:not(.round-1-16) .match-wrapper::before {
+    content: ""; position: absolute; right: -25px; top: 25%; height: 50%; border-right: 1.5px solid #cbd5e1; z-index: 1;
 }
 
-/* Multiplicadores matemáticos de compensación para los conectores por fase */
-.round-1-16 .match-top::before, .round-1-16 .match-bottom::before { height: calc(50% + 27px); }
-.round-Octavos .match-top::before, .round-Octavos .match-bottom::before { height: calc(100% + 16px); }
-.round-Cuartos .match-top::before, .round-Cuartos .match-bottom::before { height: calc(200% + 6px); }
+/* 3. LÍNEAS ENTRANTES (Desde la horquilla vertical hacia la tarjeta Padre) */
+.section-left .bracket-column:not(.round-1-16) .match-card::before {
+    content: ""; position: absolute; left: -25.5px; top: 50%; width: 25px; border-top: 1.5px solid #cbd5e1; z-index: 1;
+}
+.section-right .bracket-column:not(.round-1-16) .match-card::before {
+    content: ""; position: absolute; right: -25.5px; top: 50%; width: 25px; border-top: 1.5px solid #cbd5e1; z-index: 1;
+}
 		
 /* Aplicar la animación a las tarjetas de los grupos */
 .group-card {
@@ -6627,12 +6604,10 @@ function renderBracket(partidos) {
     
     bracket.innerHTML = "";
 
-    // 1. Estructura simétrica pura por fases
     const ladoIzquierdo = { "1/16": [], "Octavos": [], "Cuartos": [], "Semifinal": [] };
     const ladoDerecho = { "Semifinal": [], "Cuartos": [], "Octavos": [], "1/16": [] };
     const centro = { "Final": [], "3º puesto": [] };
 
-    // Mapeo exacto de IDs según tu árbol base
     const idsIzquierda1_16 = ["74", "77", "73", "75", "83", "84", "81", "82"];
     const idsIzquierdaOctavos = ["89", "90", "93", "94"];
     const idsIzquierdaCuartos = ["97", "98"];
@@ -6643,10 +6618,8 @@ function renderBracket(partidos) {
     const idsDerechaCuartos = ["99", "100"];
     const idsDerechaSemi = ["102"];
 
-    // 2. Clasificación inequívoca de partidos
     partidos.forEach(partido => {
         const idStr = String(partido.id);
-        
         if (partido.ronda === "Final") {
             centro["Final"].push(partido);
         } else if (partido.ronda === "3º puesto" || partido.ronda === "3er puesto" || partido.ronda === "3º Puesto") {
@@ -6673,12 +6646,10 @@ function renderBracket(partidos) {
     ordenarPorListaIds(ladoIzquierdo["1/16"], idsIzquierda1_16);
     ordenarPorListaIds(ladoIzquierdo["Octavos"], idsIzquierdaOctavos);
     ordenarPorListaIds(ladoIzquierdo["Cuartos"], idsIzquierdaCuartos);
-    
     ordenarPorListaIds(ladoDerecho["1/16"], idsDerecha1_16);
     ordenarPorListaIds(ladoDerecho["Octavos"], idsDerechaOctavos);
     ordenarPorListaIds(ladoDerecho["Cuartos"], idsDerechaCuartos);
 
-    // 3. Crear los tres bloques principales del Layout
     const leftSection = document.createElement("div");
     leftSection.className = "bracket-section section-left";
 
@@ -6688,10 +6659,9 @@ function renderBracket(partidos) {
     const rightSection = document.createElement("div");
     rightSection.className = "bracket-section section-right";
 
-    function generarHtmlMatch(partido, index) {
+    function generarHtmlMatch(partido) {
         if (!partido) return "";
         
-        // Penaltis compactos con indicador P. pegados a la caja negra de goles
         const pCasa = (partido.penCasa !== undefined && partido.penCasa !== null && partido.penCasa !== "") ? `<span class="penalty-score"><small>P.</small>${partido.penCasa}</span>` : "";
         const pVisita = (partido.penVisita !== undefined && partido.penVisita !== null && partido.penVisita !== "") ? `<span class="penalty-score"><small>P.</small>${partido.penVisita}</span>` : "";
         
@@ -6701,7 +6671,6 @@ function renderBracket(partidos) {
         if (scoreCasa === "-") scoreCasa = "";
         if (scoreVisita === "-") scoreVisita = "";
 
-        const matchPos = (index % 2 === 0) ? "match-top" : "match-bottom";
         const tieneFecha = partido.fecha && partido.fecha !== "-";
 
         let classCasa = "";
@@ -6713,12 +6682,12 @@ function renderBracket(partidos) {
             if (gVisita > gCasa) classVisita = "winner-row";
         }
 
-        // Marcado de equipo por defecto si no se ha decidido la fase previa (Ej: W89, L101)
         const nombreCasa = partido.casa || `W${partido.id_origen_casa || ''}`;
         const nombreVisita = partido.visitante || `W${partido.id_origen_visitante || ''}`;
 
         return `
-        <div class="match-wrapper ${matchPos}">
+        <div class="match-wrapper">
+            <span class="match-id-label">P${partido.id}</span>
             <div class="match-datetime">${tieneFecha ? `${partido.fecha} ${partido.hora || ''}` : '&nbsp;'}</div>
             <div class="match-card">
                 <div class="team-row ${classCasa}">
@@ -6741,7 +6710,6 @@ function renderBracket(partidos) {
                         <span class="match-score">${scoreVisita}</span>
                     </div>
                 </div>
-                <span class="match-id-label">P${partido.id}</span>
             </div>
         </div>`;
     }
@@ -6760,34 +6728,25 @@ function renderBracket(partidos) {
         column.innerHTML = `<h3 class="column-title">${tituloMostrar}</h3>`;
         
         const gridContainer = document.createElement("div");
-        // Las columnas centrales no necesitan usar el Grid de 8 filas para estirarse
         gridContainer.className = esBloqueCentral ? "center-grid-container" : "matches-grid-container";
 
-        listaPartidos.forEach((partido, idx) => {
-            gridContainer.innerHTML += generarHtmlMatch(partido, idx);
+        listaPartidos.forEach((partido) => {
+            gridContainer.innerHTML += generarHtmlMatch(partido);
         });
 
         column.appendChild(gridContainer);
         contenedorPadre.appendChild(column);
     }
 
-    // Render de bloques laterales
     Object.keys(ladoIzquierdo).forEach(ronda => renderColumnaPura(ronda, ladoIzquierdo[ronda], leftSection));
-    
-    // Render de bloque central (Solo Final y 3º puesto alineados en el corazón del layout)
     renderColumnaPura("Final", centro["Final"], centerSection, true);
-    if (centro["3º puesto"].length > 0) {
-        renderColumnaPura("3º puesto", centro["3º puesto"], centerSection, true);
-    }
-
+    if (centro["3º puesto"].length > 0) renderColumnaPura("3º puesto", centro["3º puesto"], centerSection, true);
     Object.keys(ladoDerecho).reverse().forEach(ronda => renderColumnaPura(ronda, ladoDerecho[ronda], rightSection));
 
-    // Inyección ordenada en el DOM
     bracket.appendChild(leftSection);
     bracket.appendChild(centerSection);
     bracket.appendChild(rightSection);
 
-    // --- MANEJADOR TÁCTIL: NAVEGACIÓN POR CLIC EN ENCABEZADOS ---
     document.querySelectorAll(".column-title").forEach((header) => {
         header.style.cursor = "pointer";
         header.addEventListener("click", () => {
