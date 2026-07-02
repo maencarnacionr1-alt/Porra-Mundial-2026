@@ -6663,7 +6663,7 @@ function renderBracket(partidos) {
     const rightSection = document.createElement("div");
     rightSection.className = "bracket-section section-right";
 
-    function generarHtmlMatch(partido) {
+        function generarHtmlMatch(partido) {
         if (!partido) return "";
         
         const pCasa = (partido.penCasa !== undefined && partido.penCasa !== null && partido.penCasa !== "") ? `<span class="penalty-score"><small>P.</small>${partido.penCasa}</span>` : "";
@@ -6677,8 +6677,8 @@ function renderBracket(partidos) {
 
         const tieneFecha = partido.fecha && partido.fecha !== "-";
 
-        // Comprobación de partido finalizado si existen marcadores numéricos válidos
-        const partidoFinalizado = scoreCasa !== "" && scoreVisita !== "";
+        // CORRECCIÓN DEFINITIVA: Si el string limpio mide más de 0 caracteres, el partido SÍ está jugado
+        const partidoFinalizado = scoreCasa.length > 0 && scoreVisita.length > 0;
 
         let classCasa = "";
         let classVisita = "";
@@ -6689,7 +6689,7 @@ function renderBracket(partidos) {
             if (gVisita > gCasa) classVisita = "winner-row";
         }
 
-        // Definición del texto dinámico del encabezado interno
+        // Asignación del texto de la cabecera basado en la nueva comprobación limpia
         let textoCabecera = '&nbsp;';
         if (partidoFinalizado) {
             textoCabecera = "Finalizado";
@@ -6704,7 +6704,7 @@ function renderBracket(partidos) {
 <div class="match-wrapper">
     <span class="match-id-label">P${partido.id}</span>
     <div class="match-card">
-        <!-- Contenedor de fecha/estado configurado dentro de la tarjeta blanca -->
+        <!-- El div ahora renderiza dinámicamente el estado correcto o la fecha -->
         <div class="match-datetime">${textoCabecera}</div>
         
         <div class="team-row ${classCasa}">
