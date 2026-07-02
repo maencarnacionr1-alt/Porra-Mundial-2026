@@ -6579,7 +6579,7 @@ function renderBracket(partidos) {
     const rightSection = document.createElement("div");
     rightSection.className = "bracket-section section-right";
 
-    // Función interna auxiliar para renderizar cada tarjeta con el formato solicitado (goles visibles en caja negra)
+    // Función interna auxiliar para renderizar cada tarjeta con su marcador en caja negra
     function generarHtmlMatch(partido, index) {
         const pCasa = (partido.penaltisCasa !== undefined && partido.penaltisCasa !== null) ? `<span class="penalty-score">(${partido.penaltisCasa})</span>` : "";
         const pVisita = (partido.penaltisVisita !== undefined && partido.penaltisVisita !== null) ? `<span class="penalty-score">(${partido.penaltisVisita})</span>` : "";
@@ -6614,16 +6614,18 @@ function renderBracket(partidos) {
         </div>`;
     }
 
-    // Función interna para procesar y colgar las columnas de un lateral
-    function renderRondasLado(estructuraLado, contenedorPadre) {
+    // Función interna para procesar y colgar las columnas añadiendo sufijos de zona (A / B) para evitar nombres idénticos
+    function renderRondasLado(estructuraLado, contenedorPadre, sufijoZona) {
         Object.entries(estructuraLado).forEach(([nombreRonda, listaPartidos]) => {
             const column = document.createElement("div");
             column.className = `bracket-column round-${nombreRonda.replace("/", "-")}`;
             
+            // Personalización de títulos para diferenciar el lado izquierdo (Zona A) del derecho (Zona B)
             let tituloMostrar = nombreRonda;
-            if (nombreRonda === "1/16") tituloMostrar = "Dieciséisavos";
-            if (nombreRonda === "Cuartos") tituloMostrar = "Cuartos de final";
-            if (nombreRonda === "Octavos") tituloMostrar = "Octavos de final";
+            if (nombreRonda === "1/16") tituloMostrar = `Dieciséisavos (${sufijoZona})`;
+            if (nombreRonda === "Octavos") tituloMostrar = `Octavos (${sufijoZona})`;
+            if (nombreRonda === "Cuartos") tituloMostrar = `Cuartos (${sufijoZona})`;
+            if (nombreRonda === "Semifinal") tituloMostrar = `Semifinal ${sufijoZona}`;
 
             column.innerHTML = `<h3 class="column-title">${tituloMostrar}</h3>`;
             
@@ -6640,7 +6642,7 @@ function renderBracket(partidos) {
     }
 
     // --- Ejecución del Renderizado por Secciones ---
-    renderRondasLado(ladoIzquierdo, leftSection);
+    renderRondasLado(ladoIzquierdo, leftSection, "Izq");
 
     // Bloque Central: Columna de la Gran Final
     const finalCol = document.createElement("div");
@@ -6658,7 +6660,7 @@ function renderBracket(partidos) {
         const tercerCol = document.createElement("div");
         tercerCol.className = "bracket-column round-Tercer-puesto";
         tercerCol.innerHTML = `
-            <h3 class="column-title">Partido por el tercer puesto</h3>
+            <h3 class="column-title">3º Puesto</h3>
             <div class="matches-flex-group">
                 ${generarHtmlMatch(rondas["3º puesto"], 0)}
             </div>`;
@@ -6672,9 +6674,10 @@ function renderBracket(partidos) {
         column.className = `bracket-column round-${nombreRonda.replace("/", "-")}`;
         
         let tituloMostrar = nombreRonda;
-        if (nombreRonda === "1/16") tituloMostrar = "Dieciséisavos";
-        if (nombreRonda === "Cuartos") tituloMostrar = "Cuartos de final";
-        if (nombreRonda === "Octavos") tituloMostrar = "Octavos de final";
+        if (nombreRonda === "1/16") tituloMostrar = "Dieciséisavos (Der)";
+        if (nombreRonda === "Octavos") tituloMostrar = "Octavos (Der)";
+        if (nombreRonda === "Cuartos") tituloMostrar = "Cuartos (Der)";
+        if (nombreRonda === "Semifinal") tituloMostrar = "Semifinal Der";
 
         column.innerHTML = `<h3 class="column-title">${tituloMostrar}</h3>`;
         
@@ -6694,6 +6697,24 @@ function renderBracket(partidos) {
     bracket.appendChild(centerSection);
     bracket.appendChild(rightSection);
 
+    // --- NUEVO: Interacción de clics en Encabezados para Desplazamiento ---
+    const todasLasColumnas = bracket.querySelectorAll(".bracket-column");
+    
+    todasLasColumnas.forEach(columna => {
+        const titulo = columna.querySelector(".column-title");
+        if (titulo) {
+            // Estilo visual de puntero para indicar que es cliqueable
+            titulo.style.cursor = "pointer";
+            titulo.addEventListener("click", () => {
+                columna.scrollIntoView({
+                    behavior: "smooth", // Desplazamiento fluido nativo
+                    block: "nearest",
+                    inline: "center"    // Centra de forma exacta la columna en la pantalla
+                });
+            });
+        }
+    });
+
     // --- IntersectionObserver: Monitor de Scroll para Encabezados Activos ---
     const observerOptions = {
         root: bracket,
@@ -6711,9 +6732,9 @@ function renderBracket(partidos) {
         });
     }, observerOptions);
 
-    const todasLasColumnas = bracket.querySelectorAll(".bracket-column");
     todasLasColumnas.forEach(columna => observer.observe(columna));
 }
+
 
 </script>
 
