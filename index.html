@@ -3163,183 +3163,191 @@ body{
     vertical-align: middle;
 }
 
-.bracket {
+/* --- CONTENEDOR RAÍZ GENERAL --- */
+#bracket {
     display: flex;
-    gap: 40px;
+    justify-content: center;
     align-items: stretch;
-    overflow-x: auto;
-    padding: 20px;
-    background-color: #fcfcfc;
+    gap: 15px;
+    padding: 30px;
+    background-color: #f8fafc;
+    font-family: system-ui, -apple-system, sans-serif;
+    min-width: max-content;
 }
 
-.round {
-    width: 240px;
-    flex-shrink: 0;
+/* Secciones principales */
+.bracket-section {
+    display: flex;
+    gap: 30px;
+}
+
+.section-center {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+    width: 260px;
+}
+
+/* Columnas de cada Ronda */
+.bracket-column {
     display: flex;
     flex-direction: column;
+    width: 240px;
 }
 
-.round-title {
+.column-title {
     text-align: center;
-    font-size: 16px;
-    color: #333;
-    margin: 0 0 20px 0;
-    height: 30px;
-    line-height: 30px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #64748b;
+    text-transform: uppercase;
+    margin: 0 0 25px 0;
+    letter-spacing: 0.5px;
 }
 
-/* Red de cuadrícula virtual */
-.matches-container {
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-auto-rows: 55px;
+/* Grupo elástico que expande y alinea los partidos uniformemente */
+.matches-flex-group {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
     flex-grow: 1;
     position: relative;
 }
 
-/* Tarjeta base */
-.match {
-    grid-row: var(--match-row);
-    background: #fff;
-    border-radius: 12px;
-    padding: 10px;
-    box-shadow: 0 2px 8px rgba(0,0,0,.12);
+/* --- DISEÑO DE TARJETA DE PARTIDO (Idéntico al de la imagen) --- */
+.match-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 10px 14px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
     position: relative;
-    transition: .25s;
-    height: 90px;
+    transition: all 0.2s ease;
     box-sizing: border-box;
-    align-self: center;
-    z-index: 2;
+    width: 100%;
+    margin: 10px 0;
 }
 
-.match:hover {
+.match-card:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 18px rgba(0,0,0,.18);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
 }
 
-/* --- CONECTORES DE SALIDA (DERECHA) --- */
-
-/* Línea horizontal que sale hacia la derecha */
-.round:not(:last-child):not(:nth-last-child(2)) .match::after {
-    content: "";
-    position: absolute;
-    right: -20px;
-    top: 50%;
-    width: 20px;
-    border-top: 2px solid #ccc;
-    z-index: 1;
-}
-
-/* Conector vertical hacia ABAJO para los partidos superiores */
-.round:not(:last-child):not(:nth-last-child(2)) .match.match-top::before {
-    content: "";
-    position: absolute;
-    right: -20px;
-    top: 50%;
-    width: 20px;
-    border-right: 2px solid #ccc;
-    z-index: 1;
-}
-
-/* Conector vertical hacia ARRIBA para los partidos inferiores */
-.round:not(:last-child):not(:nth-last-child(2)) .match.match-bottom::before {
-    content: "";
-    position: absolute;
-    right: -20px;
-    bottom: 50%;
-    width: 20px;
-    border-right: 2px solid #ccc;
-    z-index: 1;
-}
-
-/* Alturas exactas de las líneas verticales según la escala de cada ronda */
-.round:nth-child(1) .match.match-top::before,
-.round:nth-child(1) .match.match-bottom::before { height: 55px; }
-
-.round:nth-child(2) .match.match-top::before,
-.round:nth-child(2) .match.match-bottom::before { height: 110px; }
-
-.round:nth-child(3) .match.match-top::before,
-.round:nth-child(3) .match.match-bottom::before { height: 220px; }
-
-.round:nth-child(4) .match.match-top::before,
-.round:nth-child(4) .match.match-bottom::before { height: 440px; }
-
-
-/* --- CONECTORES DE ENTRADA REPARADOS (IZQUIERDA) --- */
-
-/* --- CONECTORES DE ENTRADA REPARADOS (IZQUIERDA) --- */
-
-.round:not(:first-child) .match {
-    /* Añadimos la línea horizontal fija aquí usando un degradado de fondo que sobresale a la izquierda */
-    background-image: linear-gradient(to right, #ccc 20px, transparent 20px), linear-gradient(to bottom, #fff, #fff);
-    background-size: 20px 2px, 100% 100%;
-    background-position: -20px 44px, 0 0; /* Centrada a los 44px de altura de la tarjeta */
-    background-repeat: no-repeat;
-    
-    /* Mantenemos tu sombra intacta */
-    box-shadow: 0 2px 8px rgba(0,0,0,.12);
-}
-	
-.round:not(:first-child) .match:hover {
-    /* Tu hover original pero manteniendo la línea visible */
-    background-image: linear-gradient(to right, #ccc 20px, transparent 20px), linear-gradient(to bottom, #fff, #fff);
-    background-size: 20px 2px, 100% 100%;
-    background-position: -20px 44px, 0 0;
-    background-repeat: no-repeat;
-    
-    transform: translateY(-2px);
-    box-shadow: 0 6px 18px rgba(0,0,0,.18);
-}
-
-
-/* --- DISEÑO INTERNO --- */
+/* Cabecera del partido */
 .match-header {
     display: flex;
     justify-content: space-between;
-    font-size: 11px;
-    color: #777;
-    margin-bottom: 4px;
+    font-size: 10px;
+    font-weight: 500;
+    color: #94a3b8;
+    margin-bottom: 6px;
+    border-bottom: 1px solid #f1f5f9;
     padding-bottom: 4px;
-    border-bottom: 1px solid #ececec;
 }
 
-.team {
+/* Filas de Equipos */
+.team-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 3px 0;
-    box-sizing: border-box;
+    padding: 4px 0;
 }
 
-.team-left {
+.team-info {
     display: flex;
     align-items: center;
     gap: 8px;
     font-size: 13px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    color: #1e293b;
+    font-weight: 500;
 }
 
-.score {
-    font-weight: bold;
-    font-size: 16px;
-    min-width: 20px;
+/* Estilo para los scores */
+.match-score {
+    font-weight: 700;
+    font-size: 15px;
+    color: #0f172a;
+    min-width: 16px;
     text-align: center;
 }
 
-		/* 1. ANIMACIÓN DE ENTRADA EN CASCADA */
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(15px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+/* Estilos de los penaltis solicitados */
+.penalty-score {
+    font-size: 11px;
+    color: #64748b;
+    font-weight: 400;
+    margin-left: 2px;
 }
+
+/* --- CONECTORES DE LÍNEAS AVANZADAS (Simétricos) --- */
+
+/* Líneas base horizontales salientes */
+.section-left .bracket-column:not(.round-Semifinal) .match-card::after {
+    content: "";
+    position: absolute;
+    right: -16px;
+    top: 50%;
+    width: 16px;
+    border-top: 2px solid #cbd5e1;
+}
+
+.section-right .bracket-column:not(.round-Semifinal) .match-card::after {
+    content: "";
+    position: absolute;
+    left: -16px;
+    top: 50%;
+    width: 16px;
+    border-top: 2px solid #cbd5e1;
+}
+
+/* Líneas verticales conectoras (Lado Izquierdo) */
+.section-left .bracket-column:not(.round-Semifinal) .match-card.match-top::before {
+    content: "";
+    position: absolute;
+    right: -16px;
+    top: 50%;
+    width: 16px;
+    height: calc(50% + 22px);
+    border-right: 2px solid #cbd5e1;
+}
+.section-left .bracket-column:not(.round-Semifinal) .match-card.match-bottom::before {
+    content: "";
+    position: absolute;
+    right: -16px;
+    bottom: 50%;
+    width: 16px;
+    height: calc(50% + 22px);
+    border-right: 2px solid #cbd5e1;
+}
+
+/* Líneas verticales conectoras (Lado Derecho) */
+.section-right .bracket-column:not(.round-Semifinal) .match-card.match-top::before {
+    content: "";
+    position: absolute;
+    left: -16px;
+    top: 50%;
+    width: 16px;
+    height: calc(50% + 22px);
+    border-left: 2px solid #cbd5e1;
+}
+.section-right .bracket-column:not(.round-Semifinal) .match-card.match-bottom::before {
+    content: "";
+    position: absolute;
+    left: -16px;
+    bottom: 50%;
+    width: 16px;
+    height: calc(50% + 22px);
+    border-left: 2px solid #cbd5e1;
+}
+
+/* Multiplicadores dinámicos de altura para las uniones según la ronda */
+.round-Octavos .match-card.match-top::before, 
+.round-Octavos .match-card.match-bottom::before { height: calc(100% + 20px) !important; }
+
+.round-Cuartos .match-card.match-top::before, 
+.round-Cuartos .match-card.match-bottom::before { height: calc(200% + 40px) !important; }
+		
 
 /* Aplicar la animación a las tarjetas de los grupos */
 .group-card {
@@ -6568,81 +6576,140 @@ function detectRound(id) {
     return "";
 }
 
-function renderBracket(partidos){
-
-    const rondas = {
-        "1/16": [],
-        "Octavos": [],
-        "Cuartos": [],
-        "Semifinal": [],
-        "Final": [],
-        "3º puesto": []
-    };
-
-    partidos.forEach(p => {
-        if(rondas[p.ronda]) rondas[p.ronda].push(p);
-    });
-
+function renderBracket(partidos) {
     const bracket = document.getElementById("bracket");
+    if (!bracket) return;
     bracket.innerHTML = "";
 
-    Object.entries(rondas).forEach(([nombre, lista])=>{
-        if(lista.length === 0) return;
+    // 1. Agrupar partidos por ronda
+    const rondas = { "1/16": [], "Octavos": [], "Cuartos": [], "Semifinal": [], "Final": [], "3º puesto": [] };
+    partidos.forEach(p => { if (rondas[p.ronda]) rondas[p.ronda].push(p); });
 
-        const columna = document.createElement("div");
-        columna.className = "round";
-        columna.innerHTML = `<h3 class="round-title">${nombre}</h3>`;
+    // 2. Dividir las rondas clasificatorias en Lado Izquierdo y Lado Derecho (50% cada una)
+    const ladoIzquierdo = { "1/16": [], "Octavos": [], "Cuartos": [], "Semifinal": [] };
+    const ladoDerecho = { "Semifinal": [], "Cuartos": [], "Octavos": [], "1/16": [] };
 
-        const matchesContainer = document.createElement("div");
-        matchesContainer.className = "matches-container";
+    ["1/16", "Octavos", "Cuartos", "Semifinal"].forEach(ronda => {
+        const lista = rondas[ronda];
+        const mitad = Math.ceil(lista.length / 2);
+        ladoIzquierdo[ronda] = lista.slice(0, mitad);
+        ladoDerecho[ronda] = lista.slice(mitad);
+    });
 
-        lista.forEach((partido, index) => {
-            const positionClass = (index % 2 === 0) ? "match-top" : "match-bottom";
+    // 3. Crear los 3 contenedores estructurales principales
+    const leftSection = document.createElement("div");
+    leftSection.className = "bracket-section section-left";
 
-            let rowStyle = "";
-            if (nombre === "1/16") {
-                rowStyle = `style="--match-row: ${index * 2 + 1}"`;
-            } else if (nombre === "Octavos") {
-                rowStyle = `style="--match-row: ${index * 4 + 2}"`;
-            } else if (nombre === "Cuartos") {
-                rowStyle = `style="--match-row: ${index * 8 + 4}"`;
-            } else if (nombre === "Semifinal") {
-                rowStyle = `style="--match-row: ${index * 16 + 8}"`;
-            } else if (nombre === "Final") {
-                rowStyle = `style="--match-row: 12"`;
-            } else if (nombre === "3º puesto") {
-                rowStyle = `style="--match-row: 20"`;
-            }
+    const centerSection = document.createElement("div");
+    centerSection.className = "bracket-section section-center";
 
-            matchesContainer.innerHTML += `
-            <div class="match ${positionClass}" ${rowStyle}>
-                <div class="match-header">
-                    <span>${partido.fecha}</span>
-                    <span>${partido.hora}</span>
-                </div>
-                <div class="team">
-                    <div class="team-left">
-                       ${getBandera(partido.casa)}
-                        <span>${partido.casa}</span>
-                    </div>
-                    <span class="score">${partido.golCasa}</span>
-                </div>
-                <div class="team">
-                    <div class="team-left">
-                        ${getBandera(partido.visitante)}
-                        <span>${partido.visitante}</span>
-                    </div>
-                    <span class="score">${partido.golVisita}</span>
-                </div>
+    const rightSection = document.createElement("div");
+    rightSection.className = "bracket-section section-right";
+
+    // Función auxiliar para renderizar una tarjeta de partido con penaltis
+    function generarHtmlMatch(partido, index) {
+        const pCasa = (partido.penaltisCasa !== undefined && partido.penaltisCasa !== null) ? `<span class="penalty-score">(${partido.penaltisCasa})</span>` : "";
+        const pVisita = (partido.penaltisVisita !== undefined && partido.penaltisVisita !== null) ? `<span class="penalty-score">(${partido.penaltisVisita})</span>` : "";
+        
+        // Marcamos una clase para que el CSS sepa si es el de arriba o abajo en la llave
+        const matchPos = (index % 2 === 0) ? "match-top" : "match-bottom";
+
+        return `
+        <div class="match-card ${matchPos}">
+            <div class="match-header">
+                <span class="match-id">${partido.id || ''}</span>
+                <span class="match-datetime">${partido.fecha} &nbsp; ${partido.hora}</span>
             </div>
-            `;
+            <div class="team-row">
+                <div class="team-info">
+                    ${getBandera(partido.casa)}
+                    <span class="team-name">${partido.casa}</span>
+                    ${pCasa}
+                </div>
+                <span class="match-score">${partido.golCasa ?? ''}</span>
+            </div>
+            <div class="team-row">
+                <div class="team-info">
+                    ${getBandera(partido.visitante)}
+                    <span class="team-name">${partido.visitante}</span>
+                    ${pVisita}
+                </div>
+                <span class="match-score">${partido.golVisita ?? ''}</span>
+            </div>
+        </div>`;
+    }
+
+    // Función para renderizar columnas de un lado específico
+    function renderRondasLado(estructuraLado, contenedorPadre) {
+        Object.entries(estructuraLado).forEach(([nombreRonda, listaPartidos]) => {
+            const column = document.createElement("div");
+            column.className = `bracket-column round-${nombreRonda.replace("/", "-")}`;
+            
+            // Título de la ronda
+            column.innerHTML = `<h3 class="column-title">${nombreRonda === "1/16" ? "Dieciséisavos" : nombreRonda}</h3>`;
+            
+            const groupContainer = document.createElement("div");
+            groupContainer.className = "matches-flex-group";
+
+            listaPartidos.forEach((partido, idx) => {
+                groupContainer.innerHTML += generarHtmlMatch(partido, idx);
+            });
+
+            column.appendChild(groupContainer);
+            contenedorPadre.appendChild(column);
+        });
+    }
+
+    // --- Renderizar Lado Izquierdo (Flujo: 1/16 -> Semifinal) ---
+    renderRondasLado(ladoIzquierdo, leftSection);
+
+    // --- Renderizar Bloque Central (Finales) ---
+    // Columna de Final
+    const finalCol = document.createElement("div");
+    finalCol.className = "bracket-column round-final-center";
+    
+    let finalHtml = `<h3 class="column-title">Final</h3><div class="matches-flex-group">`;
+    if (rondas["Final"][0]) finalHtml += generarHtmlMatch(rondas["Final"][0], 0);
+    finalHtml += `</div>`;
+    finalCol.innerHTML = finalHtml;
+    centerSection.appendChild(finalCol);
+
+    // Columna de Tercer Puesto (Abajo en el centro)
+    if (rondas["3º puesto"][0]) {
+        const tercerCol = document.createElement("div");
+        tercerCol.className = "bracket-column round-third-center";
+        tercerCol.innerHTML = `
+            <h3 class="column-title">Tercer puesto</h3>
+            <div class="matches-flex-group">
+                ${generarHtmlMatch(rondas["3º puesto"][0], 0)}
+            </div>`;
+        centerSection.appendChild(tercerCol);
+    }
+
+    // --- Renderizar Lado Derecho (Flujo: Semifinal <- 1/16) ---
+    // Invertimos el orden de las llaves para que pinte Semifinal primero y 1/16 al extremo derecho del navegador
+    const llavesDerechasInvertidas = Object.entries(ladoDerecho).reverse();
+    llavesDerechasInvertidas.forEach(([nombreRonda, listaPartidos]) => {
+        const column = document.createElement("div");
+        column.className = `bracket-column round-${nombreRonda.replace("/", "-")}`;
+        column.innerHTML = `<h3 class="column-title">${nombreRonda === "1/16" ? "Dieciséisavos" : nombreRonda}</h3>`;
+        
+        const groupContainer = document.createElement("div");
+        groupContainer.className = "matches-flex-group";
+
+        listaPartidos.forEach((partido, idx) => {
+            groupContainer.innerHTML += generarHtmlMatch(partido, idx);
         });
 
-        columna.appendChild(matchesContainer);
-        bracket.appendChild(columna);
+        column.appendChild(groupContainer);
+        rightSection.appendChild(column);
     });
-}
 
+    // 4. Inyectar todo en el contenedor principal en orden horizontal
+    bracket.appendChild(leftSection);
+    bracket.appendChild(centerSection);
+    bracket.appendChild(rightSection);
+}
 
 
 </script>
