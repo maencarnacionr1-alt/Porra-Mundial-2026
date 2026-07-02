@@ -6568,7 +6568,6 @@ function detectRound(id) {
     return "";
 }
 
-
 function renderBracket(partidos){
 
     const rondas = {
@@ -6600,32 +6599,19 @@ function renderBracket(partidos){
         lista.forEach((partido, index) => {
             const positionClass = (index % 2 === 0) ? "match-top" : "match-bottom";
 
-            // Convertimos el ID de tu columna Z a número entero
-            const idPartido = parseInt(partido.id);
-
             let rowStyle = "";
             if (nombre === "1/16") {
-                // IDs del 73 al 87 -> ordenReal va de 0 a 14
-                const ordenReal = idPartido - 73;
-                rowStyle = `style="--match-row: ${ordenReal * 2 + 1}"`;
+                rowStyle = `style="--match-row: ${index * 2 + 1}"`;
             } else if (nombre === "Octavos") {
-                // IDs del 90 al 96 -> ordenReal va de 0 a 6
-                const ordenReal = idPartido - 90;
-                rowStyle = `style="--match-row: ${ordenReal * 4 + 2}"`;
+                rowStyle = `style="--match-row: ${index * 4 + 2}"`;
             } else if (nombre === "Cuartos") {
-                // IDs del 97 al 100 -> ordenReal va de 0 a 3
-                const ordenReal = idPartido - 97;
-                rowStyle = `style="--match-row: ${ordenReal * 8 + 4}"`;
+                rowStyle = `style="--match-row: ${index * 8 + 4}"`;
             } else if (nombre === "Semifinal") {
-                // IDs 101 y 102 -> ordenReal va de 0 a 1
-                const ordenReal = idPartido - 101;
-                rowStyle = `style="--match-row: ${ordenReal * 16 + 8}"`;
-            } else if (nombre === "3º puesto") {
-                // ID 103 fijo en la fila 20
-                rowStyle = `style="--match-row: 20"`;
+                rowStyle = `style="--match-row: ${index * 16 + 8}"`;
             } else if (nombre === "Final") {
-                // ID 104 fijo en la fila 12
                 rowStyle = `style="--match-row: 12"`;
+            } else if (nombre === "3º puesto") {
+                rowStyle = `style="--match-row: 20"`;
             }
 
             matchesContainer.innerHTML += `
