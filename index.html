@@ -3163,23 +3163,24 @@ body{
     vertical-align: middle;
 }
 
-/* --- CONTENEDOR RAÍZ --- */
+/* --- CONTENEDOR RAÍZ GENERAL --- */
 #bracket {
     display: flex;
     justify-content: flex-start;
     align-items: stretch;
-    padding: 40px 20px;
-    background-color: #ffffff;
+    gap: 15px;
+    padding: 30px 20px;
+    background-color: #f8fafc;
     font-family: system-ui, -apple-system, sans-serif;
     overflow-x: auto;
-    gap: 0;
+    -webkit-overflow-scrolling: touch;
 }
 
+/* Secciones del Árbol */
 .bracket-section {
     display: flex;
-    align-items: stretch;
+    gap: 25px;
 }
-
 .section-left { flex-direction: row; }
 .section-right { flex-direction: row-reverse; }
 
@@ -3188,80 +3189,76 @@ body{
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 290px;
-    padding: 0 30px;
-    gap: 60px;
+    gap: 40px;
+    width: 250px;
+    flex-shrink: 0;
 }
 
-/* --- COLUMNAS Y ESPACIADO MATEMÁTICO --- */
+/* Columnas Estructuradas */
 .bracket-column {
     display: flex;
     flex-direction: column;
-    width: 220px;
+    width: 210px;
     flex-shrink: 0;
 }
 
 .column-title {
     text-align: center;
     font-size: 12px;
-    font-weight: 500;
+    font-weight: 600;
     color: #64748b;
     margin: 0 0 20px 0;
+    text-transform: capitalize;
 }
 
-.matches-flex-group {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    height: 100%;
+/* --- SISTEMA GRID MATEMÁTICO PARA EMPAREJAMIENTOS --- */
+.matches-grid-container {
+    display: grid;
+    grid-template-rows: repeat(8, 1fr);
+    height: 760px; /* Define una altura base uniforme para que las ramas coincidan */
     flex-grow: 1;
     position: relative;
 }
 
-/* --- CONTENEDOR DE TARJETA --- */
+/* Asignación de posiciones en el Grid por fase */
+.round-1-16 .match-wrapper { grid-row: span 1; margin: auto 0; }
+.round-Octavos .match-wrapper { grid-row: span 2; margin: auto 0; }
+.round-Cuartos .match-wrapper { grid-row: span 4; margin: auto 0; }
+.round-Semifinal .match-wrapper { grid-row: span 8; margin: auto 0; }
+
+/* Contenedor wrapper individual */
 .match-wrapper {
     display: flex;
     flex-direction: column;
     position: relative;
-    padding: 10px 0;
     width: 100%;
-    box-sizing: border-box;
 }
 
 .match-datetime {
     font-size: 10px;
     color: #94a3b8;
-    margin-bottom: 5px;
-    padding-left: 5px;
+    margin-bottom: 4px;
+    text-align: center;
 }
 
-/* --- TARJETA --- */
+/* --- TARJETA RE-ESTILIZADA --- */
 .match-card {
     background: #ffffff;
-    border: 1px solid #cbd5e1;
-    border-radius: 14px;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 6px 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
     position: relative;
     box-sizing: border-box;
     width: 100%;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.02);
 }
 
 .team-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 8px 12px;
-    min-height: 38px;
-    box-sizing: border-box;
-}
-
-.team-row:first-child {
-    border-bottom: 1px solid #f1f5f9;
-}
-
-/* Subrayado verde discreto de victoria */
-.team-row.winner-row {
-    border-bottom: 2px solid #10b981 !important;
+    padding: 4px 0;
+    min-height: 28px;
 }
 
 .team-info {
@@ -3270,65 +3267,85 @@ body{
     gap: 8px;
     font-size: 12px;
     color: #1e293b;
-    font-weight: 600;
+    font-weight: 500;
 }
 
+/* SOLUCIÓN: Marcadores en caja negra con texto blanco perfectamente legible */
 .match-score {
+    background-color: #111111;
+    color: #ffffff !important; /* Forzado a blanco */
     font-weight: 700;
-    font-size: 13px;
-    color: #0f172a;
+    font-size: 12px;
+    min-width: 22px;
+    height: 22px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
 }
 
-/* ID del partido reposicionado para evitar solapamientos */
-.match-id-badge {
+/* ID del partido debajo de la tarjeta */
+.match-id-label {
     position: absolute;
-    bottom: -18px;
-    font-size: 9px;
-    font-weight: 700;
+    bottom: -16px;
+    font-size: 10px;
+    font-weight: bold;
     color: #64748b;
     text-decoration: underline;
 }
-.section-left .match-id-badge { left: 5px; }
-.section-right .match-id-badge { right: 5px; }
-.section-center .match-id-badge { bottom: 5px; right: 10px; text-decoration: none; }
+.section-left .match-id-label { left: 4px; }
+.section-right .match-id-label { right: 4px; }
+.section-center .match-id-label { bottom: 6px; right: 10px; text-decoration: none; }
 
-/* --- CONECTORES GRÁFICOS RE-CALCULADOS --- */
+.penalty-score {
+    font-size: 10px;
+    color: #64748b;
+}
+
+/* --- DIBUJO DE LÍNEAS CONECTORAS SIMÉTRICAS --- */
+
+/* Línea horizontal saliente desde cada tarjeta */
 .bracket-column:not(.round-Semifinal) .match-wrapper::after {
     content: "";
     position: absolute;
-    top: 52px;
-    width: 15px;
-    border-top: 1px solid #cbd5e1;
+    top: 50%;
+    width: 13px;
+    border-top: 1.5px solid #cbd5e1;
 }
-.section-left .bracket-column:not(.round-Semifinal) .match-wrapper::after { right: -15px; }
-.section-right .bracket-column:not(.round-Semifinal) .match-wrapper::after { left: -15px; }
+.section-left .bracket-column:not(.round-Semifinal) .match-wrapper::after { right: -13px; }
+.section-right .bracket-column:not(.round-Semifinal) .match-wrapper::after { left: -13px; }
 
+/* Líneas verticales de agrupación de llaves */
 .bracket-column:not(.round-Semifinal) .match-wrapper::before {
     content: "";
     position: absolute;
-    width: 15px;
+    width: 13px;
     border-color: #cbd5e1;
     border-style: solid;
     border-width: 0;
 }
 
-/* Posicionamiento vertical según la dirección del árbol */
+/* Uniones de las ramas de la izquierda */
 .section-left .match-top::before {
-    top: 52px; height: 50%; border-right-width: 1px; border-top-width: 1px; right: -15px;
+    top: 50%; height: 50%; border-right-width: 1.5px; border-top-width: 1.5px; right: -13px;
 }
 .section-left .match-bottom::before {
-    bottom: calc(100% - 52px); height: 50%; border-right-width: 1px; border-bottom-width: 1px; right: -15px;
-}
-.section-right .match-top::before {
-    top: 52px; height: 50%; border-left-width: 1px; border-top-width: 1px; left: -15px;
-}
-.section-right .match-bottom::before {
-    bottom: calc(100% - 52px); height: 50%; border-left-width: 1px; border-bottom-width: 1px; left: -15px;
+    bottom: 50%; height: 50%; border-right-width: 1.5px; border-bottom-width: 1.5px; right: -13px;
 }
 
-/* Multiplicadores adaptables de altura basados en el contenedor elástico */
-.round-Octavos .match-top::before, .round-Octavos .match-bottom::before { height: 110%; }
-.round-Cuartos .match-top::before, .round-Cuartos .match-bottom::before { height: 240%; }
+/* Uniones de las ramas de la derecha */
+.section-right .match-top::before {
+    top: 50%; height: 50%; border-left-width: 1.5px; border-top-width: 1.5px; left: -13px;
+}
+.section-right .match-bottom::before {
+    bottom: 50%; height: 50%; border-left-width: 1.5px; border-bottom-width: 1.5px; left: -13px;
+}
+
+/* Modificadores de compensación de altura según la separación del Grid */
+.round-1-16 .match-top::before, .round-1-16 .match-bottom::before { height: calc(50% + 24px); }
+.round-Octavos .match-top::before, .round-Octavos .match-bottom::before { height: calc(100% + 14px); }
+.round-Cuartos .match-top::before, .round-Cuartos .match-bottom::before { height: calc(200% + 4px); }
 		
 /* Aplicar la animación a las tarjetas de los grupos */
 .group-card {
@@ -6563,7 +6580,7 @@ function renderBracket(partidos) {
     
     bracket.innerHTML = "";
 
-    // 1. Estructura simétrica exacta por IDs
+    // 1. Inicializar la estructura exacta del torneo simétrico por IDs
     const ladoIzquierdo = { "1/16": [], "Octavos": [], "Cuartos": [], "Semifinal": [] };
     const ladoDerecho = { "Semifinal": [], "Cuartos": [], "Octavos": [], "1/16": [] };
     const centro = { "Final": [], "3º puesto": [] };
@@ -6578,7 +6595,7 @@ function renderBracket(partidos) {
     const idsDerechaCuartos = ["99", "100"];
     const idsDerechaSemi = ["102"];
 
-    // 2. Clasificar partidos
+    // 2. Clasificar cada partido
     partidos.forEach(partido => {
         const idStr = String(partido.id);
         
@@ -6613,7 +6630,7 @@ function renderBracket(partidos) {
     ordenarPorListaIds(ladoDerecho["Octavos"], idsDerechaOctavos);
     ordenarPorListaIds(ladoDerecho["Cuartos"], idsDerechaCuartos);
 
-    // 3. Secciones del Layout
+    // 3. Crear Bloques de Layout
     const leftSection = document.createElement("div");
     leftSection.className = "bracket-section section-left";
 
@@ -6626,62 +6643,45 @@ function renderBracket(partidos) {
     function generarHtmlMatch(partido, index) {
         if (!partido) return "";
         
-        // Normalización de penaltis
         const pCasa = (partido.penCasa !== undefined && partido.penCasa !== null && partido.penCasa !== "") ? `<span class="penalty-score">(${partido.penCasa})</span>` : "";
         const pVisita = (partido.penVisita !== undefined && partido.penVisita !== null && partido.penVisita !== "") ? `<span class="penalty-score">(${partido.penVisita})</span>` : "";
         
-        // Corrección de visualización de goles (si viene '-' o vacío se evalúa limpio)
-        let scoreCasa = (partido.golCasa !== undefined && partido.golCasa !== null) ? String(partido.golCasa).trim() : "";
-        let scoreVisita = (partido.golVisita !== undefined && partido.golVisita !== null) ? String(partido.golVisita).trim() : "";
-
-        if (scoreCasa === "-") scoreCasa = "";
-        if (scoreVisita === "-") scoreVisita = "";
-
-        // Detectar filas ganadoras
-        let classCasa = "";
-        let classVisita = "";
-        if (scoreCasa !== "" && scoreVisita !== "") {
-            const gCasa = parseInt(scoreCasa) + parseInt(partido.penCasa || 0);
-            const gVisita = parseInt(scoreVisita) + parseInt(partido.penVisita || 0);
-            if (gCasa > gVisita) classCasa = "winner-row";
-            if (gVisita > gCasa) classVisita = "winner-row";
-        }
+        const scoreCasa = (partido.golCasa !== undefined && partido.golCasa !== null && partido.golCasa !== "-") ? partido.golCasa : "";
+        const scoreVisita = (partido.golVisita !== undefined && partido.golVisita !== null && partido.golVisita !== "-") ? partido.golVisita : "";
 
         const matchPos = (index % 2 === 0) ? "match-top" : "match-bottom";
         const tieneFecha = partido.fecha && partido.fecha !== "-";
 
-        // Fallbacks para nombres vacíos tipo W89 / L101
-        const nombreCasa = partido.casa || `W${partido.id_origen_casa || ''}`;
-        const nombreVisita = partido.visitante || `W${partido.id_origen_visitante || ''}`;
-
         return `
         <div class="match-wrapper ${matchPos}">
-            <div class="match-datetime">${tieneFecha ? `${partido.fecha} ${partido.hora || ''}` : '&nbsp;'}</div>
+            <div class="match-datetime">${tieneFecha ? `${partido.fecha} &nbsp; ${partido.hora || ''}` : '&nbsp;'}</div>
             <div class="match-card">
-                <div class="team-row ${classCasa}">
+                <div class="team-row">
                     <div class="team-info">
-                        <div class="flag-container">${(partido.casa && typeof getBandera === 'function') ? getBandera(partido.casa) : ''}</div>
-                        <span class="team-name">${nombreCasa}</span>
+                        ${(partido.casa && typeof getBandera === 'function') ? getBandera(partido.casa) : ''}
+                        <span class="team-name">${partido.casa || `W${partido.id_origen_casa || ''}`}</span>
                         ${pCasa}
                     </div>
                     <span class="match-score">${scoreCasa}</span>
                 </div>
-                <div class="team-row ${classVisita}">
+                <div class="team-row">
                     <div class="team-info">
-                        <div class="flag-container">${(partido.visitante && typeof getBandera === 'function') ? getBandera(partido.visitante) : ''}</div>
-                        <span class="team-name">${nombreVisita}</span>
+                        ${(partido.visitante && typeof getBandera === 'function') ? getBandera(partido.visitante) : ''}
+                        <span class="team-name">${partido.visitante || `W${partido.id_origen_visitante || ''}`}</span>
                         ${pVisita}
                     </div>
                     <span class="match-score">${scoreVisita}</span>
                 </div>
-                <span class="match-id-badge">P${partido.id}</span>
+                <span class="match-id-label">P${partido.id}</span>
             </div>
         </div>`;
     }
 
     function renderColumnaPura(nombreRonda, listaPartidos, contenedorPadre) {
         const column = document.createElement("div");
-        column.className = `bracket-column round-${nombreRonda.replace("/", "-")}`;
+        // Reemplazar barras diagonales para generar clases válidas CSS como round-1-16
+        const claseRonda = nombreRonda.replace("/", "-").replace(/ /g, "-");
+        column.className = `bracket-column round-${claseRonda}`;
         
         let tituloMostrar = nombreRonda;
         if (nombreRonda === "1/16") tituloMostrar = "Dieciséisavos de final";
@@ -6691,21 +6691,20 @@ function renderBracket(partidos) {
 
         column.innerHTML = `<h3 class="column-title">${tituloMostrar}</h3>`;
         
-        const groupContainer = document.createElement("div");
-        groupContainer.className = "matches-flex-group";
+        const gridContainer = document.createElement("div");
+        gridContainer.className = "matches-grid-container";
 
         listaPartidos.forEach((partido, idx) => {
-            groupContainer.innerHTML += generarHtmlMatch(partido, idx);
+            gridContainer.innerHTML += generarHtmlMatch(partido, idx);
         });
 
-        column.appendChild(groupContainer);
+        column.appendChild(gridContainer);
         contenedorPadre.appendChild(column);
     }
 
-    // Render de secciones
+    // Renderizado ordenado
     Object.keys(ladoIzquierdo).forEach(ronda => renderColumnaPura(ronda, ladoIzquierdo[ronda], leftSection));
     
-    // Bloque central
     renderColumnaPura("Final", centro["Final"], centerSection);
     if (centro["3º puesto"].length > 0) {
         renderColumnaPura("3º puesto", centro["3º puesto"], centerSection);
@@ -6717,6 +6716,7 @@ function renderBracket(partidos) {
     bracket.appendChild(centerSection);
     bracket.appendChild(rightSection);
 }
+	
 </script>
 
 <!-- MENÚ INFERIOR (ICONOS) -->
