@@ -3246,6 +3246,7 @@ body{
 
 /* --- TARJETA --- */
 .match-card {
+	position: relative;
     background: #ffffff;
     border: 1px solid #cbd5e1;
     border-radius: 10px;
@@ -3259,11 +3260,14 @@ body{
 
 .match-datetime {
     position: absolute;
-    top: calc(50% - 40px); /* Flotante por encima de la tarjeta */
+    top: -18px; /* Coloca la fecha justo encima del borde superior */
     left: 2px;
     font-size: 10px;
     color: #94a3b8;
-    z-index: 3;
+    white-space: nowrap; /* Evita que la fecha se rompa en dos líneas */
+    font-weight: 500;
+    pointer-events: none; /* Evita que interfiera con clics */
+    z-index: 1;
 }
 
 /* IDs EN EL CENTRO LATERAL EXTREMO */
