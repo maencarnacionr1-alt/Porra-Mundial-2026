@@ -3163,23 +3163,26 @@ body{
     vertical-align: middle;
 }
 
-/* --- CONTENEDOR RAÍZ GENERAL --- */
+/* --- CONTENEDOR RAÍZ RESPONSIVO Y TÁCTIL --- */
 #bracket {
     display: flex;
     justify-content: flex-start;
     align-items: stretch;
-    gap: 15px;
-    padding: 30px 20px;
-    background-color: #f8fafc;
+    gap: 0;
+    padding: 30px 10px;
+    background-color: #ffffff;
     font-family: system-ui, -apple-system, sans-serif;
+    
+    /* Soporte táctil y gestos */
     overflow-x: auto;
+    scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
+    touch-action: pan-x pan-y;
 }
 
-/* Secciones del Árbol */
+/* Secciones */
 .bracket-section {
     display: flex;
-    gap: 25px;
 }
 .section-left { flex-direction: row; }
 .section-right { flex-direction: row-reverse; }
@@ -3187,19 +3190,23 @@ body{
 .section-center {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: center; /* Centrado vertical absoluto en medio de la pantalla */
     align-items: center;
-    gap: 40px;
-    width: 250px;
+    width: 260px;
+    padding: 0 40px;
+    gap: 80px; /* Separación simétrica de la Final y el 3º puesto */
     flex-shrink: 0;
 }
 
-/* Columnas Estructuradas */
+/* Columnas de Rondas */
 .bracket-column {
     display: flex;
     flex-direction: column;
-    width: 210px;
+    width: 220px;
     flex-shrink: 0;
+    scroll-snap-align: center;
+    padding: 0 10px;
+    box-sizing: border-box;
 }
 
 .column-title {
@@ -3207,26 +3214,23 @@ body{
     font-size: 12px;
     font-weight: 600;
     color: #64748b;
-    margin: 0 0 20px 0;
-    text-transform: capitalize;
+    margin: 0 0 25px 0;
 }
 
-/* --- SISTEMA GRID MATEMÁTICO PARA EMPAREJAMIENTOS --- */
+/* --- GRID BASE UNIFORME PARA GENERAR LÍNEAS MATEMÁTICAS --- */
 .matches-grid-container {
     display: grid;
     grid-template-rows: repeat(8, 1fr);
-    height: 760px; /* Define una altura base uniforme para que las ramas coincidan */
-    flex-grow: 1;
+    height: 840px; /* Altura controlada para evitar solapamientos */
     position: relative;
 }
 
-/* Asignación de posiciones en el Grid por fase */
 .round-1-16 .match-wrapper { grid-row: span 1; margin: auto 0; }
 .round-Octavos .match-wrapper { grid-row: span 2; margin: auto 0; }
 .round-Cuartos .match-wrapper { grid-row: span 4; margin: auto 0; }
 .round-Semifinal .match-wrapper { grid-row: span 8; margin: auto 0; }
+.round-Final .match-wrapper, .round-3º-puesto .match-wrapper { width: 100%; }
 
-/* Contenedor wrapper individual */
 .match-wrapper {
     display: flex;
     flex-direction: column;
@@ -3238,16 +3242,16 @@ body{
     font-size: 10px;
     color: #94a3b8;
     margin-bottom: 4px;
-    text-align: center;
+    padding-left: 2px;
 }
 
 /* --- TARJETA RE-ESTILIZADA --- */
 .match-card {
     background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 14px;
     padding: 6px 10px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.02);
     position: relative;
     box-sizing: border-box;
     width: 100%;
@@ -3257,9 +3261,11 @@ body{
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 4px 0;
-    min-height: 28px;
+    padding: 5px 0;
+    min-height: 32px;
 }
+.team-row:first-child { border-bottom: 1px solid #f1f5f9; }
+.team-row.winner-row { border-bottom: 1.5px solid #22c55e; }
 
 .team-info {
     display: flex;
@@ -3267,13 +3273,20 @@ body{
     gap: 8px;
     font-size: 12px;
     color: #1e293b;
-    font-weight: 500;
+    font-weight: 600;
 }
 
-/* SOLUCIÓN: Marcadores en caja negra con texto blanco perfectamente legible */
+/* Contenedor de Marcadores alineados a la derecha */
+.score-container {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+/* Marcador: Caja negra, número blanco */
 .match-score {
     background-color: #111111;
-    color: #ffffff !important; /* Forzado a blanco */
+    color: #ffffff !important;
     font-weight: 700;
     font-size: 12px;
     min-width: 22px;
@@ -3282,10 +3295,20 @@ body{
     display: flex;
     align-items: center;
     justify-content: center;
-    box-sizing: border-box;
 }
 
-/* ID del partido debajo de la tarjeta */
+/* Estilo de Penaltis compacto */
+.penalty-score {
+    font-size: 11px;
+    font-weight: bold;
+    color: #ef4444; 
+}
+.penalty-score small {
+    font-size: 8px;
+    color: #94a3b8;
+    margin-right: 1px;
+}
+
 .match-id-label {
     position: absolute;
     bottom: -16px;
@@ -3298,54 +3321,44 @@ body{
 .section-right .match-id-label { right: 4px; }
 .section-center .match-id-label { bottom: 6px; right: 10px; text-decoration: none; }
 
-.penalty-score {
-    font-size: 10px;
-    color: #64748b;
-}
-
-/* --- DIBUJO DE LÍNEAS CONECTORAS SIMÉTRICAS --- */
-
-/* Línea horizontal saliente desde cada tarjeta */
-.bracket-column:not(.round-Semifinal) .match-wrapper::after {
+/* --- DIBUJO DE CONECTORES Y LÍNEAS DE ÁRBOL --- */
+.bracket-column:not(.round-Semifinal):not(.round-Final):not(.round-3º-puesto) .match-wrapper::after {
     content: "";
     position: absolute;
     top: 50%;
-    width: 13px;
+    width: 15px;
     border-top: 1.5px solid #cbd5e1;
 }
-.section-left .bracket-column:not(.round-Semifinal) .match-wrapper::after { right: -13px; }
-.section-right .bracket-column:not(.round-Semifinal) .match-wrapper::after { left: -13px; }
+.section-left .bracket-column:not(.round-Semifinal):not(.round-Final):not(.round-3º-puesto) .match-wrapper::after { right: -15px; }
+.section-right .bracket-column:not(.round-Semifinal):not(.round-Final):not(.round-3º-puesto) .match-wrapper::after { left: -15px; }
 
-/* Líneas verticales de agrupación de llaves */
-.bracket-column:not(.round-Semifinal) .match-wrapper::before {
+.bracket-column:not(.round-Semifinal):not(.round-Final):not(.round-3º-puesto) .match-wrapper::before {
     content: "";
     position: absolute;
-    width: 13px;
+    width: 15px;
     border-color: #cbd5e1;
     border-style: solid;
     border-width: 0;
 }
 
-/* Uniones de las ramas de la izquierda */
+/* Ajustes posicionales en espejo */
 .section-left .match-top::before {
-    top: 50%; height: 50%; border-right-width: 1.5px; border-top-width: 1.5px; right: -13px;
+    top: 50%; height: 50%; border-right-width: 1.5px; border-top-width: 1.5px; right: -15px;
 }
 .section-left .match-bottom::before {
-    bottom: 50%; height: 50%; border-right-width: 1.5px; border-bottom-width: 1.5px; right: -13px;
+    bottom: 50%; height: 50%; border-right-width: 1.5px; border-bottom-width: 1.5px; right: -15px;
 }
-
-/* Uniones de las ramas de la derecha */
 .section-right .match-top::before {
-    top: 50%; height: 50%; border-left-width: 1.5px; border-top-width: 1.5px; left: -13px;
+    top: 50%; height: 50%; border-left-width: 1.5px; border-top-width: 1.5px; left: -15px;
 }
 .section-right .match-bottom::before {
-    bottom: 50%; height: 50%; border-left-width: 1.5px; border-bottom-width: 1.5px; left: -13px;
+    bottom: 50%; height: 50%; border-left-width: 1.5px; border-bottom-width: 1.5px; left: -15px;
 }
 
-/* Modificadores de compensación de altura según la separación del Grid */
-.round-1-16 .match-top::before, .round-1-16 .match-bottom::before { height: calc(50% + 24px); }
-.round-Octavos .match-top::before, .round-Octavos .match-bottom::before { height: calc(100% + 14px); }
-.round-Cuartos .match-top::before, .round-Cuartos .match-bottom::before { height: calc(200% + 4px); }
+/* Modificadores de altura proporcionales al Grid */
+.round-1-16 .match-top::before, .round-1-16 .match-bottom::before { height: calc(50% + 28px); }
+.round-Octavos .match-top::before, .round-Octavos .match-bottom::before { height: calc(100% + 18px); }
+.round-Cuartos .match-top::before, .round-Cuartos .match-bottom::before { height: calc(200% + 8px); }
 		
 /* Aplicar la animación a las tarjetas de los grupos */
 .group-card {
@@ -6601,7 +6614,7 @@ function renderBracket(partidos) {
         
         if (partido.ronda === "Final") {
             centro["Final"].push(partido);
-        } else if (partido.ronda === "3º puesto" || partido.ronda === "3er puesto") {
+        } else if (partido.ronda === "3º puesto" || partido.ronda === "3er puesto" || partido.ronda === "3º Puesto") {
             centro["3º puesto"].push(partido);
         } else if (partido.ronda === "1/16") {
             if (idsIzquierda1_16.includes(idStr)) ladoIzquierdo["1/16"].push(partido);
@@ -6630,7 +6643,7 @@ function renderBracket(partidos) {
     ordenarPorListaIds(ladoDerecho["Octavos"], idsDerechaOctavos);
     ordenarPorListaIds(ladoDerecho["Cuartos"], idsDerechaCuartos);
 
-    // 3. Crear Bloques de Layout
+    // 3. Crear Secciones contenedoras
     const leftSection = document.createElement("div");
     leftSection.className = "bracket-section section-left";
 
@@ -6643,8 +6656,9 @@ function renderBracket(partidos) {
     function generarHtmlMatch(partido, index) {
         if (!partido) return "";
         
-        const pCasa = (partido.penCasa !== undefined && partido.penCasa !== null && partido.penCasa !== "") ? `<span class="penalty-score">(${partido.penCasa})</span>` : "";
-        const pVisita = (partido.penVisita !== undefined && partido.penVisita !== null && partido.penVisita !== "") ? `<span class="penalty-score">(${partido.penVisita})</span>` : "";
+        // P. para indicar penaltis pegados al resultado
+        const pCasa = (partido.penCasa !== undefined && partido.penCasa !== null && partido.penCasa !== "") ? `<span class="penalty-score"><small>P.</small>${partido.penCasa}</span>` : "";
+        const pVisita = (partido.penVisita !== undefined && partido.penVisita !== null && partido.penVisita !== "") ? `<span class="penalty-score"><small>P.</small>${partido.penVisita}</span>` : "";
         
         const scoreCasa = (partido.golCasa !== undefined && partido.golCasa !== null && partido.golCasa !== "-") ? partido.golCasa : "";
         const scoreVisita = (partido.golVisita !== undefined && partido.golVisita !== null && partido.golVisita !== "-") ? partido.golVisita : "";
@@ -6652,25 +6666,36 @@ function renderBracket(partidos) {
         const matchPos = (index % 2 === 0) ? "match-top" : "match-bottom";
         const tieneFecha = partido.fecha && partido.fecha !== "-";
 
+        let classCasa = "";
+        let classVisita = "";
+        if (scoreCasa !== "" && scoreVisita !== "") {
+            if (parseInt(scoreCasa) > parseInt(scoreVisita)) classCasa = "winner-row";
+            if (parseInt(scoreVisita) > parseInt(scoreCasa)) classVisita = "winner-row";
+        }
+
         return `
         <div class="match-wrapper ${matchPos}">
-            <div class="match-datetime">${tieneFecha ? `${partido.fecha} &nbsp; ${partido.hora || ''}` : '&nbsp;'}</div>
+            <div class="match-datetime">${tieneFecha ? `${partido.fecha} ${partido.hora || ''}` : '&nbsp;'}</div>
             <div class="match-card">
-                <div class="team-row">
+                <div class="team-row ${classCasa}">
                     <div class="team-info">
                         ${(partido.casa && typeof getBandera === 'function') ? getBandera(partido.casa) : ''}
                         <span class="team-name">${partido.casa || `W${partido.id_origen_casa || ''}`}</span>
-                        ${pCasa}
                     </div>
-                    <span class="match-score">${scoreCasa}</span>
+                    <div class="score-container">
+                        ${pCasa}
+                        <span class="match-score">${scoreCasa}</span>
+                    </div>
                 </div>
-                <div class="team-row">
+                <div class="team-row ${classVisita}">
                     <div class="team-info">
                         ${(partido.visitante && typeof getBandera === 'function') ? getBandera(partido.visitante) : ''}
                         <span class="team-name">${partido.visitante || `W${partido.id_origen_visitante || ''}`}</span>
-                        ${pVisita}
                     </div>
-                    <span class="match-score">${scoreVisita}</span>
+                    <div class="score-container">
+                        ${pVisita}
+                        <span class="match-score">${scoreVisita}</span>
+                    </div>
                 </div>
                 <span class="match-id-label">P${partido.id}</span>
             </div>
@@ -6679,7 +6704,6 @@ function renderBracket(partidos) {
 
     function renderColumnaPura(nombreRonda, listaPartidos, contenedorPadre) {
         const column = document.createElement("div");
-        // Reemplazar barras diagonales para generar clases válidas CSS como round-1-16
         const claseRonda = nombreRonda.replace("/", "-").replace(/ /g, "-");
         column.className = `bracket-column round-${claseRonda}`;
         
@@ -6702,9 +6726,10 @@ function renderBracket(partidos) {
         contenedorPadre.appendChild(column);
     }
 
-    // Renderizado ordenado
+    // Render de lados
     Object.keys(ladoIzquierdo).forEach(ronda => renderColumnaPura(ronda, ladoIzquierdo[ronda], leftSection));
     
+    // Bloque central (Se agrupan verticalmente en su propia sección compacta)
     renderColumnaPura("Final", centro["Final"], centerSection);
     if (centro["3º puesto"].length > 0) {
         renderColumnaPura("3º puesto", centro["3º puesto"], centerSection);
@@ -6715,6 +6740,26 @@ function renderBracket(partidos) {
     bracket.appendChild(leftSection);
     bracket.appendChild(centerSection);
     bracket.appendChild(rightSection);
+
+    // --- ENCABEZADOS CLICABLES CON DESPLAZAMIENTO SUAVE ---
+    const titulosMenuSuperior = document.querySelectorAll(".eliminatorias-header span, th, .header-title, .column-title");
+    titulosMenuSuperior.forEach((elementoHeader) => {
+        elementoHeader.style.cursor = "pointer";
+        elementoHeader.addEventListener("click", () => {
+            const texto = elementoHeader.textContent.toLowerCase();
+            let destino = "";
+            if (texto.includes("dieci") || texto.includes("1/16")) destino = ".round-1-16";
+            else if (texto.includes("octa")) destino = ".round-Octavos";
+            else if (texto.includes("cuar")) destino = ".round-Cuartos";
+            else if (texto.includes("semi")) destino = ".round-Semifinal";
+            else if (texto.includes("fina")) destino = ".round-Final";
+
+            if (destino) {
+                const el = bracket.querySelector(destino);
+                if (el) el.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+            }
+        });
+    });
 }
 	
 </script>
