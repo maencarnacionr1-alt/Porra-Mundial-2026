@@ -3163,16 +3163,20 @@ body{
     vertical-align: middle;
 }
 
-/* --- CONTENEDOR RAÍZ GENERAL --- */
+/* --- CONTENEDOR RAÍZ GENERAL RESPONSIVE --- */
 #bracket {
     display: flex;
-    justify-content: center;
+    justify-content: flex-start; /* Permite el scroll hacia la derecha */
     align-items: stretch;
-    gap: 15px;
-    padding: 30px;
+    gap: 20px;
+    padding: 30px 20px;
     background-color: #f8fafc;
     font-family: system-ui, -apple-system, sans-serif;
-    min-width: max-content;
+    
+    /* Propiedades para scroll horizontal táctil y fluido */
+    overflow-x: auto;
+    scroll-snap-type: x mandatory; 
+    -webkit-overflow-scrolling: touch;
 }
 
 /* Secciones principales */
@@ -3189,24 +3193,34 @@ body{
     width: 260px;
 }
 
-/* Columnas de cada Ronda */
+/* Columnas de cada Ronda con anclaje de scroll (Scroll Snap) */
 .bracket-column {
     display: flex;
     flex-direction: column;
     width: 240px;
+    flex-shrink: 0; /* Evita que las columnas se aplasten en pantallas pequeñas */
+    scroll-snap-align: center; /* Hace que se detenga centrado al deslizar en móvil */
 }
 
+/* Título de la ronda con estado activo */
 .column-title {
     text-align: center;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 600;
-    color: #64748b;
+    color: #94a3b8; /* Apagado por defecto */
     text-transform: uppercase;
     margin: 0 0 25px 0;
     letter-spacing: 0.5px;
+    transition: color 0.3s ease, transform 0.3s ease;
 }
 
-/* Grupo elástico que expande y alinea los partidos uniformemente */
+/* Clase dinámica que aplicará el JS al deslizar */
+.bracket-column.active-round .column-title {
+    color: #0f172a; /* Color destacado/oscuro cuando está activo */
+    transform: scale(1.05);
+}
+
+/* Grupo elástico de partidos */
 .matches-flex-group {
     display: flex;
     flex-direction: column;
@@ -3215,33 +3229,27 @@ body{
     position: relative;
 }
 
-/* --- DISEÑO DE TARJETA DE PARTIDO (Idéntico al de la imagen) --- */
+/* --- TARJETA DE PARTIDO CORREGIDA (Estilo Cajita Negra) --- */
 .match-card {
     background: #ffffff;
     border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    padding: 10px 14px;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    border-radius: 12px;
+    padding: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
     position: relative;
-    transition: all 0.2s ease;
     box-sizing: border-box;
     width: 100%;
     margin: 10px 0;
 }
 
-.match-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-}
-
-/* Cabecera del partido */
+/* Cabecera */
 .match-header {
     display: flex;
     justify-content: space-between;
     font-size: 10px;
     font-weight: 500;
     color: #94a3b8;
-    margin-bottom: 6px;
+    margin-bottom: 8px;
     border-bottom: 1px solid #f1f5f9;
     padding-bottom: 4px;
 }
@@ -3251,7 +3259,7 @@ body{
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 4px 0;
+    padding: 5px 0;
 }
 
 .team-info {
@@ -3261,92 +3269,55 @@ body{
     font-size: 13px;
     color: #1e293b;
     font-weight: 500;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
-/* Estilo para los scores */
+/* SOLUCCIÓN: La cajita negra para el resultado visualizado */
 .match-score {
+    background-color: #111111; /* Fondo negro de tu diseño */
+    color: #ffffff;            /* Texto blanco para que sea perfectamente visible */
     font-weight: 700;
-    font-size: 15px;
-    color: #0f172a;
-    min-width: 16px;
-    text-align: center;
+    font-size: 14px;
+    min-width: 24px;
+    height: 24px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
 }
 
-/* Estilos de los penaltis solicitados */
+/* Estilos de los penaltis junto al nombre */
 .penalty-score {
     font-size: 11px;
     color: #64748b;
     font-weight: 400;
-    margin-left: 2px;
 }
 
-/* --- CONECTORES DE LÍNEAS AVANZADAS (Simétricos) --- */
-
-/* Líneas base horizontales salientes */
+/* --- CONECTORES DE LÍNEAS SIMÉTRICAS --- */
 .section-left .bracket-column:not(.round-Semifinal) .match-card::after {
-    content: "";
-    position: absolute;
-    right: -16px;
-    top: 50%;
-    width: 16px;
-    border-top: 2px solid #cbd5e1;
+    content: ""; position: absolute; right: -16px; top: 50%; width: 16px; border-top: 2px solid #cbd5e1;
 }
-
 .section-right .bracket-column:not(.round-Semifinal) .match-card::after {
-    content: "";
-    position: absolute;
-    left: -16px;
-    top: 50%;
-    width: 16px;
-    border-top: 2px solid #cbd5e1;
+    content: ""; position: absolute; left: -16px; top: 50%; width: 16px; border-top: 2px solid #cbd5e1;
 }
-
-/* Líneas verticales conectoras (Lado Izquierdo) */
 .section-left .bracket-column:not(.round-Semifinal) .match-card.match-top::before {
-    content: "";
-    position: absolute;
-    right: -16px;
-    top: 50%;
-    width: 16px;
-    height: calc(50% + 22px);
-    border-right: 2px solid #cbd5e1;
+    content: ""; position: absolute; right: -16px; top: 50%; width: 16px; height: calc(50% + 22px); border-right: 2px solid #cbd5e1;
 }
 .section-left .bracket-column:not(.round-Semifinal) .match-card.match-bottom::before {
-    content: "";
-    position: absolute;
-    right: -16px;
-    bottom: 50%;
-    width: 16px;
-    height: calc(50% + 22px);
-    border-right: 2px solid #cbd5e1;
+    content: ""; position: absolute; right: -16px; bottom: 50%; width: 16px; height: calc(50% + 22px); border-right: 2px solid #cbd5e1;
 }
-
-/* Líneas verticales conectoras (Lado Derecho) */
 .section-right .bracket-column:not(.round-Semifinal) .match-card.match-top::before {
-    content: "";
-    position: absolute;
-    left: -16px;
-    top: 50%;
-    width: 16px;
-    height: calc(50% + 22px);
-    border-left: 2px solid #cbd5e1;
+    content: ""; position: absolute; left: -16px; top: 50%; width: 16px; height: calc(50% + 22px); border-left: 2px solid #cbd5e1;
 }
 .section-right .bracket-column:not(.round-Semifinal) .match-card.match-bottom::before {
-    content: "";
-    position: absolute;
-    left: -16px;
-    bottom: 50%;
-    width: 16px;
-    height: calc(50% + 22px);
-    border-left: 2px solid #cbd5e1;
+    content: ""; position: absolute; left: -16px; bottom: 50%; width: 16px; height: calc(50% + 22px); border-left: 2px solid #cbd5e1;
 }
 
-/* Multiplicadores dinámicos de altura para las uniones según la ronda */
-.round-Octavos .match-card.match-top::before, 
-.round-Octavos .match-card.match-bottom::before { height: calc(100% + 20px) !important; }
-
-.round-Cuartos .match-card.match-top::before, 
-.round-Cuartos .match-card.match-bottom::before { height: calc(200% + 40px) !important; }
+.round-Octavos .match-card.match-top::before, .round-Octavos .match-card.match-bottom::before { height: calc(100% + 20px) !important; }
+.round-Cuartos .match-card.match-top::before, .round-Cuartos .match-card.match-bottom::before { height: calc(200% + 40px) !important; }
 		
 
 /* Aplicar la animación a las tarjetas de los grupos */
@@ -6579,6 +6550,8 @@ function detectRound(id) {
 function renderBracket(partidos) {
     const bracket = document.getElementById("bracket");
     if (!bracket) return;
+    
+    // Limpiamos el contenedor original
     bracket.innerHTML = "";
 
     // 1. Agrupar partidos por ronda
@@ -6596,7 +6569,7 @@ function renderBracket(partidos) {
         ladoDerecho[ronda] = lista.slice(mitad);
     });
 
-    // 3. Crear los 3 contenedores estructurales principales
+    // 3. Crear los 3 bloques estructurales del layout simétrico
     const leftSection = document.createElement("div");
     leftSection.className = "bracket-section section-left";
 
@@ -6606,12 +6579,14 @@ function renderBracket(partidos) {
     const rightSection = document.createElement("div");
     rightSection.className = "bracket-section section-right";
 
-    // Función auxiliar para renderizar una tarjeta de partido con penaltis
+    // Función interna auxiliar para renderizar cada tarjeta con el formato solicitado (goles visibles en caja negra)
     function generarHtmlMatch(partido, index) {
         const pCasa = (partido.penaltisCasa !== undefined && partido.penaltisCasa !== null) ? `<span class="penalty-score">(${partido.penaltisCasa})</span>` : "";
         const pVisita = (partido.penaltisVisita !== undefined && partido.penaltisVisita !== null) ? `<span class="penalty-score">(${partido.penaltisVisita})</span>` : "";
         
-        // Marcamos una clase para que el CSS sepa si es el de arriba o abajo en la llave
+        const scoreCasa = (partido.golCasa !== undefined && partido.golCasa !== null) ? partido.golCasa : "-";
+        const scoreVisita = (partido.golVisita !== undefined && partido.golVisita !== null) ? partido.golVisita : "-";
+
         const matchPos = (index % 2 === 0) ? "match-top" : "match-bottom";
 
         return `
@@ -6626,7 +6601,7 @@ function renderBracket(partidos) {
                     <span class="team-name">${partido.casa}</span>
                     ${pCasa}
                 </div>
-                <span class="match-score">${partido.golCasa ?? ''}</span>
+                <span class="match-score">${scoreCasa}</span>
             </div>
             <div class="team-row">
                 <div class="team-info">
@@ -6634,19 +6609,23 @@ function renderBracket(partidos) {
                     <span class="team-name">${partido.visitante}</span>
                     ${pVisita}
                 </div>
-                <span class="match-score">${partido.golVisita ?? ''}</span>
+                <span class="match-score">${scoreVisita}</span>
             </div>
         </div>`;
     }
 
-    // Función para renderizar columnas de un lado específico
+    // Función interna para procesar y colgar las columnas de un lateral
     function renderRondasLado(estructuraLado, contenedorPadre) {
         Object.entries(estructuraLado).forEach(([nombreRonda, listaPartidos]) => {
             const column = document.createElement("div");
             column.className = `bracket-column round-${nombreRonda.replace("/", "-")}`;
             
-            // Título de la ronda
-            column.innerHTML = `<h3 class="column-title">${nombreRonda === "1/16" ? "Dieciséisavos" : nombreRonda}</h3>`;
+            let tituloMostrar = nombreRonda;
+            if (nombreRonda === "1/16") tituloMostrar = "Dieciséisavos";
+            if (nombreRonda === "Cuartos") tituloMostrar = "Cuartos de final";
+            if (nombreRonda === "Octavos") tituloMostrar = "Octavos de final";
+
+            column.innerHTML = `<h3 class="column-title">${tituloMostrar}</h3>`;
             
             const groupContainer = document.createElement("div");
             groupContainer.className = "matches-flex-group";
@@ -6660,39 +6639,44 @@ function renderBracket(partidos) {
         });
     }
 
-    // --- Renderizar Lado Izquierdo (Flujo: 1/16 -> Semifinal) ---
+    // --- Ejecución del Renderizado por Secciones ---
     renderRondasLado(ladoIzquierdo, leftSection);
 
-    // --- Renderizar Bloque Central (Finales) ---
-    // Columna de Final
+    // Bloque Central: Columna de la Gran Final
     const finalCol = document.createElement("div");
-    finalCol.className = "bracket-column round-final-center";
-    
+    finalCol.className = "bracket-column round-Final";
     let finalHtml = `<h3 class="column-title">Final</h3><div class="matches-flex-group">`;
-    if (rondas["Final"][0]) finalHtml += generarHtmlMatch(rondas["Final"][0], 0);
+    if (rondas["Final"] && rondas["Final"].length > 0) {
+        finalHtml += generarHtmlMatch(rondas["Final"], 0);
+    }
     finalHtml += `</div>`;
     finalCol.innerHTML = finalHtml;
     centerSection.appendChild(finalCol);
 
-    // Columna de Tercer Puesto (Abajo en el centro)
-    if (rondas["3º puesto"][0]) {
+    // Bloque Central: Columna del Tercer Puesto
+    if (rondas["3º puesto"] && rondas["3º puesto"].length > 0) {
         const tercerCol = document.createElement("div");
-        tercerCol.className = "bracket-column round-third-center";
+        tercerCol.className = "bracket-column round-Tercer-puesto";
         tercerCol.innerHTML = `
-            <h3 class="column-title">Tercer puesto</h3>
+            <h3 class="column-title">Partido por el tercer puesto</h3>
             <div class="matches-flex-group">
-                ${generarHtmlMatch(rondas["3º puesto"][0], 0)}
+                ${generarHtmlMatch(rondas["3º puesto"], 0)}
             </div>`;
         centerSection.appendChild(tercerCol);
     }
 
-    // --- Renderizar Lado Derecho (Flujo: Semifinal <- 1/16) ---
-    // Invertimos el orden de las llaves para que pinte Semifinal primero y 1/16 al extremo derecho del navegador
+    // Renderizado del Lado Derecho (Espejo invertido hacia el extremo derecho)
     const llavesDerechasInvertidas = Object.entries(ladoDerecho).reverse();
     llavesDerechasInvertidas.forEach(([nombreRonda, listaPartidos]) => {
         const column = document.createElement("div");
         column.className = `bracket-column round-${nombreRonda.replace("/", "-")}`;
-        column.innerHTML = `<h3 class="column-title">${nombreRonda === "1/16" ? "Dieciséisavos" : nombreRonda}</h3>`;
+        
+        let tituloMostrar = nombreRonda;
+        if (nombreRonda === "1/16") tituloMostrar = "Dieciséisavos";
+        if (nombreRonda === "Cuartos") tituloMostrar = "Cuartos de final";
+        if (nombreRonda === "Octavos") tituloMostrar = "Octavos de final";
+
+        column.innerHTML = `<h3 class="column-title">${tituloMostrar}</h3>`;
         
         const groupContainer = document.createElement("div");
         groupContainer.className = "matches-flex-group";
@@ -6705,12 +6689,31 @@ function renderBracket(partidos) {
         rightSection.appendChild(column);
     });
 
-    // 4. Inyectar todo en el contenedor principal en orden horizontal
+    // Inyección limpia de bloques en el nodo HTML raíz
     bracket.appendChild(leftSection);
     bracket.appendChild(centerSection);
     bracket.appendChild(rightSection);
-}
 
+    // --- IntersectionObserver: Monitor de Scroll para Encabezados Activos ---
+    const observerOptions = {
+        root: bracket,
+        rootMargin: "0px",
+        threshold: 0.5
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add("active-round");
+            } else {
+                entry.target.classList.remove("active-round");
+            }
+        });
+    }, observerOptions);
+
+    const todasLasColumnas = bracket.querySelectorAll(".bracket-column");
+    todasLasColumnas.forEach(columna => observer.observe(columna));
+}
 
 </script>
 
