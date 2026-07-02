@@ -6551,7 +6551,7 @@ function renderBracket(partidos) {
     const bracket = document.getElementById("bracket");
     if (!bracket) return;
     
-    // Limpiamos el contenedor original
+    // Limpiamos el contenedor por completo
     bracket.innerHTML = "";
 
     // 1. Agrupar partidos por ronda
@@ -6614,18 +6614,21 @@ function renderBracket(partidos) {
         </div>`;
     }
 
-    // Función interna para procesar y colgar las columnas añadiendo sufijos de zona (A / B) para evitar nombres idénticos
-    function renderRondasLado(estructuraLado, contenedorPadre, sufijoZona) {
-        Object.entries(estructuraLado).forEach(([nombreRonda, listaPartidos]) => {
+    // Función interna para procesar y colgar las columnas con sus títulos integrados
+    function renderRondasLado(estructuraLado, contenedorPadre, esLadoDerecho) {
+        // Si es el lado derecho, invertimos el orden de las llaves para que pinte Semifinal -> Cuartos -> Octavos -> 1/16
+        const entradasRondas = esLadoDerecho ? Object.entries(estructuraLado).reverse() : Object.entries(estructuraLado);
+
+        entradasRondas.forEach(([nombreRonda, listaPartidos]) => {
             const column = document.createElement("div");
             column.className = `bracket-column round-${nombreRonda.replace("/", "-")}`;
             
-            // Personalización de títulos para diferenciar el lado izquierdo (Zona A) del derecho (Zona B)
+            // Títulos limpios e independientes por columna
             let tituloMostrar = nombreRonda;
-            if (nombreRonda === "1/16") tituloMostrar = `Dieciséisavos (${sufijoZona})`;
-            if (nombreRonda === "Octavos") tituloMostrar = `Octavos (${sufijoZona})`;
-            if (nombreRonda === "Cuartos") tituloMostrar = `Cuartos (${sufijoZona})`;
-            if (nombreRonda === "Semifinal") tituloMostrar = `Semifinal ${sufijoZona}`;
+            if (nombreRonda === "1/16") tituloMostrar = "Dieciséisavos";
+            if (nombreRonda === "Octavos") tituloMostrar = "Octavos de final";
+            if (nombreRonda === "Cuartos") tituloMostrar = "Cuartos de final";
+            if (nombreRonda === "Semifinal") tituloMostrar = "Semifinal";
 
             column.innerHTML = `<h3 class="column-title">${tituloMostrar}</h3>`;
             
@@ -6642,7 +6645,9 @@ function renderBracket(partidos) {
     }
 
     // --- Ejecución del Renderizado por Secciones ---
-    renderRondasLado(ladoIzquierdo, leftSection, "Izq");
+    
+    // Lado Izquierdo (Flujo natural: 1/16 -> Octavos -> Cuartos -> Semifinal)
+    renderRondasLado(ladoIzquierdo, leftSection, false);
 
     // Bloque Central: Columna de la Gran Final
     const finalCol = document.createElement("div");
@@ -6667,49 +6672,26 @@ function renderBracket(partidos) {
         centerSection.appendChild(tercerCol);
     }
 
-    // Renderizado del Lado Derecho (Espejo invertido hacia el extremo derecho)
-    const llavesDerechasInvertidas = Object.entries(ladoDerecho).reverse();
-    llavesDerechasInvertidas.forEach(([nombreRonda, listaPartidos]) => {
-        const column = document.createElement("div");
-        column.className = `bracket-column round-${nombreRonda.replace("/", "-")}`;
-        
-        let tituloMostrar = nombreRonda;
-        if (nombreRonda === "1/16") tituloMostrar = "Dieciséisavos (Der)";
-        if (nombreRonda === "Octavos") tituloMostrar = "Octavos (Der)";
-        if (nombreRonda === "Cuartos") tituloMostrar = "Cuartos (Der)";
-        if (nombreRonda === "Semifinal") tituloMostrar = "Semifinal Der";
-
-        column.innerHTML = `<h3 class="column-title">${tituloMostrar}</h3>`;
-        
-        const groupContainer = document.createElement("div");
-        groupContainer.className = "matches-flex-group";
-
-        listaPartidos.forEach((partido, idx) => {
-            groupContainer.innerHTML += generarHtmlMatch(partido, idx);
-        });
-
-        column.appendChild(groupContainer);
-        rightSection.appendChild(column);
-    });
+    // Lado Derecho CORREGIDO (Flujo inverso de adentro hacia afuera: Semifinal -> Cuartos -> Octavos -> 1/16)
+    renderRondasLado(ladoDerecho, rightSection, true);
 
     // Inyección limpia de bloques en el nodo HTML raíz
     bracket.appendChild(leftSection);
     bracket.appendChild(centerSection);
     bracket.appendChild(rightSection);
 
-    // --- NUEVO: Interacción de clics en Encabezados para Desplazamiento ---
+    // --- Navegación Interactiva: Clic en Títulos para Desplazamiento ---
     const todasLasColumnas = bracket.querySelectorAll(".bracket-column");
     
     todasLasColumnas.forEach(columna => {
         const titulo = columna.querySelector(".column-title");
         if (titulo) {
-            // Estilo visual de puntero para indicar que es cliqueable
             titulo.style.cursor = "pointer";
             titulo.addEventListener("click", () => {
                 columna.scrollIntoView({
-                    behavior: "smooth", // Desplazamiento fluido nativo
+                    behavior: "smooth",
                     block: "nearest",
-                    inline: "center"    // Centra de forma exacta la columna en la pantalla
+                    inline: "center" // Centra perfectamente la columna pulsada en el visor de la pantalla
                 });
             });
         }
@@ -6734,6 +6716,7 @@ function renderBracket(partidos) {
 
     todasLasColumnas.forEach(columna => observer.observe(columna));
 }
+
 
 
 </script>
