@@ -6553,33 +6553,61 @@ function renderBracket(partidos) {
     
     bracket.innerHTML = "";
 
-    // 1. Agrupar partidos por ronda
-    const rondas = { "1/16": [], "Octavos": [], "Cuartos": [], "Semifinal": [], "Final": [], "3º puesto": [] };
-    partidos.forEach(p => { if (rondas[p.ronda]) rondas[p.ronda].push(p); });
-
-    // 2. Separar y ORDENAR para que las llaves queden perfectamente enfrentadas en espejo
+    // 1. Inicializar la estructura exacta del torneo simétrico por IDs de tus partidos
     const ladoIzquierdo = { "1/16": [], "Octavos": [], "Cuartos": [], "Semifinal": [] };
     const ladoDerecho = { "Semifinal": [], "Cuartos": [], "Octavos": [], "1/16": [] };
+    const centro = { "Final": [], "3º puesto": [] };
 
-    // Función para ordenar los partidos del bloque derecho en espejo con el izquierdo
-    function ordenarLadoDerecho(lista) {
-        if (lista.length <= 1) return lista;
-        // Invertimos el orden o emparejamos por ID/índice para que el de arriba de la derecha 
-        // corresponda visualmente a la misma altura matemática del bloque izquierdo
-        return [...lista].reverse(); 
-    }
+    // IDs exactos que componen el lado izquierdo de tu torneo (según tus datos)
+    const idsIzquierda1_16 = ["74", "77", "73", "75", "83", "84", "81", "82"];
+    const idsIzquierdaOctavos = ["89", "90", "93", "94"];
+    const idsIzquierdaCuartos = ["97", "98"];
+    const idsIzquierdaSemi = ["101"];
 
-    ["1/16", "Octavos", "Cuartos", "Semifinal"].forEach(ronda => {
-        const lista = rondas[ronda];
-        const mitad = Math.ceil(lista.length / 2);
+    // IDs exactos que componen el lado derecho de tu torneo (según tus datos)
+    const idsDerecha1_16 = ["76", "78", "79", "80", "86", "88", "85", "87"];
+    const idsDerechaOctavos = ["91", "92", "95", "96"];
+    const idsDerechaCuartos = ["99", "100"];
+    const idsDerechaSemi = ["102"];
+
+    // 2. Clasificar cada partido en su celda matemática correcta del espejo
+    partidos.forEach(partido => {
+        const idStr = String(partido.id);
         
-        ladoIzquierdo[ronda] = lista.slice(0, mitad);
-        
-        // Aplicamos el ordenamiento en espejo para la parte derecha
-        ladoDerecho[ronda] = ordenarLadoDerecho(lista.slice(mitad));
+        if (partido.ronda === "Final") {
+            centro["Final"].push(partido);
+        } else if (partido.ronda === "3º puesto") {
+            centro["3º puesto"].push(partido);
+        } else if (partido.ronda === "1/16") {
+            if (idsIzquierda1_16.includes(idStr)) ladoIzquierdo["1/16"].push(partido);
+            if (idsDerecha1_16.includes(idStr)) ladoDerecho["1/16"].push(partido);
+        } else if (partido.ronda === "Octavos") {
+            if (idsIzquierdaOctavos.includes(idStr)) ladoIzquierdo["Octavos"].push(partido);
+            if (idsDerechaOctavos.includes(idStr)) ladoDerecho["Octavos"].push(partido);
+        } else if (partido.ronda === "Cuartos") {
+            if (idsIzquierdaCuartos.includes(idStr)) ladoIzquierdo["Cuartos"].push(partido);
+            if (idsDerechaCuartos.includes(idStr)) ladoDerecho["Cuartos"].push(partido);
+        } else if (partido.ronda === "Semifinal") {
+            if (idsIzquierdaSemi.includes(idStr)) ladoIzquierdo["Semifinal"].push(partido);
+            if (idsDerechaSemi.includes(idStr)) ladoDerecho["Semifinal"].push(partido);
+        }
     });
 
-    // 3. Crear contenedores estructurales
+    // Función de ordenación interna para que el árbol visual coincida con las ramificaciones hijas
+    function ordenarPorListaIds(arrayPartidos, listaIds) {
+        return arrayPartidos.sort((a, b) => listaIds.indexOf(String(a.id)) - listaIds.indexOf(String(b.id)));
+    }
+
+    // Ordenamos cada ronda para asegurar el enfrentamiento vertical simétrico
+    ordenarPorListaIds(ladoIzquierdo["1/16"], idsIzquierda1_16);
+    ordenarPorListaIds(ladoIzquierdo["Octavos"], idsIzquierdaOctavos);
+    ordenarPorListaIds(ladoIzquierdo["Cuartos"], idsIzquierdaCuartos);
+    
+    ordenarPorListaIds(ladoDerecho["1/16"], idsDerecha1_16);
+    ordenarPorListaIds(ladoDerecho["Octavos"], idsDerechaOctavos);
+    ordenarPorListaIds(ladoDerecho["Cuartos"], idsDerechaCuartos);
+
+    // 3. Bloques del Layout
     const leftSection = document.createElement("div");
     leftSection.className = "bracket-section section-left";
 
@@ -6589,20 +6617,21 @@ function renderBracket(partidos) {
     const rightSection = document.createElement("div");
     rightSection.className = "bracket-section section-right";
 
-    // Generador de tarjetas de partidos con marcador negro y penaltis
+    // Generador de tarjetas de partidos (Corregido para leer "penCasa" y "penVisita")
     function generarHtmlMatch(partido, index) {
-        const pCasa = (partido.penaltisCasa !== undefined && partido.penaltisCasa !== null) ? `<span class="penalty-score">(${partido.penaltisCasa})</span>` : "";
-        const pVisita = (partido.penaltisVisita !== undefined && partido.penaltisVisita !== null) ? `<span class="penalty-score">(${partido.penaltisVisita})</span>` : "";
+        if (!partido) return "";
+        const pCasa = (partido.penCasa !== undefined && partido.penCasa !== null && partido.penCasa !== "") ? `<span class="penalty-score">(${partido.penCasa})</span>` : "";
+        const pVisita = (partido.penVisita !== undefined && partido.penVisita !== null && partido.penVisita !== "") ? `<span class="penalty-score">(${partido.penVisita})</span>` : "";
         
-        const scoreCasa = (partido.golCasa !== undefined && partido.golCasa !== null) ? partido.golCasa : "-";
-        const scoreVisita = (partido.golVisita !== undefined && partido.golVisita !== null) ? partido.golVisita : "-";
+        const scoreCasa = (partido.golCasa !== undefined && partido.golCasa !== null && partido.golCasa !== "") ? partido.golCasa : "-";
+        const scoreVisita = (partido.golVisita !== undefined && partido.golVisita !== null && partido.golVisita !== "") ? partido.golVisita : "-";
 
         const matchPos = (index % 2 === 0) ? "match-top" : "match-bottom";
 
         return `
         <div class="match-card ${matchPos}">
             <div class="match-header">
-                <span class="match-id">${partido.id || ''}</span>
+                <span class="match-id">P${partido.id}</span>
                 <span class="match-datetime">${partido.fecha} &nbsp; ${partido.hora}</span>
             </div>
             <div class="team-row">
@@ -6650,61 +6679,73 @@ function renderBracket(partidos) {
 
     // --- RENDERIZADO EN ORDEN DE IZQUIERDA A DERECHA ---
     
-    // 1. Lado Izquierdo (1/16 -> Octavos -> Cuartos -> Semifinal)
+    // Lado Izquierdo (1/16 -> Octavos -> Cuartos -> Semifinal)
     Object.keys(ladoIzquierdo).forEach(ronda => {
         renderColumnaPura(ronda, ladoIzquierdo[ronda], leftSection);
     });
 
-    // 2. Bloque Centro (Final y Tercer Puesto)
-    renderColumnaPura("Final", rondas["Final"] || [], centerSection);
-    if (rondas["3º puesto"] && rondas["3º puesto"].length > 0) {
-        renderColumnaPura("3º puesto", rondas["3º puesto"], centerSection);
+    // Bloque Centro (Final / 3º Puesto)
+    renderColumnaPura("Final", centro["Final"], centerSection);
+    if (centro["3º puesto"].length > 0) {
+        renderColumnaPura("3º puesto", centro["3º puesto"], centerSection);
     }
 
-    // 3. Lado Derecho Corregido (Flujo visual inverso: Semifinal -> Cuartos -> Octavos -> 1/16)
-    // Usamos reverse() sobre las llaves para que la columna de Semifinal quede al lado de la Final
+    // Lado Derecho (Semifinal -> Cuartos -> Octavos -> 1/16)
     Object.keys(ladoDerecho).reverse().forEach(ronda => {
         renderColumnaPura(ronda, ladoDerecho[ronda], rightSection);
     });
 
-    // Inyección en el DOM
+    // Inyectamos las secciones estructuradas
     bracket.appendChild(leftSection);
     bracket.appendChild(centerSection);
     bracket.appendChild(rightSection);
 
-    // --- ENLACE DE CLICS EN ENCABEZADOS DE LA BARRA SUPERIOR ---
-    // Buscamos los elementos de la cabecera fija de tu HTML para asociarles el scroll
-    const contenedoresColumnas = bracket.querySelectorAll(".bracket-column");
-    const titulosCabeceraFija = document.querySelectorAll(".eliminatorias-header .header-title, .column-title");
+    // --- SISTEMA DE CLIC EN ENCABEZADOS DE LA PÁGINA ---
+    // Seleccionamos tus títulos superiores para dotarlos de navegación scroll
+    const titulosMenuSuperior = document.querySelectorAll(".eliminatorias-header span, th, .header-title");
+    
+    titulosMenuSuperior.forEach((elementoHeader) => {
+        const textoEnFase = elementoHeader.textContent.toLowerCase();
+        let claseDestino = "";
 
-    titulosCabeceraFija.forEach((titulo, index) => {
-        if (contenedoresColumnas[index]) {
-            titulo.style.cursor = "pointer";
-            titulo.addEventListener("click", () => {
-                contenedoresColumnas[index].scrollIntoView({
-                    behavior: "smooth",
-                    block: "nearest",
-                    inline: "center"
-                });
+        if (textoEnFase.includes("dieci") || textoEnFase.includes("1/16")) claseDestino = ".round-1-16";
+        else if (textoEnFase.includes("octa")) claseDestino = ".round-Octavos";
+        else if (textoEnFase.includes("cuar")) claseDestino = ".round-Cuartos";
+        else if (textoEnFase.includes("semi")) claseDestino = ".round-Semifinal";
+        else if (textoEnFase.includes("fina")) claseDestino = ".round-Final";
+
+        if (claseDestino) {
+            elementoHeader.style.cursor = "pointer";
+            elementoHeader.addEventListener("click", () => {
+                const columnasDestino = bracket.querySelectorAll(claseDestino);
+                // Si encuentra dos (izquierda y derecha), se desplaza a la primera visible
+                if (columnasDestino.length > 0) {
+                    columnasDestino[0].scrollIntoView({
+                        behavior: "smooth",
+                        block: "nearest",
+                        inline: "center"
+                    });
+                }
             });
         }
     });
 
-    // --- INTERSECTION OBSERVER (Actualizar clases activas al deslizar) ---
+    // --- INTERSECTION OBSERVER (Activar clases de visualización al arrastrar) ---
     const observerOptions = { root: bracket, rootMargin: "0px", threshold: 0.5 };
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add("active-round");
-                // Opcional: Si tienes pestañas fijas arriba, puedes añadirles la clase activa aquí
             } else {
                 entry.target.classList.remove("active-round");
             }
         });
     }, observerOptions);
 
-    contenedoresColumnas.forEach(columna => observer.observe(columna));
+    const todasLasColumnas = bracket.querySelectorAll(".bracket-column");
+    todasLasColumnas.forEach(columna => observer.observe(columna));
 }
+
 
 </script>
 
