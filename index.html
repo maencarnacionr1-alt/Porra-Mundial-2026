@@ -6668,19 +6668,19 @@ function renderBracket(partidos) {
         
         const pCasa = (partido.penCasa !== undefined && partido.penCasa !== null && partido.penCasa !== "") ? `<span class="penalty-score"><small>P.</small>${partido.penCasa}</span>` : "";
         const pVisita = (partido.penVisita !== undefined && partido.penVisita !== null && partido.penVisita !== "") ? `<span class="penalty-score"><small>P.</small>${partido.penVisita}</span>` : "";
-        
-                // Convertimos a string de forma segura y eliminamos espacios
+                // 1. CAPTURA SEGURA: Asegura compatibilidad entre formatos de número y texto
         let scoreCasa = (partido.golCasa !== undefined && partido.golCasa !== null) ? String(partido.golCasa).trim() : "";
         let scoreVisita = (partido.golVisita !== undefined && partido.golVisita !== null) ? String(partido.golVisita).trim() : "";
 
-        // Si es un guion o está vacío, lo dejamos totalmente en blanco
+        // 2. LIMPIEZA: Si contiene guiones o está vacío, se limpia por completo
         if (scoreCasa === "-" || scoreCasa === "") scoreCasa = "";
         if (scoreVisita === "-" || scoreVisita === "") scoreVisita = "";
 
         const tieneFecha = partido.fecha && partido.fecha !== "-";
 
-        // COMPROBACIÓN ULTRA SEGURA: Si ambos campos tienen texto y no están vacíos, el partido finalizó
+        // 3. CONDICIÓN: Evalúa por contenido de texto en lugar de por longitud de caracteres
         const partidoFinalizado = scoreCasa !== "" && scoreVisita !== "";
+			
 
         let classCasa = "";
         let classVisita = "";
