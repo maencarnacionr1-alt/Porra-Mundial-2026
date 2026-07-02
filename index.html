@@ -6677,13 +6677,24 @@ function renderBracket(partidos) {
 
         const tieneFecha = partido.fecha && partido.fecha !== "-";
 
+        // Comprobación de partido finalizado si existen marcadores numéricos válidos
+        const partidoFinalizado = scoreCasa !== "" && scoreVisita !== "";
+
         let classCasa = "";
         let classVisita = "";
-        if (scoreCasa !== "" && scoreVisita !== "") {
+        if (partidoFinalizado) {
             const gCasa = parseInt(scoreCasa) + parseInt(partido.penCasa || 0);
             const gVisita = parseInt(scoreVisita) + parseInt(partido.penVisita || 0);
             if (gCasa > gVisita) classCasa = "winner-row";
             if (gVisita > gCasa) classVisita = "winner-row";
+        }
+
+        // Definición del texto dinámico del encabezado interno
+        let textoCabecera = '&nbsp;';
+        if (partidoFinalizado) {
+            textoCabecera = "Finalizado";
+        } else if (tieneFecha) {
+            textoCabecera = `${partido.fecha} ${partido.hora || ''}`;
         }
 
         const nombreCasa = partido.casa || `W${partido.id_origen_casa || ''}`;
@@ -6693,8 +6704,8 @@ function renderBracket(partidos) {
 <div class="match-wrapper">
     <span class="match-id-label">P${partido.id}</span>
     <div class="match-card">
-        <!-- NUEVA UBICACIÓN: Ahora vive de forma nativa dentro de la tarjeta blanca -->
-        <div class="match-datetime">${tieneFecha ? `${partido.fecha} ${partido.hora || ''}` : '&nbsp;'}</div>
+        <!-- Contenedor de fecha/estado configurado dentro de la tarjeta blanca -->
+        <div class="match-datetime">${textoCabecera}</div>
         
         <div class="team-row ${classCasa}">
             <div class="team-info">
@@ -6718,7 +6729,6 @@ function renderBracket(partidos) {
         </div>
     </div>
 </div>`;
-
     }
 
     function renderColumnaPura(nombreRonda, listaPartidos, contenedorPadre, esBloqueCentral = false) {
@@ -6761,6 +6771,7 @@ function renderBracket(partidos) {
         });
     });
 }
+
 	
 </script>
 
