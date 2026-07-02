@@ -3168,15 +3168,15 @@ body{
     display: flex;
     justify-content: flex-start;
     align-items: stretch;
-    gap: 50px; /* Separación exacta para las líneas conectoras */
+    gap: 50px;
     padding: 20px 40px;
     background-color: #f8fafc;
     font-family: system-ui, -apple-system, sans-serif;
     
-    /* SCROLL TÁCTIL (SIN BLOQUEAR ZOOM) */
+    /* Scroll táctil permitido, zoom nativo liberado al no limitar scale en viewport */
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
-    /* Eliminado touch-action y scroll-snap para permitir zoom nativo */
+    width: max-content; /* Permite que el contenedor se adapte al contenido y sea escalable */
 }
 
 /* Secciones */
@@ -3197,13 +3197,15 @@ body{
     flex-shrink: 0;
 }
 
-/* Columnas */
+/* --- 2. COLUMNAS: Permiten encogerse mediante flex-shrink --- */
 .bracket-column {
     display: flex;
     flex-direction: column;
-    width: 210px; /* Ancho fijo */
-    flex-shrink: 0;
+    width: 210px; /* Tamaño base */
+    flex-shrink: 0; /* Permitimos que se encojan si el navegador aplica zoom */
+    position: relative;
 }
+
 
 .column-title {
     text-align: center;
@@ -3226,7 +3228,8 @@ body{
 .center-grid-container {
     display: flex;
     flex-direction: column;
-    width: 100%;
+    justify-content: center;
+    height: 840px
 }
 
 .round-1-16 .match-wrapper { grid-row: span 1; }
@@ -3244,7 +3247,7 @@ body{
     height: 100%;
 }
 
-/* --- TARJETA --- */
+/* --- 3. TARJETA: Diseño limpio con IDs y Fechas corregidas --- */
 .match-card {
     background: #ffffff;
     border: 1px solid #cbd5e1;
@@ -3254,33 +3257,67 @@ body{
     position: relative;
     width: 100%;
     box-sizing: border-box;
-    z-index: 2; /* Siempre por encima de las líneas */
+    z-index: 2;
+    /* Evita que el contenido desborde al hacer zoom */
+    overflow: hidden; 
 }
 
+/* Mejora de visibilidad de fecha */
 .match-datetime {
     position: absolute;
-    top: calc(50% - 40px); /* Flotante por encima de la tarjeta */
-    left: 2px;
+    top: -18px;
+    left: 0;
     font-size: 10px;
-    color: #94a3b8;
-    z-index: 3;
+    color: #475569;
+    font-weight: 600;
+    background: #f8fafc;
+    padding: 0 4px;
+    z-index: 5;
+    white-space: nowrap;
 }
 
 /* IDs EN EL CENTRO LATERAL EXTREMO */
-.match-id-label {
-    position: absolute;
-    font-size: 10px;
-    font-weight: bold;
+	position: absolute;
+    font-size: 9px;
+    font-weight: 800;
     color: #64748b;
-    text-decoration: underline;
-    z-index: 3;
+    background-color: #f8fafc; /* Color de fondo del bracket */
+    padding: 0 4px;
+    z-index: 10;
     top: 50%;
     transform: translateY(-50%);
 }
+
+/* IDs con fondo para no interceptar líneas */
+.match-id-label {
+    position: absolute;
+    font-size: 9px;
+    font-weight: 800;
+    color: #64748b;
+    background-color: #f8fafc;
+    padding: 0 4px;
+    z-index: 10;
+    top: 50%;
+    transform: translateY(-50%);
+}
+		
 .section-left .match-id-label { left: -32px; }
 .section-right .match-id-label { right: -32px; }
 .section-center .match-id-label { bottom: -20px; left: 50%; transform: translateX(-50%); top: auto; text-decoration: none; }
 
+/* Ajuste específico para que las líneas de la Final se vean */
+.section-center .match-wrapper {
+    border-left: 1.5px solid #cbd5e1;
+    border-right: 1.5px solid #cbd5e1;
+    margin: 0 20px;
+}
+
+		
+/* Forzar que las líneas tengan un z-index inferior para no tapar contenido */
+.match-wrapper::before, .match-wrapper::after, .match-card::before {
+    z-index: 0 !important;
+}
+		
 .team-row {
     display: flex;
     justify-content: space-between;
@@ -6754,6 +6791,14 @@ function renderBracket(partidos) {
         });
     });
 }
+
+function aplicarZoom(factor) {
+    const contenedor = document.getElementById("bracket");
+    if (contenedor) {
+        contenedor.style.transform = `scale(${factor})`;
+        contenedor.style.transformOrigin = "top left";
+    }
+}	
 	
 </script>
 
@@ -6814,5 +6859,11 @@ function renderBracket(partidos) {
     ▲
 </button>	
 <script src="https://widgets.365scores.com/main.js"></script>
+
+<div class="zoom-controls">
+    <button onclick="aplicarZoom(0.8)">-</button>
+    <button onclick="aplicarZoom(1)">1:1</button>
+    <button onclick="aplicarZoom(1.2)">+</button>
+</div>	
 </body>
 </html>
