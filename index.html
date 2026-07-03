@@ -3351,48 +3351,40 @@ body{
 /* DIBUJO GEOMÉTRICO EXACTO DE LÍNEAS (MAGIA CSS)            */
 /* ========================================================= */
 
-/* 1. LÍNEAS SALIENTES (De los hijos hacia el centro) */
+/* --- LÍNEAS UNIVERSALES: Aplican a cualquier match-wrapper --- */
 
-/* 1. LÍNEAS SALIENTES (Añadimos .section-center para conectar con las columnas laterales) */
-.section-left .match-wrapper::after,
-.section-center .match-wrapper::after {
-    content: ""; position: absolute; right: -25px; top: 50%; width: 25px; border-top: 1.5px solid #cbd5e1; z-index: 0;
-}
-.section-right .match-wrapper::after,
-.section-center .match-wrapper::before { /* Usamos before para salir hacia la izquierda desde el centro */
-    content: ""; position: absolute; left: -25px; top: 50%; width: 25px; border-top: 1.5px solid #cbd5e1; z-index: 0;
-}
-
-/* 2. REGLA ESPECIAL PARA QUE EL CENTRO CONECTE CON LAS SEMIFINALES */
-/* Como el centro está fijo, necesita dibujar líneas hacia ambos lados para atrapar a los hijos */
-.section-center .match-wrapper::before {
-    content: ""; 
-    position: absolute; 
-    left: -25px; 
-    top: 50%; 
-    width: 50px; /* Ancho total para unir izquierda y derecha */
-    border-top: 1.5px solid #cbd5e1; 
+/* Conectores horizontales (Salida de la tarjeta hacia el lado) */
+.match-wrapper::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 25px;
+    border-top: 1.5px solid #cbd5e1;
     z-index: 0;
 }
-		
-/* 1. LÍNEAS SALIENTES: Hacia el exterior */
-.section-left .match-wrapper::after { content: ""; position: absolute; right: -25px; top: 50%; width: 25px; border-top: 1.5px solid #cbd5e1; z-index: 0; }
-.section-right .match-wrapper::after { content: ""; position: absolute; left: -25px; top: 50%; width: 25px; border-top: 1.5px solid #cbd5e1; z-index: 0; }
 
-/* 2. HORQUILLAS VERTICALES: El dibujo del "gancho" */
-/* Izquierda */
-.section-left .bracket-column:not(.round-1-16) .match-wrapper::before { content: ""; position: absolute; left: -25px; top: 25%; height: 50%; border-left: 1.5px solid #cbd5e1; z-index: 0; }
-/* Derecha */
-.section-right .bracket-column:not(.round-1-16) .match-wrapper::before { content: ""; position: absolute; right: -25px; top: 25%; height: 50%; border-right: 1.5px solid #cbd5e1; z-index: 0; }
-/* Centro (El puente) */
-.section-center .bracket-column .match-wrapper::before { content: ""; position: absolute; left: -25px; top: 25%; height: 50%; border-left: 1.5px solid #cbd5e1; z-index: 0; }
-.section-center .bracket-column .match-wrapper::after { content: ""; position: absolute; right: -25px; top: 25%; height: 50%; border-right: 1.5px solid #cbd5e1; z-index: 0; }
+/* Conectores verticales (Horquilla) */
+.match-wrapper::before {
+    content: "";
+    position: absolute;
+    top: 25%;
+    height: 50%;
+    border-left: 1.5px solid #cbd5e1;
+    z-index: 0;
+}
 
-/* 3. LÍNEAS ENTRANTES: Hacia la tarjeta */
-.section-left .bracket-column:not(.round-1-16) .match-card::before { content: ""; position: absolute; left: -25.5px; top: 50%; width: 25px; border-top: 1.5px solid #cbd5e1; z-index: 0; }
-.section-right .bracket-column:not(.round-1-16) .match-card::before { content: ""; position: absolute; right: -25.5px; top: 50%; width: 25px; border-top: 1.5px solid #cbd5e1; z-index: 0; }
-.section-center .bracket-column .match-card::before { content: ""; position: absolute; left: -25.5px; top: 50%; width: 25px; border-top: 1.5px solid #cbd5e1; z-index: 0; }
-.section-center .bracket-column .match-card::after { content: ""; position: absolute; right: -25.5px; top: 50%; width: 25px; border-top: 1.5px solid #cbd5e1; z-index: 0; }
+/* --- AJUSTE DE POSICIÓN SEGÚN LADO --- */
+/* Lado Izquierdo */
+.section-left .match-wrapper::after { right: -25px; }
+.section-left .match-wrapper::before { left: -25px; border-left: 1.5px solid #cbd5e1; }
+
+/* Lado Derecho */
+.section-right .match-wrapper::after { left: -25px; }
+.section-right .match-wrapper::before { right: -25px; border-right: 1.5px solid #cbd5e1; border-left: none; }
+
+/* Centro (Fuerza absoluta) */
+.section-center .match-wrapper::after { left: -25px; width: 50px; border-top: 1.5px solid #cbd5e1; }
+.section-center .match-wrapper::before { display: none; } /* Ocultamos horquilla en el centro para evitar el cruce */
 		
 /* Aplicar la animación a las tarjetas de los grupos */
 .group-card {
