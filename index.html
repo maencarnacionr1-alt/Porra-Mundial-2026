@@ -3253,6 +3253,7 @@ body{
     border-radius: 10px;
     padding: 6px 10px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+    position: relative;
     width: 100%;
     box-sizing: border-box;
     z-index: 2; /* Siempre por encima de las líneas */
@@ -3350,30 +3351,12 @@ body{
 /* DIBUJO GEOMÉTRICO EXACTO DE LÍNEAS (MAGIA CSS)            */
 /* ========================================================= */
 
-.match-wrapper::before,
-.match-wrapper::after,
-.match--card::before {
-	content: "";
-	position: absolute;
-	border-color: #cbd5e1;
-	border-style: solid;
-	z-index: -1; */ CLAVE! Esto pone las líneas detrás de todo */
-
 /* 1. LÍNEAS SALIENTES (De los hijos hacia el centro) */
-.section-left .match-wrapper::after { 
-	right: -25px; 
-	top: 50%; 
-	width: 25px; 
-	border-top: 1.5px solid #cbd5e1; 
-	z-index: 1;
+.section-left .match-wrapper::after {
+    content: ""; position: absolute; right: -25px; top: 50%; width: 25px; border-top: 1.5px solid #cbd5e1; z-index: 1;
 }
-	
 .section-right .match-wrapper::after {
-    left: -25px; 
-	top: 50%; 
-	width: 25px; 
-	border-top: 1.5px solid #cbd5e1; 
-	z-index: 1;
+    content: ""; position: absolute; left: -25px; top: 50%; width: 25px; border-top: 1.5px solid #cbd5e1; z-index: 1;
 }
 
 /* 2. LA HORQUILLA VERTICAL (En el Padre N+1, conecta a sus dos hijos) */
