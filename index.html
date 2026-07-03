@@ -3352,13 +3352,29 @@ body{
 /* ========================================================= */
 
 /* 1. LÍNEAS SALIENTES (De los hijos hacia el centro) */
-.section-left .match-wrapper::after {
-    content: ""; position: absolute; right: -25px; top: 50%; width: 25px; border-top: 1.5px solid #cbd5e1; z-index: 1;
+
+/* 1. LÍNEAS SALIENTES (Añadimos .section-center para conectar con las columnas laterales) */
+.section-left .match-wrapper::after,
+.section-center .match-wrapper::after {
+    content: ""; position: absolute; right: -25px; top: 50%; width: 25px; border-top: 1.5px solid #cbd5e1; z-index: 0;
 }
-.section-right .match-wrapper::after {
-    content: ""; position: absolute; left: -25px; top: 50%; width: 25px; border-top: 1.5px solid #cbd5e1; z-index: 1;
+.section-right .match-wrapper::after,
+.section-center .match-wrapper::before { /* Usamos before para salir hacia la izquierda desde el centro */
+    content: ""; position: absolute; left: -25px; top: 50%; width: 25px; border-top: 1.5px solid #cbd5e1; z-index: 0;
 }
 
+/* 2. REGLA ESPECIAL PARA QUE EL CENTRO CONECTE CON LAS SEMIFINALES */
+/* Como el centro está fijo, necesita dibujar líneas hacia ambos lados para atrapar a los hijos */
+.section-center .match-wrapper::before {
+    content: ""; 
+    position: absolute; 
+    left: -25px; 
+    top: 50%; 
+    width: 50px; /* Ancho total para unir izquierda y derecha */
+    border-top: 1.5px solid #cbd5e1; 
+    z-index: 0;
+}
+		
 /* 2. LA HORQUILLA VERTICAL (En el Padre N+1, conecta a sus dos hijos) */
 /* Abarca exactamente del 25% al 75% del alto de la fila padre */
 .section-left .bracket-column:not(.round-1-16) .match-wrapper::before {
