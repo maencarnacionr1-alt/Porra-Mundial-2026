@@ -3375,26 +3375,24 @@ body{
     z-index: 0;
 }
 		
-/* 2. LA HORQUILLA VERTICAL (Ahora incluye el centro) */
-/* Conecta las líneas salientes de los hijos con el match-wrapper del padre */
-.section-left .bracket-column:not(.round-1-16) .match-wrapper::before,
-.section-center .bracket-column:not(.round-1-16) .match-wrapper::before {
-    content: ""; position: absolute; left: -25px; top: 25%; height: 50%; border-left: 1.5px solid #cbd5e1; z-index: 0;
-}
-.section-right .bracket-column:not(.round-1-16) .match-wrapper::before,
-.section-center .bracket-column:not(.round-1-16) .match-wrapper::after { /* Usamos after para la derecha del centro */
-    content: ""; position: absolute; right: -25px; top: 25%; height: 50%; border-right: 1.5px solid #cbd5e1; z-index: 0;
-}
+/* 1. LÍNEAS SALIENTES: Hacia el exterior */
+.section-left .match-wrapper::after { content: ""; position: absolute; right: -25px; top: 50%; width: 25px; border-top: 1.5px solid #cbd5e1; z-index: 0; }
+.section-right .match-wrapper::after { content: ""; position: absolute; left: -25px; top: 50%; width: 25px; border-top: 1.5px solid #cbd5e1; z-index: 0; }
 
-/* 3. LÍNEAS ENTRANTES (Desde la horquilla hacia la tarjeta Padre) */
-.section-left .bracket-column:not(.round-1-16) .match-card::before,
-.section-center .bracket-column:not(.round-1-16) .match-card::before {
-    content: ""; position: absolute; left: -25.5px; top: 50%; width: 25px; border-top: 1.5px solid #cbd5e1; z-index: 0;
-}
-.section-right .bracket-column:not(.round-1-16) .match-card::before,
-.section-center .bracket-column:not(.round-1-16) .match-card::after { /* Usamos after para la derecha del centro */
-    content: ""; position: absolute; right: -25.5px; top: 50%; width: 25px; border-top: 1.5px solid #cbd5e1; z-index: 0;
-}
+/* 2. HORQUILLAS VERTICALES: El dibujo del "gancho" */
+/* Izquierda */
+.section-left .bracket-column:not(.round-1-16) .match-wrapper::before { content: ""; position: absolute; left: -25px; top: 25%; height: 50%; border-left: 1.5px solid #cbd5e1; z-index: 0; }
+/* Derecha */
+.section-right .bracket-column:not(.round-1-16) .match-wrapper::before { content: ""; position: absolute; right: -25px; top: 25%; height: 50%; border-right: 1.5px solid #cbd5e1; z-index: 0; }
+/* Centro (El puente) */
+.section-center .bracket-column .match-wrapper::before { content: ""; position: absolute; left: -25px; top: 25%; height: 50%; border-left: 1.5px solid #cbd5e1; z-index: 0; }
+.section-center .bracket-column .match-wrapper::after { content: ""; position: absolute; right: -25px; top: 25%; height: 50%; border-right: 1.5px solid #cbd5e1; z-index: 0; }
+
+/* 3. LÍNEAS ENTRANTES: Hacia la tarjeta */
+.section-left .bracket-column:not(.round-1-16) .match-card::before { content: ""; position: absolute; left: -25.5px; top: 50%; width: 25px; border-top: 1.5px solid #cbd5e1; z-index: 0; }
+.section-right .bracket-column:not(.round-1-16) .match-card::before { content: ""; position: absolute; right: -25.5px; top: 50%; width: 25px; border-top: 1.5px solid #cbd5e1; z-index: 0; }
+.section-center .bracket-column .match-card::before { content: ""; position: absolute; left: -25.5px; top: 50%; width: 25px; border-top: 1.5px solid #cbd5e1; z-index: 0; }
+.section-center .bracket-column .match-card::after { content: ""; position: absolute; right: -25.5px; top: 50%; width: 25px; border-top: 1.5px solid #cbd5e1; z-index: 0; }
 		
 /* Aplicar la animación a las tarjetas de los grupos */
 .group-card {
