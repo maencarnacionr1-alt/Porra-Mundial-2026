@@ -4102,7 +4102,7 @@ function actualizarCintaPartidos(partidos) {
 
     // 2. FILTRAR ESTRICTAMENTE: Solo "1/16" Y que los equipos sean países reales (no códigos "W" o "L")
     const partidosFiltrados = partidos.filter(partido => {
-        const esRondaCorrecta = partido.ronda === "Cuartos";
+        const esRondaCorrecta = partido.ronda === "Semifinal";
         
         // Verificamos que no contenga códigos de "Ganador" (W) o "Perdedor" (L) típicos de cuadros vacíos
         const casaString = String(partido.casa || "");
