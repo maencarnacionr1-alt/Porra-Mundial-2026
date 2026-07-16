@@ -4102,16 +4102,18 @@ function actualizarCintaPartidos(partidos) {
 
     // 2. FILTRAR ESTRICTAMENTE: Solo "1/16" Y que los equipos sean países reales (no códigos "W" o "L")
     const partidosFiltrados = partidos.filter(partido => {
-        const esRondaCorrecta = partido.ronda === "Semifinal" && "Final";
-        
-        // Verificamos que no contenga códigos de "Ganador" (W) o "Perdedor" (L) típicos de cuadros vacíos
-        const casaString = String(partido.casa || "");
-        const visitaString = String(partido.visitante || "");
-        const esEquipoReal = !casaString.startsWith("W") && !casaString.startsWith("L") &&
-                             !visitaString.startsWith("W") && !visitaString.startsWith("L");
-                             
-        return esRondaCorrecta && esEquipoReal;
-    });
+    // CORREGIDO: Ahora busca cualquiera de las dos rondas correctamente
+    const esRondaCorrecta = ["Semifinal", "Final"].includes(partido.ronda);
+    
+    // Verificamos que no contenga códigos de "Ganador" (W) o "Perdedor" (L) típicos de cuadros vacíos
+    const casaString = String(partido.casa || "");
+    const visitaString = String(partido.visitante || "");
+    const esEquipoReal = !casaString.startsWith("W") && !casaString.startsWith("L") &&
+                         !visitaString.startsWith("W") && !visitaString.startsWith("L");
+                         
+    return esRondaCorrecta && esEquipoReal;
+});
+
 
     if (partidosFiltrados.length === 0) {
         console.log("No hay partidos válidos de 1/16 para mostrar.");
